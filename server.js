@@ -45,6 +45,5 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/demo1.html');
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("Running on " + PORT));
+// Vercel ke liye ye line sabse important hai
 module.exports = app;
