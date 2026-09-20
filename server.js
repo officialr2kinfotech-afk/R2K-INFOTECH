@@ -13,8 +13,11 @@ let otpStore = {};
 
 app.post('/api/send-otp', async (req, res) => {
   const { email } = req.body;
+  if (!email) {
+    return res.json({ success: false, message: "Email likho bhai" });
+  }
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  otpStore[email] = otp;
+  otpStore[email] = { otp: otp, time: Date.now() };
   console.log(`OTP for ${email} is ${otp}`);
 
   try {
@@ -27,22 +30,35 @@ app.post('/api/send-otp', async (req, res) => {
     res.json({ success: true });
   } catch (e) {
     console.log(e);
-    res.json({ success: false, error: e.message });
+    res.json({ success: false, message: "Email nahi bheja ja saka, email sahi likho" });
   }
 });
 
 app.post('/api/verify-otp', (req, res) => {
   const { email, otp } = req.body;
-  if (otpStore[email] && otpStore[email] == otp) {
+  const stored = otpStore[email];
+
+  if (!stored) {
+    return res.json({ success: false, message: "Pehle OTP bhejo" });
+  }
+
+  // 5 minute expiry
+  if (Date.now() - stored.time > 5 * 60 * 1000) {
+    delete otpStore[email];
+    return res.json({ success: false, message: "OTP expire ho gaya" });
+  }
+
+  if (stored.otp == otp) {
     delete otpStore[email];
     res.json({ success: true });
   } else {
-    res.json({ success: false, message: "Wrong OTP" });
+    res.json({ success: false, message: "Galat OTP hai" });
   }
 });
 
+// YAHI MAIN FIX HAI - ab index.html khulega
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/demo1.html');
+  res.sendFile(__dirname + '/index.html');
 });
 
 // Vercel ke liye ye line sabse important hai
