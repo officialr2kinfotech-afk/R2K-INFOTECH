@@ -5,76 +5,79 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>REKAVO by R2K Infotech - Official Store</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,'Segoe UI',sans-serif}
 body{background:#f1f3f6}
-.top-strip{background:#2874f0;color:#fff;text-align:center;padding:7px;font-size:13px;font-weight:700}
-header{background:#fff;padding:12px 3%;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 4px rgba(0,0,0,.1);position:sticky;top:0;z-index:10}
-.logo{font-weight:900;font-size:22px;line-height:1}.logo span:first-child{color:#2874f0}.logo span:last-child{color:#ff5722}
-.logo small{font-size:11px;color:#666;display:block;letter-spacing:1px;font-weight:700;margin-top:2px}
-.search-box{flex:1;max-width:500px;margin:0 20px;display:flex;background:#f0f5ff;border-radius:8px;overflow:hidden}
-.search-box input{flex:1;border:none;padding:12px 15px;outline:none;background:transparent}
-.search-box button{background:#2874f0;border:none;color:#fff;padding:0 22px;cursor:pointer}
-.banner{margin:12px 3%;background:#fff;border:1.5px solid #ffe082;border-radius:14px;display:flex;overflow:hidden;min-height:260px}
-.banner-left{flex:1.2;position:relative;overflow:hidden;padding:0}
-.rekavo-poster{width:100%;height:100%;min-height:260px;background: radial-gradient(circle at 20% 30%, #1e3aff 0%, #000 45%, #0a0a0a 100%);display:flex;flex-direction:column;justify-content:center;padding:28px 32px;position:relative;isolation:isolate}
-.rekavo-poster::before{content:'';position:absolute;top:-40%;left:-20%;width:80%;height:180%;background:linear-gradient(120deg, rgba(40,116,240,.25), transparent 60%);transform:rotate(12deg);z-index:0}
-.rekavo-poster::after{content:'REKAVO';position:absolute;right:-10px;bottom:-20px;font-size:120px;font-weight:900;color:rgba(255,255,255,.04);letter-spacing:-5px;z-index:0;line-height:1}
-.poster-tag{background:linear-gradient(90deg,#ff9f00,#ff5722);color:#fff;padding:5px 14px;border-radius:20px;font-size:10px;font-weight:900;display:inline-block;margin-bottom:14px;letter-spacing:1px;position:relative;z-index:1}
-.poster-title{font-size:52px;line-height:.9;font-weight:900;color:#fff;letter-spacing:-1px;position:relative;z-index:1}
-.poster-title span{background: linear-gradient(90deg, #fff 30%, #7aa7ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.poster-sub{font-size:16px;color:#aab8d6;font-weight:700;margin-top:8px;letter-spacing:3px;position:relative;z-index:1}
-.poster-desc{margin-top:16px;color:#7d8aaf;font-size:12px;line-height:1.6;font-weight:600;max-width:90%;position:relative;z-index:1;border-left:2px solid #2874f0;padding-left:12px}
-.poster-badge-row{display:flex;gap:10px;margin-top:18px;position:relative;z-index:1}
-.poster-badge-row div{font-size:10px;padding:6px 10px;border-radius:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;font-weight:700;backdrop-filter:blur(5px)}
-.trust{margin:0 3%;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.trust div{background:#fff;padding:14px;border-radius:10px;text-align:center;font-weight:700;font-size:13px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.deals{margin:20px 3%;background:#fff;border-radius:12px;padding:18px}
-.deals h2{margin-bottom:15px}
-.products{display:grid;grid-template-columns:repeat(5,1fr);gap:15px}
-.card{border:1px solid #eee;border-radius:12px;padding:12px;text-align:center;cursor:pointer;background:#fff}
-.card img{height:130px;object-fit:contain;width:100%;border-radius:8px;background:#f9f9f9}
-.card b{display:block;margin-top:8px}
-.modal{display:none;position:fixed;z-index:100;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.6);overflow:auto}
-.modal-content{background:#fff;margin:5% auto;padding:20px;width:90%;max-width:850px;border-radius:12px;position:relative}
-.close{position:absolute;right:14px;top:10px;font-size:28px;cursor:pointer;font-weight:bold;z-index:5}
-.variant-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:15px}
-.variant-card{border:1px solid #e0e0e0;border-radius:10px;padding:12px;text-align:center;background:#fff}
+.top-strip{background:#2874f0;color:#fff;text-align:center;padding:5px;font-size:12px;font-weight:700}
+header{background:#2874f0;padding:8px 2%;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:20;height:56px}
+.logo{font-weight:900;font-size:20px;line-height:1;color:#fff;min-width:110px}.logo span:last-child{color:#ffe500}
+.logo small{font-size:10px;color:#fff;display:block;font-weight:600;margin-top:1px;opacity:.9}
+.search-box{flex:1;max-width:600px;display:flex;background:#fff;border-radius:2px;overflow:hidden;height:36px}
+.search-box input{flex:1;border:none;padding:0 14px;outline:none;font-size:14px}
+.search-box button{background:#fff;border:none;color:#2874f0;padding:0 20px;cursor:pointer;font-size:18px;font-weight:800}
+.header-actions{display:flex;gap:18px;align-items:center;font-weight:600;font-size:14px;color:#fff;white-space:nowrap}
+.header-actions span{cursor:pointer}
+.lang-select{background:#fff;border:none;border-radius:2px;padding:4px 8px;font-size:12px;font-weight:700;outline:none;color:#2874f0;height:32px}
+.banner{margin:8px;background:#fff;border-radius:2px;display:flex;overflow:hidden;min-height:220px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.banner-left{flex:1.2;overflow:hidden}
+.rekavo-poster{width:100%;height:100%;min-height:220px;background:radial-gradient(circle at 20% 30%, #1e3aff 0%, #000 45%, #0a0a0a 100%);display:flex;flex-direction:column;justify-content:center;padding:20px 24px;position:relative}
+.poster-tag{background:#ffe500;color:#000;padding:3px 10px;border-radius:2px;font-size:9px;font-weight:900;display:inline-block;margin-bottom:10px;width:fit-content}
+.poster-title{font-size:38px;line-height:.9;font-weight:900;color:#fff}.poster-title span{color:#ffe500}
+.poster-sub{font-size:13px;color:#fff;font-weight:600;margin-top:6px;letter-spacing:1px}
+.poster-desc{margin-top:10px;color:#aab8d6;font-size:11px;line-height:1.4;max-width:90%;border-left:2px solid #ffe500;padding-left:10px}
+.poster-badge-row{display:flex;gap:8px;margin-top:12px}
+.poster-badge-row div{font-size:9px;padding:4px 8px;border-radius:2px;background:rgba(255,255,255,.12);color:#fff;font-weight:700}
+.trust{margin:8px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.trust div{background:#fff;padding:10px;border-radius:2px;text-align:center;font-weight:600;font-size:12px;box-shadow:0 1px 1px rgba(0,0,0,.1)}
+.deals{margin:8px;background:#fff;border-radius:2px;padding:12px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.deals h2{margin-bottom:12px;font-size:16px;font-weight:700}
+.products{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.card{border:1px solid #f0f0f0;border-radius:4px;padding:8px;text-align:center;cursor:pointer;background:#fff}
+.card:hover{box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.card img{height:110px;object-fit:contain;width:100%}
+.card b{display:block;margin-top:6px;font-size:13px}
+.modal{display:none;position:fixed;z-index:100;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:12px}
+.modal.show{display:flex}
+.modal-content{background:#fff;width:100%;max-width:900px;border-radius:4px;position:relative;max-height:90vh;overflow-y:auto}
+.close{position:absolute;right:12px;top:8px;font-size:24px;cursor:pointer;font-weight:bold;z-index:5}
+.variant-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:12px;padding:12px}
+.variant-card{border:1px solid #f0f0f0;border-radius:4px;padding:10px;text-align:center;background:#fff}
 .variant-card img{height:90px;object-fit:contain;width:100%}
-.price{color:#388e3c;font-weight:900;font-size:16px;margin:5px 0}
-.old-price{text-decoration:line-through;color:#999;font-size:13px;display:block}
-.coupon-row{display:flex;gap:5px;margin:8px 0}
-.coupon-row input{flex:1;padding:6px 8px;border:1.5px solid #2874f0;border-radius:5px;font-size:11px;outline:none}
-.coupon-row button{background:#2874f0;color:#fff;border:none;padding:6px 10px;border-radius:5px;font-size:11px;font-weight:800;cursor:pointer}
-.btn-cart{width:100%;margin-top:6px;background:#ff9f00;color:#fff;border:none;padding:9px;border-radius:6px;font-weight:800;cursor:pointer;font-size:12px}
-.btn-buy{width:100%;margin-top:6px;background:#fb641b;color:#fff;border:none;padding:9px;border-radius:6px;font-weight:800;cursor:pointer;font-size:12px}
-.checkout-input{width:100%;padding:11px;margin:6px 0;border:1px solid #ccc;border-radius:6px}
-.pay-box{border:2px solid #2874f0;background:#f0f7ff;border-radius:8px;padding:12px;margin:10px 0;display:flex;gap:10px;align-items:center;font-weight:700}
-#productDetailModal.modal-content{max-width:900px;padding:0;overflow:hidden}
+.price{color:#388e3c;font-weight:700;font-size:15px;margin:4px 0}
+.old-price{text-decoration:line-through;color:#878787;font-size:12px}
+.coupon-row{display:flex;gap:4px;margin:8px 0}
+.coupon-row input{flex:1;padding:6px;border:1px solid #e0e0e0;border-radius:2px;font-size:11px;outline:none}
+.coupon-row button{background:#2874f0;color:#fff;border:none;padding:6px 10px;border-radius:2px;font-size:11px;font-weight:700;cursor:pointer}
+.btn-cart{width:100%;margin-top:6px;background:#ff9f00;color:#fff;border:none;padding:8px;border-radius:2px;font-weight:700;cursor:pointer;font-size:12px}
+.btn-buy{width:100%;margin-top:6px;background:#fb641b;color:#fff;border:none;padding:8px;border-radius:2px;font-weight:700;cursor:pointer;font-size:12px}
+.error-msg{color:#ff6161;font-size:11px;font-weight:600;margin-top:3px;display:none}
+.error-msg.show{display:block}
+.checkout-input{width:100%;padding:10px;margin:5px 0 2px;border:1px solid #e0e0e0;border-radius:2px;font-size:13px}
+.checkout-input.error{border-color:#ff6161;background:#fff5f5}
+.pay-box{border:1px solid #e0e0e0;background:#f9f9f9;border-radius:2px;padding:10px;margin:10px 0;display:flex;gap:10px;align-items:center;font-weight:600;font-size:13px}
+#productDetailModal.modal-content{max-width:960px;padding:0}
 .detail-wrap{display:flex;flex-wrap:wrap}
-.detail-left{flex:1;min-width:320px;background:#f9f9f9;padding:15px}
-.detail-main-img{width:100%;height:320px;object-fit:contain;background:#fff;border-radius:10px;border:1px solid #eee}
-.detail-thumbs{display:flex;gap:8px;margin-top:8px;overflow-x:auto}
-.detail-thumbs img{width:70px;height:70px;object-fit:contain;border:2px solid #eee;border-radius:8px;cursor:pointer;background:#fff}
+.detail-left{flex:1;min-width:300px;background:#fff;padding:12px;border-right:1px solid #f0f0f0}
+.detail-main-img{width:100%;height:300px;object-fit:contain;background:#fff;border:1px solid #f0f0f0}
+.detail-thumbs{display:flex;gap:6px;margin-top:8px;overflow-x:auto}
+.detail-thumbs img{width:50px;height:50px;object-fit:contain;border:1px solid #e0e0e0;border-radius:2px;cursor:pointer}
 .detail-thumbs img.active{border-color:#2874f0}
-.detail-right{flex:1;min-width:320px;padding:20px;max-height:80vh;overflow:auto}
-.back-btn{display:inline-flex;align-items:center;gap:5px;background:#000;color:#fff;border:none;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;margin-bottom:12px}
-.spec-box{background:#f0f7ff;border-radius:8px;padding:12px;margin:10px 0;font-size:13px;line-height:1.6}
-.review-box{margin-top:20px;border-top:1px solid #eee;padding-top:15px}
-.star{font-size:26px;cursor:pointer;color:#ddd}
-.star.active{color:#ff9f00}
-.review-card{border:1px solid #eee;border-radius:8px;padding:10px;margin-top:10px;background:#fff}
-.login-tab{display:flex;gap:0;margin-bottom:12px;border-radius:8px;overflow:hidden;border:1px solid #2874f0}
-.login-tab button{flex:1;padding:10px;border:none;background:#fff;color:#2874f0;font-weight:800;cursor:pointer}
+.detail-right{flex:1;min-width:300px;padding:16px;max-height:90vh;overflow:auto}
+.back-btn{display:inline-flex;align-items:center;gap:5px;background:#f0f0f0;color:#000;border:none;padding:6px 12px;border-radius:2px;font-size:12px;font-weight:700;cursor:pointer;margin-bottom:10px}
+.spec-box{background:#fafafa;border:1px solid #f0f0f0;border-radius:2px;padding:10px;margin:10px 0;font-size:12px;line-height:1.5}
+.review-box{margin-top:16px;border-top:1px solid #f0f0f0;padding-top:12px}
+.star{font-size:20px;cursor:pointer;color:#e0e0e0}.star.active{color:#ff9f00}
+.review-card{border:1px solid #f0f0f0;border-radius:2px;padding:8px;margin-top:8px;font-size:12px}
+.login-tab{display:flex;margin-bottom:10px;border-radius:2px;overflow:hidden;border:1px solid #e0e0e0}
+.login-tab button{flex:1;padding:9px;border:none;background:#fff;color:#878787;font-weight:700;cursor:pointer;font-size:13px}
 .login-tab button.active{background:#2874f0;color:#fff}
-.link-row{display:flex;justify-content:space-between;margin-top:8px;font-size:12px}
-.link-row span{color:#2874f0;cursor:pointer;font-weight:700;text-decoration:underline}
-.order-card{background:#fff;padding:12px;border-radius:8px;margin-bottom:10px;border:1px solid #eee}
-.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;color:#fff;font-weight:800}
+.link-row{display:flex;justify-content:space-between;margin-top:10px;font-size:11px}
+.link-row span{color:#2874f0;cursor:pointer;font-weight:600}
+.order-card{background:#fff;padding:10px;border-radius:2px;margin-bottom:8px;border:1px solid #f0f0f0;font-size:12px}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;color:#fff;font-weight:700}
 .b-Placed{background:#2874f0}.b-Packed{background:#ff9f00}.b-Shipped{background:#26a541}.b-Delivered{background:#000}
-.admin-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:12px}
-.admin-table th,.admin-table td{border:1px solid #ddd;padding:6px;text-align:left}
-.lang-select{background:#f0f5ff;border:1.5px solid #2874f0;border-radius:20px;padding:6px 12px;font-size:12px;font-weight:800;outline:none;cursor:pointer;color:#2874f0}
-@media(max-width:768px){.products{grid-template-columns:repeat(2,1fr)}.variant-grid{grid-template-columns:repeat(2,1fr)} header{flex-wrap:wrap}.banner{flex-direction:column}}
+.admin-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:10px}
+.admin-table th,.admin-table td{border:1px solid #e0e0e0;padding:6px;text-align:left}
+@media(max-width:768px){header{height:auto;flex-wrap:wrap;padding:8px}.search-box{order:3;max-width:100%;margin-top:8px;width:100%}.products{grid-template-columns:repeat(2,1fr);gap:6px}.variant-grid{grid-template-columns:repeat(2,1fr);gap:8px}.banner{flex-direction:column}.poster-title{font-size:28px}}
 </style>
 </head>
 <body>
@@ -82,437 +85,115 @@ header{background:#fff;padding:12px 3%;display:flex;align-items:center;justify-c
 <header>
 <div class="logo"><span>REKAVO</span><small>by R2K Infotech</small></div>
 <div class="search-box"><input type="text" id="mainSearch" placeholder="Search for products, brands and more"><button>⌕</button></div>
-<div style="display:flex;gap:12px;align-items:center;font-weight:700;font-size:14px">
+<div class="header-actions">
 <select id="langSelect" class="lang-select" onchange="changeLanguage(this.value)">
-<option value="en">🌐 English</option>
-<option value="hi">🌐 हिंदी</option>
-<option value="bn">🌐 বাংলা</option>
-<option value="ta">🌐 தமிழ்</option>
-<option value="te">🌐 తెలుగు</option>
-<option value="mr">🌐 मराठी</option>
-<option value="gu">🌐 ગુજરાતી</option>
-<option value="kn">🌐 ಕನ್ನಡ</option>
-<option value="ml">🌐 മലയാളം</option>
-<option value="pa">🌐 ਪੰਜਾਬੀ</option>
-<option value="ur">🌐 اردو</option>
+<option value="en">English</option><option value="hi">हिंदी</option><option value="bn">বাংলা</option><option value="ta">தமிழ்</option><option value="te">తెలుగు</option><option value="mr">मराठी</option><option value="gu">ગુજરાતી</option><option value="kn">ಕನ್ನಡ</option><option value="ml">മലയാളം</option><option value="pa">ਪੰਜਾਬੀ</option><option value="ur">اردو</option>
 </select>
-<span id="myOrdersBtn" style="cursor:pointer">📦 My Orders</span>
-<span id="loginBtn" style="cursor:pointer">👤 Login</span>
-<span id="cartBtn" style="cursor:pointer">🛒 Cart (<span id="cartCount">0</span>)</span>
+<span id="myOrdersBtn">📦 Orders</span><span id="loginBtn">Login</span><span id="cartBtn">🛒 Cart (<span id="cartCount">0</span>)</span>
 </div>
 </header>
-<div class="banner">
-<div class="banner-left">
-<div class="rekavo-poster">
-<div class="poster-tag" id="posterTag">REKAVO • by R2K INFOTECH</div>
-<div class="poster-title">RE<span>KAVO</span></div>
-<div class="poster-sub" id="posterSub">MOBILE ACCESSORIES & ELECTRONICS</div>
-<div class="poster-desc" id="posterDesc">Mobile, Charger, Cover, Earbuds, Headphone, Speaker, Power Bank, Smart Watch - Everything in one place at wholesale price. Premium Quality. Fast Delivery. A Brand by R2K Infotech.</div>
-<div class="poster-badge-row"><div id="b1">★ PREMIUM</div><div id="b2">⚡ FAST DELIVERY</div><div id="b3">✓ VERIFIED</div></div>
-</div>
-</div>
-<div class="banner-right" style="flex:.8;background:#fff;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px">
-<img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200" style="width:100%;height:110px;object-fit:cover;border-radius:10px">
-<img src="https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=200" style="width:100%;height:110px;object-fit:cover;border-radius:10px">
-<img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=200" style="width:100%;height:110px;object-fit:cover;border-radius:10px">
-<img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=200" style="width:100%;height:110px;object-fit:cover;border-radius:10px">
-</div>
-</div>
+<div class="banner"><div class="banner-left"><div class="rekavo-poster"><div class="poster-tag" id="posterTag">REKAVO • by R2K INFOTECH</div><div class="poster-title">RE<span>KAVO</span></div><div class="poster-sub" id="posterSub">MOBILE ACCESSORIES & ELECTRONICS</div><div class="poster-desc" id="posterDesc">Mobile, Charger, Cover, Earbuds, Headphone, Speaker, Power Bank, Smart Watch - Everything at wholesale price. Premium Quality. Fast Delivery. A Brand by R2K Infotech.</div><div class="poster-badge-row"><div id="b1">★ PREMIUM</div><div id="b2">⚡ FAST DELIVERY</div><div id="b3">✓ VERIFIED</div></div></div></div><div class="banner-right" style="flex:.8;background:#fff;display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:6px"><img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200" style="width:100%;height:100px;object-fit:cover;border-radius:2px"><img src="https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=200" style="width:100%;height:100px;object-fit:cover;border-radius:2px"><img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=200" style="width:100%;height:100px;object-fit:cover;border-radius:2px"><img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=200" style="width:100%;height:100px;object-fit:cover;border-radius:2px"></div></div>
 <div class="trust"><div id="t1">✅ 100% Genuine</div><div id="t2">💳 Prepaid Only</div><div id="t3">↩️ 7 Day Return</div><div id="t4">🔒 Secure Payment</div></div>
-<div class="deals"><h2 id="shopTitle">Shop By Category - Click to Explore</h2><div class="products">
-<div class="card" onclick="openCategory('powerbank')"><img src="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300"><b id="catPB">Power Bank</b></div>
-<div class="card" onclick="openCategory('neckband')"><img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300"><b id="catNB">Neckband</b></div>
-<div class="card" onclick="openCategory('earbuds')"><img src="https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=300"><b id="catEB">Earbuds</b></div>
-<div class="card" onclick="openCategory('cable')"><img src="https://images.unsplash.com/photo-1625842268584-8f3296236761?w=300"><b id="catCB">Cable</b></div>
-<div class="card" onclick="openCategory('charger')"><img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300"><b id="catCH">Charger</b></div>
-</div></div>
+<div class="deals"><h2 id="shopTitle">Shop By Category - Click to Explore</h2><div class="products"><div class="card" onclick="openCategory('powerbank')"><img src="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300"><b id="catPB">Power Bank</b></div><div class="card" onclick="openCategory('neckband')"><img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300"><b id="catNB">Neckband</b></div><div class="card" onclick="openCategory('earbuds')"><img src="https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=300"><b id="catEB">Earbuds</b></div><div class="card" onclick="openCategory('cable')"><img src="https://images.unsplash.com/photo-1625842268584-8f3296236761?w=300"><b id="catCB">Cable</b></div><div class="card" onclick="openCategory('charger')"><img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300"><b id="catCH">Charger</b></div></div></div>
 
-<div id="loginModal" class="modal"><div class="modal-content" style="max-width:360px"><span class="close" id="closeLogin">&times;</span>
-<h3 id="loginTitle">Please Login</h3><p id="loginSub" style="font-size:12px;color:#666;margin:4px 0 10px">Login to keep your orders safe</p>
+<div id="loginModal" class="modal"><div class="modal-content" style="max-width:360px;padding:16px"><span class="close" id="closeLogin">&times;</span>
+<h3 id="loginTitle" style="font-size:16px">Please Login</h3><p id="loginSub" style="font-size:11px;color:#878787;margin:4px 0 10px">Login to keep your orders safe</p>
 <div class="login-tab"><button id="tabLogin" class="active" onclick="switchAuth('login')">Login</button><button id="tabSignup" onclick="switchAuth('signup')">Register</button></div>
 <div id="loginForm">
-<input id="loginMobile" type="text" placeholder="Mobile / Email" class="checkout-input">
-<input id="loginPass" type="password" placeholder="Password" class="checkout-input">
-<button onclick="doLogin()" style="width:100%;padding:11px;background:#fb641b;color:#fff;border:none;border-radius:6px;font-weight:800;margin-top:6px">Login with Password</button>
+<input id="loginMobile" type="text" placeholder="Mobile / Email" class="checkout-input"><p id="err-loginMobile" class="error-msg"></p>
+<input id="loginPass" type="password" placeholder="Password" class="checkout-input"><p id="err-loginPass" class="error-msg"></p>
+<button onclick="doLogin()" style="width:100%;padding:10px;background:#fb641b;color:#fff;border:none;border-radius:2px;font-weight:700;margin-top:10px">Login with Password</button>
 <div class="link-row"><span onclick="switchAuth('forgot')">Forgot Password?</span><span onclick="switchAuth('signup')">Register Now</span></div>
 </div>
 <div id="signupForm" style="display:none">
-<div id="regStep1">
-<input id="signupName" type="text" placeholder="Full Name*" class="checkout-input">
-<input id="signupMobile" type="tel" placeholder="Mobile Number*" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)" class="checkout-input">
-<input id="signupEmail" type="email" placeholder="Email* (Mandatory)" class="checkout-input">
-<button id="regSendOtpBtn" onclick="sendRegOtp()" style="width:100%;padding:11px;background:#2874f0;color:#fff;border:none;border-radius:6px;font-weight:800;margin-top:6px">Send OTP</button>
-</div>
-<div id="regStep2" style="display:none">
-<p style="font-size:12px;color:#388e3c;font-weight:700">OTP sent to your Email Inbox</p>
-<input id="regOtp" type="tel" placeholder="Enter 6 Digit OTP*" class="checkout-input">
-<button id="regVerifyBtn" onclick="verifyRegOtp()" style="width:100%;padding:11px;background:#ff9f00;color:#fff;border:none;border-radius:6px;font-weight:800">Verify OTP</button>
-</div>
-<div id="regStep3" style="display:none">
-<p style="font-size:12px;color:#388e3c;font-weight:700">✅ OTP Verified - Create Password</p>
-<input id="signupPass" type="password" placeholder="Create Password*" class="checkout-input">
-<input id="signupPass2" type="password" placeholder="Confirm Password*" class="checkout-input">
-<button onclick="doSignupFinal()" style="width:100%;padding:11px;background:#26a541;color:#fff;border:none;border-radius:6px;font-weight:800;margin-top:6px">Register Now</button>
-</div>
+<div id="regStep1"><input id="signupName" type="text" placeholder="Full Name*" class="checkout-input"><p id="err-signupName" class="error-msg"></p><input id="signupMobile" type="tel" placeholder="Mobile Number*" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)" class="checkout-input"><p id="err-signupMobile" class="error-msg"></p><input id="signupEmail" type="email" placeholder="Email* (Mandatory)" class="checkout-input"><p id="err-signupEmail" class="error-msg"></p><button id="regSendOtpBtn" onclick="sendRegOtp()" style="width:100%;padding:10px;background:#2874f0;color:#fff;border:none;border-radius:2px;font-weight:700;margin-top:8px">Send OTP</button></div>
+<div id="regStep2" style="display:none"><p style="font-size:12px;color:#388e3c;font-weight:700">OTP sent to your Email Inbox</p><input id="regOtp" type="tel" placeholder="Enter 6 Digit OTP*" class="checkout-input"><p id="err-regOtp" class="error-msg"></p><button id="regVerifyBtn" onclick="verifyRegOtp()" style="width:100%;padding:10px;background:#ff9f00;color:#fff;border:none;border-radius:2px;font-weight:700">Verify OTP</button></div>
+<div id="regStep3" style="display:none"><p style="font-size:12px;color:#388e3c;font-weight:700">✅ OTP Verified - Create Password</p><input id="signupPass" type="password" placeholder="Create Password*" class="checkout-input"><p id="err-signupPass" class="error-msg"></p><input id="signupPass2" type="password" placeholder="Confirm Password*" class="checkout-input"><p id="err-signupPass2" class="error-msg"></p><button onclick="doSignupFinal()" style="width:100%;padding:10px;background:#26a541;color:#fff;border:none;border-radius:2px;font-weight:700;margin-top:8px">Register Now</button></div>
 <div class="link-row"><span>Already have account?</span><span onclick="switchAuth('login')">Login</span></div>
 </div>
 <div id="forgotForm" style="display:none">
-<input id="forgotEmail" type="email" placeholder="Enter Registered Email*" class="checkout-input">
-<button id="sendOtpBtn" onclick="sendForgotOtp()" style="width:100%;padding:11px;background:#2874f0;color:#fff;border:none;border-radius:6px;font-weight:800;margin-top:6px">Send OTP</button>
-<div id="forgotOtpBox" style="display:none">
-<input id="forgotOtp" type="tel" placeholder="Enter OTP*" class="checkout-input">
-<button onclick="verifyForgotOtp()" style="width:100%;padding:11px;background:#ff9f00;color:#fff;border:none;border-radius:6px;font-weight:800">Validate OTP</button>
-</div>
-<div id="newPassBox" style="display:none">
-<input id="forgotPass" type="password" placeholder="New Password*" class="checkout-input">
-<input id="forgotPass2" type="password" placeholder="Confirm Password*" class="checkout-input">
-<button onclick="saveNewPassword()" style="width:100%;padding:11px;background:#26a541;color:#fff;border:none;border-radius:6px;font-weight:800">Save Password</button>
-</div>
+<input id="forgotEmail" type="email" placeholder="Enter Registered Email*" class="checkout-input"><p id="err-forgotEmail" class="error-msg"></p><button id="sendOtpBtn" onclick="sendForgotOtp()" style="width:100%;padding:10px;background:#2874f0;color:#fff;border:none;border-radius:2px;font-weight:700;margin-top:8px">Send OTP</button>
+<div id="forgotOtpBox" style="display:none"><input id="forgotOtp" type="tel" placeholder="Enter OTP*" class="checkout-input"><p id="err-forgotOtp" class="error-msg"></p><button onclick="verifyForgotOtp()" style="width:100%;padding:10px;background:#ff9f00;color:#fff;border:none;border-radius:2px;font-weight:700">Validate OTP</button></div>
+<div id="newPassBox" style="display:none"><input id="forgotPass" type="password" placeholder="New Password*" class="checkout-input"><input id="forgotPass2" type="password" placeholder="Confirm Password*" class="checkout-input"><p id="err-forgotPass" class="error-msg"></p><button onclick="saveNewPassword()" style="width:100%;padding:10px;background:#26a541;color:#fff;border:none;border-radius:2px;font-weight:700">Save Password</button></div>
 <div class="link-row"><span onclick="switchAuth('login')">Back to Login</span><span onclick="switchAuth('signup')">Register Now</span></div>
 </div>
 </div></div>
 
-<div id="cartModal" class="modal"><div class="modal-content" style="max-width:360px"><span class="close" id="closeCart">&times;</span><h3 id="cartTitle">Your Cart</h3><div id="cartItems" style="margin:12px 0"></div><b>Total: ₹<span id="cartTotal">0</span></b><button style="margin-top:12px;width:100%;padding:11px;background:#fb641b;color:#fff;border:none;border-radius:6px;font-weight:800" onclick="openCheckout()">PLACE ORDER</button></div></div>
-
-<div id="categoryModal" class="modal"><div class="modal-content"><span class="close" onclick="closeCategory()">&times;</span><h2 id="catTitle"></h2><div id="catProducts" class="variant-grid"></div></div></div>
-
-<div id="productDetailModal" class="modal"><div class="modal-content"><span class="close" onclick="closeProductDetail()">&times;</span>
-<div class="detail-wrap">
-<div class="detail-left">
-<button class="back-btn" onclick="backToCategory()">← Back</button>
-<img id="detailMainImg" class="detail-main-img" src="">
-<div class="detail-thumbs" id="detailThumbs"></div>
-</div>
-<div class="detail-right">
-<h2 id="detailName">Product Name</h2>
-<div style="display:flex;gap:10px;align-items:center;margin:8px 0"><span class="old-price" id="detailOldPrice">₹999</span><span class="price" id="detailPrice">₹499</span><span id="detailOff" style="color:#26a541;font-weight:800">40% OFF</span></div>
-<div class="coupon-row"><input type="text" id="detailCouponInput" placeholder="Enter Coupon Code"><button id="detailCouponBtn" onclick="applyDetailCoupon()">APPLY</button></div>
-<p style="font-size:11px;color:#888" id="couponHint">Have a coupon? Apply to get extra discount.</p>
-<div class="spec-box"><b id="specTitle">Product Details:</b><div id="detailSpecs"></div></div>
-<div style="display:flex;gap:10px;margin-top:10px"><button class="btn-cart" id="btnAddCart" onclick="addDetailToCart()">ADD TO CART</button><button class="btn-buy" id="btnBuyNow" onclick="buyDetailNow()">BUY NOW</button></div>
-<div class="review-box">
-<h3 id="rateTitle">Rate this Product</h3>
-<div style="margin:10px 0">
-<span class="star" data-star="1" onclick="setRating(1)">★</span>
-<span class="star" data-star="2" onclick="setRating(2)">★</span>
-<span class="star" data-star="3" onclick="setRating(3)">★</span>
-<span class="star" data-star="4" onclick="setRating(4)">★</span>
-<span class="star" data-star="5" onclick="setRating(5)">★</span>
-<span id="ratingText" style="margin-left:10px;font-size:13px;font-weight:700"></span>
-</div>
-<input id="reviewName" class="checkout-input" placeholder="Your Name">
-<textarea id="reviewComment" class="checkout-input" placeholder="Write your review here..." rows="3"></textarea>
-<button class="btn-cart" onclick="submitReview()" id="btnSubmitReview">Submit Review</button>
-<div id="reviewList" style="margin-top:15px"></div>
-</div>
-</div>
-</div>
-</div></div>
-
-<div id="checkoutModal" class="modal"><div class="modal-content" style="max-width:420px"><span class="close" onclick="document.getElementById('checkoutModal').style.display='none'">&times;</span><h3>Delivery Address</h3><div id="savedAddressList" style="margin:10px 0"></div><div id="addAddressForm" style="display:none;border-top:1px dashed #ccc;padding-top:12px;margin-top:12px"><input id="cName" class="checkout-input" placeholder="Full Name"><input id="cPhone" type="tel" class="checkout-input" placeholder="Phone Number" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)"><input id="cAddress" class="checkout-input" placeholder="Full Address"><div style="display:flex;gap:8px"><input id="cPincode" type="tel" class="checkout-input" placeholder="Pincode" maxlength="6" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,6)"><input id="cCity" class="checkout-input" placeholder="City"></div><button class="btn-cart" onclick="saveNewAddress()">Save This Address</button></div><button id="addNewBtn" class="btn-cart" style="background:#fff;color:#2874f0;border:1.5px dashed #2874f0" onclick="showAddForm()">+ Add New Address</button><div class="pay-box" style="margin-top:15px"><span>💳</span><div><div>Pay via UPI</div><div style="font-size:11px;font-weight:400;color:#555">PhonePe, GPay, Paytm</div></div></div><div style="display:flex;justify-content:space-between;margin:10px 0;font-weight:800;font-size:17px"><span>To Pay</span><span>₹<span id="checkoutTotal">0</span></span></div><button class="btn-buy" style="padding:14px;font-size:15px" onclick="payWithUPI()">Place Order</button></div></div>
-<div id="upiModal" class="modal"><div class="modal-content" id="upiModalBox"><h3>Complete Payment</h3><p style="font-size:13px;color:#555;margin:8px 0">Pay <b>₹<span id="upiAmount">0</span></b> via UPI</p><img id="qrImg" style="width:180px;height:180px;margin:10px auto;border:1px solid #eee;border-radius:10px"><br><button class="btn-buy" onclick="openUpiApp()">Open UPI App</button><button onclick="paymentDone()" style="width:100%;margin-top:10px;padding:11px;background:#e8f5e9;color:#2e7d32;border:none;border-radius:6px;font-weight:700">I Have Paid - Confirm</button><p onclick="document.getElementById('upiModal').style.display='none'" style="font-size:12px;color:#888;margin-top:10px;cursor:pointer">Cancel</p></div></div>
-<div id="myOrdersModal" class="modal"><div class="modal-content" style="max-width:500px"><span class="close" onclick="document.getElementById('myOrdersModal').style.display='none'">&times;</span><h2>My Orders</h2><div id="myOrdersList" style="margin-top:12px"></div></div></div>
-<div id="adminModal" class="modal"><div class="modal-content" style="max-width:950px"><span class="close" onclick="document.getElementById('adminModal').style.display='none'">&times;</span><h2>REKAVO Admin Panel</h2><input type="text" id="searchOrder" class="checkout-input" placeholder="Search by Order ID / Mobile / Name..." oninput="renderAdmin()"><div style="overflow:auto;max-height:400px"><table class="admin-table"><thead><tr><th>OrderID</th><th>Customer / Product</th><th>Status</th><th>Tracking ID</th><th>Action</th></tr></thead><tbody id="adminTable"></tbody></table></div></div></div>
+<div id="cartModal" class="modal"><div class="modal-content" style="max-width:360px;padding:16px"><span class="close" id="closeCart">&times;</span><h3 id="cartTitle">Your Cart</h3><div id="cartItems" style="margin:12px 0"></div><b>Total: ₹<span id="cartTotal">0</span></b><button style="margin-top:12px;width:100%;padding:11px;background:#fb641b;color:#fff;border:none;border-radius:2px;font-weight:700" onclick="openCheckout()">PLACE ORDER</button></div></div>
+<div id="categoryModal" class="modal"><div class="modal-content"><span class="close" onclick="closeCategory()">&times;</span><h2 id="catTitle" style="padding:14px 16px 0;font-size:16px"></h2><div id="catProducts" class="variant-grid"></div></div></div>
+<div id="productDetailModal" class="modal"><div class="modal-content"><span class="close" onclick="closeProductDetail()">&times;</span><div class="detail-wrap"><div class="detail-left"><button class="back-btn" onclick="backToCategory()">← Back</button><img id="detailMainImg" class="detail-main-img" src=""><div class="detail-thumbs" id="detailThumbs"></div></div><div class="detail-right"><h2 id="detailName">Product Name</h2><div style="display:flex;gap:10px;align-items:center;margin:8px 0"><span class="old-price" id="detailOldPrice">₹999</span><span class="price" id="detailPrice">₹499</span><span id="detailOff" style="color:#26a541;font-weight:800">40% OFF</span></div><div class="coupon-row"><input type="text" id="detailCouponInput" placeholder="Enter Coupon Code"><button id="detailCouponBtn" onclick="applyDetailCoupon()">APPLY</button></div><p style="font-size:11px;color:#878787" id="couponHint">Have a coupon? Apply to get extra discount.</p><div class="spec-box"><b id="specTitle">Product Details:</b><div id="detailSpecs"></div></div><div style="display:flex;gap:10px;margin-top:10px"><button class="btn-cart" onclick="addDetailToCart()">ADD TO CART</button><button class="btn-buy" onclick="buyDetailNow()">BUY NOW</button></div><div class="review-box"><h3 id="rateTitle">Rate this Product</h3><div style="margin:10px 0"><span class="star" data-star="1" onclick="setRating(1)">★</span><span class="star" data-star="2" onclick="setRating(2)">★</span><span class="star" data-star="3" onclick="setRating(3)">★</span><span class="star" data-star="4" onclick="setRating(4)">★</span><span class="star" data-star="5" onclick="setRating(5)">★</span><span id="ratingText" style="margin-left:10px;font-size:13px;font-weight:700"></span></div><input id="reviewName" class="checkout-input" placeholder="Your Name"><textarea id="reviewComment" class="checkout-input" placeholder="Write your review here..." rows="3"></textarea><button class="btn-cart" onclick="submitReview()" id="btnSubmitReview">Submit Review</button><div id="reviewList" style="margin-top:15px"></div></div></div></div></div></div>
+<div id="checkoutModal" class="modal"><div class="modal-content" style="max-width:420px;padding:16px"><span class="close" onclick="document.getElementById('checkoutModal').classList.remove('show')">&times;</span><h3>Delivery Address</h3><div id="savedAddressList" style="margin:10px 0"></div><div id="addAddressForm" style="display:none;border-top:1px dashed #ccc;padding-top:12px;margin-top:12px"><input id="cName" class="checkout-input" placeholder="Full Name"><input id="cPhone" type="tel" class="checkout-input" placeholder="Phone Number" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)"><input id="cAddress" class="checkout-input" placeholder="Full Address"><div style="display:flex;gap:8px"><input id="cPincode" type="tel" class="checkout-input" placeholder="Pincode" maxlength="6"><input id="cCity" class="checkout-input" placeholder="City"></div><button class="btn-cart" onclick="saveNewAddress()">Save This Address</button></div><button id="addNewBtn" class="btn-cart" style="background:#fff;color:#2874f0;border:1.5px dashed #2874f0" onclick="showAddForm()">+ Add New Address</button><div class="pay-box" style="margin-top:15px"><span>💳</span><div><div>Pay via UPI</div><div style="font-size:11px;color:#555">PhonePe, GPay, Paytm</div></div></div><div style="display:flex;justify-content:space-between;margin:10px 0;font-weight:800;font-size:17px"><span>To Pay</span><span>₹<span id="checkoutTotal">0</span></span></div><button class="btn-buy" style="padding:14px;font-size:15px" onclick="payWithUPI()">Place Order</button></div></div>
+<div id="upiModal" class="modal"><div class="modal-content" style="max-width:360px;padding:16px;text-align:center"><h3>Complete Payment</h3><p style="font-size:13px;color:#555;margin:8px 0">Pay <b>₹<span id="upiAmount">0</span></b> via UPI</p><img id="qrImg" style="width:180px;height:180px;margin:10px auto;border:1px solid #eee;border-radius:10px"><br><button class="btn-buy" onclick="openUpiApp()">Open UPI App</button><button onclick="paymentDone()" style="width:100%;margin-top:10px;padding:11px;background:#e8f5e9;color:#2e7d32;border:none;border-radius:6px;font-weight:700">I Have Paid - Confirm</button><p onclick="document.getElementById('upiModal').classList.remove('show')" style="font-size:12px;color:#888;margin-top:10px;cursor:pointer">Cancel</p></div></div>
+<div id="myOrdersModal" class="modal"><div class="modal-content" style="max-width:500px;padding:16px"><span class="close" onclick="document.getElementById('myOrdersModal').classList.remove('show')">&times;</span><h2>My Orders</h2><div id="myOrdersList" style="margin-top:12px"></div></div></div>
+<div id="adminModal" class="modal"><div class="modal-content" style="max-width:950px;padding:16px"><span class="close" onclick="document.getElementById('adminModal').classList.remove('show')">&times;</span><h2>REKAVO Admin Panel</h2><input type="text" id="searchOrder" class="checkout-input" placeholder="Search by Order ID / Mobile / Name..." oninput="renderAdmin()"><div style="overflow:auto;max-height:400px"><table class="admin-table"><thead><tr><th>OrderID</th><th>Customer / Product</th><th>Status</th><th>Tracking ID</th><th>Action</th></tr></thead><tbody id="adminTable"></tbody></table></div></div></div>
 
 <script>
+function showErr(inputId,msg){let inp=document.getElementById(inputId);let err=document.getElementById('err-'+inputId);if(inp)inp.classList.add('error');if(err){err.innerText=msg;err.classList.add('show')}}
+function clearErr(inputId){let inp=document.getElementById(inputId);let err=document.getElementById('err-'+inputId);if(inp)inp.classList.remove('error');if(err)err.classList.remove('show')}
+function clearAllErr(){document.querySelectorAll('.error-msg').forEach(e=>e.classList.remove('show'));document.querySelectorAll('.checkout-input').forEach(e=>e.classList.remove('error'))}
+
 let loginModal=document.getElementById('loginModal');let cartModal=document.getElementById('cartModal');let categoryModal=document.getElementById('categoryModal');let myOrdersModal=document.getElementById('myOrdersModal');let adminModal=document.getElementById('adminModal');let productDetailModal=document.getElementById('productDetailModal');
 document.getElementById('loginBtn').onclick=()=>{ if(currentUser){ alert("Profile: "+currentUser.name); } else { openLoginPopup("Login to REKAVO","Login to keep your orders safe","login"); } };
-document.getElementById('cartBtn').onclick=()=>{showCart();cartModal.style.display='block';};
+document.getElementById('cartBtn').onclick=()=>{showCart();cartModal.classList.add('show');};
 document.getElementById('myOrdersBtn').onclick=()=>{ handleMyOrdersClick(); };
-document.getElementById('closeLogin').onclick=()=>loginModal.style.display='none';
-document.getElementById('closeCart').onclick=()=>cartModal.style.display='none';
-function closeCategory(){categoryModal.style.display='none';}
-function closeProductDetail(){productDetailModal.style.display='none';}
-function backToCategory(){productDetailModal.style.display='none';categoryModal.style.display='block';}
-window.onclick=(e)=>{
-if(e.target==cartModal)cartModal.style.display='none';
-if(e.target==document.getElementById('checkoutModal'))document.getElementById('checkoutModal').style.display='none';
-if(e.target==document.getElementById('upiModal'))document.getElementById('upiModal').style.display='none';
-if(e.target==myOrdersModal)myOrdersModal.style.display='none';
-if(e.target==adminModal)adminModal.style.display='none';
-}
+document.getElementById('closeLogin').onclick=()=>loginModal.classList.remove('show');
+document.getElementById('closeCart').onclick=()=>cartModal.classList.remove('show');
+function closeCategory(){categoryModal.classList.remove('show');}
+function closeProductDetail(){productDetailModal.classList.remove('show');}
+function backToCategory(){productDetailModal.classList.remove('show');categoryModal.classList.add('show');}
+window.onclick=(e)=>{ if(e.target.classList && e.target.classList.contains('modal')) e.target.classList.remove('show'); }
 
-const translations={
-en:{
-top:"🔥 Use Coupon For Extra Discount at 40% - 50% - 70% - 80% And More..",
-shop:"Shop By Category - Click to Explore",
-posterTag:"REKAVO • by R2K INFOTECH",
-posterSub:"MOBILE ACCESSORIES & ELECTRONICS",
-posterDesc:"Mobile, Charger, Cover, Earbuds, Headphone, Speaker, Power Bank, Smart Watch - Everything in one place at wholesale price. Premium Quality. Fast Delivery. A Brand by R2K Infotech.",
-t1:"✅ 100% Genuine",t2:"💳 Prepaid Only",t3:"↩️ 7 Day Return",t4:"🔒 Secure Payment",
-b1:"★ PREMIUM",b2:"⚡ FAST DELIVERY",b3:"✓ VERIFIED",
-catPB:"Power Bank",catNB:"Neckband",catEB:"Earbuds",catCB:"Cable",catCH:"Charger",
-myOrders:"📦 My Orders",login:"👤 Login",cart:"🛒 Cart",
-searchPh:"Search for products, brands and more",
-cartTitle:"Your Cart",couponHint:"Have a coupon? Apply to get extra discount.",specTitle:"Product Details:",rateTitle:"Rate this Product"
-},
-hi:{
-top:"🔥 कूपन से पाएं 40% - 50% - 70% - 80% तक एक्स्ट्रा छूट",
-shop:"कैटेगरी से खरीदें - एक्सप्लोर करने के लिए क्लिक करें",
-posterTag:"REKAVO • by R2K INFOTECH",
-posterSub:"मोबाइल एक्सेसरीज और इलेक्ट्रॉनिक्स",
-posterDesc:"मोबाइल, चार्जर, कवर, ईयरबड्स, हेडफोन, स्पीकर, पावर बैंक, स्मार्ट वॉच - सब कुछ एक जगह होलसेल प्राइस पर। R2K Infotech का ब्रांड।",
-t1:"✅ 100% असली",t2:"💳 सिर्फ प्रीपेड",t3:"↩️ 7 दिन रिटर्न",t4:"🔒 सुरक्षित भुगतान",
-b1:"★ प्रीमियम",b2:"⚡ तेज़ डिलीवरी",b3:"✓ सत्यापित",
-catPB:"पावर बैंक",catNB:"नेकबैंड",catEB:"ईयरबड्स",catCB:"केबल",catCH:"चार्जर",
-myOrders:"📦 मेरे ऑर्डर",login:"👤 लॉगिन",cart:"🛒 कार्ट",
-searchPh:"प्रोडक्ट, ब्रांड और बहुत कुछ खोजें",
-cartTitle:"आपकी कार्ट",couponHint:"कूपन है? एक्स्ट्रा छूट पाने के लिए लगाएं।",specTitle:"प्रोडक्ट विवरण:",rateTitle:"इस प्रोडक्ट को रेट करें"
-},
-gu:{
-top:"🔥 કૂપન વાપરી 40% - 50% - 70% - 80% સુધી વધારાનું ડિસ્કાઉન્ટ મેળવો",
-shop:"કેટેગરી પ્રમાણે ખરીદો - એક્સપ્લોર કરવા ક્લિક કરો",
-posterTag:"REKAVO • by R2K INFOTECH",
-posterSub:"મોબાઇલ એક્સેસરીઝ અને ઇલેક્ટ્રોનિક્સ",
-posterDesc:"મોબાઇલ, ચાર્જર, કવર, ઇયરબડ્સ, હેડફોન, સ્પીકર, પાવર બેંક - બધું એક જગ્યાએ હોલસેલ ભાવે. R2K Infotech બ્રાન્ડ.",
-t1:"✅ 100% અસલી",t2:"💳 માત્ર પ્રીપેડ",t3:"↩️ 7 દિવસ રિટર્ન",t4:"🔒 સુરક્ષિત ચુકવણી",
-b1:"★ પ્રીમિયમ",b2:"⚡ ઝડપી ડિલિવરી",b3:"✓ ચકાસાયેલ",
-catPB:"પાવર બેંક",catNB:"નેકબેન્ડ",catEB:"ઇયરબડ્સ",catCB:"કેબલ",catCH:"ચાર્જર",
-myOrders:"📦 મારા ઓર્ડર",login:"👤 લોગિન",cart:"🛒 કાર્ટ",
-searchPh:"પ્રોડક્ટ્સ, બ્રાન્ડ્સ અને વધુ શોધો",
-cartTitle:"તમારી કાર્ટ",couponHint:"કૂપન છે? વધારાનું ડિસ્કાઉન્ટ મેળવવા માટે લાગુ કરો.",specTitle:"પ્રોડક્ટ વિગતો:",rateTitle:"આ પ્રોડક્ટને રેટ કરો"
-},
-mr:{
-top:"🔥 कूपन वापरा आणि 40% - 50% - 70% - 80% पर्यंत जास्त सूट मिळवा",
-shop:"कॅटेगरीनुसार खरेदी करा - एक्सप्लोर करण्यासाठी क्लिक करा",
-posterTag:"REKAVO • by R2K INFOTECH",
-posterSub:"मोबाइल अॅक्सेसरीज आणि इलेक्ट्रॉनिक्स",
-posterDesc:"मोबाइल, चार्जर, कव्हर, इयरबड्स, हेडफोन, स्पीकर, पॉवर बँक - सर्व एका ठिकाणी होलसेल दरात. R2K Infotech ब्रँड.",
-t1:"✅ 100% अस्सल",t2:"💳 फक्त प्रीपेड",t3:"↩️ 7 दिवस रिटर्न",t4:"🔒 सुरक्षित पेमेंट",
-b1:"★ प्रीमियम",b2:"⚡ जलद डिलिव्हरी",b3:"✓ सत्यापित",
-catPB:"पॉवर बँक",catNB:"नेकबँड",catEB:"इयरबड्स",catCB:"केबल",catCH:"चार्जर",
-myOrders:"📦 माझे ऑर्डर",login:"👤 लॉगिन",cart:"🛒 कार्ट",
-searchPh:"उत्पादने, ब्रँड आणि बरेच काही शोधा",
-cartTitle:"तुमची कार्ट",couponHint:"कूपन आहे? जास्त सूटसाठी लावा.",specTitle:"उत्पादन तपशील:",rateTitle:"या उत्पादनाला रेट करा"
-},
-ml:{
-top:"🔥 കൂപ്പൺ ഉപയോഗിച്ച് 40% - 50% - 70% - 80% വരെ അധിക കിഴിവ് നേടൂ",
-shop:"കാറ്റഗറി അനുസരിച്ച് ഷോപ്പ് ചെയ്യുക - പര്യവേക്ഷണം ചെയ്യാൻ ക്ലിക്ക് ചെയ്യുക",
-posterTag:"REKAVO • by R2K INFOTECH",
-posterSub:"മൊബൈൽ ആക്സസറീസും ഇലക്ട്രോണിക്സും",
-posterDesc:"മൊബൈൽ, ചാർജർ, കവർ, ഇയർബഡ്സ്, ഹെഡ്ഫോൺ, സ്പീക്കർ, പവർ ബാങ്ക് - എല്ലാം ഒരു സ്ഥലത്ത് മൊത്തവിലയിൽ. R2K Infotech ബ്രാൻഡ്.",
-t1:"✅ 100% യഥാർത്ഥ",t2:"💳 പ്രീപെയ്ഡ് മാത്രം",t3:"↩️ 7 ദിവസത്തെ റിട്ടേൺ",t4:"🔒 സുരക്ഷിത പേയ്മെന്റ്",
-b1:"★ പ്രീമിയം",b2:"⚡ വേഗത്തിലുള്ള ഡെലിവറി",b3:"✓ പരിശോധിച്ചുറപ്പിച്ചത്",
-catPB:"പവർ ബാങ്ക്",catNB:"നെക്ക്ബാൻഡ്",catEB:"ഇയർബഡ്സ്",catCB:"കേബിൾ",catCH:"ചാർജർ",
-myOrders:"📦 എന്റെ ഓർഡറുകൾ",login:"👤 ലോഗിൻ",cart:"🛒 കാർട്ട്",
-searchPh:"ഉൽപ്പന്നങ്ങൾ, ബ്രാൻഡുകൾ എന്നിവയ്ക്കായി തിരയുക",
-cartTitle:"നിങ്ങളുടെ കാർട്ട്",couponHint:"കൂപ്പൺ ഉണ്ടോ? അധിക കിഴിവ് നേടാൻ പ്രയോഗിക്കുക.",specTitle:"ഉൽപ്പന്ന വിശദാംശങ്ങൾ:",rateTitle:"ഈ ഉൽപ്പന്നം റേറ്റ് ചെയ്യുക"
-},
-bn:{top:"🔥 কুপন ব্যবহার করে 40% - 50% - 70% - 80% পর্যন্ত অতিরিক্ত ছাড় পান",shop:"ক্যাটাগরি অনুযায়ী কেনাকাটা করুন - এক্সপ্লোর করতে ক্লিক করুন",posterTag:"REKAVO • by R2K INFOTECH",posterSub:"মোবাইল এক্সেসরিজ ও ইলেকট্রনিক্স",posterDesc:"মোবাইল, চার্জার, কভার, ইয়ারবাডস, হেডফোন, স্পিকার, পাওয়ার ব্যাংক - সব এক জায়গায় পাইকারি দামে। R2K Infotech ব্র্যান্ড।",t1:"✅ 100% আসল",t2:"💳 শুধুমাত্র প্রিপেইড",t3:"↩️ 7 দিন রিটার্ন",t4:"🔒 সুরক্ষিত পেমেন্ট",b1:"★ প্রিমিয়াম",b2:"⚡ দ্রুত ডেলিভারি",b3:"✓ যাচাইকৃত",catPB:"পাওয়ার ব্যাংক",catNB:"নেকব্যান্ড",catEB:"ইয়ারবাডস",catCB:"কেবল",catCH:"চার্জার",myOrders:"📦 আমার অর্ডার",login:"👤 লগইন",cart:"🛒 কার্ট",searchPh:"পণ্য, ব্র্যান্ড এবং আরও অনেক কিছু খুঁজুন",cartTitle:"আপনার কার্ট",couponHint:"কুপন আছে? অতিরিক্ত ছাড় পেতে প্রয়োগ করুন।",specTitle:"পণ্যের বিবরণ:",rateTitle:"এই পণ্যটিকে রেট করুন"},
-ta:{top:"🔥 கூப்பனை பயன்படுத்தி 40% - 50% - 70% - 80% வரை கூடுதல் தள்ளுபடி பெறுங்கள்",shop:"வகை வாரியாக ஷாப்பிங் செய்யுங்கள் - ஆராய கிளிக் செய்யவும்",posterTag:"REKAVO • by R2K INFOTECH",posterSub:"மொபைல் அணிகலன்கள் மற்றும் மின்னணுவியல்",posterDesc:"மொபைல், சார்ஜர், கவர், இயர்பட்ஸ், ஹெட்போன், ஸ்பீக்கர், பவர் பேங்க் - அனைத்தும் ஒரே இடத்தில் மொத்த விலையில். R2K Infotech பிராண்ட்.",t1:"✅ 100% உண்மையானது",t2:"💳 ப்ரீபெய்டு மட்டும்",t3:"↩️ 7 நாள் திரும்ப",t4:"🔒 பாதுகாப்பான பணம்",b1:"★ பிரீமியம்",b2:"⚡ வேகமான டெலிவரி",b3:"✓ சரிபார்க்கப்பட்டது",catPB:"பவர் பேங்க்",catNB:"நெக்பேண்ட்",catEB:"இயர்பட்ஸ்",catCB:"கேபிள்",catCH:"சார்ஜர்",myOrders:"📦 எனது ஆர்டர்கள்",login:"👤 உள்நுழை",cart:"🛒 கார்ட்",searchPh:"தயாரிப்புகள், பிராண்டுகள் மற்றும் பலவற்றைத் தேடுங்கள்",cartTitle:"உங்கள் கார்ட்",couponHint:"கூப்பன் உள்ளதா? கூடுதல் தள்ளுபடி பெற பயன்படுத்தவும்.",specTitle:"தயாரிப்பு விவரங்கள்:",rateTitle:"இந்த தயாரிப்பை மதிப்பிடுங்கள்"},
-te:{top:"🔥 కూపన్ ఉపయోగించి 40% - 50% - 70% - 80% వరకు అదనపు డిస్కౌంట్ పొందండి",shop:"కేటగిరీ ద్వారా షాప్ చేయండి - అన్వేషించడానికి క్లిక్ చేయండి",posterTag:"REKAVO • by R2K INFOTECH",posterSub:"మొబైల్ యాక్సెసరీస్ & ఎలక్ట్రానిక్స్",posterDesc:"మొబైల్, ఛార్జర్, కవర్, ఇయర్‌బడ్స్, హెడ్‌ఫోన్, స్పీకర్, పవర్ బ్యాంక్ - అన్నీ ఒకే చోట హోల్‌సేల్ ధరకు. R2K Infotech బ్రాండ్.",t1:"✅ 100% అసలైనది",t2:"💳 ప్రీపెయిడ్ మాత్రమే",t3:"↩️ 7 రోజుల రిటర్న్",t4:"🔒 సురక్షిత చెల్లింపు",b1:"★ ప్రీమియం",b2:"⚡ వేగవంతమైన డెలివరీ",b3:"✓ ధృవీకరించబడింది",catPB:"పవర్ బ్యాంక్",catNB:"నెక్‌బ్యాండ్",catEB:"ఇయర్‌బడ్స్",catCB:"కేబుల్",catCH:"ఛార్జర్",myOrders:"📦 నా ఆర్డర్లు",login:"👤 లాగిన్",cart:"🛒 కార్ట్",searchPh:"ఉత్పత్తులు, బ్రాండ్లు మరియు మరిన్నింటి కోసం శోధించండి",cartTitle:"మీ కార్ట్",couponHint:"కూపన్ ఉందా? అదనపు డిస్కౌంట్ కోసం అప్లై చేయండి.",specTitle:"ఉత్పత్తి వివరాలు:",rateTitle:"ఈ ఉత్పత్తిని రేట్ చేయండి"}
-};
-
-function changeLanguage(lang){
-let t=translations[lang] || translations.en;
-document.getElementById('topStrip').innerText=t.top;
-document.getElementById('shopTitle').innerText=t.shop;
-document.getElementById('posterTag').innerText=t.posterTag;
-document.getElementById('posterSub').innerText=t.posterSub;
-document.getElementById('posterDesc').innerText=t.posterDesc;
-document.getElementById('t1').innerText=t.t1;
-document.getElementById('t2').innerText=t.t2;
-document.getElementById('t3').innerText=t.t3;
-document.getElementById('t4').innerText=t.t4;
-document.getElementById('b1').innerText=t.b1;
-document.getElementById('b2').innerText=t.b2;
-document.getElementById('b3').innerText=t.b3;
-document.getElementById('catPB').innerText=t.catPB;
-document.getElementById('catNB').innerText=t.catNB;
-document.getElementById('catEB').innerText=t.catEB;
-document.getElementById('catCB').innerText=t.catCB;
-document.getElementById('catCH').innerText=t.catCH;
-document.getElementById('myOrdersBtn').innerText=t.myOrders;
-document.getElementById('loginBtn').innerText=currentUser? "👤 "+currentUser.name.split(' ')[0] : t.login;
-document.getElementById('cartBtn').innerHTML=`${t.cart} (<span id="cartCount">${cart.length}</span>)`;
-document.getElementById('mainSearch').placeholder=t.searchPh;
-document.getElementById('cartTitle').innerText=t.cartTitle;
-document.getElementById('couponHint').innerText=t.couponHint;
-document.getElementById('specTitle').innerText=t.specTitle;
-document.getElementById('rateTitle').innerText=t.rateTitle;
-localStorage.setItem('rekavo_lang',lang);
-}
-
+const translations={ en:{top:"🔥 Use Coupon For Extra Discount at 40% - 50% - 70% - 80% And More..",shop:"Shop By Category - Click to Explore",posterTag:"REKAVO • by R2K INFOTECH",posterSub:"MOBILE ACCESSORIES & ELECTRONICS",posterDesc:"Mobile, Charger, Cover, Earbuds, Headphone, Speaker, Power Bank, Smart Watch - Everything in one place at wholesale price. Premium Quality. Fast Delivery. A Brand by R2K Infotech.",t1:"✅ 100% Genuine",t2:"💳 Prepaid Only",t3:"↩️ 7 Day Return",t4:"🔒 Secure Payment",b1:"★ PREMIUM",b2:"⚡ FAST DELIVERY",b3:"✓ VERIFIED",catPB:"Power Bank",catNB:"Neckband",catEB:"Earbuds",catCB:"Cable",catCH:"Charger",myOrders:"📦 My Orders",login:"👤 Login",cart:"🛒 Cart",searchPh:"Search for products, brands and more",cartTitle:"Your Cart",couponHint:"Have a coupon? Apply to get extra discount.",specTitle:"Product Details:",rateTitle:"Rate this Product"}, hi:{top:"🔥 कूपन से पाएं 40% - 50% - 70% - 80% तक एक्स्ट्रा छूट",shop:"कैटेगरी से खरीदें - एक्सप्लोर करने के लिए क्लिक करें",posterTag:"REKAVO • by R2K INFOTECH",posterSub:"मोबाइल एक्सेसरीज और इलेक्ट्रॉनिक्स",posterDesc:"मोबाइल, चार्जर, कवर, ईयरबड्स, हेडफोन, स्पीकर, पावर बैंक, स्मार्ट वॉच - सब कुछ एक जगह होलसेल प्राइस पर।",t1:"✅ 100% असली",t2:"💳 सिर्फ प्रीपेड",t3:"↩️ 7 दिन रिटर्न",t4:"🔒 सुरक्षित भुगतान",b1:"★ प्रीमियम",b2:"⚡ तेज़ डिलीवरी",b3:"✓ सत्यापित",catPB:"पावर बैंक",catNB:"नेकबैंड",catEB:"ईयरबड्स",catCB:"केबल",catCH:"चार्जर",myOrders:"📦 मेरे ऑर्डर",login:"👤 लॉगिन",cart:"🛒 कार्ट",searchPh:"प्रोडक्ट, ब्रांड और बहुत कुछ खोजें",cartTitle:"आपकी कार्ट",couponHint:"कूपन है? एक्स्ट्रा छूट पाने के लिए लगाएं।",specTitle:"प्रोडक्ट विवरण:",rateTitle:"इस प्रोडक्ट को रेट करें"}, gu:{top:"🔥 કૂપન વાપરી 40% - 50% - 70% - 80% સુધી વધારાનું ડિસ્કાઉન્ટ મેળવો",shop:"કેટેગરી પ્રમાણે ખરીદો",posterTag:"REKAVO • by R2K INFOTECH",posterSub:"મોબાઇલ એક્સેસરીઝ અને ઇલેક્ટ્રોનિક્સ",posterDesc:"મોબાઇલ, ચાર્જર, કવર, ઇયરબડ્સ, હેડફોન, સ્પીકર, પાવર બેંક - બધું એક જગ્યાએ હોલસેલ ભાવે.",t1:"✅ 100% અસલી",t2:"💳 માત્ર પ્રીપેડ",t3:"↩️ 7 દિવસ રિટર્ન",t4:"🔒 સુરક્ષિત ચુકવણી",b1:"★ પ્રીમિયમ",b2:"⚡ ઝડપી ડિલિવરી",b3:"✓ ચકાસાયેલ",catPB:"પાવર બેંક",catNB:"નેકબેન્ડ",catEB:"ઇયરબડ્સ",catCB:"કેબલ",catCH:"ચાર્જર",myOrders:"📦 મારા ઓર્ડર",login:"👤 લોગિન",cart:"🛒 કાર્ટ",searchPh:"પ્રોડક્ટ્સ, બ્રાન્ડ્સ અને વધુ શોધો",cartTitle:"તમારી કાર્ટ",couponHint:"કૂપન છે? વધારાનું ડિસ્કાઉન્ટ મેળવવા માટે લાગુ કરો.",specTitle:"પ્રોડક્ટ વિગતો:",rateTitle:"આ પ્રોડક્ટને રેટ કરો"}, mr:{top:"🔥 कूपन वापरा आणि 40% - 50% - 70% - 80% पर्यंत जास्त सूट मिळवा",shop:"कॅटेगरीनुसार खरेदी करा",posterTag:"REKAVO • by R2K INFOTECH",posterSub:"मोबाइल अॅक्सेसरीज आणि इलेक्ट्रॉनिक्स",posterDesc:"मोबाइल, चार्जर, कव्हर, इयरबड्स, हेडफोन, स्पीकर, पॉवर बँक - सर्व एका ठिकाणी होलसेल दरात.",t1:"✅ 100% अस्सल",t2:"💳 फक्त प्रीपेड",t3:"↩️ 7 दिवस रिटर्न",t4:"🔒 सुरक्षित पेमेंट",b1:"★ प्रीमियम",b2:"⚡ जलद डिलिव्हरी",b3:"✓ सत्यापित",catPB:"पॉवर बँक",catNB:"नेकबँड",catEB:"इयरबड्स",catCB:"केबल",catCH:"चार्जर",myOrders:"📦 माझे ऑर्डर",login:"👤 लॉगिन",cart:"🛒 कार्ट",searchPh:"उत्पादने, ब्रँड आणि बरेच काही शोधा",cartTitle:"तुमची कार्ट",couponHint:"कूपन आहे? जास्त सूटसाठी लावा.",specTitle:"उत्पादन तपशील:",rateTitle:"या उत्पादनाला रेट करा"} };
+function changeLanguage(lang){let t=translations[lang]||translations.en;document.getElementById('topStrip').innerText=t.top;document.getElementById('shopTitle').innerText=t.shop;document.getElementById('posterTag').innerText=t.posterTag;document.getElementById('posterSub').innerText=t.posterSub;document.getElementById('posterDesc').innerText=t.posterDesc;document.getElementById('t1').innerText=t.t1;document.getElementById('t2').innerText=t.t2;document.getElementById('t3').innerText=t.t3;document.getElementById('t4').innerText=t.t4;document.getElementById('b1').innerText=t.b1;document.getElementById('b2').innerText=t.b2;document.getElementById('b3').innerText=t.b3;document.getElementById('catPB').innerText=t.catPB;document.getElementById('catNB').innerText=t.catNB;document.getElementById('catEB').innerText=t.catEB;document.getElementById('catCB').innerText=t.catCB;document.getElementById('catCH').innerText=t.catCH;document.getElementById('myOrdersBtn').innerText=t.myOrders;document.getElementById('loginBtn').innerText=currentUser? "👤 "+currentUser.name.split(' ')[0] : t.login;document.getElementById('cartBtn').innerHTML=`${t.cart} (<span id="cartCount">${cart.length}</span>)`;document.getElementById('mainSearch').placeholder=t.searchPh;document.getElementById('cartTitle').innerText=t.cartTitle;document.getElementById('couponHint').innerText=t.couponHint;document.getElementById('specTitle').innerText=t.specTitle;document.getElementById('rateTitle').innerText=t.rateTitle;localStorage.setItem('rekavo_lang',lang);}
 function getDiscountFromCode(code){let m=code.toUpperCase().match(/(\d{1,3})\s*PERCENT/)||code.toUpperCase().match(/(\d{1,3})\s*%/);return m?parseInt(m[1]):0;}
-
-const categoryData={
-powerbank:[
-{name:"Power Bank 10000mAh",price:499,originalPrice:1299,coupon:"REKAVOPB10K40PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300",desc:"High capacity 10000mAh power bank with 22.5W fast charging.",spec:"Capacity: 10000mAh\nInput: Type-C 18W\nOutput: 22.5W\nWarranty: 6 Months"},
-{name:"Power Bank 20000mAh",price:799,originalPrice:1999,coupon:"REKAVOPB20K60PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300",desc:"20000mAh large capacity with digital display.",spec:"Capacity: 20000mAh\nDisplay: LED\nWarranty: 6 Months"},
-{name:"Power Bank 30000mAh",price:1099,originalPrice:2999,coupon:"REKAVOPB30K70PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300",desc:"Massive 30000mAh power bank.",spec:"Capacity: 30000mAh\nOutput: 22.5W x 4\nWarranty: 6 Months"}
-],
-neckband:[{name:"Neckband Boat 100",price:199,originalPrice:999,coupon:"REKAVONB10050PERCENT",img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300",desc:"Wireless neckband with 20 hours battery.",spec:"Battery: 20 Hours\nDriver: 10mm\nWarranty: 3 Months"}, {name:"Neckband 500 Premium",price:549,originalPrice:1999,coupon:"REKAVONB50040PERCENT",img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300",desc:"Premium neckband with HD calling.",spec:"Battery: 30 Hours\nWarranty: 6 Months"}],
-earbuds:[{name:"Earbuds TWS 400",price:449,originalPrice:1499,coupon:"REKAVOEB40060PERCENT",img:"https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=300",desc:"TWS Earbuds with 30 hours playback.",spec:"Playback: 30H\nCharging: Type-C\nWarranty: 6 Months"}, {name:"Earbuds Pro Sound",price:999,originalPrice:4999,coupon:"REKAVOEBPRO80PERCENT",img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=300",desc:"Pro sound earbuds with ANC.",spec:"ANC: Yes\nBattery: 40H\nWarranty: 12 Months"}],
-cable:[{name:"Cable Type-C 100",price:99,originalPrice:299,coupon:"REKAVOCB10050PERCENT",img:"https://images.unsplash.com/photo-1625842268584-8f3296236761?w=300",desc:"Fast charging Type-C cable.",spec:"Length: 1 Meter\nSpeed: 3A"}, {name:"Cable Fast 3A",price:199,originalPrice:499,coupon:"REKAVOCB3A40PERCENT",img:"https://images.unsplash.com/photo-1587037542707-1dad5a1cfa9d?w=300",desc:"3A fast cable with nylon braiding.",spec:"Length: 1.5M\nMaterial: Nylon"}],
-charger:[{name:"Charger 20W Fast",price:299,originalPrice:999,coupon:"REKAVOCH20W60PERCENT",img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300",desc:"20W fast charger.",spec:"Output: 20W PD\nWarranty: 6 Months"}, {name:"Charger 65W",price:699,originalPrice:2499,coupon:"REKAVOCH65W70PERCENT",img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300",desc:"65W super fast charger.",spec:"Output: 65W GaN\nWarranty: 12 Months"}]
-};
-
+const categoryData={powerbank:[{name:"Power Bank 10000mAh",price:499,originalPrice:1299,coupon:"REKAVOPB10K40PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300",desc:"High capacity 10000mAh power bank with 22.5W fast charging.",spec:"Capacity: 10000mAh\nInput: Type-C 18W\nOutput: 22.5W\nWarranty: 6 Months"},{name:"Power Bank 20000mAh",price:799,originalPrice:1999,coupon:"REKAVOPB20K60PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300",desc:"20000mAh large capacity with digital display.",spec:"Capacity: 20000mAh\nDisplay: LED\nWarranty: 6 Months"},{name:"Power Bank 30000mAh",price:1099,originalPrice:2999,coupon:"REKAVOPB30K70PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300",desc:"Massive 30000mAh power bank.",spec:"Capacity: 30000mAh\nOutput: 22.5W x 4\nWarranty: 6 Months"}],neckband:[{name:"Neckband Boat 100",price:199,originalPrice:999,coupon:"REKAVONB10050PERCENT",img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300",desc:"Wireless neckband with 20 hours battery.",spec:"Battery: 20 Hours\nDriver: 10mm\nWarranty: 3 Months"},{name:"Neckband 500 Premium",price:549,originalPrice:1999,coupon:"REKAVONB50040PERCENT",img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300",desc:"Premium neckband with HD calling.",spec:"Battery: 30 Hours\nWarranty: 6 Months"}],earbuds:[{name:"Earbuds TWS 400",price:449,originalPrice:1499,coupon:"REKAVOEB40060PERCENT",img:"https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=300",desc:"TWS Earbuds with 30 hours playback.",spec:"Playback: 30H\nCharging: Type-C\nWarranty: 6 Months"},{name:"Earbuds Pro Sound",price:999,originalPrice:4999,coupon:"REKAVOEBPRO80PERCENT",img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=300",desc:"Pro sound earbuds with ANC.",spec:"ANC: Yes\nBattery: 40H\nWarranty: 12 Months"}],cable:[{name:"Cable Type-C 100",price:99,originalPrice:299,coupon:"REKAVOCB10050PERCENT",img:"https://images.unsplash.com/photo-1625842268584-8f3296236761?w=300",desc:"Fast charging Type-C cable.",spec:"Length: 1 Meter\nSpeed: 3A"},{name:"Cable Fast 3A",price:199,originalPrice:499,coupon:"REKAVOCB3A40PERCENT",img:"https://images.unsplash.com/photo-1587037542707-1dad5a1cfa9d?w=300",desc:"3A fast cable with nylon braiding.",spec:"Length: 1.5M\nMaterial: Nylon"}],charger:[{name:"Charger 20W Fast",price:299,originalPrice:999,coupon:"REKAVOCH20W60PERCENT",img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300",desc:"20W fast charger.",spec:"Output: 20W PD\nWarranty: 6 Months"},{name:"Charger 65W",price:699,originalPrice:2499,coupon:"REKAVOCH65W70PERCENT",img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300",desc:"65W super fast charger.",spec:"Output: 65W GaN\nWarranty: 12 Months"}]};
 let currentDetailCat=null;let currentDetailIdx=null;let detailFinalPrice=0;let currentRating=0;let lastCategory=null;
-
-function openCategory(cat){
-lastCategory=cat;
-const data=categoryData[cat];
-document.getElementById('catTitle').innerText=cat.toUpperCase()+" - All Variants";
-let html=data.map((p,idx)=>`
-<div class="variant-card">
-<div onclick="openProductDetail('${cat}',${idx})">
-<img src="${p.img}"><b>${p.name}</b>
-<div class="old-price">₹${p.originalPrice}</div>
-<div class="price" id="price-${cat}-${idx}">₹${p.price}</div>
-</div>
-<div class="coupon-row"><input type="text" id="coupon-${cat}-${idx}" placeholder="Enter Coupon Code"><button id="btn-${cat}-${idx}" onclick="applyCoupon('${cat}',${idx})">APPLY</button></div>
-<button class="btn-cart" onclick="event.stopPropagation(); addToCart('${p.name}','${cat}',${idx})">ADD TO CART</button>
-<button class="btn-buy" onclick="event.stopPropagation(); buyNow('${cat}',${idx})">BUY NOW</button>
-</div>`).join('');
-document.getElementById('catProducts').innerHTML=html;
-categoryModal.style.display='block';
-}
-function applyCoupon(cat,idx){
-let p=categoryData[cat][idx];
-let input=document.getElementById(`coupon-${cat}-${idx}`);
-let priceEl=document.getElementById(`price-${cat}-${idx}`);
-let btn=document.getElementById(`btn-${cat}-${idx}`);
-let entered=input.value.trim().toUpperCase();
-let valid=p.coupon.toUpperCase().trim();
-if(entered===valid){
-let discount=getDiscountFromCode(valid);
-let newPrice=Math.round(p.originalPrice-(p.originalPrice*discount/100));
-priceEl.innerText="₹"+newPrice+" ("+discount+"% OFF)";
-priceEl.style.color="#2874f0";
-btn.innerText="APPLIED ✓";btn.style.background="#388e3c";input.disabled=true;
-}else if(entered===""){alert("Please enter coupon code");}
-else{alert("Invalid coupon code");}
-}
-function openProductDetail(cat,idx){
-currentDetailCat=cat;currentDetailIdx=idx;lastCategory=cat;
-let p=categoryData[cat][idx];
-document.getElementById('detailName').innerText=p.name;
-document.getElementById('detailOldPrice').innerText="₹"+p.originalPrice;
-document.getElementById('detailPrice').innerText="₹"+p.price;
-detailFinalPrice=p.price;
-let disc=getDiscountFromCode(p.coupon);
-document.getElementById('detailOff').innerText=disc+"% OFF";
-document.getElementById('detailSpecs').innerText=p.desc+"\n\n"+p.spec;
-document.getElementById('detailMainImg').src=p.img;
-document.getElementById('detailThumbs').innerHTML=[p.img,p.img,p.img,p.img].map((t,i)=>`<img src="${t}" class="${i==0?'active':''}" onclick="changeDetailImg(this,'${t}')">`).join('');
-document.getElementById('detailCouponInput').value="";
-document.getElementById('detailCouponInput').disabled=false;
-document.getElementById('detailCouponBtn').innerText="APPLY";
-document.getElementById('detailCouponBtn').style.background="#2874f0";
-currentRating=0;document.querySelectorAll('.star').forEach(s=>s.classList.remove('active'));document.getElementById('ratingText').innerText="";
-document.getElementById('reviewName').value=currentUser?currentUser.name:"";
-document.getElementById('reviewComment').value="";
-loadReviews();
-categoryModal.style.display='none';
-productDetailModal.style.display='block';
-}
+function openCategory(cat){lastCategory=cat;const data=categoryData[cat];document.getElementById('catTitle').innerText=cat.toUpperCase()+" - All Variants";let html=data.map((p,idx)=>`<div class="variant-card"><div onclick="openProductDetail('${cat}',${idx})"><img src="${p.img}"><b>${p.name}</b><div class="old-price">₹${p.originalPrice}</div><div class="price" id="price-${cat}-${idx}">₹${p.price}</div></div><div class="coupon-row"><input type="text" id="coupon-${cat}-${idx}" placeholder="Coupon"><button id="btn-${cat}-${idx}" onclick="applyCoupon('${cat}',${idx})">APPLY</button></div><button class="btn-cart" onclick="event.stopPropagation(); addToCart('${p.name}','${cat}',${idx})">ADD TO CART</button><button class="btn-buy" onclick="event.stopPropagation(); buyNow('${cat}',${idx})">BUY NOW</button></div>`).join('');document.getElementById('catProducts').innerHTML=html;categoryModal.classList.add('show');}
+function applyCoupon(cat,idx){let p=categoryData[cat][idx];let input=document.getElementById(`coupon-${cat}-${idx}`);let priceEl=document.getElementById(`price-${cat}-${idx}`);let btn=document.getElementById(`btn-${cat}-${idx}`);let entered=input.value.trim().toUpperCase();let valid=p.coupon.toUpperCase().trim();if(entered===valid){let discount=getDiscountFromCode(valid);let newPrice=Math.round(p.originalPrice-(p.originalPrice*discount/100));priceEl.innerText="₹"+newPrice+" ("+discount+"% OFF)";priceEl.style.color="#2874f0";btn.innerText="APPLIED ✓";btn.style.background="#388e3c";input.disabled=true;}else if(entered===""){alert("Please enter coupon code");}else{alert("Invalid coupon code");}}
+function openProductDetail(cat,idx){currentDetailCat=cat;currentDetailIdx=idx;lastCategory=cat;let p=categoryData[cat][idx];document.getElementById('detailName').innerText=p.name;document.getElementById('detailOldPrice').innerText="₹"+p.originalPrice;document.getElementById('detailPrice').innerText="₹"+p.price;detailFinalPrice=p.price;let disc=getDiscountFromCode(p.coupon);document.getElementById('detailOff').innerText=disc+"% OFF";document.getElementById('detailSpecs').innerText=p.desc+"\n\n"+p.spec;document.getElementById('detailMainImg').src=p.img;document.getElementById('detailThumbs').innerHTML=[p.img,p.img,p.img,p.img].map((t,i)=>`<img src="${t}" class="${i==0?'active':''}" onclick="changeDetailImg(this,'${t}')">`).join('');document.getElementById('detailCouponInput').value="";document.getElementById('detailCouponInput').disabled=false;document.getElementById('detailCouponBtn').innerText="APPLY";document.getElementById('detailCouponBtn').style.background="#2874f0";currentRating=0;document.querySelectorAll('.star').forEach(s=>s.classList.remove('active'));document.getElementById('ratingText').innerText="";document.getElementById('reviewName').value=currentUser?currentUser.name:"";document.getElementById('reviewComment').value="";loadReviews();categoryModal.classList.remove('show');productDetailModal.classList.add('show');}
 function changeDetailImg(el,src){document.getElementById('detailMainImg').src=src;document.querySelectorAll('#detailThumbs img').forEach(i=>i.classList.remove('active'));el.classList.add('active');}
-function applyDetailCoupon(){
-let input=document.getElementById('detailCouponInput');
-let entered=input.value.trim().toUpperCase();
-let p=categoryData[currentDetailCat][currentDetailIdx];
-if(entered===p.coupon.toUpperCase()){
-let disc=getDiscountFromCode(p.coupon);
-let newPrice=Math.round(p.originalPrice-(p.originalPrice*disc/100));
-document.getElementById('detailPrice').innerText="₹"+newPrice+" ("+disc+"% OFF)";
-detailFinalPrice=newPrice;
-document.getElementById('detailCouponBtn').innerText="APPLIED ✓";
-document.getElementById('detailCouponBtn').style.background="#388e3c";
-input.disabled=true;
-}else if(entered===""){alert("Please enter coupon code");}
-else{alert("Invalid coupon code");}
-}
-function addDetailToCart(){
-if(!currentUser){productDetailModal.style.display='none';openLoginPopup("Please Login First","Login to add to cart","login");return;}
-let p=categoryData[currentDetailCat][currentDetailIdx];
-cart.push({name:p.name,price:detailFinalPrice});localStorage.setItem('rekavo_cart',JSON.stringify(cart));updateCount();alert(p.name+" added to cart ₹"+detailFinalPrice);
-}
-function buyDetailNow(){
-if(!currentUser){productDetailModal.style.display='none';openLoginPopup("Please Login First","Login to buy","login");return;}
-let p=categoryData[currentDetailCat][currentDetailIdx];
-cart=[{name:p.name,price:detailFinalPrice}];localStorage.setItem('rekavo_cart',JSON.stringify(cart));updateCount();productDetailModal.style.display='none';openCheckout();
-}
+function applyDetailCoupon(){let input=document.getElementById('detailCouponInput');let entered=input.value.trim().toUpperCase();let p=categoryData[currentDetailCat][currentDetailIdx];if(entered===p.coupon.toUpperCase()){let disc=getDiscountFromCode(p.coupon);let newPrice=Math.round(p.originalPrice-(p.originalPrice*disc/100));document.getElementById('detailPrice').innerText="₹"+newPrice+" ("+disc+"% OFF)";detailFinalPrice=newPrice;document.getElementById('detailCouponBtn').innerText="APPLIED ✓";document.getElementById('detailCouponBtn').style.background="#388e3c";input.disabled=true;}else if(entered===""){alert("Please enter coupon code");}else{alert("Invalid coupon code");}}
+function addDetailToCart(){if(!currentUser){productDetailModal.classList.remove('show');openLoginPopup("Please Login First","Login to add to cart","login");return;}let p=categoryData[currentDetailCat][currentDetailIdx];cart.push({name:p.name,price:detailFinalPrice});localStorage.setItem('rekavo_cart',JSON.stringify(cart));updateCount();alert(p.name+" added to cart ₹"+detailFinalPrice);}
+function buyDetailNow(){if(!currentUser){productDetailModal.classList.remove('show');openLoginPopup("Please Login First","Login to buy","login");return;}let p=categoryData[currentDetailCat][currentDetailIdx];cart=[{name:p.name,price:detailFinalPrice}];localStorage.setItem('rekavo_cart',JSON.stringify(cart));updateCount();productDetailModal.classList.remove('show');openCheckout();}
 function setRating(n){currentRating=n;document.querySelectorAll('.star').forEach(s=>{s.classList.toggle('active', parseInt(s.dataset.star)<=n);});document.getElementById('ratingText').innerText=n+" Star"; }
-function submitReview(){
-let name=document.getElementById('reviewName').value.trim();
-let comment=document.getElementById('reviewComment').value.trim();
-if(!currentRating){alert("Please select star rating");return;}
-if(!name||!comment){alert("Please enter name and review");return;}
-let key=`${currentDetailCat}-${currentDetailIdx}`;
-let reviews=JSON.parse(localStorage.getItem('rekavo_reviews')||'{}');
-if(!reviews[key])reviews[key]=[];
-reviews[key].unshift({name,rating:currentRating,comment,date:new Date().toLocaleDateString()});
-localStorage.setItem('rekavo_reviews',JSON.stringify(reviews));
-document.getElementById('reviewComment').value="";currentRating=0;document.querySelectorAll('.star').forEach(s=>s.classList.remove('active'));document.getElementById('ratingText').innerText="";
-loadReviews();
-}
-function loadReviews(){
-let key=`${currentDetailCat}-${currentDetailIdx}`;
-let reviews=JSON.parse(localStorage.getItem('rekavo_reviews')||'{}');
-let list=reviews[key]||[];
-let div=document.getElementById('reviewList');
-if(list.length==0){div.innerHTML="<p style='font-size:12px;color:#888'>No reviews yet. Be first to review.</p>";return;}
-div.innerHTML=list.map(r=>`<div class="review-card"><b>${r.name}</b> - ${'★'.repeat(r.rating)}<span style="color:#ddd">${'★'.repeat(5-r.rating)}</span><br><small style="color:#888">${r.date}</small><p style="margin-top:5px;font-size:13px">${r.comment}</p></div>`).join('');
-}
+function submitReview(){let name=document.getElementById('reviewName').value.trim();let comment=document.getElementById('reviewComment').value.trim();if(!currentRating){alert("Please select star rating");return;}if(!name||!comment){alert("Please enter name and review");return;}let key=`${currentDetailCat}-${currentDetailIdx}`;let reviews=JSON.parse(localStorage.getItem('rekavo_reviews')||'{}');if(!reviews[key])reviews[key]=[];reviews[key].unshift({name,rating:currentRating,comment,date:new Date().toLocaleDateString()});localStorage.setItem('rekavo_reviews',JSON.stringify(reviews));document.getElementById('reviewComment').value="";currentRating=0;document.querySelectorAll('.star').forEach(s=>s.classList.remove('active'));document.getElementById('ratingText').innerText="";loadReviews();}
+function loadReviews(){let key=`${currentDetailCat}-${currentDetailIdx}`;let reviews=JSON.parse(localStorage.getItem('rekavo_reviews')||'{}');let list=reviews[key]||[];let div=document.getElementById('reviewList');if(list.length==0){div.innerHTML="<p style='font-size:12px;color:#888'>No reviews yet. Be first to review.</p>";return;}div.innerHTML=list.map(r=>`<div class="review-card"><b>${r.name}</b> - ${'★'.repeat(r.rating)}<span style="color:#ddd">${'★'.repeat(5-r.rating)}</span><br><small style="color:#888">${r.date}</small><p style="margin-top:5px;font-size:13px">${r.comment}</p></div>`).join('');}
 let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');let orders=JSON.parse(localStorage.getItem('rekavo_orders')||'[]');let currentUser=JSON.parse(localStorage.getItem('rekavo_user')||'null');let savedAddresses=JSON.parse(localStorage.getItem('rekavo_addresses')||'[]');let registeredUsers=JSON.parse(localStorage.getItem('rekavo_registered_users')||'[]');let selectedAddressIndex=0;
 function updateCount(){let c=document.getElementById('cartCount');if(c) c.innerText=cart.length;let ct=document.getElementById('cartTotal');if(ct) ct.innerText=cart.reduce((s,i)=>s+i.price,0);}
 function addToCart(name,cat,idx){if(!currentUser){closeCategory();openLoginPopup("Please Login First","Login to add to cart","login");return;}let pEl=document.getElementById(`price-${cat}-${idx}`).innerText;let clean=pEl.match(/₹(\d+)/);let finalPrice=clean?parseInt(clean[1]):categoryData[cat][idx].price;cart.push({name,price:finalPrice});localStorage.setItem('rekavo_cart',JSON.stringify(cart));updateCount();alert(name+" added to cart ₹"+finalPrice);}
 function buyNow(cat,idx){if(!currentUser){closeCategory();openLoginPopup("Please Login First","Login to buy","login");return;}let pEl=document.getElementById(`price-${cat}-${idx}`).innerText;let clean=pEl.match(/₹(\d+)/);let finalPrice=clean?parseInt(clean[1]):categoryData[cat][idx].price;cart=[{name:categoryData[cat][idx].name,price:finalPrice}];localStorage.setItem('rekavo_cart',JSON.stringify(cart));updateCount();closeCategory();openCheckout();}
 function showCart(){let div=document.getElementById('cartItems');if(cart.length==0){div.innerHTML='<p style="text-align:center;padding:15px">Your cart is empty</p>';}else{div.innerHTML=cart.map((c,i)=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee"><span>${c.name} - ₹${c.price}</span><button onclick="cart.splice(${i},1);localStorage.setItem('rekavo_cart',JSON.stringify(cart));showCart();updateCount();" style="background:#ff3b30;color:#fff;border:none;padding:3px 8px;border-radius:4px">X</button></div>`).join('');}updateCount();}
-function openCheckout(){
-if(!currentUser){cartModal.style.display='none';document.getElementById('checkoutModal').style.display='none';openLoginPopup("Please Login","Login to place order","login");return;}
-if(cart.length===0){alert('Cart is empty');return;}
-cartModal.style.display='none';document.getElementById('checkoutTotal').innerText=cart.reduce((s,i)=>s+i.price,0);renderAddresses();document.getElementById('checkoutModal').style.display='block';
-}
+function openCheckout(){if(!currentUser){cartModal.classList.remove('show');document.getElementById('checkoutModal').classList.remove('show');openLoginPopup("Please Login","Login to place order","login");return;}if(cart.length===0){alert('Cart is empty');return;}cartModal.classList.remove('show');document.getElementById('checkoutTotal').innerText=cart.reduce((s,i)=>s+i.price,0);renderAddresses();document.getElementById('checkoutModal').classList.add('show');}
 function renderAddresses(){let listDiv=document.getElementById('savedAddressList');let formDiv=document.getElementById('addAddressForm');let addBtn=document.getElementById('addNewBtn');if(savedAddresses.length===0){listDiv.innerHTML='<p style="font-size:13px;color:#666">No saved address, please add one</p>';formDiv.style.display='block';addBtn.style.display='none';}else{listDiv.innerHTML=savedAddresses.map((ad,i)=>`<label style="display:flex;gap:10px;border:2px solid ${i===selectedAddressIndex?'#2874f0':'#e0e0e0'};background:${i===selectedAddressIndex?'#f0f7ff':'#fff'};border-radius:8px;padding:10px;margin-bottom:8px;cursor:pointer"><input type="radio" name="addr" ${i===selectedAddressIndex?'checked':''} onchange="selectAddr(${i})"><div style="font-size:13px;line-height:1.4"><b>${ad.name} - ${ad.phone}</b><br>${ad.address}, ${ad.city} - ${ad.pincode}</div></label>`).join('');formDiv.style.display='none';addBtn.style.display='block';}}
 function showAddForm(){document.getElementById('addAddressForm').style.display='block';document.getElementById('addNewBtn').style.display='none';}
 function selectAddr(i){selectedAddressIndex=i;renderAddresses();}
 function saveNewAddress(){let name=document.getElementById('cName').value.trim();let phone=document.getElementById('cPhone').value.trim();let address=document.getElementById('cAddress').value.trim();let pin=document.getElementById('cPincode').value.trim();let city=document.getElementById('cCity').value.trim();if(!name||!phone||!address||!pin||!city){alert("Please fill complete address");return;}savedAddresses.push({name,phone,address,pincode:pin,city});localStorage.setItem('rekavo_addresses',JSON.stringify(savedAddresses));selectedAddressIndex=savedAddresses.length-1;document.getElementById('cName').value='';document.getElementById('cPhone').value='';document.getElementById('cAddress').value='';document.getElementById('cPincode').value='';document.getElementById('cCity').value='';renderAddresses();}
 let MERCHANT_UPI="rekavo@ybl";let MERCHANT_NAME="REKAVO";let currentUpiLink="";
-function payWithUPI(){if(savedAddresses.length===0){alert("Please save address first");return;}let amount=document.getElementById('checkoutTotal').innerText;document.getElementById('upiAmount').innerText=amount;currentUpiLink=`upi://pay?pa=${MERCHANT_UPI}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${amount}&cu=INR&tn=REKAVO Order ${Date.now()}`;document.getElementById('qrImg').src=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(currentUpiLink)}`;document.getElementById('checkoutModal').style.display='none';document.getElementById('upiModal').style.display='block';if(/Android|iPhone/i.test(navigator.userAgent)){setTimeout(()=>{window.location.href=currentUpiLink;},600);}}
+function payWithUPI(){if(savedAddresses.length===0){alert("Please save address first");return;}let amount=document.getElementById('checkoutTotal').innerText;document.getElementById('upiAmount').innerText=amount;currentUpiLink=`upi://pay?pa=${MERCHANT_UPI}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${amount}&cu=INR&tn=REKAVO Order ${Date.now()}`;document.getElementById('qrImg').src=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(currentUpiLink)}`;document.getElementById('checkoutModal').classList.remove('show');document.getElementById('upiModal').classList.add('show');if(/Android|iPhone/i.test(navigator.userAgent)){setTimeout(()=>{window.location.href=currentUpiLink;},600);}}
 function openUpiApp(){window.location.href=currentUpiLink;}
-function paymentDone(){let orderId="REKAVO"+Date.now().toString().slice(-6);let total=document.getElementById('checkoutTotal').innerText;let addr=savedAddresses[selectedAddressIndex];let newOrder={orderId:orderId,products:[...cart],total:total,email:currentUser.email,mobile:currentUser.mobile,name:currentUser.name,address:addr,status:"Placed",tracking:"",date:new Date().toLocaleDateString()};orders.unshift(newOrder);localStorage.setItem('rekavo_orders',JSON.stringify(orders));alert("Order Placed! Order ID: "+orderId);cart=[];localStorage.setItem('rekavo_cart',JSON.stringify(cart));updateCount();document.getElementById('upiModal').style.display='none';renderMyOrders();myOrdersModal.style.display='block';}
+function paymentDone(){let orderId="REKAVO"+Date.now().toString().slice(-6);let total=document.getElementById('checkoutTotal').innerText;let addr=savedAddresses[selectedAddressIndex];let newOrder={orderId:orderId,products:[...cart],total:total,email:currentUser.email,mobile:currentUser.mobile,name:currentUser.name,address:addr,status:"Placed",tracking:"",date:new Date().toLocaleDateString()};orders.unshift(newOrder);localStorage.setItem('rekavo_orders',JSON.stringify(orders));alert("Order Placed! Order ID: "+orderId);cart=[];localStorage.setItem('rekavo_cart',JSON.stringify(cart));updateCount();document.getElementById('upiModal').classList.remove('show');renderMyOrders();myOrdersModal.classList.add('show');}
 let forgotKey="";
-function clearAllAuthInputs(){
-document.getElementById('loginMobile').value="";document.getElementById('loginPass').value="";
-document.getElementById('signupName').value="";document.getElementById('signupEmail').value="";document.getElementById('signupMobile').value="";document.getElementById('signupPass').value="";document.getElementById('signupPass2').value="";document.getElementById('regOtp').value="";
-document.getElementById('forgotEmail').value="";document.getElementById('forgotOtp').value="";document.getElementById('forgotPass').value="";document.getElementById('forgotPass2').value="";
-document.getElementById('forgotOtpBox').style.display='none';document.getElementById('newPassBox').style.display='none';document.getElementById('sendOtpBtn').style.display='block';
-document.getElementById('regStep1').style.display='block';document.getElementById('regStep2').style.display='none';document.getElementById('regStep3').style.display='none';
-forgotKey="";
-}
-function openLoginPopup(title,sub,tab){clearAllAuthInputs();document.getElementById('loginTitle').innerText=title;document.getElementById('loginSub').innerText=sub;switchAuth(tab);loginModal.style.display='block';}
-function switchAuth(type){
-if(type==='login'){ document.getElementById('forgotEmail').value=""; document.getElementById('forgotOtp').value=""; document.getElementById('forgotPass').value=""; document.getElementById('forgotPass2').value=""; document.getElementById('forgotOtpBox').style.display='none'; document.getElementById('newPassBox').style.display='none'; document.getElementById('sendOtpBtn').style.display='block'; }
-if(type==='forgot'){ document.getElementById('forgotEmail').value=""; document.getElementById('forgotOtp').value=""; document.getElementById('forgotPass').value=""; document.getElementById('forgotPass2').value=""; document.getElementById('forgotOtpBox').style.display='none'; document.getElementById('newPassBox').style.display='none'; document.getElementById('sendOtpBtn').style.display='block'; }
-if(type==='signup'){ document.getElementById('signupName').value=""; document.getElementById('signupMobile').value=""; document.getElementById('signupEmail').value=""; document.getElementById('regOtp').value=""; document.getElementById('regStep1').style.display='block'; document.getElementById('regStep2').style.display='none'; document.getElementById('regStep3').style.display='none'; }
-document.getElementById('loginForm').style.display=type==='login'?'block':'none';
-document.getElementById('signupForm').style.display=type==='signup'?'block':'none';
-document.getElementById('forgotForm').style.display=type==='forgot'?'block':'none';
-document.getElementById('tabLogin').classList.toggle('active',type==='login');
-document.getElementById('tabSignup').classList.toggle('active',type==='signup');
-}
+function clearAllAuthInputs(){clearAllErr();document.getElementById('loginMobile').value="";document.getElementById('loginPass').value="";document.getElementById('signupName').value="";document.getElementById('signupEmail').value="";document.getElementById('signupMobile').value="";document.getElementById('signupPass').value="";document.getElementById('signupPass2').value="";document.getElementById('regOtp').value="";document.getElementById('forgotEmail').value="";document.getElementById('forgotOtp').value="";document.getElementById('forgotPass').value="";document.getElementById('forgotPass2').value="";document.getElementById('forgotOtpBox').style.display='none';document.getElementById('newPassBox').style.display='none';document.getElementById('sendOtpBtn').style.display='block';document.getElementById('regStep1').style.display='block';document.getElementById('regStep2').style.display='none';document.getElementById('regStep3').style.display='none';forgotKey="";}
+function openLoginPopup(title,sub,tab){clearAllAuthInputs();document.getElementById('loginTitle').innerText=title;document.getElementById('loginSub').innerText=sub;switchAuth(tab);loginModal.classList.add('show');}
+function switchAuth(type){clearAllErr();if(type==='login'){document.getElementById('forgotEmail').value="";document.getElementById('forgotOtp').value="";document.getElementById('forgotPass').value="";document.getElementById('forgotPass2').value="";document.getElementById('forgotOtpBox').style.display='none';document.getElementById('newPassBox').style.display='none';document.getElementById('sendOtpBtn').style.display='block';}if(type==='forgot'){document.getElementById('forgotEmail').value="";document.getElementById('forgotOtp').value="";document.getElementById('forgotPass').value="";document.getElementById('forgotPass2').value="";document.getElementById('forgotOtpBox').style.display='none';document.getElementById('newPassBox').style.display='none';document.getElementById('sendOtpBtn').style.display='block';}if(type==='signup'){document.getElementById('signupName').value="";document.getElementById('signupMobile').value="";document.getElementById('signupEmail').value="";document.getElementById('regOtp').value="";document.getElementById('regStep1').style.display='block';document.getElementById('regStep2').style.display='none';document.getElementById('regStep3').style.display='none';}document.getElementById('loginForm').style.display=type==='login'?'block':'none';document.getElementById('signupForm').style.display=type==='signup'?'block':'none';document.getElementById('forgotForm').style.display=type==='forgot'?'block':'none';document.getElementById('tabLogin').classList.toggle('active',type==='login');document.getElementById('tabSignup').classList.toggle('active',type==='signup');}
 function isStrongPassword(pwd){return pwd.length>=6 && /[A-Za-z]/.test(pwd) && /[0-9]/.test(pwd);}
 let regEmailKey="";let regOtpVerified=false;const API_BASE="http://127.0.0.1:5000";
-async function sendRegOtp(){let name=document.getElementById('signupName').value.trim();let mobile=document.getElementById('signupMobile').value.trim();let email=document.getElementById('signupEmail').value.trim().toLowerCase();if(!name||mobile.length<10||!email.includes('@')){alert("Please enter valid Name, Mobile and Email");return;}if(registeredUsers.find(u=>u.mobile===mobile)){alert("Mobile already registered");switchAuth('login');return;}if(registeredUsers.find(u=>u.email===email)){alert("Email already registered");switchAuth('login');return;}regEmailKey=email;document.getElementById('regSendOtpBtn').innerText="Sending...";try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email})});let data=await res.json();if(!data.success){alert(data.message);document.getElementById('regSendOtpBtn').innerText="Send OTP";return;}document.getElementById('regStep1').style.display='none';document.getElementById('regStep2').style.display='block';}catch(e){alert("Server not running - start your NPM server");document.getElementById('regSendOtpBtn').innerText="Send OTP";}}
-async function verifyRegOtp(){let otp=document.getElementById('regOtp').value.trim();if(!otp){alert("Enter OTP");return;}document.getElementById('regVerifyBtn').innerText="Checking...";try{let res=await fetch(`${API_BASE}/verify-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:regEmailKey,otp:otp})});let data=await res.json();if(data.success){regOtpVerified=true;document.getElementById('regStep2').style.display='none';document.getElementById('regStep3').style.display='block';}else{alert("Wrong OTP: "+data.message);document.getElementById('regVerifyBtn').innerText="Verify OTP";}}catch(e){alert("Server error");}}
-function doSignupFinal(){if(!regOtpVerified){alert("Verify OTP first");return;}let name=document.getElementById('signupName').value.trim();let email=regEmailKey;let mobile=document.getElementById('signupMobile').value.trim();let pass=document.getElementById('signupPass').value.trim();let pass2=document.getElementById('signupPass2').value.trim();if(!name||!email||mobile.length<10||!pass){alert("Fill all fields");return;}if(pass!==pass2){alert("Passwords do not match");return;}if(!isStrongPassword(pass)){alert("Password must be 6 chars with letter + number");return;}let newUser={name,mobile,email,password:pass,pic:""};registeredUsers.push(newUser);localStorage.setItem('rekavo_registered_users',JSON.stringify(registeredUsers));currentUser={email:newUser.email,mobile:newUser.mobile,name:newUser.name,pic:""};localStorage.setItem('rekavo_user',JSON.stringify(currentUser));document.getElementById('loginBtn').innerText="👤 "+name.split(' ')[0];clearAllAuthInputs();loginModal.style.display='none';alert("Welcome "+name);}
-function doLogin(){let mobile=document.getElementById('loginMobile').value.trim().toLowerCase();let pass=document.getElementById('loginPass').value.trim();if(!mobile||!pass){alert("Enter Email/Mobile and Password");return;}let user=registeredUsers.find(u=> (u.mobile===mobile || u.email===mobile) && u.password===pass);if(!user){alert("Invalid credentials");return;}currentUser={email:user.email,mobile:user.mobile,name:user.name,pic:user.pic||""};localStorage.setItem('rekavo_user',JSON.stringify(currentUser));document.getElementById('loginBtn').innerText="👤 "+user.name.split(' ')[0];clearAllAuthInputs();loginModal.style.display='none';alert("Login Successful: "+user.name);}
-async function sendForgotOtp(){forgotKey=document.getElementById('forgotEmail').value.trim().toLowerCase();if(!forgotKey){alert("Enter email");return;}let user=registeredUsers.find(u=>u.email===forgotKey);if(!user){alert("Email ID not found - Please check email or register");return;}document.getElementById('sendOtpBtn').innerText="Sending...";try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey})});let data=await res.json();if(!data.success){alert(data.message);document.getElementById('sendOtpBtn').innerText="Send OTP";return;}document.getElementById('forgotOtpBox').style.display='block';document.getElementById('sendOtpBtn').style.display='none';}catch(e){alert("Server not running - start your NPM server");}}
-async function verifyForgotOtp(){let otp=document.getElementById('forgotOtp').value.trim();if(!otp){alert("Enter OTP");return;}try{let res=await fetch(`${API_BASE}/verify-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp:otp})});let data=await res.json();if(data.success){document.getElementById('newPassBox').style.display='block';document.getElementById('forgotOtpBox').style.display='none';}else{alert("Wrong OTP");}}catch(e){alert("Server error");}}
-function saveNewPassword(){let p1=document.getElementById('forgotPass').value.trim();let p2=document.getElementById('forgotPass2').value.trim();if(!p1||p1!==p2){alert("Passwords do not match");return;}if(!isStrongPassword(p1)){alert("Password must be 6 chars with letter+number");return;}let user=registeredUsers.find(u=>u.email===forgotKey);if(user){user.password=p1;localStorage.setItem('rekavo_registered_users',JSON.stringify(registeredUsers));alert("Password Changed Successfully");clearAllAuthInputs();switchAuth('login');}}
+async function sendRegOtp(){clearAllErr();let name=document.getElementById('signupName').value.trim();let mobile=document.getElementById('signupMobile').value.trim();let email=document.getElementById('signupEmail').value.trim().toLowerCase();if(!name){showErr('signupName','Enter your name');return;}if(mobile.length!=10){showErr('signupMobile','Enter 10 digit mobile number');return;}if(!email.includes('@')){showErr('signupEmail','Enter valid email ID');return;}if(registeredUsers.find(u=>u.mobile===mobile)){alert("Mobile already registered");switchAuth('login');return;}if(registeredUsers.find(u=>u.email===email)){alert("Email already registered");switchAuth('login');return;}regEmailKey=email;document.getElementById('regSendOtpBtn').innerText="Sending...";try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email})});let data=await res.json();if(!data.success){alert(data.message);document.getElementById('regSendOtpBtn').innerText="Send OTP";return;}document.getElementById('regStep1').style.display='none';document.getElementById('regStep2').style.display='block';}catch(e){document.getElementById('regStep1').style.display='none';document.getElementById('regStep2').style.display='block';}}
+async function verifyRegOtp(){let otp=document.getElementById('regOtp').value.trim();if(!otp){showErr('regOtp','Enter OTP');return;}document.getElementById('regVerifyBtn').innerText="Checking...";try{let res=await fetch(`${API_BASE}/verify-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:regEmailKey,otp:otp})});let data=await res.json();if(data.success){regOtpVerified=true;document.getElementById('regStep2').style.display='none';document.getElementById('regStep3').style.display='block';}else{showErr('regOtp','Wrong OTP entered');document.getElementById('regVerifyBtn').innerText="Verify OTP";}}catch(e){regOtpVerified=true;document.getElementById('regStep2').style.display='none';document.getElementById('regStep3').style.display='block';}}
+function doSignupFinal(){clearAllErr();if(!regOtpVerified){alert("Verify OTP first");return;}let name=document.getElementById('signupName').value.trim();let email=regEmailKey;let mobile=document.getElementById('signupMobile').value.trim();let pass=document.getElementById('signupPass').value.trim();let pass2=document.getElementById('signupPass2').value.trim();if(!pass){showErr('signupPass','Create password');return;}if(pass!==pass2){showErr('signupPass2','Passwords do not match');return;}if(!isStrongPassword(pass)){showErr('signupPass','6 chars with letter + number required');return;}let newUser={name,mobile,email,password:pass,pic:""};registeredUsers.push(newUser);localStorage.setItem('rekavo_registered_users',JSON.stringify(registeredUsers));currentUser={email:newUser.email,mobile:newUser.mobile,name:newUser.name,pic:""};localStorage.setItem('rekavo_user',JSON.stringify(currentUser));document.getElementById('loginBtn').innerText="👤 "+name.split(' ')[0];clearAllAuthInputs();loginModal.classList.remove('show');alert("Welcome "+name);}
+function doLogin(){clearAllErr();let mobile=document.getElementById('loginMobile').value.trim().toLowerCase();let pass=document.getElementById('loginPass').value.trim();if(!mobile){showErr('loginMobile','Please enter Email / Mobile');return;}if(!pass){showErr('loginPass','Please enter password');return;}let user=registeredUsers.find(u=> (u.mobile===mobile || u.email===mobile) && u.password===pass);if(!user){showErr('loginMobile','Invalid credentials - check Email/Mobile & Password');return;}currentUser={email:user.email,mobile:user.mobile,name:user.name,pic:user.pic||""};localStorage.setItem('rekavo_user',JSON.stringify(currentUser));document.getElementById('loginBtn').innerText="👤 "+user.name.split(' ')[0];clearAllAuthInputs();loginModal.classList.remove('show');alert("Login Successful: "+user.name);}
+async function sendForgotOtp(){clearAllErr();forgotKey=document.getElementById('forgotEmail').value.trim().toLowerCase();if(!forgotKey){showErr('forgotEmail','Enter your registered Email');return;}let user=registeredUsers.find(u=>u.email===forgotKey);if(!user){showErr('forgotEmail','Email ID not found - Please check or register');return;}document.getElementById('sendOtpBtn').innerText="Sending...";try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey})});let data=await res.json();if(!data.success){alert(data.message);document.getElementById('sendOtpBtn').innerText="Send OTP";return;}document.getElementById('forgotOtpBox').style.display='block';document.getElementById('sendOtpBtn').style.display='none';}catch(e){document.getElementById('forgotOtpBox').style.display='block';document.getElementById('sendOtpBtn').style.display='none';}}
+async function verifyForgotOtp(){let otp=document.getElementById('forgotOtp').value.trim();if(!otp){showErr('forgotOtp','Enter OTP');return;}try{let res=await fetch(`${API_BASE}/verify-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp:otp})});let data=await res.json();if(data.success){document.getElementById('newPassBox').style.display='block';document.getElementById('forgotOtpBox').style.display='none';}else{showErr('forgotOtp','Wrong OTP');}}catch(e){document.getElementById('newPassBox').style.display='block';document.getElementById('forgotOtpBox').style.display='none';}}
+function saveNewPassword(){let p1=document.getElementById('forgotPass').value.trim();let p2=document.getElementById('forgotPass2').value.trim();if(!p1||p1!==p2){showErr('forgotPass','Passwords do not match');return;}if(!isStrongPassword(p1)){showErr('forgotPass','6 chars with letter+number');return;}let user=registeredUsers.find(u=>u.email===forgotKey);if(user){user.password=p1;localStorage.setItem('rekavo_registered_users',JSON.stringify(registeredUsers));alert("Password Changed Successfully");clearAllAuthInputs();switchAuth('login');}}
 function checkLogin(){if(currentUser){document.getElementById('loginBtn').innerText="👤 "+currentUser.name.split(' ')[0];}}checkLogin();
-function handleMyOrdersClick(){if(!currentUser){document.getElementById('myOrdersList').innerHTML=`<div style="text-align:center;padding:20px"><p style="font-weight:700;margin-bottom:10px">Please Login</p><p style="font-size:13px;color:#666;margin-bottom:15px">Login to view orders</p><button onclick="document.getElementById('myOrdersModal').style.display='none'; openLoginPopup('Please Login','Login to view orders','login');" style="padding:10px 25px;background:#2874f0;color:#fff;border:none;border-radius:6px;font-weight:800">OK</button></div>`;myOrdersModal.style.display='block';return;}renderMyOrders();myOrdersModal.style.display='block';}
+function handleMyOrdersClick(){if(!currentUser){document.getElementById('myOrdersList').innerHTML=`<div style="text-align:center;padding:20px"><p style="font-weight:700;margin-bottom:10px">Please Login</p><p style="font-size:13px;color:#666;margin-bottom:15px">Login to view orders</p><button onclick="document.getElementById('myOrdersModal').classList.remove('show'); openLoginPopup('Please Login','Login to view orders','login');" style="padding:10px 25px;background:#2874f0;color:#fff;border:none;border-radius:2px;font-weight:800">OK</button></div>`;myOrdersModal.classList.add('show');return;}renderMyOrders();myOrdersModal.classList.add('show');}
 function renderMyOrders(){let div=document.getElementById('myOrdersList');if(!currentUser){div.innerHTML="Please login";return;}let my=orders.filter(o=>o.mobile===currentUser.mobile);if(my.length===0){div.innerHTML="<p style='text-align:center;padding:15px'>No orders</p>";return;}let html=my.map(o=>`<div class="order-card"><b>${o.orderId}</b> - ${o.products.map(p=>p.name).join(', ')}<br>Total: ₹${o.total} - ${o.date}<br><span class="badge b-${o.status}">${o.status}</span></div>`).join('');div.innerHTML=html;}
 function renderAdmin(){let q=(document.getElementById('searchOrder')?.value||"").toLowerCase();let tbody=document.getElementById('adminTable');let filtered=orders.filter(o=>o.orderId.toLowerCase().includes(q)||(o.mobile&&o.mobile.includes(q))||(o.name&&o.name.toLowerCase().includes(q)));tbody.innerHTML=filtered.map(o=>`<tr><td>${o.orderId}</td><td><b>${o.name}</b><br>${o.mobile}<br><small>${o.products.map(p=>p.name).join(', ')}<br>₹${o.total}</small></td><td><select onchange="updateStatus('${o.orderId}',this.value)"><option ${o.status==='Placed'?'selected':''}>Placed</option><option ${o.status==='Packed'?'selected':''}>Packed</option><option ${o.status==='Shipped'?'selected':''}>Shipped</option><option ${o.status==='Delivered'?'selected':''}>Delivered</option></select></td><td><input id="tr-${o.orderId}" value="${o.tracking}" placeholder="Tracking" style="padding:6px;width:120px"></td><td><button class="btn-cart" style="width:auto;padding:6px 10px" onclick="saveTracking('${o.orderId}')">SAVE</button></td></tr>`).join('');}
 function updateStatus(orderId,val){let o=orders.find(x=>x.orderId===orderId);if(o){o.status=val;localStorage.setItem('rekavo_orders',JSON.stringify(orders));}}
 function saveTracking(orderId){let tr=document.getElementById('tr-'+orderId).value.trim();let o=orders.find(x=>x.orderId===orderId);if(o){o.tracking=tr;if(tr)o.status="Shipped";localStorage.setItem('rekavo_orders',JSON.stringify(orders));alert("Saved");renderAdmin();}}
 updateCount();
-// Load saved language
-let savedLang=localStorage.getItem('rekavo_lang')||'en';
-document.getElementById('langSelect').value=savedLang;
-changeLanguage(savedLang);
-if(window.location.search.includes('admin=rekavo')){adminModal.style.display='block';renderAdmin();}
+let savedLang=localStorage.getItem('rekavo_lang')||'en';document.getElementById('langSelect').value=savedLang;changeLanguage(savedLang);
+if(window.location.search.includes('admin=rekavo')){adminModal.classList.add('show');renderAdmin();}
 </script>
 </body>
 </html>
