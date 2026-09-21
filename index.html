@@ -7,24 +7,24 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,'Segoe UI',sans-serif}
 body{background:#f1f3f6;padding-bottom:70px}
-.top-strip{background:#2874f0;color:#fff;text-align:center;padding:6px 5px;font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-header{background:#2874f0;padding:8px 12px;position:sticky;top:0;z-index:20}
-.header-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.logo-area{display:flex;align-items:center;gap:8px}
-.rv-logo-wrap{position:relative;width:38px;height:36px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
-.rv-roof{width:100%;height:8px;position:relative}
-.rv-roof::before,.rv-roof::after{content:'';position:absolute;left:0;right:0;height:2px;background:#ff9f00;transform:skewX(-20deg)}
-.rv-roof::before{top:0;background:#ff9f00}
-.rv-roof::after{top:4px;background:#ff9f00}
-.rv-letters{display:flex;font-weight:900;font-size:22px;line-height:1;letter-spacing:-1px;margin-top:2px}
-.rv-r{color:#03a9f4;position:relative}
-.rv-r::after{content:'';position:absolute;left:-2px;bottom:-2px;width:22px;height:10px;border-left:2.5px solid #03a9f4;border-bottom:2.5px solid #03a9f4;border-radius:0 0 0 2px;transform:skewX(-5deg)}
-.rv-v{color:#ff6a00;margin-left:1px}
+.top-strip{background:#2874f0;color:#fff;text-align:center;padding:10px 12px;font-size:13px;font-weight:800;white-space:normal;line-height:1.4;word-break:break-word}
+header{background:#2874f0;padding:10px 12px 12px 12px;position:sticky;top:0;z-index:20;box-shadow:0 2px 4px rgba(0,0,0,.15)}
+.header-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.2);margin-bottom:10px}
+.logo-area{display:flex;align-items:center;gap:10px}
+.rv-logo-img{width:44px;height:44px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));background:transparent}
 .logo{font-weight:900;font-size:20px;line-height:1;color:#fff;min-width:110px}.logo small{font-size:10px;color:#fff;display:block;font-weight:600;margin-top:1px;opacity:.9}
-.lang-select{background:#fff;border:none;border-radius:2px;padding:6px 10px;font-size:12px;font-weight:700;outline:none;color:#2874f0;height:32px}
-.search-box{margin-top:8px;width:100%;display:flex;background:#fff;border-radius:2px;overflow:hidden;height:38px}
+.lang-select{background:#fff;border:none;border-radius:4px;padding:6px 10px;font-size:12px;font-weight:700;outline:none;color:#2874f0;height:32px}
+.search-box{width:100%;display:flex;background:#fff;border-radius:4px;overflow:hidden;height:42px;box-shadow:0 1px 3px rgba(0,0,0,.2);position:relative}
 .search-box input{flex:1;border:none;padding:0 14px;outline:none;font-size:14px}
 .search-box button{background:#fff;border:none;color:#2874f0;padding:0 20px;cursor:pointer;font-size:18px;font-weight:800}
+.search-results{position:absolute;top:44px;left:0;right:0;background:#fff;border-radius:0 0 4px 4px;max-height:380px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:30;display:none}
+.search-results.show{display:block}
+.sr-item{display:flex;gap:10px;padding:10px;border-bottom:1px solid #f0f0f0;cursor:pointer;align-items:center}
+.sr-item:hover{background:#f5f8ff}
+.sr-item img{width:50px;height:50px;object-fit:contain;border:1px solid #f0f0f0;border-radius:4px}
+.sr-info{flex:1}
+.sr-name{font-size:13px;font-weight:600;color:#212121}
+.sr-price{font-size:12px;color:#388e3c;font-weight:700;margin-top:2px}
 .banner{margin:8px;background:#fff;border-radius:4px;display:flex;overflow:hidden;min-height:130px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
 .banner-left{flex:1.2;overflow:hidden}
 .rekavo-poster{width:100%;height:100%;min-height:130px;background:radial-gradient(circle at 20% 30%, #1e3aff 0%, #000 45%, #0a0a0a 100%);display:flex;flex-direction:column;justify-content:center;padding:12px 14px;position:relative}
@@ -46,9 +46,19 @@ header{background:#2874f0;padding:8px 12px;position:sticky;top:0;z-index:20}
 .modal.show{display:flex}
 .modal-content{background:#fff;width:100%;max-width:900px;border-radius:6px;position:relative;max-height:90vh;overflow-y:auto}
 .close{position:absolute;right:12px;top:8px;font-size:24px;cursor:pointer;font-weight:bold;z-index:5}
-.variant-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px;padding:10px}
-.variant-card{border:1px solid #f0f0f0;border-radius:6px;padding:8px;text-align:center;background:#fff;cursor:pointer}
-.variant-card img{height:90px;object-fit:contain;width:100%}
+.variant-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px;padding:12px}
+.variant-card{border:1px solid #f0f0f0;border-radius:6px;padding:10px;text-align:left;background:#fff;cursor:pointer;transition:box-shadow.2s;display:flex;flex-direction:column}
+.variant-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.variant-card img{height:120px;object-fit:contain;width:100%;margin-bottom:8px}
+.variant-card.v-title{font-size:13px;font-weight:500;color:#212121;line-height:1.3;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.variant-card.v-rating{display:flex;align-items:center;gap:4px;margin:6px 0}
+.v-rating-badge{background:#388e3c;color:#fff;font-size:11px;padding:2px 5px;border-radius:3px;font-weight:700;display:flex;align-items:center;gap:2px}
+.v-rating-count{font-size:11px;color:#878787;font-weight:600}
+.v-price-row{display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap}
+.v-price{font-size:16px;font-weight:800;color:#212121}
+.v-mrp{font-size:12px;color:#878787;text-decoration:line-through}
+.v-off{font-size:12px;color:#388e3c;font-weight:700}
+.v-coupon{margin-top:6px;font-size:11px;font-weight:700;color:#26a541;background:#f0faf0;padding:4px 6px;border-radius:3px;display:inline-block;width:fit-content}
 .price{color:#388e3c;font-weight:800;font-size:14px;margin:4px 0}
 .old-price{text-decoration:line-through;color:#878787;font-size:11px}
 .coupon-row{display:flex;gap:6px;margin:10px 0}
@@ -96,14 +106,14 @@ header{background:#2874f0;padding:8px 12px;position:sticky;top:0;z-index:20}
 <header>
 <div class="header-top">
 <div class="logo-area">
-<div class="rv-logo-wrap"><div class="rv-roof"></div><div class="rv-letters"><span class="rv-r">R</span><span class="rv-v">V</span></div></div>
+<img src="rv_logo_transparent.png" class="rv-logo-img" alt="RV Logo" id="rvLogo">
 <div class="logo"><span>REKAVO</span><small>by R2K Infotech</small></div>
 </div>
 <select id="langSelect" class="lang-select" onchange="changeLanguage(this.value)">
 <option value="en">English</option><option value="hi">हिंदी</option><option value="bn">বাংলা</option><option value="ta">தமிழ்</option><option value="te">తెలుగు</option><option value="mr">मराठी</option><option value="gu">ગુજરાતી</option><option value="kn">ಕನ್ನಡ</option><option value="ml">മലയാളം</option><option value="pa">ਪੰਜਾਬੀ</option><option value="ur">اردو</option>
 </select>
 </div>
-<div class="search-box"><input type="text" id="mainSearch" placeholder="Search for products, brands and more"><button>⌕</button></div>
+<div class="search-box"><input type="text" id="mainSearch" placeholder="Search for products, brands and more" oninput="liveSearch(this.value)" autocomplete="off"><button>⌕</button><div id="searchResults" class="search-results"></div></div>
 </header>
 <div class="banner"><div class="banner-left"><div class="rekavo-poster"><div class="poster-tag" id="posterTag">REKAVO • by R2K INFOTECH</div><div class="poster-title">RE<span>KAVO</span></div><div class="poster-sub" id="posterSub">MOBILE ACCESSORIES & ELECTRONICS</div><div class="poster-desc" id="posterDesc">Mobile, Charger, Cover, Earbuds, Headphone, Speaker, Power Bank, Smart Watch - Everything at wholesale price. Premium Quality. Fast Delivery.</div><div class="poster-badge-row"><div id="b1">★ PREMIUM</div><div id="b2">⚡ FAST DELIVERY</div><div id="b3">✓ VERIFIED</div></div></div></div></div>
 <div class="trust"><div id="t1">✅ 100% Genuine</div><div id="t2">💳 Prepaid Only</div><div id="t3">↩️ 7 Day Return</div><div id="t4">🔒 Secure Payment</div></div>
@@ -160,25 +170,51 @@ document.getElementById('closeCart').onclick=()=>cartModal.classList.remove('sho
 function closeCategory(){categoryModal.classList.remove('show');}
 function closeProductDetail(){productDetailModal.classList.remove('show');}
 function backToCategory(){productDetailModal.classList.remove('show');categoryModal.classList.add('show');}
-window.onclick=(e)=>{ if(e.target.classList && e.target.classList.contains('modal')) e.target.classList.remove('show'); }
+window.onclick=(e)=>{
+  if(e.target.classList && e.target.classList.contains('modal')){
+    if(e.target.id === 'loginModal' || e.target.id === 'categoryModal'){ return; }
+    e.target.classList.remove('show');
+  }
+  if(!e.target.closest('.search-box')){
+    document.getElementById('searchResults').classList.remove('show');
+  }
+}
 const translations={ en:{top:"🔥 Use Coupon For Extra Discount at 40% - 50% - 70% - 80% And More..",shop:"Shop By Category - Click to Explore",posterTag:"REKAVO • by R2K INFOTECH",posterSub:"MOBILE ACCESSORIES & ELECTRONICS",posterDesc:"Mobile, Charger, Cover, Earbuds, Headphone, Speaker, Power Bank, Smart Watch - Everything in one place at wholesale price. Premium Quality. Fast Delivery. A Brand by R2K Infotech.",t1:"✅ 100% Genuine",t2:"💳 Prepaid Only",t3:"↩️ 7 Day Return",t4:"🔒 Secure Payment",b1:"★ PREMIUM",b2:"⚡ FAST DELIVERY",b3:"✓ VERIFIED",catPB:"Power Bank",catNB:"Neckband",catEB:"Earbuds",catCB:"Cable",catCH:"Charger",myOrders:"📦 My Orders",login:"👤 Login",cart:"🛒 Cart",searchPh:"Search for products, brands and more",cartTitle:"Your Cart",couponHint:"Have a coupon? Apply to get extra discount.",specTitle:"Product Details:",rateTitle:"Rate this Product"}, hi:{top:"🔥 कूपन से पाएं 40% - 50% - 70% - 80% तक एक्स्ट्रा छूट",shop:"कैटेगरी से खरीदें - एक्सप्लोर करने के लिए क्लिक करें",posterTag:"REKAVO • by R2K INFOTECH",posterSub:"मोबाइल एक्सेसरीज और इलेक्ट्रॉनिक्स",posterDesc:"मोबाइल, चार्जर, कवर, ईयरबड्स, हेडफोन, स्पीकर, पावर बैंक, स्मार्ट वॉच - सब कुछ एक जगह होलसेल प्राइस पर।",t1:"✅ 100% असली",t2:"💳 सिर्फ प्रीपेड",t3:"↩️ 7 दिन रिटर्न",t4:"🔒 सुरक्षित भुगतान",b1:"★ प्रीमियम",b2:"⚡ तेज़ डिलीवरी",b3:"✓ सत्यापित",catPB:"पावर बैंक",catNB:"नेकबैंड",catEB:"ईयरबड्स",catCB:"केबल",catCH:"चार्जर",myOrders:"📦 मेरे ऑर्डर",login:"👤 लॉगिन",cart:"🛒 कार्ट",searchPh:"प्रोडक्ट, ब्रांड और बहुत कुछ खोजें",cartTitle:"आपकी कार्ट",couponHint:"कूपन है? एक्स्ट्रा छूट पाने के लिए लगाएं।",specTitle:"प्रोडक्ट विवरण:",rateTitle:"इस प्रोडक्ट को रेट करें"} };
 function changeLanguage(lang){let t=translations[lang]||translations.en;document.getElementById('topStrip').innerText=t.top;document.getElementById('shopTitle').innerText=t.shop;document.getElementById('posterTag').innerText=t.posterTag;document.getElementById('posterSub').innerText=t.posterSub;document.getElementById('posterDesc').innerText=t.posterDesc;document.getElementById('t1').innerText=t.t1;document.getElementById('t2').innerText=t.t2;document.getElementById('t3').innerText=t.t3;document.getElementById('t4').innerText=t.t4;document.getElementById('b1').innerText=t.b1;document.getElementById('b2').innerText=t.b2;document.getElementById('b3').innerText=t.b3;document.getElementById('catPB').innerText=t.catPB;document.getElementById('catNB').innerText=t.catNB;document.getElementById('catEB').innerText=t.catEB;document.getElementById('catCB').innerText=t.catCB;document.getElementById('catCH').innerText=t.catCH;document.getElementById('mainSearch').placeholder=t.searchPh;document.getElementById('cartTitle').innerText=t.cartTitle;document.getElementById('couponHint').innerText=t.couponHint;document.getElementById('specTitle').innerText=t.specTitle;document.getElementById('rateTitle').innerText=t.rateTitle;localStorage.setItem('rekavo_lang',lang);}
 function getDiscountFromCode(code){let m=code.toUpperCase().match(/(\d{1,3})\s*PERCENT/)||code.toUpperCase().match(/(\d{1,3})\s*%/);return m?parseInt(m[1]):0;}
 const categoryData={powerbank:[{name:"Power Bank 10000mAh",price:499,originalPrice:1299,coupon:"REKAVOPB10K40PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300",desc:"High capacity 10000mAh power bank with 22.5W fast charging.",spec:"Capacity: 10000mAh\nInput: Type-C 18W\nOutput: 22.5W\nWarranty: 6 Months"},{name:"Power Bank 20000mAh",price:799,originalPrice:1999,coupon:"REKAVOPB20K60PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300",desc:"20000mAh large capacity with digital display.",spec:"Capacity: 20000mAh\nDisplay: LED\nWarranty: 6 Months"},{name:"Power Bank 30000mAh",price:1099,originalPrice:2999,coupon:"REKAVOPB30K70PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300",desc:"Massive 30000mAh power bank.",spec:"Capacity: 30000mAh\nOutput: 22.5W x 4\nWarranty: 6 Months"}],neckband:[{name:"Neckband Boat 100",price:199,originalPrice:999,coupon:"REKAVONB10050PERCENT",img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300",desc:"Wireless neckband with 20 hours battery.",spec:"Battery: 20 Hours\nDriver: 10mm\nWarranty: 3 Months"},{name:"Neckband 500 Premium",price:549,originalPrice:1999,coupon:"REKAVONB50040PERCENT",img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300",desc:"Premium neckband with HD calling.",spec:"Battery: 30 Hours\nWarranty: 6 Months"}],earbuds:[{name:"Earbuds TWS 400",price:449,originalPrice:1499,coupon:"REKAVOEB40060PERCENT",img:"https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=300",desc:"TWS Earbuds with 30 hours playback.",spec:"Playback: 30H\nCharging: Type-C\nWarranty: 6 Months"},{name:"Earbuds Pro Sound",price:999,originalPrice:4999,coupon:"REKAVOEBPRO80PERCENT",img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=300",desc:"Pro sound earbuds with ANC.",spec:"ANC: Yes\nBattery: 40H\nWarranty: 12 Months"}],cable:[{name:"Cable Type-C 100",price:99,originalPrice:299,coupon:"REKAVOCB10050PERCENT",img:"https://images.unsplash.com/photo-1625842268584-8f3296236761?w=300",desc:"Fast charging Type-C cable.",spec:"Length: 1 Meter\nSpeed: 3A"},{name:"Cable Fast 3A",price:199,originalPrice:499,coupon:"REKAVOCB3A40PERCENT",img:"https://images.unsplash.com/photo-1587037542707-1dad5a1cfa9d?w=300",desc:"3A fast cable with nylon braiding.",spec:"Length: 1.5M\nMaterial: Nylon"}],charger:[{name:"Charger 20W Fast",price:299,originalPrice:999,coupon:"REKAVOCH20W60PERCENT",img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300",desc:"20W fast charger.",spec:"Output: 20W PD\nWarranty: 6 Months"},{name:"Charger 65W",price:699,originalPrice:2499,coupon:"REKAVOCH65W70PERCENT",img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300",desc:"65W super fast charger.",spec:"Output: 65W GaN\nWarranty: 12 Months"}]};
 let currentDetailCat=null;let currentDetailIdx=null;let detailFinalPrice=0;let currentRating=0;let lastCategory=null;
+function liveSearch(query){
+  let resultsBox = document.getElementById('searchResults');
+  query = query.trim().toLowerCase();
+  if(!query){ resultsBox.classList.remove('show'); resultsBox.innerHTML=''; return; }
+  let allProducts=[]; for(let cat in categoryData){ categoryData[cat].forEach((p,idx)=>{ allProducts.push({...p,cat,idx}); }); }
+  let filtered = allProducts.filter(p=> p.name.toLowerCase().includes(query) || p.cat.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query));
+  if(filtered.length===0){ resultsBox.innerHTML=`<div style="padding:12px;text-align:center;color:#878787;font-size:13px">No products found for "${query}"</div>`; resultsBox.classList.add('show'); return; }
+  let html = filtered.map(p=>` <div class="sr-item" onclick="searchSelectProduct('${p.cat}',${p.idx})"> <img src="${p.img}"> <div class="sr-info"> <div class="sr-name">${p.name}</div> <div class="sr-price">₹${p.price} <span style="color:#878787;text-decoration:line-through;font-weight:400">₹${p.originalPrice}</span> <span style="color:#388e3c">${getDiscountFromCode(p.coupon)}% off</span></div> </div> </div>`).join('');
+  resultsBox.innerHTML=html; resultsBox.classList.add('show');
+}
+function searchSelectProduct(cat,idx){ document.getElementById('searchResults').classList.remove('show'); document.getElementById('mainSearch').value=''; openProductDetail(cat,idx); }
 function openCategory(cat){
   lastCategory=cat;
   const data=categoryData[cat];
   document.getElementById('catTitle').innerText=cat.toUpperCase()+" - All Variants";
-  let html=data.map((p,idx)=>
-    `<div class="variant-card" onclick="openProductDetail('${cat}',${idx})">
+  let html=data.map((p,idx)=>{
+    let disc = getDiscountFromCode(p.coupon);
+    let rating = (4 + Math.random()).toFixed(1);
+    let ratingCount = Math.floor(1000 + Math.random()*5000);
+    return `<div class="variant-card" onclick="openProductDetail('${cat}',${idx})">
         <img src="${p.img}">
-        <b style="font-size:12px;display:block;height:32px;overflow:hidden;margin-top:4px">${p.name}</b>
-        <div class="old-price">₹${p.originalPrice}</div>
-        <div class="price" id="price-${cat}-${idx}">₹${p.price}</div>
-        <div style="color:#388e3c;font-size:11px;font-weight:700">${getDiscountFromCode(p.coupon)}% OFF</div>
+        <div class="v-title">${p.name}</div>
+        <div class="v-rating"><span class="v-rating-badge">${rating} ★</span><span class="v-rating-count">(${ratingCount})</span></div>
+        <div class="v-price-row">
+          <span class="v-price">₹${p.price}</span>
+          <span class="v-mrp">₹${p.originalPrice}</span>
+          <span class="v-off">${disc}% off</span>
+        </div>
+        <div class="v-coupon">Use Coupon For Discount</div>
     </div>`
-  ).join('');
+  }).join('');
   document.getElementById('catProducts').innerHTML=html;
   categoryModal.classList.add('show');
 }
@@ -192,8 +228,6 @@ function submitReview(){let name=document.getElementById('reviewName').value.tri
 function loadReviews(){let key=`${currentDetailCat}-${currentDetailIdx}`;let reviews=JSON.parse(localStorage.getItem('rekavo_reviews')||'{}');let list=reviews[key]||[];let div=document.getElementById('reviewList');if(list.length==0){div.innerHTML="<p style='font-size:12px;color:#888'>No reviews yet. Be first to review.</p>";return;}div.innerHTML=list.map(r=>`<div class="review-card"><b>${r.name}</b> - ${'★'.repeat(r.rating)}<span style="color:#ddd">${'★'.repeat(5-r.rating)}</span><br><small style="color:#888">${r.date}</small><p style="margin-top:5px;font-size:13px">${r.comment}</p></div>`).join('');}
 let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');let orders=JSON.parse(localStorage.getItem('rekavo_orders')||'[]');let currentUser=JSON.parse(localStorage.getItem('rekavo_user')||'null');let savedAddresses=JSON.parse(localStorage.getItem('rekavo_addresses')||'[]');let registeredUsers=JSON.parse(localStorage.getItem('rekavo_registered_users')||'[]');let selectedAddressIndex=0;
 function updateCount(){let c=document.getElementById('cartCount');if(c) c.innerText=cart.length;let ct=document.getElementById('cartTotal');if(ct) ct.innerText=cart.reduce((s,i)=>s+i.price,0);}
-function addToCart(name,cat,idx){if(!currentUser){closeCategory();openLoginPopup("Please Login First","Login to add to cart","login");return;}let pEl=document.getElementById(`price-${cat}-${idx}`).innerText;let clean=pEl.match(/₹(\d+)/);let finalPrice=clean?parseInt(clean[1]):categoryData[cat][idx].price;cart.push({name,price:finalPrice});localStorage.setItem('rekavo_cart',JSON.stringify(cart));updateCount();alert(name+" added to cart ₹"+finalPrice);}
-function buyNow(cat,idx){if(!currentUser){closeCategory();openLoginPopup("Please Login First","Login to buy","login");return;}let pEl=document.getElementById(`price-${cat}-${idx}`).innerText;let clean=pEl.match(/₹(\d+)/);let finalPrice=clean?parseInt(clean[1]):categoryData[cat][idx].price;cart=[{name:categoryData[cat][idx].name,price:finalPrice}];localStorage.setItem('rekavo_cart',JSON.stringify(cart));updateCount();closeCategory();openCheckout();}
 function showCart(){let div=document.getElementById('cartItems');if(cart.length==0){div.innerHTML='<p style="text-align:center;padding:15px">Your cart is empty</p>';}else{div.innerHTML=cart.map((c,i)=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee"><span>${c.name} - ₹${c.price}</span><button onclick="cart.splice(${i},1);localStorage.setItem('rekavo_cart',JSON.stringify(cart));showCart();updateCount();" style="background:#ff3b30;color:#fff;border:none;padding:3px 8px;border-radius:4px">X</button></div>`).join('');}updateCount();}
 function openCheckout(){if(!currentUser){cartModal.classList.remove('show');document.getElementById('checkoutModal').classList.remove('show');openLoginPopup("Please Login","Login to place order","login");return;}if(cart.length===0){alert('Cart is empty');return;}cartModal.classList.remove('show');document.getElementById('checkoutTotal').innerText=cart.reduce((s,i)=>s+i.price,0);renderAddresses();document.getElementById('checkoutModal').classList.add('show');}
 function renderAddresses(){let listDiv=document.getElementById('savedAddressList');let formDiv=document.getElementById('addAddressForm');let addBtn=document.getElementById('addNewBtn');if(savedAddresses.length===0){listDiv.innerHTML='<p style="font-size:13px;color:#666">No saved address, please add one</p>';formDiv.style.display='block';addBtn.style.display='none';}else{listDiv.innerHTML=savedAddresses.map((ad,i)=>`<label style="display:flex;gap:10px;border:2px solid ${i===selectedAddressIndex?'#2874f0':'#e0e0e0'};background:${i===selectedAddressIndex?'#f0f7ff':'#fff'};border-radius:8px;padding:10px;margin-bottom:8px;cursor:pointer"><input type="radio" name="addr" ${i===selectedAddressIndex?'checked':''} onchange="selectAddr(${i})"><div style="font-size:13px;line-height:1.4"><b>${ad.name} - ${ad.phone}</b><br>${ad.address}, ${ad.city} - ${ad.pincode}</div></label>`).join('');formDiv.style.display='none';addBtn.style.display='block';}}
