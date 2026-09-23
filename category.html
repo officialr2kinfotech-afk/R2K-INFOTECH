@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REKAVO - Category</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,sans-serif}
+body{background:#f1f3f6;padding-bottom:70px}
+.top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:7px 12px;font-size:12px;font-weight:800;border-bottom:2px solid #fff;margin-bottom:2px}
+.search-wrapper{background:#2874f0;padding:10px 12px;position:sticky;top:0;z-index:99;border-top:2px solid #fff}
+.search-box{width:100%;display:flex;background:#fff;border-radius:2px;height:42px;position:relative;overflow:hidden}
+.search-box input{flex:1;border:none;padding:0 14px;outline:none;font-size:14px}
+.search-box button{border:none;background:#fff;color:#2874f0;padding:0 18px;font-size:20px;font-weight:900;cursor:pointer}
+.search-results{position:absolute;top:44px;left:0;right:0;background:#fff;max-height:420px;overflow:auto;box-shadow:0 8px 16px rgba(0,0,0,.2);display:none;z-index:30;border-radius:0 0 4px 4px}
+.search-results.show{display:block}
+.sr-item{display:flex;gap:10px;padding:10px;border-bottom:1px solid #f0f0f0;cursor:pointer;align-items:center}
+.sr-item:hover{background:#f5f8ff}
+.sr-item img{width:50px;height:50px;object-fit:contain;border:1px solid #eee;border-radius:4px}
+.variant-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:12px}
+.variant-card{border:1px solid #f0f0f0;border-radius:6px;padding:10px;background:#fff;cursor:pointer;display:flex;flex-direction:column}
+.variant-card:active{transform:scale(0.98)}
+.variant-card img{height:120px;width:100%;object-fit:contain;margin-bottom:8px}
+.v-title{font-size:13px;font-weight:500;color:#212121;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.v-rating{display:flex;align-items:center;gap:4px;margin:6px 0}
+.v-rating-badge{background:#388e3c;color:#fff;font-size:11px;padding:2px 5px;border-radius:3px;font-weight:700}
+.v-rating-count{font-size:11px;color:#878787}
+.v-price-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.v-price{font-size:16px;font-weight:800}
+.v-mrp{font-size:12px;color:#878787;text-decoration:line-through}
+.v-off{font-size:12px;color:#388e3c;font-weight:700}
+.v-coupon{margin-top:6px;font-size:11px;font-weight:700;color:#26a541;background:#f0faf0;padding:4px 6px;border-radius:3px;display:inline-block}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:6px 0;border-top:1px solid #ddd;z-index:999}
+.bottom-nav a{text-decoration:none;color:#555;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center}
+.bottom-nav a.active{color:#2874f0}
+</style>
+</head>
+<body>
+<div class="top-strip">🔥 Use Coupon For Extra Discount At 20%, 40%, 50%, 80% And More....</div>
+<div class="search-wrapper">
+  <div class="search-box">
+    <input id="mainSearch" placeholder="Search for products, brands and more" onfocus="handleSearchFocus()" oninput="liveSearch(this.value)" autocomplete="off">
+    <button>⌕</button>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+
+<div style="background:#fff;padding:12px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 2px rgba(0,0,0,.1)">
+  <button onclick="location.href='index.html'" style="background:#f0f0f0;border:none;padding:6px 12px;border-radius:4px;font-weight:700;cursor:pointer">← Back</button>
+  <h2 id="catTitle" style="font-size:16px"></h2>
+</div>
+
+<div id="catProducts" class="variant-grid"></div>
+
+<div class="bottom-nav">
+  <a href="index.html"><span>🏠</span>Home</a>
+  <a href="#" class="active"><span>🗂️</span>Categories</a>
+  <a href="account.html"><span>👤</span>Account</a>
+  <a href="cart.html"><span>🛒</span>Cart</a>
+</div>
+
+<script>
+const categoryData={
+powerbank:[
+{name:"Power Bank 10000mAh",price:499,originalPrice:1299,coupon:"REKAVOPB10K40PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300",desc:"High capacity 10000mAh",spec:"Capacity: 10000mAh"},
+{name:"Power Bank 20000mAh",price:799,originalPrice:1999,coupon:"REKAVOPB20K60PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300",desc:"20000mAh large capacity",spec:"Capacity: 20000mAh"},
+{name:"Power Bank 30000mAh",price:1099,originalPrice:2999,coupon:"REKAVOPB30K70PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300",desc:"Massive 30000mAh",spec:"Capacity: 30000mAh"}
+],
+neckband:[
+{name:"Neckband Boat 100",price:199,originalPrice:999,coupon:"REKAVONB10050PERCENT",img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300",desc:"Wireless neckband",spec:"Battery: 20 Hours"},
+{name:"Neckband 500 Premium",price:549,originalPrice:1999,coupon:"REKAVONB50040PERCENT",img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300",desc:"Premium neckband",spec:"Battery: 30 Hours"}
+],
+earbuds:[
+{name:"Earbuds TWS 400",price:449,originalPrice:1499,coupon:"REKAVOEB40060PERCENT",img:"https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=300",desc:"TWS Earbuds",spec:"Playback: 30H"},
+{name:"Earbuds Pro Sound",price:999,originalPrice:4999,coupon:"REKAVOEBPRO80PERCENT",img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=300",desc:"Pro sound earbuds",spec:"ANC: Yes"}
+],
+cable:[
+{name:"Cable Type-C 100",price:99,originalPrice:299,coupon:"REKAVOCB10050PERCENT",img:"https://images.unsplash.com/photo-1625842268584-8f3296236761?w=300",desc:"Fast charging cable",spec:"Length: 1 Meter"},
+{name:"Cable Fast 3A",price:199,originalPrice:499,coupon:"REKAVOCB3A40PERCENT",img:"https://images.unsplash.com/photo-1587037542707-1dad5a1cfa9d?w=300",desc:"3A fast cable",spec:"Length: 1.5M"}
+],
+charger:[
+{name:"Charger 20W Fast",price:299,originalPrice:999,coupon:"REKAVOCH20W60PERCENT",img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300",desc:"20W fast charger",spec:"Output: 20W"},
+{name:"Charger 65W",price:699,originalPrice:2499,coupon:"REKAVOCH65W70PERCENT",img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300",desc:"65W super fast charger",spec:"Output: 65W"}
+]
+};
+
+function getDiscountFromCode(code){
+  let m=code.toUpperCase().match(/(\d{1,3})\s*PERCENT/);
+  return m?parseInt(m[1]):40;
+}
+function getAllProducts(){
+  let all=[];
+  for(let c in categoryData){
+    categoryData[c].forEach((p,i)=>{
+      all.push({...p,cat:c,idx:i})
+    })
+  }
+  return all;
+}
+function handleSearchFocus(){
+  window.scrollTo({top:0,behavior:'smooth'});
+  liveSearch(document.getElementById('mainSearch').value)
+}
+function liveSearch(q){
+  let box=document.getElementById('searchResults');
+  let all=getAllProducts();
+  let query=q.trim().toLowerCase();
+  let filtered=query===""?all:all.filter(p=>p.name.toLowerCase().includes(query)||p.cat.toLowerCase().includes(query));
+  box.innerHTML=filtered.map(p=>`<div class="sr-item" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'"><img src="${p.img}"><div><div style="font-size:13px;font-weight:600">${p.name}</div><div style="font-size:12px;color:#388e3c">₹${p.price}</div></div></div>`).join('');
+  box.classList.add('show');
+}
+
+let params=new URLSearchParams(location.search);
+let cat=params.get('cat')||'powerbank';
+document.getElementById('catTitle').innerText=cat.toUpperCase()+" - All Variants";
+
+let data=categoryData[cat]||[];
+let container=document.getElementById('catProducts');
+
+container.innerHTML=data.map((p,i)=>{
+  let disc=getDiscountFromCode(p.coupon);
+  let rating=(4+Math.random()).toFixed(1);
+  let cnt=Math.floor(1000+Math.random()*5000);
+  return `
+  <div class="variant-card" onclick="location.href='product.html?cat=${cat}&idx=${i}'">
+    <img src="${p.img}">
+    <div class="v-title">${p.name}</div>
+    <div class="v-rating"><span class="v-rating-badge">${rating} ★</span><span class="v-rating-count">(${cnt})</span></div>
+    <div class="v-price-row">
+      <span class="v-price">₹${p.price}</span>
+      <span class="v-mrp">₹${p.originalPrice}</span>
+      <span class="v-off">${disc}% off</span>
+    </div>
+    <div class="v-coupon">Use Coupon For Discount</div>
+  </div>`;
+}).join('');
+
+window.onclick=(e)=>{
+  if(!e.target.closest('.search-wrapper')){
+    document.getElementById('searchResults').classList.remove('show');
+  }
+}
+</script>
+</body>
+</html>

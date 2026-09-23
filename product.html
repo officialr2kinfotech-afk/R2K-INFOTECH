@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REKAVO - Product Detail</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,sans-serif}
+body{background:#fff;padding-bottom:90px}
+.top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:8px 12px;font-size:12px;font-weight:800}
+.search-wrapper{background:#2874f0;padding:10px 12px;position:sticky;top:0;z-index:99}
+.search-box{width:100%;display:flex;background:#fff;border-radius:2px;height:42px;position:relative}
+.search-box input{flex:1;border:none;padding:0 14px;outline:none}
+.search-box button{border:none;background:#fff;color:#2874f0;padding:0 18px;font-size:20px;font-weight:900}
+.search-results{position:absolute;top:44px;left:0;right:0;background:#fff;max-height:400px;overflow:auto;box-shadow:0 8px 16px rgba(0,0,0,.2);display:none;z-index:30}
+.search-results.show{display:block}
+.sr-item{display:flex;gap:10px;padding:10px;border-bottom:1px solid #f0f0f0;cursor:pointer;align-items:center}
+.detail-wrap{display:flex;flex-wrap:wrap}
+.detail-left{flex:1;min-width:280px;padding:12px;border-right:1px solid #f0f0f0}
+.detail-main-img{width:100%;height:340px;object-fit:contain;border:1px solid #f0f0f0;border-radius:6px;background:#fff}
+.detail-thumbs{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.detail-thumbs img{width:56px;height:56px;border:1px solid #e0e0e0;border-radius:4px;cursor:pointer;object-fit:contain}
+.detail-thumbs img.active{border:2px solid #2874f0}
+.detail-right{flex:1;min-width:300px;padding:14px}
+.price{color:#388e3c;font-weight:800;font-size:24px}
+.old-price{text-decoration:line-through;color:#878787;font-size:14px}
+.coupon-row{display:flex;gap:6px;margin:12px 0}
+.coupon-row input{flex:1;padding:11px;border:1px solid #e0e0e0;border-radius:4px;outline:none}
+.coupon-row button{background:#2874f0;color:#fff;border:none;padding:11px 16px;border-radius:4px;font-weight:700;cursor:pointer}
+.spec-box{background:#fafafa;border:1px solid #f0f0f0;border-radius:6px;padding:12px;margin:12px 0;font-size:13px;line-height:1.6;white-space:pre-line}
+.btn-cart{width:100%;background:#ff9f00;color:#fff;border:none;padding:14px;border-radius:4px;font-weight:800;cursor:pointer}
+.btn-buy{width:100%;background:#fb641b;color:#fff;border:none;padding:14px;border-radius:4px;font-weight:800;cursor:pointer}
+.rating-top{display:flex;align-items:center;gap:8px;margin:8px 0}
+.rating-badge{background:#388e3c;color:#fff;font-size:12px;padding:3px 6px;border-radius:3px;font-weight:700}
+.rating-count{font-size:12px;color:#878787;font-weight:600}
+.review-section{margin:20px 14px;border-top:8px solid #f1f3f6;padding-top:16px}
+.review-head{font-size:16px;font-weight:800;margin-bottom:10px}
+.star{font-size:28px;color:#e0e0e0;cursor:pointer;transition:0.2s}.star.active{color:#ff9f00}
+.review-card{border:1px solid #f0f0f0;border-radius:6px;padding:10px;margin:10px 0;background:#fff}
+.review-card img{width:70px;height:70px;object-fit:cover;border-radius:6px;margin-top:8px;border:1px solid #eee}
+.upload-box{border:2px dashed #2874f0;background:#f5f8ff;padding:12px;border-radius:6px;margin-top:10px}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:6px 0;border-top:1px solid #ddd;z-index:999}
+.bottom-nav a{text-decoration:none;color:#555;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center}
+</style>
+</head>
+<body>
+<div class="top-strip">🔥 Use Coupon For Extra Discount At 20%, 40%, 50%, 80% And More....</div>
+<div class="search-wrapper"><div class="search-box"><input id="mainSearch" placeholder="Search for products, brands and more" oninput="liveSearch(this.value)"><button>⌕</button><div id="searchResults" class="search-results"></div></div></div>
+
+<div class="detail-wrap">
+  <div class="detail-left">
+    <button onclick="location.href='category.html?cat='+cat" style="background:#f0f0f0;border:none;padding:6px 12px;border-radius:4px;font-weight:700;margin-bottom:10px;cursor:pointer">← Back</button>
+    <img id="mainImg" class="detail-main-img" src="">
+    <div id="thumbs" class="detail-thumbs"></div>
+  </div>
+  <div class="detail-right">
+    <h2 id="pName"></h2>
+    <div class="rating-top"><span id="pRatingBadge" class="rating-badge">4.4 ★</span><span id="pRatingCount" class="rating-count">(2,431 Ratings)</span><span style="color:#2874f0;font-size:12px;font-weight:700"> • Assured</span></div>
+    <div style="margin:10px 0"><span id="pOld" class="old-price"></span> <span id="pPrice" class="price"></span> <span id="pOff" style="color:#388e3c;font-weight:800"></span></div>
+    <p style="font-size:12px">Coupon Code: <b id="pCoupon" style="color:#2874f0;background:#e6efff;padding:3px 8px;border-radius:3px;border:1px dashed #2874f0"></b> <span style="color:#26a541;font-weight:700">- Copy & Apply</span></p>
+    <div class="coupon-row"><input id="couponInput" placeholder="Enter Coupon Code"><button id="cBtn" onclick="applyCoupon()">APPLY</button></div>
+    <p id="couponMsg" style="font-size:12px;color:#388e3c;font-weight:700;display:none">✓ Coupon Applied! Extra Discount Added</p>
+    <div id="pSpec" class="spec-box"></div>
+    <div style="display:flex;gap:10px"><button class="btn-cart" onclick="addToCart()">ADD TO CART</button><button class="btn-buy" onclick="buyNow()">BUY NOW</button></div>
+  </div>
+</div>
+
+<div class="review-section">
+  <div class="review-head">Ratings & Reviews</div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div style="font-size:28px;font-weight:800">4.4 <span style="color:#ff9f00;font-size:18px">★</span></div>
+    <div style="font-size:12px;color:#878787">2,431 Ratings &<br>412 Reviews</div>
+  </div>
+
+  <div style="margin-top:14px;background:#fff;border:1px solid #f0f0f0;border-radius:6px;padding:12px">
+    <p style="font-weight:700;font-size:13px;margin-bottom:6px">Rate this product</p>
+    <div id="starBox">
+      <span class="star" onclick="setStar(1)">★</span>
+      <span class="star" onclick="setStar(2)">★</span>
+      <span class="star" onclick="setStar(3)">★</span>
+      <span class="star" onclick="setStar(4)">★</span>
+      <span class="star" onclick="setStar(5)">★</span>
+    </div>
+    <textarea id="reviewText" placeholder="Write your review..." style="width:100%;margin-top:10px;padding:10px;border:1px solid #e0e0e0;border-radius:4px;height:70px;outline:none"></textarea>
+
+    <div class="upload-box">
+      <p style="font-size:12px;font-weight:700;color:#2874f0">📷 Upload Product Photo (optional)</p>
+      <input type="file" id="reviewPhoto" accept="image/*" onchange="previewPhoto(event)" style="margin-top:8px">
+      <img id="photoPreview" style="display:none;width:80px;height:80px;object-fit:cover;border-radius:6px;margin-top:8px;border:1px solid #ddd">
+    </div>
+
+    <button onclick="submitReview()" style="margin-top:12px;background:#2874f0;color:#fff;border:none;padding:10px 20px;border-radius:4px;font-weight:700;cursor:pointer;width:100%">SUBMIT REVIEW</button>
+  </div>
+
+  <div id="reviewList" style="margin-top:16px">
+    <div class="review-card"><b>Rahul S. • </b><span style="background:#388e3c;color:#fff;padding:2px 6px;border-radius:3px;font-size:11px">5 ★</span><p style="font-size:12px;margin-top:4px">Best powerbank in this price. Battery backup is awesome!</p><img src="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=200"></div>
+    <div class="review-card"><b>Priya M. • </b><span style="background:#388e3c;color:#fff;padding:2px 6px;border-radius:3px;font-size:11px">4 ★</span><p style="font-size:12px;margin-top:4px">Good quality, fast charging working fine.</p></div>
+  </div>
+</div>
+
+<div class="bottom-nav"><a href="index.html">🏠 Home</a><a href="account.html">👤 Account</a><a href="cart.html">🛒 Cart (<span id="cartCount">0</span>)</a></div>
+
+<script>
+const categoryData={
+powerbank:[
+{name:"Power Bank 10000mAh",price:499,originalPrice:1299,coupon:"REKAVOPB10K40PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400",desc:"High capacity 10000mAh power bank with 22.5W fast charging.",spec:"Capacity: 10000mAh\nInput: Type-C 18W\nOutput: 22.5W\nWarranty: 6 Months"},
+{name:"Power Bank 20000mAh",price:799,originalPrice:1999,coupon:"REKAVOPB20K60PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400",desc:"20000mAh large capacity with digital display.",spec:"Capacity: 20000mAh\nDisplay: LED\nWarranty: 6 Months"},
+{name:"Power Bank 30000mAh",price:1099,originalPrice:2999,coupon:"REKAVOPB30K70PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400",desc:"Massive 30000mAh power bank.",spec:"Capacity: 30000mAh\nOutput: 22.5W x 4\nWarranty: 6 Months"}
+],
+neckband:[
+{name:"Neckband Boat 100",price:199,originalPrice:999,coupon:"REKAVONB10050PERCENT",img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400",desc:"Wireless neckband with 20 hours battery.",spec:"Battery: 20 Hours\nDriver: 10mm\nWarranty: 3 Months"},
+{name:"Neckband 500 Premium",price:549,originalPrice:1999,coupon:"REKAVONB50040PERCENT",img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400",desc:"Premium neckband with HD calling.",spec:"Battery: 30 Hours\nWarranty: 6 Months"}
+],
+earbuds:[
+{name:"Earbuds TWS 400",price:449,originalPrice:1499,coupon:"REKAVOEB40060PERCENT",img:"https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=400",desc:"TWS Earbuds with 30 hours playback.",spec:"Playback: 30H\nCharging: Type-C\nWarranty: 6 Months"},
+{name:"Earbuds Pro Sound",price:999,originalPrice:4999,coupon:"REKAVOEBPRO80PERCENT",img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400",desc:"Pro sound earbuds with ANC.",spec:"ANC: Yes\nBattery: 40H\nWarranty: 12 Months"}
+],
+cable:[
+{name:"Cable Type-C 100",price:99,originalPrice:299,coupon:"REKAVOCB10050PERCENT",img:"https://images.unsplash.com/photo-1625842268584-8f3296236761?w=400",desc:"Fast charging Type-C cable.",spec:"Length: 1 Meter\nSpeed: 3A"},
+{name:"Cable Fast 3A",price:199,originalPrice:499,coupon:"REKAVOCB3A40PERCENT",img:"https://images.unsplash.com/photo-1587037542707-1dad5a1cfa9d?w=400",desc:"3A fast cable with nylon braiding.",spec:"Length: 1.5M\nMaterial: Nylon"}
+],
+charger:[
+{name:"Charger 20W Fast",price:299,originalPrice:999,coupon:"REKAVOCH20W60PERCENT",img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400",desc:"20W fast charger.",spec:"Output: 20W PD\nWarranty: 6 Months"},
+{name:"Charger 65W",price:699,originalPrice:2499,coupon:"REKAVOCH65W70PERCENT",img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400",desc:"65W super fast charger.",spec:"Output: 65W GaN\nWarranty: 12 Months"}
+]
+};
+
+function getDiscount(code){let m=code.toUpperCase().match(/(\d{1,3})\s*PERCENT/);return m?parseInt(m[1]):0}
+function getAllProducts(){let all=[];for(let c in categoryData){categoryData[c].forEach((p,i)=>{all.push({...p,cat:c,idx:i})})}return all}
+function liveSearch(q){let box=document.getElementById('searchResults');let all=getAllProducts();let query=q.trim().toLowerCase();let filtered=query===""?all:all.filter(p=>p.name.toLowerCase().includes(query)||p.cat.includes(query));box.innerHTML=filtered.map(p=>`<div class="sr-item" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'"><img src="${p.img}" style="width:40px;height:40px;object-fit:contain"><div><div style="font-size:13px;font-weight:600">${p.name}</div><div style="font-size:12px;color:#388e3c">₹${p.price}</div></div></div>`).join('');box.classList.add('show')}
+
+let params=new URLSearchParams(location.search);
+let cat=params.get('cat')||'powerbank';
+let idx=parseInt(params.get('idx')||'0');
+let product = categoryData[cat]? categoryData[cat][idx] : null;
+let finalPrice = product? product.price : 0;
+let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+document.getElementById('cartCount').innerText = cart.length;
+
+if(!product){
+  document.body.innerHTML = "<h2 style='padding:20px'>Product not found! <br><a href='index.html'>Go Home</a></h2>";
+} else {
+  document.getElementById('pName').innerText = product.name;
+  document.getElementById('pOld').innerText = "₹"+product.originalPrice;
+  document.getElementById('pPrice').innerText = "₹"+product.price;
+  document.getElementById('pOff').innerText = getDiscount(product.coupon)+"% off";
+  document.getElementById('pCoupon').innerText = product.coupon;
+  document.getElementById('mainImg').src = product.img;
+  document.getElementById('pSpec').innerText = product.desc + "\n\n" + product.spec;
+  document.getElementById('thumbs').innerHTML = [product.img,product.img,product.img,product.img].map((t,i)=>`<img src="${t}" class="${i==0?'active':''}" onclick="changeImg(this,'${t}')">`).join('');
+  let r=(3.8+Math.random()).toFixed(1); let c=Math.floor(1000+Math.random()*4000);
+  document.getElementById('pRatingBadge').innerText=r+" ★";
+  document.getElementById('pRatingCount').innerText="("+c+" Ratings)";
+}
+
+function changeImg(el,src){document.getElementById('mainImg').src=src;document.querySelectorAll('#thumbs img').forEach(i=>i.classList.remove('active'));el.classList.add('active')}
+function applyCoupon(){
+  let input=document.getElementById('couponInput').value.trim().toUpperCase();
+  if(input===product.coupon.toUpperCase()){
+    let disc=getDiscount(product.coupon);
+    finalPrice=Math.round(product.originalPrice - (product.originalPrice*disc/100));
+    document.getElementById('pPrice').innerText="₹"+finalPrice;
+    document.getElementById('cBtn').innerText="APPLIED ✓";
+    document.getElementById('cBtn').style.background="#388e3c";
+    document.getElementById('couponMsg').style.display="block";
+  } else { alert("Wrong coupon! Correct is: "+product.coupon); }
+}
+function addToCart(){cart.push({name:product.name,price:finalPrice,img:product.img});localStorage.setItem('rekavo_cart',JSON.stringify(cart));alert(product.name+" added to cart ₹"+finalPrice);location.href='cart.html';}
+function buyNow(){cart=[{name:product.name,price:finalPrice,img:product.img}];localStorage.setItem('rekavo_cart',JSON.stringify(cart));location.href='cart.html';}
+
+// FIXED RATING + PHOTO UPLOAD LOGIC
+let currentStar=0; let uploadedPhoto="";
+function setStar(n){
+  currentStar=n;
+  let stars=document.querySelectorAll('#starBox.star');
+  stars.forEach((s,i)=>{ if(i < n) s.classList.add('active'); else s.classList.remove('active'); });
+}
+function previewPhoto(e){
+  let file=e.target.files[0];
+  if(file){
+    let r=new FileReader();
+    r.onload=function(ev){
+      uploadedPhoto=ev.target.result;
+      let img=document.getElementById('photoPreview');
+      img.src=uploadedPhoto;
+      img.style.display='block';
+    };
+    r.readAsDataURL(file);
+  }
+}
+function submitReview(){
+  let txt=document.getElementById('reviewText').value.trim();
+  if(currentStar==0){alert("Please select stars");return}
+  if(txt==""){alert("Please write review");return}
+  let div=document.createElement('div'); div.className='review-card';
+  div.innerHTML=`<b>You • </b><span style="background:#388e3c;color:#fff;padding:2px 6px;border-radius:3px;font-size:11px">${currentStar} ★</span><p style="font-size:12px;margin-top:6px">${txt}</p>${uploadedPhoto?`<img src="${uploadedPhoto}">`:''}`;
+  document.getElementById('reviewList').prepend(div);
+  document.getElementById('reviewText').value="";
+  currentStar=0;
+  document.querySelectorAll('#starBox.star').forEach(s=>s.classList.remove('active'));
+  document.getElementById('photoPreview').style.display='none';
+  document.getElementById('reviewPhoto').value="";
+  uploadedPhoto="";
+  alert("Review Submitted ✓");
+}
+</script>
+</body>
+</html>
