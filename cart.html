@@ -10,24 +10,17 @@ body{background:#f1f3f6;padding-bottom:70px}
 .top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:7px 12px;font-size:12px;font-weight:800}
 .search-wrapper{background:#2874f0;padding:10px 12px;position:sticky;top:0;z-index:99}
 .search-box{width:100%;display:flex;background:#fff;border-radius:2px;overflow:hidden;height:42px}
-.search-box input{flex:1;border:none;padding:0 14px;outline:none;font-size:14px}
+.search-box input{flex:1;border:none;padding:0 14px;outline:none}
 .search-box button{background:#fff;border:none;color:#2874f0;padding:0 18px;font-size:20px;font-weight:900}
-.header{background:#fff;padding:12px 14px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #eee}
-.back-btn{background:#f0f0f0;border:none;padding:6px 14px;border-radius:4px;font-weight:700;cursor:pointer}
 
-/* Flipkart wala Empty Cart Style */
-.empty-cart-wrap{background:#fff;min-height:75vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
-.empty-cart-img{width:180px;height:180px;margin-bottom:20px;opacity:0.9}
-.empty-title{font-size:20px;font-weight:600;margin-bottom:24px}
-.btn-login{background:#2874f0;color:#fff;border:none;padding:12px 60px;border-radius:4px;font-weight:700;font-size:16px;cursor:pointer}
-.continue-link{color:#2874f0;margin-top:16px;font-size:15px;cursor:pointer;text-decoration:none;font-weight:500}
+/* Empty Cart - Clean */
+.empty-cart-wrap{background:#fff;min-height:75vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px;text-align:center}
+.trolley-big{font-size:90px;margin-bottom:15px;background:#f7f7f7;width:150px;height:150px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.empty-title{font-size:18px;font-weight:700;margin-bottom:22px}
+.btn-login{background:#2874f0;color:#fff;border:none;padding:11px 70px;border-radius:4px;font-weight:700;font-size:15px;cursor:pointer}
+.continue-link{color:#2874f0;margin-top:16px;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer}
 
-/* Cart with items wala style */
 .cart-box{background:#fff;padding:12px;margin:8px;border-radius:4px}
-.cart-item{display:flex;gap:10px;padding:10px;border:1px solid #f0f0f0;border-radius:4px;margin-bottom:8px}
-.cart-item img{width:70px;height:70px;object-fit:contain}
-.total-box{background:#fff;padding:12px;margin:8px;border-radius:4px;font-weight:800;font-size:15px}
-
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:999}
 .bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;white-space:nowrap;flex:1}
 .bottom-nav a.active{color:#2874f0}
@@ -35,8 +28,7 @@ body{background:#f1f3f6;padding-bottom:70px}
 </head>
 <body>
 <div class="top-strip">🔥 Use Coupon For Extra Discount At 20%, 40%, 50%, 80% And More....</div>
-<div class="search-wrapper"><div class="search-box"><input placeholder="Search for products"><button>⌕</button></div></div>
-<div class="header"><button class="back-btn" onclick="location.href='index.html'">← Back</button><h3>Cart & Checkout</h3></div>
+<div class="search-wrapper"><div class="search-box"><input placeholder="Search for products" onclick="location.href='index.html'"><button>⌕</button></div></div>
 
 <div id="cartContainer"></div>
 
@@ -54,28 +46,19 @@ let container = document.getElementById('cartContainer');
 if(cart.length === 0){
   container.innerHTML = `
     <div class="empty-cart-wrap">
-      <img class="empty-cart-img" src="https://cdni.iconscout.com/illustration/premium/thumb/empty-cart-illustration-download-in-svg-png-gif-file-formats--shopping-ecommerce-simple-error-state-pack-e-commerce-illustrations-9565304.png">
+      <div class="trolley-big">🛒</div>
       <div class="empty-title">Missing Cart items?</div>
       <button class="btn-login" onclick="location.href='account.html'">Login</button>
       <a class="continue-link" href="index.html">Continue Shopping</a>
     </div>
   `;
 } else {
-  let total = 0;
-  let html = '<div class="cart-box"><b>Your Cart</b>';
-  cart.forEach((item,i)=>{
-    total += item.price;
-    html += `<div class="cart-item"><img src="${item.img}"><div><div style="font-weight:600;font-size:13px">${item.name}</div><div style="color:#388e3c;font-weight:800">₹${item.price}</div><button onclick="removeItem(${i})" style="margin-top:6px;color:red;background:none;border:none;font-size:12px">Remove</button></div></div>`;
+  let html = '<div class="cart-box"><b>Your Items</b>';
+  cart.forEach(i=>{
+    html+=`<div style="display:flex;gap:10px;padding:10px;border:1px solid #f0f0f0;margin-top:8px;border-radius:4px"><img src="${i.img}" style="width:60px;height:60px;object-fit:contain"><div><div style="font-size:13px;font-weight:600">${i.name}</div><div style="color:#388e3c;font-weight:800">₹${i.price}</div></div></div>`;
   });
-  html += `</div><div class="total-box">Total: ₹${total}</div>`;
-  html += `<div class="cart-box" style="text-align:center"><button style="width:100%;background:#fb641b;color:#fff;padding:12px;border:none;border-radius:4px;font-weight:800">Place Order</button></div>`;
+  html+='</div>';
   container.innerHTML = html;
-}
-
-function removeItem(i){
-  cart.splice(i,1);
-  localStorage.setItem('rekavo_cart', JSON.stringify(cart));
-  location.reload();
 }
 </script>
 </body>
