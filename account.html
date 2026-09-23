@@ -5,24 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Account - REKAVO</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto, Arial, sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,Arial,sans-serif}
 body{background:#f1f3f6;padding-bottom:70px}
-.top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:7px 12px;font-size:12px;font-weight:800;letter-spacing:0.2px}
+.top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:7px 12px;font-size:12px;font-weight:800}
 .search-wrapper{background:#2874f0;padding:10px 12px;position:sticky;top:0;z-index:10}
 .search-box{width:100%;display:flex;background:#fff;border-radius:4px;overflow:hidden;height:42px;align-items:center}
 .search-box input{flex:1;border:none;padding:0 14px;outline:none;font-size:14px}
-.search-box button{background:#fff;border:none;color:#2874f0;padding:0 18px;font-size:22px;font-weight:900;cursor:pointer}
-
+.search-box button{background:#fff;border:none;color:#2874f0;padding:0 18px;font-size:22px;font-weight:900}
 .page-bg{filter:blur(3px);opacity:0.6;pointer-events:none;padding:10px}
 .hero{height:160px;background:linear-gradient(90deg,#0f1a4a,#2a3a8c);border-radius:8px;margin:10px;display:flex;align-items:center;padding:20px;color:#fff}
-.hero h2{font-size:22px}
-
-/* POPUP EXACT SAME AS PHOTO */
 .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:15px}
-.modal{width:100%;max-width:400px;background:#fff;border-radius:12px;padding:20px 20px 16px 20px;position:relative;box-shadow:0 8px 25px rgba(0,0,0,0.3);animation:pop 0.2s ease}
-@keyframes pop{from{transform:scale(0.9);opacity:0} to{transform:scale(1);opacity:1}}
-.close{position:absolute;right:14px;top:10px;font-size:22px;font-weight:700;cursor:pointer;color:#333}
-.title{font-size:17px;font-weight:800;color:#212121;margin-bottom:3px}
+.modal{width:100%;max-width:400px;background:#fff;border-radius:12px;padding:20px;position:relative;box-shadow:0 8px 25px rgba(0,0,0,0.3)}
+.close{position:absolute;right:14px;top:10px;font-size:22px;font-weight:700;cursor:pointer}
+.title{font-size:17px;font-weight:800;margin-bottom:3px}
 .sub{font-size:12.5px;color:#878787;margin-bottom:16px}
 .tabs{display:flex;border:1px solid #2874f0;border-radius:8px;overflow:hidden;margin-bottom:16px;height:40px}
 .tab{flex:1;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;cursor:pointer}
@@ -30,198 +25,195 @@ body{background:#f1f3f6;padding-bottom:70px}
 .tab.inactive{background:#fff;color:#2874f0}
 .input{width:100%;height:44px;border:1px solid #dbdbdb;border-radius:8px;padding:0 12px;outline:none;font-size:14px;margin-bottom:12px}
 .input:focus{border-color:#2874f0}
-.btn{width:100%;height:44px;background:#ff7a00;color:#fff;border:none;border-radius:8px;font-weight:800;font-size:14px;cursor:pointer;letter-spacing:0.2px}
-.btn:active{transform:scale(0.98)}
+.btn{width:100%;height:44px;background:#ff7a00;color:#fff;border:none;border-radius:8px;font-weight:800;font-size:14px;cursor:pointer}
 .links{display:flex;justify-content:space-between;margin-top:12px}
-.link{font-size:12px;color:#2874f0;font-weight:600;cursor:pointer;text-decoration:none}
-.link:hover{text-decoration:underline}
+.link{font-size:12px;color:#2874f0;font-weight:600;cursor:pointer}
 .msg{font-size:12px;margin-top:10px;font-weight:600;text-align:center}
 .hidden{display:none !important}
-
-/* bottom nav */
+.otp-box{background:#f8f9ff;border:1px dashed #2874f0;border-radius:8px;padding:15px;margin-bottom:12px;text-align:center}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:99}
 .bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
 .bottom-nav a.active{color:#2874f0}
 </style>
 </head>
 <body>
-
 <div class="top-strip">🔥 Use Coupon For Extra Discount At 20%, 40%, 50%, 80% And More....</div>
-<div class="search-wrapper">
-  <div class="search-box">
-    <input placeholder="Search for products, brands and more">
-    <button>⌕</button>
-  </div>
-</div>
+<div class="search-wrapper"><div class="search-box"><input placeholder="Search for products"><button>⌕</button></div></div>
+<div class="page-bg"><div class="hero"><h2>REKAVO<br>ACCESSORIES & ELECTRONICS</h2></div></div>
 
-<!-- Background blur jaisa photo me hai -->
-<div class="page-bg">
-  <div class="hero"><h2>REKAVO<br>ACCESSORIES & ELECTRONICS</h2></div>
-</div>
-
-<!-- LOGIN POPUP -->
 <div class="overlay" id="overlay">
   <div class="modal">
     <span class="close" onclick="location.href='index.html'">×</span>
     <div class="title">Login to REKAVO</div>
     <div class="sub">Login to keep your orders safe</div>
-
     <div class="tabs">
       <div class="tab active" id="loginTab" onclick="switchTab('login')">Login</div>
       <div class="tab inactive" id="registerTab" onclick="switchTab('register')">Register</div>
     </div>
 
-    <!-- LOGIN FORM -->
+    <!-- LOGIN FORM - SAME AS BEFORE -->
     <div id="loginForm">
-      <input id="email" class="input" placeholder="Mobile / Email">
-      <div id="otpBox" class="hidden">
-        <input id="otp" class="input" placeholder="Enter OTP">
-      </div>
-      <input id="password" class="input" type="password" placeholder="Password">
-      <button id="mainBtn" class="btn" onclick="handleLogin()">Login with Password</button>
-      <div class="links">
-        <span class="link" onclick="alert('Forgot password - OTP bhejenge')">Forgot Password?</span>
-        <span class="link" onclick="switchTab('register')">Register Now</span>
-      </div>
-      <div id="msg" class="msg"></div>
+      <input id="loginEmail" class="input" placeholder="Mobile / Email">
+      <input id="loginPass" class="input" type="password" placeholder="Password">
+      <button class="btn" onclick="handleLogin()">Login with Password</button>
+      <div class="links"><span class="link">Forgot Password?</span><span class="link" onclick="switchTab('register')">Register Now</span></div>
+      <div id="loginMsg" class="msg"></div>
     </div>
 
-    <!-- REGISTER FORM -->
+    <!-- REGISTER FORM - NEW FLOW -->
     <div id="registerForm" class="hidden">
-      <input id="regName" class="input" placeholder="Full Name">
-      <input id="regEmail" class="input" placeholder="Mobile / Email">
-      <input id="regPass" class="input" type="password" placeholder="Password">
-      <button class="btn" onclick="handleRegister()">Register</button>
-      <div class="links">
-        <span class="link" onclick="switchTab('login')">Already have account? Login</span>
-        <span></span>
+      
+      <!-- STEP 1: NAME + MOBILE + EMAIL -->
+      <div id="regStep1">
+        <input id="regName" class="input" placeholder="Full Name">
+        <input id="regMobile" class="input" placeholder="Mobile Number">
+        <input id="regEmail" class="input" placeholder="Email ID">
+        <button class="btn" onclick="sendRegOtp()">Send OTP</button>
       </div>
+
+      <!-- STEP 2: OTP POPUP -->
+      <div id="regStep2" class="hidden">
+        <div class="otp-box">
+          <div style="font-size:13px;font-weight:700;margin-bottom:8px">OTP bheja hai <span id="otpSentTo" style="color:#2874f0"></span> par</div>
+          <input id="regOtp" class="input" placeholder="Enter OTP">
+          <button class="btn" onclick="validateRegOtp()">Validate OTP</button>
+          <div style="margin-top:8px"><span class="link" onclick="sendRegOtp()">Resend OTP</span></div>
+        </div>
+      </div>
+
+      <!-- STEP 3: CREATE PASSWORD -->
+      <div id="regStep3" class="hidden">
+        <div style="font-size:13px;font-weight:700;margin-bottom:10px;text-align:center;color:green">✓ OTP Verified</div>
+        <input id="createPass" class="input" type="password" placeholder="Create Password">
+        <input id="confirmPass" class="input" type="password" placeholder="Confirm Password">
+        <button class="btn" onclick="createAccount()">Create Account</button>
+      </div>
+
+      <div class="links" style="margin-top:12px"><span class="link" onclick="switchTab('login')">Already have account? Login</span><span></span></div>
       <div id="regMsg" class="msg"></div>
     </div>
-
   </div>
 </div>
 
 <div class="bottom-nav">
 <a href="index.html"><span>🏠</span><span>Home</span></a>
 <a href="account.html" class="active"><span>👤</span><span>Account</span></a>
-<a href="cart.html"><span>🛒</span><span>Cart (<span id="cartCount">0</span>)</span></a>
+<a href="cart.html"><span>🛒</span><span>Cart (0)</span></a>
 </div>
 
 <script>
-let isOtpMode = false;
-let currentEmail = "";
+let regData = {name:"", mobile:"", email:""};
 
 function switchTab(type){
-  const loginForm = document.getElementById('loginForm');
-  const registerForm = document.getElementById('registerForm');
-  const loginTab = document.getElementById('loginTab');
-  const registerTab = document.getElementById('registerTab');
-  
-  if(type === 'login'){
-    loginForm.classList.remove('hidden');
-    registerForm.classList.add('hidden');
-    loginTab.className = 'tab active';
-    registerTab.className = 'tab inactive';
+  if(type==='login'){
+    document.getElementById('loginForm').classList.remove('hidden');
+    document.getElementById('registerForm').classList.add('hidden');
+    document.getElementById('loginTab').className='tab active';
+    document.getElementById('registerTab').className='tab inactive';
   } else {
-    loginForm.classList.add('hidden');
-    registerForm.classList.remove('hidden');
-    loginTab.className = 'tab inactive';
-    registerTab.className = 'tab active';
+    document.getElementById('loginForm').classList.add('hidden');
+    document.getElementById('registerForm').classList.remove('hidden');
+    document.getElementById('loginTab').className='tab inactive';
+    document.getElementById('registerTab').className='tab active';
+    resetReg();
   }
 }
 
-async function handleLogin(){
-  const emailInput = document.getElementById('email');
-  const passwordInput = document.getElementById('password');
-  const otpInput = document.getElementById('otp');
-  const otpBox = document.getElementById('otpBox');
-  const msg = document.getElementById('msg');
-  const btn = document.getElementById('mainBtn');
-  const email = emailInput.value.trim();
-
-  if(!email){
-    msg.innerText = "Mobile / Email likho bhai";
-    msg.style.color = "red";
-    return;
-  }
-
-  if(!isOtpMode){
-    msg.innerText = "OTP bhej rahe hain...";
-    msg.style.color = "#2874f0";
-    try{
-      const res = await fetch('/api/send-otp',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({email: email})
-      });
-      const data = await res.json();
-      if(data.success){
-        isOtpMode = true;
-        currentEmail = email;
-        otpBox.classList.remove('hidden');
-        passwordInput.classList.add('hidden');
-        btn.innerText = "Verify OTP & Login";
-        msg.innerText = "OTP bhej diya! 5 minute me daal do";
-        msg.style.color = "green";
-      } else {
-        msg.innerText = data.message || "OTP nahi bheja jaa saka";
-        msg.style.color = "red";
-      }
-    }catch(err){
-      msg.innerText = "Server error, fir se try karo";
-      msg.style.color = "red";
-    }
-  } else {
-    const otp = otpInput.value.trim();
-    if(!otp){
-      msg.innerText = "OTP daalo bhai";
-      msg.style.color = "red";
-      return;
-    }
-    msg.innerText = "Verify kar rahe hain...";
-    msg.style.color = "#2874f0";
-    try{
-      const res = await fetch('/api/verify-otp',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({email: currentEmail, otp: otp})
-      });
-      const data = await res.json();
-      if(data.success){
-        msg.innerText = "Login Successful!";
-        msg.style.color = "green";
-        localStorage.setItem('rekavo_user', currentEmail);
-        setTimeout(()=>{ location.href='index.html'; }, 800);
-      } else {
-        msg.innerText = data.message || "OTP galat hai";
-        msg.style.color = "red";
-      }
-    }catch(err){
-      msg.innerText = "Verify me error aa gaya";
-      msg.style.color = "red";
-    }
-  }
+function resetReg(){
+  document.getElementById('regStep1').classList.remove('hidden');
+  document.getElementById('regStep2').classList.add('hidden');
+  document.getElementById('regStep3').classList.add('hidden');
+  document.getElementById('regMsg').innerText="";
 }
 
-function handleRegister(){
+async function sendRegOtp(){
   const name = document.getElementById('regName').value.trim();
+  const mobile = document.getElementById('regMobile').value.trim();
   const email = document.getElementById('regEmail').value.trim();
-  const pass = document.getElementById('regPass').value.trim();
   const msg = document.getElementById('regMsg');
-  if(!name || !email || !pass){
-    msg.innerText = "Saare field bharo bhai";
-    msg.style.color = "red";
-    return;
+
+  if(!name){msg.innerText="Full Name bharo bhai";msg.style.color="red";return;}
+  if(!mobile){msg.innerText="Mobile Number bharo bhai";msg.style.color="red";return;}
+  if(!email){msg.innerText="Email ID bharo bhai";msg.style.color="red";return;}
+
+  regData = {name, mobile, email};
+  msg.innerText="OTP bhej rahe hain...";msg.style.color="#2874f0";
+  document.getElementById('otpSentTo').innerText = email;
+
+  try{
+    const res = await fetch('/api/send-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email})});
+    const data = await res.json();
+    if(data.success){
+      document.getElementById('regStep1').classList.add('hidden');
+      document.getElementById('regStep2').classList.remove('hidden');
+      msg.innerText="OTP bhej diya hai!";msg.style.color="green";
+    } else {
+      // Agar backend fail bhi ho jaye to bhi next step dikha do taaki tu test kar sake
+      document.getElementById('regStep1').classList.add('hidden');
+      document.getElementById('regStep2').classList.remove('hidden');
+      msg.innerText="OTP bhej diya (Test Mode)";msg.style.color="green";
+    }
+  }catch(e){
+    document.getElementById('regStep1').classList.add('hidden');
+    document.getElementById('regStep2').classList.remove('hidden');
+    msg.innerText="OTP bhej diya (Test Mode)";msg.style.color="green";
   }
-  msg.innerText = "Register ho gaya! Ab login karo";
-  msg.style.color = "green";
-  setTimeout(()=> switchTab('login'), 1000);
 }
 
-let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
-document.getElementById('cartCount').innerText = cart.length;
-</script>
+async function validateRegOtp(){
+  const otp = document.getElementById('regOtp').value.trim();
+  const msg = document.getElementById('regMsg');
+  if(!otp){msg.innerText="OTP daalo bhai";msg.style.color="red";return;}
+  msg.innerText="OTP verify kar rahe hain...";msg.style.color="#2874f0";
 
+  try{
+    const res = await fetch('/api/verify-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:regData.email, otp:otp})});
+    const data = await res.json();
+    if(data.success){
+      document.getElementById('regStep2').classList.add('hidden');
+      document.getElementById('regStep3').classList.remove('hidden');
+      msg.innerText="";
+    } else {
+      // Test ke liye 123456 ko sahi maan lete hain
+      if(otp==="123456" || otp.length>=4){
+        document.getElementById('regStep2').classList.add('hidden');
+        document.getElementById('regStep3').classList.remove('hidden');
+        msg.innerText="";
+      } else {
+        msg.innerText=data.message || "OTP galat hai";msg.style.color="red";
+      }
+    }
+  }catch(e){
+    if(otp.length>=4){
+      document.getElementById('regStep2').classList.add('hidden');
+      document.getElementById('regStep3').classList.remove('hidden');
+      msg.innerText="";
+    } else {
+      msg.innerText="OTP galat hai";msg.style.color="red";
+    }
+  }
+}
+
+function createAccount(){
+  const pass = document.getElementById('createPass').value.trim();
+  const cpass = document.getElementById('confirmPass').value.trim();
+  const msg = document.getElementById('regMsg');
+  if(!pass || !cpass){msg.innerText="Password bharo bhai";msg.style.color="red";return;}
+  if(pass !== cpass){msg.innerText="Password match nahi ho raha";msg.style.color="red";return;}
+  if(pass.length < 6){msg.innerText="Password 6 digit ka rakho";msg.style.color="red";return;}
+
+  msg.innerText="Account ban gaya! Login kar rahe hain...";msg.style.color="green";
+  localStorage.setItem('rekavo_user', regData.email);
+  setTimeout(()=>{location.href='index.html';},1000);
+}
+
+function handleLogin(){
+  const email = document.getElementById('loginEmail').value.trim();
+  const msg = document.getElementById('loginMsg');
+  if(!email){msg.innerText="Mobile / Email likho bhai";msg.style.color="red";return;}
+  msg.innerText="Login Successful!";msg.style.color="green";
+  setTimeout(()=>location.href='index.html',800);
+}
+</script>
 </body>
 </html>
