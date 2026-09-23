@@ -1,174 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>REKAVO - My Account</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account - REKAVO</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,sans-serif}
 body{background:#f1f3f6;padding-bottom:70px}
-.top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:7px 12px;font-size:12px;font-weight:800;border-bottom:2px solid #fff;margin-bottom:2px}
-.search-wrapper{background:#2874f0;padding:10px 12px;position:sticky;top:0;z-index:99;border-top:2px solid #fff}
-.search-box{width:100%;display:flex;background:#fff;border-radius:2px;height:42px;position:relative}
-.search-box input{flex:1;border:none;padding:0 14px;outline:none;font-size:14px}
-.search-box button{border:none;background:#fff;color:#2874f0;padding:0 18px;font-size:20px;font-weight:900}
-.search-results{position:absolute;top:44px;left:0;right:0;background:#fff;max-height:420px;overflow:auto;box-shadow:0 8px 16px rgba(0,0,0,.2);display:none;z-index:30}
-.search-results.show{display:block}
-.sr-item{display:flex;gap:10px;padding:10px;border-bottom:1px solid #f0f0f0;cursor:pointer;align-items:center}
-.sr-item img{width:50px;height:50px;object-fit:contain;border:1px solid #eee;border-radius:4px}
-.checkout-input{width:100%;padding:10px;margin:5px 0;border:1px solid #e0e0e0;border-radius:4px;font-size:13px}
-.btn-cart{width:100%;margin-top:8px;background:#ff9f00;color:#fff;border:none;padding:10px;border-radius:4px;font-weight:700;cursor:pointer}
-.btn-blue{width:100%;margin-top:8px;background:#2874f0;color:#fff;border:none;padding:10px;border-radius:4px;font-weight:700;cursor:pointer}
-.modal{display:none;position:fixed;z-index:100;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:12px}
-.modal.show{display:flex}
-.modal-content{background:#fff;width:100%;max-width:360px;border-radius:6px;padding:16px;position:relative;max-height:90vh;overflow:auto}
-.close{position:absolute;right:12px;top:8px;font-size:24px;cursor:pointer;font-weight:bold}
-.login-tab{display:flex;margin-bottom:10px;border-radius:4px;overflow:hidden;border:1px solid #e0e0e0}
-.login-tab button{flex:1;padding:9px;border:none;background:#fff;color:#878787;font-weight:700;cursor:pointer;font-size:13px}
-.login-tab button.active{background:#2874f0;color:#fff}
-.link-row{display:flex;justify-content:space-between;margin-top:10px;font-size:11px}
-.link-row span{color:#2874f0;cursor:pointer;font-weight:600}
-.order-card{background:#fff;padding:10px;border-radius:4px;margin-bottom:8px;border:1px solid #f0f0f0;font-size:12px}
-.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;color:#fff;font-weight:700}
-.b-Placed{background:#2874f0}.b-Packed{background:#ff9f00}.b-Shipped{background:#26a541}.b-Delivered{background:#000}
-.lang-select{width:100%;background:#f1f3f6;border:1px solid #e0e0e0;border-radius:4px;padding:10px;font-size:12px;font-weight:700;margin-top:8px}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:6px 0;border-top:1px solid #ddd;z-index:999}
-.bottom-nav a{text-decoration:none;color:#555;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center}
+.top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:7px 12px;font-size:12px;font-weight:800}
+.search-wrapper{background:#2874f0;padding:10px 12px}
+.search-box{width:100%;display:flex;background:#fff;border-radius:2px;overflow:hidden;height:42px}
+.search-box input{flex:1;border:none;padding:0 14px;outline:none}
+.search-box button{background:#fff;border:none;color:#2874f0;padding:0 18px;font-size:20px;font-weight:900}
+
+.account-card{background:#fff;max-width:380px;margin:20px auto;padding:22px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.tabs{display:flex;margin-bottom:18px;border-bottom:1px solid #e0e0e0}
+.tab{flex:1;text-align:center;padding:10px;font-weight:700;cursor:pointer;color:#878787;border-bottom:2px solid transparent}
+.tab.active{color:#2874f0;border-bottom:2px solid #2874f0}
+.input{width:100%;padding:12px;border:1px solid #e0e0e0;border-radius:4px;margin:8px 0;outline:none}
+.input:focus{border-color:#2874f0}
+.btn{width:100%;padding:12px;background:#fb641b;color:#fff;border:none;border-radius:4px;font-weight:800;font-size:15px;cursor:pointer;margin-top:10px}
+.btn-blue{background:#2874f0}
+.link{font-size:12px;color:#2874f0;cursor:pointer;margin-top:10px;display:inline-block;font-weight:600}
+.msg{font-size:13px;margin-top:8px;font-weight:600}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd}
+.bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
 .bottom-nav a.active{color:#2874f0}
-.error-msg{color:#ff6161;font-size:11px;font-weight:600;margin-top:3px;display:none}
-.error-msg.show{display:block}
+.hidden{display:none}
 </style>
 </head>
 <body>
 <div class="top-strip">🔥 Use Coupon For Extra Discount At 20%, 40%, 50%, 80% And More....</div>
-<div class="search-wrapper"><div class="search-box"><input id="mainSearch" placeholder="Search for products" onfocus="handleSearchFocus()" oninput="liveSearch(this.value)" autocomplete="off"><button>⌕</button><div id="searchResults" class="search-results"></div></div></div>
+<div class="search-wrapper"><div class="search-box"><input placeholder="Search for products" onclick="location.href='index.html'"><button>⌕</button></div></div>
 
-<div style="background:#fff;padding:12px;display:flex;align-items:center;gap:10px"><button onclick="location.href='index.html'" style="background:#f0f0f0;border:none;padding:6px 12px;border-radius:4px;font-weight:700">← Back</button><h3>My Account</h3></div>
+<div class="account-card">
+  <div class="tabs">
+    <div class="tab active" id="loginTab" onclick="switchTab('login')">Login</div>
+    <div class="tab" id="registerTab" onclick="switchTab('register')">Register</div>
+  </div>
 
-<div style="background:#fff;margin:8px;border-radius:4px;padding:14px">
-<h2>👤 My Profile</h2>
-<div id="accountInfo" style="margin-top:12px;line-height:1.6;font-size:13px"></div>
-<hr style="margin:12px 0">
-<label style="font-size:12px;font-weight:800">🌐 Language / भाषा चुनें</label>
-<select id="langSelect" class="lang-select" onchange="changeLanguage(this.value)">
-<option value="en">English</option>
-<option value="hi">हिंदी - Hindi</option>
-<option value="bn">বাংলা - Bengali</option>
-<option value="ta">தமிழ் - Tamil</option>
-<option value="te">తెలుగు - Telugu</option>
-<option value="mr">मराठी - Marathi</option>
-<option value="gu">ગુજરાતી - Gujarati</option>
-<option value="kn">ಕನ್ನಡ - Kannada</option>
-<option value="ml">മലയാളം - Malayalam</option>
-<option value="pa">ਪੰਜਾਬੀ - Punjabi</option>
-</select>
-<button id="logoutBtn" onclick="doLogout()" style="display:none;width:100%;margin-top:14px;padding:10px;background:#fff;color:#d32f2f;border:1px solid #d32f2f;border-radius:4px;font-weight:700">Logout</button>
+  <!-- LOGIN -->
+  <div id="loginForm">
+    <input id="loginEmail" class="input" placeholder="Email likho bhai">
+    <div id="otpField" class="hidden">
+      <input id="loginOtp" class="input" placeholder="OTP daalo (6 digit)">
+    </div>
+    <button id="loginBtn" class="btn" onclick="sendOtp()">Send OTP</button>
+    <div style="display:flex;justify-content:space-between;margin-top:12px">
+      <span class="link" onclick="switchTab('forgot')">Forgot Password?</span>
+      <span class="link" onclick="switchTab('register')">New? Register</span>
+    </div>
+    <div id="loginMsg" class="msg"></div>
+  </div>
+
+  <!-- REGISTER -->
+  <div id="registerForm" class="hidden">
+    <input class="input" placeholder="Full Name">
+    <input class="input" placeholder="Email">
+    <input class="input" type="password" placeholder="Password">
+    <button class="btn btn-blue">Create Account</button>
+    <span class="link" onclick="switchTab('login')">Already have account? Login</span>
+  </div>
+
+  <!-- FORGOT -->
+  <div id="forgotForm" class="hidden">
+    <p style="font-size:13px;color:#555;margin-bottom:8px">Email daalo, hum OTP bhej denge</p>
+    <input class="input" placeholder="Email">
+    <button class="btn btn-blue">Send Reset OTP</button>
+    <span class="link" onclick="switchTab('login')">← Back to Login</span>
+  </div>
 </div>
 
-<div style="background:#fff;margin:8px;border-radius:4px;padding:14px">
-<h3>📦 My Orders</h3>
-<div id="myOrdersList" style="margin-top:12px"></div>
+<div class="bottom-nav">
+<a href="index.html"><span>🏠</span><span>Home</span></a>
+<a href="account.html" class="active"><span>👤</span><span>Account</span></a>
+<a href="cart.html"><span>🛒</span><span>Cart (0)</span></a>
 </div>
-
-<!-- Login Modal -->
-<div id="loginModal" class="modal"><div class="modal-content"><span class="close" id="closeLogin">&times;</span><h3 id="loginTitle">Please Login</h3><p id="loginSub" style="font-size:11px;color:#878787;margin:4px 0 10px">Login to keep your orders safe</p><div class="login-tab"><button id="tabLogin" class="active" onclick="switchAuth('login')">Login</button><button id="tabSignup" onclick="switchAuth('signup')">Register</button></div><div id="loginForm"><input id="loginMobile" type="text" placeholder="Mobile / Email" class="checkout-input"><p id="err-loginMobile" class="error-msg"></p><input id="loginPass" type="password" placeholder="Password" class="checkout-input"><p id="err-loginPass" class="error-msg"></p><button onclick="doLogin()" style="width:100%;padding:10px;background:#fb641b;color:#fff;border:none;border-radius:4px;font-weight:700;margin-top:10px">Login</button><div class="link-row"><span onclick="switchAuth('forgot')">Forgot Password?</span><span onclick="switchAuth('signup')">Register Now</span></div></div><div id="signupForm" style="display:none"><div id="regStep1"><input id="signupName" type="text" placeholder="Full Name*" class="checkout-input"><input id="signupMobile" type="tel" placeholder="Mobile*" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)" class="checkout-input"><input id="signupEmail" type="email" placeholder="Email*" class="checkout-input"><button onclick="sendRegOtp()" style="width:100%;padding:10px;background:#2874f0;color:#fff;border:none;border-radius:4px;font-weight:700;margin-top:8px">Send OTP</button></div><div id="regStep2" style="display:none"><p style="font-size:12px;color:#388e3c;font-weight:700">OTP sent - check popup</p><input id="regOtp" type="tel" placeholder="Enter OTP*" class="checkout-input"><button onclick="verifyRegOtp()" style="width:100%;padding:10px;background:#ff9f00;color:#fff;border:none;border-radius:4px;font-weight:700">Verify OTP</button></div><div id="regStep3" style="display:none"><p style="font-size:12px;color:#388e3c;font-weight:700">✅ OTP Verified</p><input id="signupPass" type="password" placeholder="Create Password*" class="checkout-input"><input id="signupPass2" type="password" placeholder="Confirm Password*" class="checkout-input"><button onclick="doSignupFinal()" style="width:100%;padding:10px;background:#26a541;color:#fff;border:none;border-radius:4px;font-weight:700;margin-top:8px">Register Now</button></div></div><div id="forgotForm" style="display:none"><input id="forgotEmail" type="email" placeholder="Enter Registered Email*" class="checkout-input"><button id="sendOtpBtn" onclick="sendForgotOtp()" style="width:100%;padding:10px;background:#2874f0;color:#fff;border:none;border-radius:4px;font-weight:700;margin-top:8px">Send OTP</button><div id="forgotOtpBox" style="display:none"><input id="forgotOtp" type="tel" placeholder="Enter OTP*" class="checkout-input"><button onclick="verifyForgotOtp()" style="width:100%;padding:10px;background:#ff9f00;color:#fff;border:none;border-radius:4px;font-weight:700">Validate OTP</button></div><div id="newPassBox" style="display:none"><input id="forgotPass" type="password" placeholder="New Password*" class="checkout-input"><input id="forgotPass2" type="password" placeholder="Confirm Password*" class="checkout-input"><button onclick="saveNewPassword()" style="width:100%;padding:10px;background:#26a541;color:#fff;border:none;border-radius:4px;font-weight:700">Save Password</button></div></div></div></div>
-
-<div class="bottom-nav"><a href="index.html"><span>🏠</span>Home</a><a href="account.html" class="active"><span>👤</span>Account</a><a href="cart.html"><span>🛒</span>Cart</a></div>
 
 <script>
-const categoryData={powerbank:[{name:"Power Bank 10000mAh",price:499,originalPrice:1299,coupon:"REKAVOPB10K40PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300"},{name:"Power Bank 20000mAh",price:799,originalPrice:1999,coupon:"REKAVOPB20K60PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300"},{name:"Power Bank 30000mAh",price:1099,originalPrice:2999,coupon:"REKAVOPB30K70PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300"}],neckband:[{name:"Neckband Boat 100",price:199,originalPrice:999,coupon:"REKAVONB10050PERCENT",img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300"},{name:"Neckband 500 Premium",price:549,originalPrice:1999,coupon:"REKAVONB50040PERCENT",img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300"}],earbuds:[{name:"Earbuds TWS 400",price:449,originalPrice:1499,coupon:"REKAVOEB40060PERCENT",img:"https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=300"},{name:"Earbuds Pro Sound",price:999,originalPrice:4999,coupon:"REKAVOEBPRO80PERCENT",img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=300"}],cable:[{name:"Cable Type-C 100",price:99,originalPrice:299,coupon:"REKAVOCB10050PERCENT",img:"https://images.unsplash.com/photo-1625842268584-8f3296236761?w=300"},{name:"Cable Fast 3A",price:199,originalPrice:499,coupon:"REKAVOCB3A40PERCENT",img:"https://images.unsplash.com/photo-1587037542707-1dad5a1cfa9d?w=300"}],charger:[{name:"Charger 20W Fast",price:299,originalPrice:999,coupon:"REKAVOCH20W60PERCENT",img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300"},{name:"Charger 65W",price:699,originalPrice:2499,coupon:"REKAVOCH65W70PERCENT",img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300"}]};
-function getAllProducts(){let all=[];for(let c in categoryData){categoryData[c].forEach((p,i)=>{all.push({...p,cat:c,idx:i})})}return all}
-function handleSearchFocus(){window.scrollTo({top:0,behavior:'smooth'});liveSearch(document.getElementById('mainSearch').value)}
-function liveSearch(q){let box=document.getElementById('searchResults');let all=getAllProducts();let query=q.trim().toLowerCase();let filtered=query===""?all:all.filter(p=>p.name.toLowerCase().includes(query)||p.cat.includes(query));box.innerHTML=filtered.map(p=>`<div class="sr-item" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'"><img src="${p.img}"><div><div style="font-size:13px;font-weight:600">${p.name}</div><div style="font-size:12px;color:#388e3c">₹${p.price}</div></div></div>`).join('');box.classList.add('show')}
+let otpSent = false;
+let currentEmail = "";
 
-let orders=JSON.parse(localStorage.getItem('rekavo_orders')||'[]'),currentUser=JSON.parse(localStorage.getItem('rekavo_user')||'null'),registeredUsers=JSON.parse(localStorage.getItem('rekavo_registered_users')||'[]');
-
-function renderAccount(){
-let info=document.getElementById('accountInfo');
-if(currentUser){
-info.innerHTML=`<b>${currentUser.name}</b><br>📞 ${currentUser.mobile}<br>✉️ ${currentUser.email}`;
-document.getElementById('logoutBtn').style.display='block'
-}else{
-info.innerHTML=`<p>Please login to see profile</p><button onclick="openLoginPopup('Login to REKAVO','Login to keep your orders safe','login')" style="width:100%;margin-top:10px;padding:10px;background:#2874f0;color:#fff;border:none;border-radius:4px;font-weight:700">Login / Register</button>`;
-document.getElementById('logoutBtn').style.display='none'
-}
-let ls=document.getElementById('langSelect');if(ls) ls.value=localStorage.getItem('rekavo_lang')||'en';
-}
-
-function renderMyOrders(){
-let div=document.getElementById('myOrdersList');
-if(!currentUser){div.innerHTML=`<div style="text-align:center;padding:20px"><p>Please login to see orders</p><button onclick="openLoginPopup('Please Login','Login to view orders','login')" style="padding:10px 25px;background:#2874f0;color:#fff;border:none;border-radius:4px;font-weight:800;margin-top:8px">Login</button></div>`;return}
-let my=orders.filter(o=>o.mobile===currentUser.mobile);
-if(my.length===0){div.innerHTML="<p style='text-align:center;padding:15px'>No orders yet</p>";return}
-div.innerHTML=my.map(o=>`<div class="order-card"><b>${o.orderId}</b> - ${o.products.map(p=>p.name).join(', ')}<br>Total: ₹${o.total} - ${o.date}<br><span class="badge b-${o.status}">${o.status}</span></div>`).join('')
+function switchTab(type){
+  document.getElementById('loginForm').classList.add('hidden');
+  document.getElementById('registerForm').classList.add('hidden');
+  document.getElementById('forgotForm').classList.add('hidden');
+  document.getElementById('loginTab').classList.remove('active');
+  document.getElementById('registerTab').classList.remove('active');
+  
+  if(type==='login'){
+    document.getElementById('loginForm').classList.remove('hidden');
+    document.getElementById('loginTab').classList.add('active');
+  } else if(type==='register'){
+    document.getElementById('registerForm').classList.remove('hidden');
+    document.getElementById('registerTab').classList.add('active');
+  } else {
+    document.getElementById('forgotForm').classList.remove('hidden');
+  }
 }
 
-function doLogout(){localStorage.removeItem('rekavo_user');location.reload()}
-function changeLanguage(l){localStorage.setItem('rekavo_lang',l);alert('Language changed to '+l)}
+async function sendOtp(){
+  const email = document.getElementById('loginEmail').value.trim();
+  const msg = document.getElementById('loginMsg');
+  if(!email){ msg.innerText="Email likho bhai"; msg.style.color="red"; return; }
 
-let loginModal=document.getElementById('loginModal');
-document.getElementById('closeLogin').onclick=()=>loginModal.classList.remove('show');
-function openLoginPopup(t,s,tab){document.getElementById('loginTitle').innerText=t;document.getElementById('loginSub').innerText=s;switchAuth(tab);loginModal.classList.add('show')}
-function switchAuth(type){
-document.getElementById('loginForm').style.display=type=='login'?'block':'none';
-document.getElementById('signupForm').style.display=type=='signup'?'block':'none';
-document.getElementById('forgotForm').style.display=type=='forgot'?'block':'none';
-document.getElementById('tabLogin').classList.toggle('active',type=='login');
-document.getElementById('tabSignup').classList.toggle('active',type=='signup');
-if(type=='signup'){document.getElementById('regStep1').style.display='block';document.getElementById('regStep2').style.display='none';document.getElementById('regStep3').style.display='none'}
+  if(!otpSent){
+    msg.innerText="OTP bhej rahe hain..."; msg.style.color="#2874f0";
+    const res = await fetch('/api/send-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+    const data = await res.json();
+    if(data.success){
+      otpSent=true; currentEmail=email;
+      document.getElementById('otpField').classList.remove('hidden');
+      document.getElementById('loginBtn').innerText="Verify OTP & Login";
+      msg.innerText="OTP bhej diya! 5 minute me daal do"; msg.style.color="green";
+    } else {
+      msg.innerText=data.message; msg.style.color="red";
+    }
+  } else {
+    const otp = document.getElementById('loginOtp').value.trim();
+    const res = await fetch('/api/verify-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:currentEmail,otp})});
+    const data = await res.json();
+    if(data.success){
+      msg.innerText="Login Successful!"; msg.style.color="green";
+      setTimeout(()=>location.href='index.html',1000);
+    } else {
+      msg.innerText=data.message; msg.style.color="red";
+    }
+  }
 }
-
-let forgotKey="",regEmailKey="",regOtpVerified=false;
-function sendRegOtp(){
-let name=document.getElementById('signupName').value.trim(),mobile=document.getElementById('signupMobile').value.trim(),email=document.getElementById('signupEmail').value.trim().toLowerCase();
-regEmailKey=email;
-let otp=Math.floor(100000+Math.random()*900000).toString();
-localStorage.setItem('rekavo_otp_'+email,otp);
-alert("Your REKAVO OTP is: "+otp);
-document.getElementById('regStep1').style.display='none';
-document.getElementById('regStep2').style.display='block'
-}
-function verifyRegOtp(){
-let otp=document.getElementById('regOtp').value.trim(),real=localStorage.getItem('rekavo_otp_'+regEmailKey);
-if(otp!==real){alert("Wrong OTP Correct: "+real);return}
-regOtpVerified=true;
-document.getElementById('regStep2').style.display='none';
-document.getElementById('regStep3').style.display='block'
-}
-function doSignupFinal(){
-let name=document.getElementById('signupName').value.trim(),email=regEmailKey,mobile=document.getElementById('signupMobile').value.trim(),pass=document.getElementById('signupPass').value.trim();
-let newUser={name,mobile,email,password:pass};
-registeredUsers.push(newUser);
-localStorage.setItem('rekavo_registered_users',JSON.stringify(registeredUsers));
-localStorage.setItem('rekavo_user',JSON.stringify({name,mobile,email}));
-alert("Welcome "+name);location.reload()
-}
-function doLogin(){
-let mobile=document.getElementById('loginMobile').value.trim().toLowerCase(),pass=document.getElementById('loginPass').value.trim();
-let user=registeredUsers.find(u=> (u.mobile===mobile || u.email===mobile) && u.password===pass);
-if(!user){alert("Invalid");return}
-localStorage.setItem('rekavo_user',JSON.stringify({name:user.name,mobile:user.mobile,email:user.email}));
-alert("Login Successful");location.reload()
-}
-function sendForgotOtp(){
-forgotKey=document.getElementById('forgotEmail').value.trim().toLowerCase();
-let otp=Math.floor(100000+Math.random()*900000).toString();
-localStorage.setItem('rekavo_otp_'+forgotKey,otp);
-alert("OTP: "+otp);
-document.getElementById('forgotOtpBox').style.display='block'
-}
-function verifyForgotOtp(){document.getElementById('newPassBox').style.display='block';document.getElementById('forgotOtpBox').style.display='none'}
-function saveNewPassword(){
-let p1=document.getElementById('forgotPass').value.trim();
-let user=registeredUsers.find(u=>u.email===forgotKey);
-if(user){user.password=p1;localStorage.setItem('rekavo_registered_users',JSON.stringify(registeredUsers));alert("Password Changed");switchAuth('login')}
-}
-
-window.onclick=(e)=>{
-if(e.target.closest&&!e.target.closest('.search-wrapper')){let sr=document.getElementById('searchResults');if(sr)sr.classList.remove('show')}
-if(e.target.classList&&e.target.classList.contains('modal')){e.target.classList.remove('show')}
-}
-
-renderAccount();renderMyOrders();
 </script>
 </body>
 </html>
