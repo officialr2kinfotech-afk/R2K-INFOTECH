@@ -42,7 +42,6 @@ app.post('/api/verify-otp', (req, res) => {
     return res.json({ success: false, message: "Pehle OTP bhejo" });
   }
 
-  // 5 minute expiry
   if (Date.now() - stored.time > 5 * 60 * 1000) {
     delete otpStore[email];
     return res.json({ success: false, message: "OTP expire ho gaya" });
@@ -56,9 +55,21 @@ app.post('/api/verify-otp', (req, res) => {
   }
 });
 
-// YAHI MAIN FIX HAI - ab index.html khulega
+// ---- YEH 5 LINE FIX HAI ----
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
+});
+app.get('/category.html', (req, res) => {
+  res.sendFile(__dirname + '/category.html');
+});
+app.get('/product.html', (req, res) => {
+  res.sendFile(__dirname + '/product.html');
+});
+app.get('/cart.html', (req, res) => {
+  res.sendFile(__dirname + '/cart.html');
+});
+app.get('/account.html', (req, res) => {
+  res.sendFile(__dirname + '/account.html');
 });
 
 // Vercel ke liye ye line sabse important hai
