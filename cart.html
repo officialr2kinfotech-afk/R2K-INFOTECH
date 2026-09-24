@@ -19,6 +19,7 @@ body{background:#f1f3f6;padding-bottom:70px}
 .empty-title{font-size:18px;font-weight:700;margin-bottom:22px}
 .btn-login{background:#2874f0;color:#fff;border:none;padding:11px 70px;border-radius:4px;font-weight:700;font-size:15px;cursor:pointer}
 .continue-link{color:#2874f0;margin-top:16px;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer}
+.btn-shop{background:#2874f0;color:#fff;border:none;padding:12px 50px;border-radius:4px;font-weight:700;font-size:14px;cursor:pointer}
 
 .cart-box{background:#fff;padding:12px;margin:8px;border-radius:4px}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:999}
@@ -40,18 +41,31 @@ body{background:#f1f3f6;padding-bottom:70px}
 
 <script>
 let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+let user = localStorage.getItem('rekavo_user');
 document.getElementById('cartCount').innerText = cart.length;
 let container = document.getElementById('cartContainer');
 
 if(cart.length === 0){
-  container.innerHTML = `
-    <div class="empty-cart-wrap">
-      <div class="trolley-big">🛒</div>
-      <div class="empty-title">Missing Cart items?</div>
-      <button class="btn-login" onclick="location.href='account.html'">Login</button>
-      <a class="continue-link" href="index.html">Continue Shopping</a>
-    </div>
-  `;
+  if(user){
+    // CASE 1: Login HAI + Cart Khali -> Your cart is empty! + Shop Now
+    container.innerHTML = `
+      <div class="empty-cart-wrap">
+        <div class="trolley-big">🛒</div>
+        <div class="empty-title">Your cart is empty!</div>
+        <button class="btn-shop" onclick="location.href='index.html'">Shop now</button>
+      </div>
+    `;
+  } else {
+    // CASE 2: Login NAHI + Cart Khali -> Missing Cart items? + Login / Continue Shopping
+    container.innerHTML = `
+      <div class="empty-cart-wrap">
+        <div class="trolley-big">🛒</div>
+        <div class="empty-title">Missing Cart items?</div>
+        <button class="btn-login" onclick="location.href='account.html'">Login</button>
+        <a class="continue-link" href="index.html">Continue Shopping</a>
+      </div>
+    `;
+  }
 } else {
   let html = '<div class="cart-box"><b>Your Items</b>';
   cart.forEach(i=>{
