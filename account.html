@@ -58,60 +58,57 @@ body{background:#f1f3f6;padding-bottom:70px}
       <div class="tab inactive" id="registerTab" onclick="switchTab('register')">Register</div>
     </div>
 
-    <!-- LOGIN FORM -->
     <div id="loginForm">
-      <input id="loginEmail" class="input" placeholder="Email / Mobile Number*"><p id="err-loginEmail" class="error-msg"></p>
-      <input id="loginPass" class="input" type="password" placeholder="Password*"><p id="err-loginPass" class="error-msg"></p>
+      <input id="loginEmail" class="input" placeholder="Email / Mobile Number*" oninput="clearErr('loginEmail')" onfocus="clearErr('loginEmail')"><p id="err-loginEmail" class="error-msg"></p>
+      <input id="loginPass" class="input" type="password" placeholder="Password*" oninput="clearErr('loginPass')" onfocus="clearErr('loginPass')"><p id="err-loginPass" class="error-msg"></p>
       <p id="success-login" class="success-msg"></p>
       <button class="btn" onclick="handleLogin()">Login with Password</button>
       <div class="links"><span class="link" onclick="switchTab('forgot')">Forgot Password?</span><span class="link" onclick="switchTab('register')">Register Now</span></div>
     </div>
 
-    <!-- REGISTER FORM -->
     <div id="registerForm" class="hidden">
       <div id="regStep1">
-        <input id="regName" class="input" placeholder="Full Name*"><p id="err-regName" class="error-msg"></p>
-        <input id="regMobile" class="input" placeholder="Mobile Number* (10 digits)" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)"><p id="err-regMobile" class="error-msg"></p>
-        <input id="regEmail" class="input" placeholder="Email Address* (e.g. name@gmail.com)"><p id="err-regEmail" class="error-msg"></p>
+        <input id="regName" class="input" placeholder="Full Name*" oninput="clearErr('regName')" onfocus="clearErr('regName')"><p id="err-regName" class="error-msg"></p>
+        <input id="regMobile" class="input" placeholder="Mobile Number* (10 digits)" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10);clearErr('regMobile')" onfocus="clearErr('regMobile')"><p id="err-regMobile" class="error-msg"></p>
+        <input id="regEmail" class="input" placeholder="Email Address* (e.g. name@gmail.com)" oninput="clearErr('regEmail')" onfocus="clearErr('regEmail')"><p id="err-regEmail" class="error-msg"></p>
         <p id="success-reg1" class="success-msg"></p>
         <button class="btn btn-blue" onclick="sendRegOtp()">Send OTP</button>
       </div>
       <div id="regStep2" class="hidden">
         <div class="otp-box">
           <p id="otpSentTo" class="success-msg show" style="margin-bottom:10px"></p>
-          <input id="regOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6"><p id="err-regOtp" class="error-msg"></p>
+          <input id="regOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6" oninput="clearErr('regOtp')" onfocus="clearErr('regOtp')"><p id="err-regOtp" class="error-msg"></p>
           <button class="btn btn-orange" onclick="validateRegOtp()">Validate OTP</button>
           <div style="margin-top:10px"><span class="link" onclick="sendRegOtp()">Resend OTP</span></div>
         </div>
       </div>
       <div id="regStep3" class="hidden">
         <p class="success-msg show">OTP Verified Successfully! Create your password</p>
-        <input id="createPass" class="input" type="password" placeholder="Create Password* (min 6 characters)"><p id="err-createPass" class="error-msg"></p>
-        <input id="confirmPass" class="input" type="password" placeholder="Confirm Password*"><p id="err-confirmPass" class="error-msg"></p>
+        <input id="createPass" class="input" type="password" placeholder="Create Password* (min 6 characters)" oninput="clearErr('createPass')" onfocus="clearErr('createPass')"><p id="err-createPass" class="error-msg"></p>
+        <input id="confirmPass" class="input" type="password" placeholder="Confirm Password*" oninput="clearErr('confirmPass')" onfocus="clearErr('confirmPass')"><p id="err-confirmPass" class="error-msg"></p>
         <p id="success-regFinal" class="success-msg"></p>
         <button class="btn btn-green" onclick="createAccount()">Create Account</button>
       </div>
       <div class="links" style="margin-top:12px"><span class="link" onclick="switchTab('login')">Already have an account? Login</span><span></span></div>
     </div>
 
-    <!-- FORGOT PASSWORD FORM - FULLY ACTIVE -->
     <div id="forgotForm" class="hidden">
       <h3 style="font-size:14px;margin-bottom:4px">Reset Password</h3>
       <p style="font-size:11px;color:#878787;margin-bottom:8px">Enter your registered email to receive OTP</p>
-      <input id="forgotEmail" class="input" placeholder="Enter Registered Email Address*"><p id="err-forgotEmail" class="error-msg"></p>
+      <input id="forgotEmail" class="input" placeholder="Enter Registered Email Address*" oninput="clearErr('forgotEmail')" onfocus="clearErr('forgotEmail')"><p id="err-forgotEmail" class="error-msg"></p>
       <p id="success-forgot1" class="success-msg"></p>
       <button id="sendOtpBtn" class="btn btn-blue" onclick="sendForgotOtp()">Send OTP</button>
 
       <div id="forgotOtpBox" class="otp-box hidden" style="display:none">
         <p id="forgotOtpInfo" class="success-msg show" style="margin-bottom:8px"></p>
-        <input id="forgotOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6"><p id="err-forgotOtp" class="error-msg"></p>
+        <input id="forgotOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6" oninput="clearErr('forgotOtp')" onfocus="clearErr('forgotOtp')"><p id="err-forgotOtp" class="error-msg"></p>
         <button class="btn btn-orange" onclick="verifyForgotOtp()">Validate OTP</button>
       </div>
 
       <div id="newPassBox" class="hidden" style="margin-top:12px">
         <p id="forgotValidatedMsg" class="success-msg show">OTP Validated Successfully! ✅</p>
-        <input id="forgotPass" class="input" type="password" placeholder="New Password* (min 6 characters)"><p id="err-forgotPass" class="error-msg"></p>
-        <input id="forgotPass2" class="input" type="password" placeholder="Confirm New Password*"><p id="err-forgotPass2" class="error-msg"></p>
+        <input id="forgotPass" class="input" type="password" placeholder="New Password* (min 6 characters)" oninput="clearErr('forgotPass')" onfocus="clearErr('forgotPass')"><p id="err-forgotPass" class="error-msg"></p>
+        <input id="forgotPass2" class="input" type="password" placeholder="Confirm New Password*" oninput="clearErr('forgotPass2')" onfocus="clearErr('forgotPass2')"><p id="err-forgotPass2" class="error-msg"></p>
         <p id="success-forgotFinal" class="success-msg"></p>
         <button class="btn btn-green" onclick="saveNewPassword()">Save Password</button>
       </div>
@@ -131,21 +128,52 @@ body{background:#f1f3f6;padding-bottom:70px}
 let regData = {name:"", mobile:"", email:""};
 let registeredUsers = JSON.parse(localStorage.getItem('rekavo_registered_users')||'[]');
 
+function clearErr(inputId){
+  let errEl = document.getElementById('err-'+inputId);
+  if(errEl){ errEl.innerText=''; errEl.classList.remove('show'); }
+  let inp = document.getElementById(inputId);
+  if(inp) inp.classList.remove('error');
+}
+
 function switchTab(type){
   document.getElementById('loginForm').classList.toggle('hidden', type!=='login');
   document.getElementById('registerForm').classList.toggle('hidden', type!=='register');
   document.getElementById('forgotForm').classList.toggle('hidden', type!=='forgot');
   document.getElementById('loginTab').className = (type==='login' || type==='forgot') ? 'tab active' : 'tab inactive';
   document.getElementById('registerTab').className = (type==='register') ? 'tab active' : 'tab inactive';
-  if(type==='register') resetReg();
-  if(type==='forgot'){ document.getElementById('forgotOtpBox').style.display='none'; document.getElementById('newPassBox').classList.add('hidden'); }
+
+  if(type==='login'){
+    // clear register + forgot data
+    ['regName','regMobile','regEmail','regOtp','createPass','confirmPass','forgotEmail','forgotOtp','forgotPass','forgotPass2'].forEach(id=>{
+      let el=document.getElementById(id); if(el) el.value='';
+    });
+    document.getElementById('regStep1').classList.remove('hidden');
+    document.getElementById('regStep2').classList.add('hidden');
+    document.getElementById('regStep3').classList.add('hidden');
+    document.getElementById('forgotOtpBox').style.display='none';
+    document.getElementById('newPassBox').classList.add('hidden');
+  }
+  if(type==='register'){
+    // clear everything when entering register fresh
+    ['regName','regMobile','regEmail','regOtp','createPass','confirmPass','loginEmail','loginPass','forgotEmail','forgotOtp','forgotPass','forgotPass2'].forEach(id=>{
+      let el=document.getElementById(id); if(el) el.value='';
+    });
+    resetReg();
+  }
+  if(type==='forgot'){
+    ['forgotEmail','forgotOtp','forgotPass','forgotPass2'].forEach(id=>{
+      let el=document.getElementById(id); if(el) el.value='';
+    });
+    document.getElementById('forgotOtpBox').style.display='none';
+    document.getElementById('newPassBox').classList.add('hidden');
+  }
   clearAllErrs();
 }
 function clearAllErrs(){
   document.querySelectorAll('.error-msg').forEach(e=>{e.innerText='';e.classList.remove('show')});
   document.querySelectorAll('.input').forEach(e=>e.classList.remove('error'));
   document.querySelectorAll('.success-msg').forEach(e=>{
-    if(e.id!=='otpSentTo' && e.id!=='forgotOtpInfo' && e.id!=='forgotValidatedMsg') e.classList.remove('show')
+    if(e.id!=='otpSentTo' && e.id!=='forgotOtpInfo' && e.id!=='forgotValidatedMsg') e.classList.remove('show');
   });
 }
 function showErr(id,msg){let el=document.getElementById(id); if(!el) return; el.innerText=msg; el.classList.add('show'); let inpId=id.replace('err-',''); let inp=document.getElementById(inpId); if(inp) inp.classList.add('error');}
@@ -154,6 +182,9 @@ function resetReg(){
   document.getElementById('regStep1').classList.remove('hidden');
   document.getElementById('regStep2').classList.add('hidden');
   document.getElementById('regStep3').classList.add('hidden');
+  ['regName','regMobile','regEmail','regOtp','createPass','confirmPass'].forEach(id=>{
+    let el=document.getElementById(id); if(el) el.value='';
+  });
 }
 
 const disposableDomains=["tempmail","10minutemail","guerrillamail","mailinator","yopmail","temp-mail","throwaway","maildrop","disposable"];
@@ -230,8 +261,6 @@ function handleLogin(){
   showSuccess('success-login',`Login successful! Welcome ${user.name}`);
   setTimeout(()=>location.href='index.html',800);
 }
-
-// FORGOT PASSWORD FLOW
 let forgotKey="",forgotOtpVerified=false;
 function sendForgotOtp(){
   clearAllErrs();
