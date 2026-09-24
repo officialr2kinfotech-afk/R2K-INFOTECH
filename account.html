@@ -15,7 +15,7 @@ body{background:#f1f3f6;padding-bottom:70px}
 .page-bg{filter:blur(3px);opacity:0.6;pointer-events:none;padding:10px}
 .hero{height:160px;background:linear-gradient(90deg,#0f1a4a,#2a3a8c);border-radius:8px;margin:10px;display:flex;align-items:center;padding:20px;color:#fff}
 .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:15px}
-.modal{width:100%;max-width:400px;background:#fff;border-radius:12px;padding:20px;position:relative;box-shadow:0 8px 25px rgba(0,0,0,0.3)}
+.modal{width:100%;max-width:400px;background:#fff;border-radius:12px;padding:20px;position:relative;box-shadow:0 8px 25px rgba(0,0,0,0.3);max-height:92vh;overflow-y:auto}
 .close{position:absolute;right:14px;top:10px;font-size:22px;font-weight:700;cursor:pointer}
 .title{font-size:17px;font-weight:800;margin-bottom:3px}
 .sub{font-size:12.5px;color:#878787;margin-bottom:16px}
@@ -23,14 +23,21 @@ body{background:#f1f3f6;padding-bottom:70px}
 .tab{flex:1;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;cursor:pointer}
 .tab.active{background:#2874f0;color:#fff}
 .tab.inactive{background:#fff;color:#2874f0}
-.input{width:100%;height:44px;border:1px solid #dbdbdb;border-radius:8px;padding:0 12px;outline:none;font-size:14px;margin-bottom:12px}
+.input{width:100%;height:44px;border:1px solid #dbdbdb;border-radius:8px;padding:0 12px;outline:none;font-size:14px;margin:5px 0 2px}
+.input.error{border-color:#d93025;background:#fff5f5}
 .input:focus{border-color:#2874f0}
-.btn{width:100%;height:44px;background:#ff7a00;color:#fff;border:none;border-radius:8px;font-weight:800;font-size:14px;cursor:pointer}
+.btn{width:100%;height:44px;background:#ff7a00;color:#fff;border:none;border-radius:8px;font-weight:800;font-size:14px;cursor:pointer;margin-top:6px}
+.btn-blue{background:#2874f0}
+.btn-green{background:#26a541}
+.btn-orange{background:#ff9f00}
 .links{display:flex;justify-content:space-between;margin-top:12px}
 .link{font-size:12px;color:#2874f0;font-weight:600;cursor:pointer}
-.msg{font-size:12px;margin-top:10px;font-weight:600;text-align:center}
+.error-msg{color:#d93025;font-size:11px;font-weight:600;margin-top:2px;display:none;background:#fff5f5;padding:5px 7px;border-radius:4px;word-break:break-all}
+.error-msg.show{display:block}
+.success-msg{color:#188038;font-size:11px;font-weight:700;margin-top:6px;display:none;background:#e6f4ea;padding:8px;border-radius:4px;text-align:center;word-break:break-all;overflow-wrap:anywhere}
+.success-msg.show{display:block}
 .hidden{display:none !important}
-.otp-box{background:#f8f9ff;border:1px dashed #2874f0;border-radius:8px;padding:15px;margin-bottom:12px;text-align:center}
+.otp-box{background:#f8f9ff;border:1px dashed #2874f0;border-radius:8px;padding:15px;margin-top:10px;text-align:center}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:99}
 .bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
 .bottom-nav a.active{color:#2874f0}
@@ -51,47 +58,66 @@ body{background:#f1f3f6;padding-bottom:70px}
       <div class="tab inactive" id="registerTab" onclick="switchTab('register')">Register</div>
     </div>
 
-    <!-- LOGIN FORM - SAME AS BEFORE -->
+    <!-- LOGIN FORM -->
     <div id="loginForm">
-      <input id="loginEmail" class="input" placeholder="Mobile / Email">
-      <input id="loginPass" class="input" type="password" placeholder="Password">
+      <input id="loginEmail" class="input" placeholder="Email / Mobile Number*"><p id="err-loginEmail" class="error-msg"></p>
+      <input id="loginPass" class="input" type="password" placeholder="Password*"><p id="err-loginPass" class="error-msg"></p>
+      <p id="success-login" class="success-msg"></p>
       <button class="btn" onclick="handleLogin()">Login with Password</button>
-      <div class="links"><span class="link">Forgot Password?</span><span class="link" onclick="switchTab('register')">Register Now</span></div>
-      <div id="loginMsg" class="msg"></div>
+      <div class="links"><span class="link" onclick="switchTab('forgot')">Forgot Password?</span><span class="link" onclick="switchTab('register')">Register Now</span></div>
     </div>
 
-    <!-- REGISTER FORM - NEW FLOW -->
+    <!-- REGISTER FORM -->
     <div id="registerForm" class="hidden">
-      
-      <!-- STEP 1: NAME + MOBILE + EMAIL -->
       <div id="regStep1">
-        <input id="regName" class="input" placeholder="Full Name">
-        <input id="regMobile" class="input" placeholder="Mobile Number">
-        <input id="regEmail" class="input" placeholder="Email ID">
-        <button class="btn" onclick="sendRegOtp()">Send OTP</button>
+        <input id="regName" class="input" placeholder="Full Name*"><p id="err-regName" class="error-msg"></p>
+        <input id="regMobile" class="input" placeholder="Mobile Number* (10 digits)" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)"><p id="err-regMobile" class="error-msg"></p>
+        <input id="regEmail" class="input" placeholder="Email Address* (e.g. name@gmail.com)"><p id="err-regEmail" class="error-msg"></p>
+        <p id="success-reg1" class="success-msg"></p>
+        <button class="btn btn-blue" onclick="sendRegOtp()">Send OTP</button>
       </div>
-
-      <!-- STEP 2: OTP POPUP -->
       <div id="regStep2" class="hidden">
         <div class="otp-box">
-          <div style="font-size:13px;font-weight:700;margin-bottom:8px">OTP bheja hai <span id="otpSentTo" style="color:#2874f0"></span> par</div>
-          <input id="regOtp" class="input" placeholder="Enter OTP">
-          <button class="btn" onclick="validateRegOtp()">Validate OTP</button>
-          <div style="margin-top:8px"><span class="link" onclick="sendRegOtp()">Resend OTP</span></div>
+          <p id="otpSentTo" class="success-msg show" style="margin-bottom:10px"></p>
+          <input id="regOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6"><p id="err-regOtp" class="error-msg"></p>
+          <button class="btn btn-orange" onclick="validateRegOtp()">Validate OTP</button>
+          <div style="margin-top:10px"><span class="link" onclick="sendRegOtp()">Resend OTP</span></div>
         </div>
       </div>
-
-      <!-- STEP 3: CREATE PASSWORD -->
       <div id="regStep3" class="hidden">
-        <div style="font-size:13px;font-weight:700;margin-bottom:10px;text-align:center;color:green">✓ OTP Verified</div>
-        <input id="createPass" class="input" type="password" placeholder="Create Password">
-        <input id="confirmPass" class="input" type="password" placeholder="Confirm Password">
-        <button class="btn" onclick="createAccount()">Create Account</button>
+        <p class="success-msg show">OTP Verified Successfully! Create your password</p>
+        <input id="createPass" class="input" type="password" placeholder="Create Password* (min 6 characters)"><p id="err-createPass" class="error-msg"></p>
+        <input id="confirmPass" class="input" type="password" placeholder="Confirm Password*"><p id="err-confirmPass" class="error-msg"></p>
+        <p id="success-regFinal" class="success-msg"></p>
+        <button class="btn btn-green" onclick="createAccount()">Create Account</button>
+      </div>
+      <div class="links" style="margin-top:12px"><span class="link" onclick="switchTab('login')">Already have an account? Login</span><span></span></div>
+    </div>
+
+    <!-- FORGOT PASSWORD FORM - FULLY ACTIVE -->
+    <div id="forgotForm" class="hidden">
+      <h3 style="font-size:14px;margin-bottom:4px">Reset Password</h3>
+      <p style="font-size:11px;color:#878787;margin-bottom:8px">Enter your registered email to receive OTP</p>
+      <input id="forgotEmail" class="input" placeholder="Enter Registered Email Address*"><p id="err-forgotEmail" class="error-msg"></p>
+      <p id="success-forgot1" class="success-msg"></p>
+      <button id="sendOtpBtn" class="btn btn-blue" onclick="sendForgotOtp()">Send OTP</button>
+
+      <div id="forgotOtpBox" class="otp-box hidden" style="display:none">
+        <p id="forgotOtpInfo" class="success-msg show" style="margin-bottom:8px"></p>
+        <input id="forgotOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6"><p id="err-forgotOtp" class="error-msg"></p>
+        <button class="btn btn-orange" onclick="verifyForgotOtp()">Validate OTP</button>
       </div>
 
-      <div class="links" style="margin-top:12px"><span class="link" onclick="switchTab('login')">Already have account? Login</span><span></span></div>
-      <div id="regMsg" class="msg"></div>
+      <div id="newPassBox" class="hidden" style="margin-top:12px">
+        <p id="forgotValidatedMsg" class="success-msg show">OTP Validated Successfully! ✅</p>
+        <input id="forgotPass" class="input" type="password" placeholder="New Password* (min 6 characters)"><p id="err-forgotPass" class="error-msg"></p>
+        <input id="forgotPass2" class="input" type="password" placeholder="Confirm New Password*"><p id="err-forgotPass2" class="error-msg"></p>
+        <p id="success-forgotFinal" class="success-msg"></p>
+        <button class="btn btn-green" onclick="saveNewPassword()">Save Password</button>
+      </div>
+      <div class="links" style="margin-top:12px"><span class="link" onclick="switchTab('login')">Back to Login</span><span></span></div>
     </div>
+
   </div>
 </div>
 
@@ -103,116 +129,156 @@ body{background:#f1f3f6;padding-bottom:70px}
 
 <script>
 let regData = {name:"", mobile:"", email:""};
+let registeredUsers = JSON.parse(localStorage.getItem('rekavo_registered_users')||'[]');
 
 function switchTab(type){
-  if(type==='login'){
-    document.getElementById('loginForm').classList.remove('hidden');
-    document.getElementById('registerForm').classList.add('hidden');
-    document.getElementById('loginTab').className='tab active';
-    document.getElementById('registerTab').className='tab inactive';
-  } else {
-    document.getElementById('loginForm').classList.add('hidden');
-    document.getElementById('registerForm').classList.remove('hidden');
-    document.getElementById('loginTab').className='tab inactive';
-    document.getElementById('registerTab').className='tab active';
-    resetReg();
-  }
+  document.getElementById('loginForm').classList.toggle('hidden', type!=='login');
+  document.getElementById('registerForm').classList.toggle('hidden', type!=='register');
+  document.getElementById('forgotForm').classList.toggle('hidden', type!=='forgot');
+  document.getElementById('loginTab').className = (type==='login' || type==='forgot') ? 'tab active' : 'tab inactive';
+  document.getElementById('registerTab').className = (type==='register') ? 'tab active' : 'tab inactive';
+  if(type==='register') resetReg();
+  if(type==='forgot'){ document.getElementById('forgotOtpBox').style.display='none'; document.getElementById('newPassBox').classList.add('hidden'); }
+  clearAllErrs();
 }
-
+function clearAllErrs(){
+  document.querySelectorAll('.error-msg').forEach(e=>{e.innerText='';e.classList.remove('show')});
+  document.querySelectorAll('.input').forEach(e=>e.classList.remove('error'));
+  document.querySelectorAll('.success-msg').forEach(e=>{
+    if(e.id!=='otpSentTo' && e.id!=='forgotOtpInfo' && e.id!=='forgotValidatedMsg') e.classList.remove('show')
+  });
+}
+function showErr(id,msg){let el=document.getElementById(id); if(!el) return; el.innerText=msg; el.classList.add('show'); let inpId=id.replace('err-',''); let inp=document.getElementById(inpId); if(inp) inp.classList.add('error');}
+function showSuccess(id,msg){let el=document.getElementById(id); if(!el) return; el.innerText=msg; el.classList.add('show');}
 function resetReg(){
   document.getElementById('regStep1').classList.remove('hidden');
   document.getElementById('regStep2').classList.add('hidden');
   document.getElementById('regStep3').classList.add('hidden');
-  document.getElementById('regMsg').innerText="";
 }
 
-async function sendRegOtp(){
-  const name = document.getElementById('regName').value.trim();
-  const mobile = document.getElementById('regMobile').value.trim();
-  const email = document.getElementById('regEmail').value.trim();
-  const msg = document.getElementById('regMsg');
-
-  if(!name){msg.innerText="Full Name bharo bhai";msg.style.color="red";return;}
-  if(!mobile){msg.innerText="Mobile Number bharo bhai";msg.style.color="red";return;}
-  if(!email){msg.innerText="Email ID bharo bhai";msg.style.color="red";return;}
-
-  regData = {name, mobile, email};
-  msg.innerText="OTP bhej rahe hain...";msg.style.color="#2874f0";
-  document.getElementById('otpSentTo').innerText = email;
-
-  try{
-    const res = await fetch('/api/send-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email})});
-    const data = await res.json();
-    if(data.success){
-      document.getElementById('regStep1').classList.add('hidden');
-      document.getElementById('regStep2').classList.remove('hidden');
-      msg.innerText="OTP bhej diya hai!";msg.style.color="green";
-    } else {
-      // Agar backend fail bhi ho jaye to bhi next step dikha do taaki tu test kar sake
-      document.getElementById('regStep1').classList.add('hidden');
-      document.getElementById('regStep2').classList.remove('hidden');
-      msg.innerText="OTP bhej diya (Test Mode)";msg.style.color="green";
-    }
-  }catch(e){
-    document.getElementById('regStep1').classList.add('hidden');
-    document.getElementById('regStep2').classList.remove('hidden');
-    msg.innerText="OTP bhej diya (Test Mode)";msg.style.color="green";
-  }
+const disposableDomains=["tempmail","10minutemail","guerrillamail","mailinator","yopmail","temp-mail","throwaway","maildrop","disposable"];
+const fakeDomains=["xyz","abc","test","localhost","example","invalid","fake","abcd","qwerty","asdf","temp","c"];
+function isValidEmailFormat(email){
+  const re=/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if(!re.test(email)) return false;
+  if(email.includes("..")) return false;
+  if(email.startsWith(".")||email.includes("@.")||email.endsWith(".")) return false;
+  let parts=email.split("@"); if(parts.length!==2) return false;
+  let domain=parts[1]; if(!domain.includes(".")) return false;
+  let tld=domain.split(".").pop().toLowerCase(); if(tld.length<2) return false;
+  let domainName=domain.split(".")[0].toLowerCase();
+  if(fakeDomains.includes(domainName)) return false;
+  if(domainName.length<3) return false;
+  return true;
 }
+function isDisposableEmail(email){let d=email.split("@")[1]?.toLowerCase()||"";return disposableDomains.some(x=>d.includes(x));}
 
-async function validateRegOtp(){
-  const otp = document.getElementById('regOtp').value.trim();
-  const msg = document.getElementById('regMsg');
-  if(!otp){msg.innerText="OTP daalo bhai";msg.style.color="red";return;}
-  msg.innerText="OTP verify kar rahe hain...";msg.style.color="#2874f0";
-
-  try{
-    const res = await fetch('/api/verify-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:regData.email, otp:otp})});
-    const data = await res.json();
-    if(data.success){
-      document.getElementById('regStep2').classList.add('hidden');
-      document.getElementById('regStep3').classList.remove('hidden');
-      msg.innerText="";
-    } else {
-      // Test ke liye 123456 ko sahi maan lete hain
-      if(otp==="123456" || otp.length>=4){
-        document.getElementById('regStep2').classList.add('hidden');
-        document.getElementById('regStep3').classList.remove('hidden');
-        msg.innerText="";
-      } else {
-        msg.innerText=data.message || "OTP galat hai";msg.style.color="red";
-      }
-    }
-  }catch(e){
-    if(otp.length>=4){
-      document.getElementById('regStep2').classList.add('hidden');
-      document.getElementById('regStep3').classList.remove('hidden');
-      msg.innerText="";
-    } else {
-      msg.innerText="OTP galat hai";msg.style.color="red";
-    }
-  }
+function sendRegOtp(){
+  clearAllErrs();
+  const name=document.getElementById('regName').value.trim();
+  const mobile=document.getElementById('regMobile').value.trim();
+  const email=document.getElementById('regEmail').value.trim().toLowerCase();
+  let hasError=false;
+  if(name.length<2){showErr('err-regName','Please enter your full name');hasError=true;}
+  if(!/^[6-9][0-9]{9}$/.test(mobile)){showErr('err-regMobile','Please enter a valid 10-digit mobile number');hasError=true;}
+  if(!email){showErr('err-regEmail','Please enter your email address');hasError=true;}
+  else if(!isValidEmailFormat(email)){showErr('err-regEmail','Please enter a valid email address (e.g. name@gmail.com)');hasError=true;}
+  else if(isDisposableEmail(email)){showErr('err-regEmail','Temporary email addresses are not allowed');hasError=true;}
+  if(registeredUsers.find(u=>u.email===email)){showErr('err-regEmail','This email is already registered. Please login');hasError=true;}
+  if(registeredUsers.find(u=>u.mobile===mobile)){showErr('err-regMobile','This mobile number is already registered');hasError=true;}
+  if(hasError) return;
+  regData={name,mobile,email};
+  let otp=Math.floor(100000+Math.random()*900000).toString();
+  localStorage.setItem('rekavo_otp_'+email,otp);
+  document.getElementById('otpSentTo').innerHTML=`OTP sent to <b>${email}</b><br>Demo OTP: <b>${otp}</b>`;
+  document.getElementById('regStep1').classList.add('hidden');
+  document.getElementById('regStep2').classList.remove('hidden');
 }
-
+function validateRegOtp(){
+  clearAllErrs(); document.getElementById('otpSentTo').classList.add('show');
+  const otp=document.getElementById('regOtp').value.trim();
+  const real=localStorage.getItem('rekavo_otp_'+regData.email);
+  if(!otp){showErr('err-regOtp','Please enter the OTP');return;}
+  if(otp!==real){showErr('err-regOtp','Invalid OTP. Correct OTP is: '+real);return;}
+  document.getElementById('regStep2').classList.add('hidden');
+  document.getElementById('regStep3').classList.remove('hidden');
+}
 function createAccount(){
-  const pass = document.getElementById('createPass').value.trim();
-  const cpass = document.getElementById('confirmPass').value.trim();
-  const msg = document.getElementById('regMsg');
-  if(!pass || !cpass){msg.innerText="Password bharo bhai";msg.style.color="red";return;}
-  if(pass !== cpass){msg.innerText="Password match nahi ho raha";msg.style.color="red";return;}
-  if(pass.length < 6){msg.innerText="Password 6 digit ka rakho";msg.style.color="red";return;}
-
-  msg.innerText="Account ban gaya! Login kar rahe hain...";msg.style.color="green";
-  localStorage.setItem('rekavo_user', regData.email);
-  setTimeout(()=>{location.href='index.html';},1000);
+  clearAllErrs();
+  const pass=document.getElementById('createPass').value.trim();
+  const cpass=document.getElementById('confirmPass').value.trim();
+  if(pass.length<6){showErr('err-createPass','Password must be at least 6 characters');return;}
+  if(pass!==cpass){showErr('err-confirmPass','Passwords do not match');return;}
+  let newUser={name:regData.name,mobile:regData.mobile,email:regData.email,password:pass};
+  registeredUsers.push(newUser);
+  localStorage.setItem('rekavo_registered_users',JSON.stringify(registeredUsers));
+  localStorage.setItem('rekavo_user',JSON.stringify({name:regData.name,mobile:regData.mobile,email:regData.email}));
+  localStorage.removeItem('rekavo_otp_'+regData.email);
+  showSuccess('success-regFinal',`Welcome ${regData.name}! Account created successfully`);
+  setTimeout(()=>location.href='index.html',1000);
+}
+function handleLogin(){
+  clearAllErrs();
+  const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+  const pass=document.getElementById('loginPass').value.trim();
+  if(!email){showErr('err-loginEmail','Please enter email or mobile number');return;}
+  if(!pass){showErr('err-loginPass','Please enter your password');return;}
+  if(email.includes('@') && !isValidEmailFormat(email)){showErr('err-loginEmail','Please enter a valid email address');return;}
+  let user=registeredUsers.find(u=>(u.mobile===email||u.email===email)&&u.password===pass);
+  if(!user){showErr('err-loginEmail','Invalid email/mobile or password');return;}
+  localStorage.setItem('rekavo_user',JSON.stringify({name:user.name,mobile:user.mobile,email:user.email}));
+  showSuccess('success-login',`Login successful! Welcome ${user.name}`);
+  setTimeout(()=>location.href='index.html',800);
 }
 
-function handleLogin(){
-  const email = document.getElementById('loginEmail').value.trim();
-  const msg = document.getElementById('loginMsg');
-  if(!email){msg.innerText="Mobile / Email likho bhai";msg.style.color="red";return;}
-  msg.innerText="Login Successful!";msg.style.color="green";
-  setTimeout(()=>location.href='index.html',800);
+// FORGOT PASSWORD FLOW
+let forgotKey="",forgotOtpVerified=false;
+function sendForgotOtp(){
+  clearAllErrs();
+  forgotKey=document.getElementById('forgotEmail').value.trim().toLowerCase();
+  if(!forgotKey){showErr('err-forgotEmail','Please enter your email address');return;}
+  if(!isValidEmailFormat(forgotKey)){showErr('err-forgotEmail','Please enter a valid email address');return;}
+  let user=registeredUsers.find(u=>u.email===forgotKey);
+  if(!user){showErr('err-forgotEmail','This email is not registered. Please register first');return;}
+  let otp=Math.floor(100000+Math.random()*900000).toString();
+  localStorage.setItem('rekavo_otp_'+forgotKey,otp);
+  showSuccess('success-forgot1',`OTP sent successfully to ${forgotKey}`);
+  document.getElementById('forgotOtpInfo').innerHTML=`OTP sent to <b>${forgotKey}</b><br>Demo OTP: <b>${otp}</b>`;
+  document.getElementById('forgotOtpInfo').classList.add('show');
+  document.getElementById('forgotOtpBox').style.display='block';
+  document.getElementById('forgotOtpBox').classList.remove('hidden');
+  document.getElementById('sendOtpBtn').innerText='Resend OTP';
+}
+function verifyForgotOtp(){
+  clearAllErrs();
+  document.getElementById('success-forgot1').classList.add('show');
+  document.getElementById('forgotOtpInfo').classList.add('show');
+  let otp=document.getElementById('forgotOtp').value.trim();
+  let real=localStorage.getItem('rekavo_otp_'+forgotKey);
+  if(!otp){showErr('err-forgotOtp','Please enter the OTP');return;}
+  if(otp!==real){showErr('err-forgotOtp','Invalid OTP. Correct OTP is: '+real);return;}
+  forgotOtpVerified=true;
+  document.getElementById('forgotOtpBox').style.display='none';
+  document.getElementById('newPassBox').classList.remove('hidden');
+  document.getElementById('forgotValidatedMsg').innerText='OTP Validated Successfully! ✅';
+  document.getElementById('forgotValidatedMsg').classList.add('show');
+}
+function saveNewPassword(){
+  clearAllErrs();
+  document.getElementById('forgotValidatedMsg').classList.add('show');
+  if(!forgotOtpVerified){showErr('err-forgotPass','Please verify OTP first');return;}
+  let p1=document.getElementById('forgotPass').value.trim();
+  let p2=document.getElementById('forgotPass2').value.trim();
+  if(p1.length<6){showErr('err-forgotPass','Password must be at least 6 characters');return;}
+  if(p1!==p2){showErr('err-forgotPass2','Passwords do not match');return;}
+  let user=registeredUsers.find(u=>u.email===forgotKey);
+  if(user){
+    user.password=p1;
+    localStorage.setItem('rekavo_registered_users',JSON.stringify(registeredUsers));
+    localStorage.removeItem('rekavo_otp_'+forgotKey);
+    showSuccess('success-forgotFinal','Password updated successfully! Please login now');
+    setTimeout(()=>switchTab('login'),1200);
+  }
 }
 </script>
 </body>
