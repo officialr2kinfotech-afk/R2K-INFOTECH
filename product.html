@@ -31,7 +31,7 @@ body{background:#fff;padding-bottom:90px}
 .btn-cart{width:100%;background:#ff9f00;color:#fff;border:none;padding:14px;border-radius:4px;font-weight:800;cursor:pointer}
 .btn-buy{width:100%;background:#fb641b;color:#fff;border:none;padding:14px;border-radius:4px;font-weight:800;cursor:pointer}
 .rating-top{display:flex;align-items:center;gap:8px;margin:8px 0}
-.rating-badge{background:#388e3c;color:#fff;font-size:12px;padding:3px 6px;border-radius:3px;font-weight:700}
+.rating-badge{background:#878787;color:#fff;font-size:12px;padding:3px 6px;border-radius:3px;font-weight:700}
 .rating-count{font-size:12px;color:#878787;font-weight:600}
 .review-section{margin:20px 14px;border-top:8px solid #f1f3f6;padding-top:16px}
 .review-head{font-size:16px;font-weight:800;margin-bottom:10px}
@@ -39,13 +39,18 @@ body{background:#fff;padding-bottom:90px}
 .review-card{border:1px solid #f0f0f0;border-radius:6px;padding:10px;margin:10px 0;background:#fff}
 .review-card img{width:70px;height:70px;object-fit:cover;border-radius:6px;margin-top:8px;border:1px solid #eee}
 .upload-box{border:2px dashed #2874f0;background:#f5f8ff;padding:12px;border-radius:6px;margin-top:10px}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:6px 0;border-top:1px solid #ddd;z-index:999}
-.bottom-nav a{text-decoration:none;color:#555;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center}
+.error-msg{color:#d93025;font-size:11px;font-weight:600;margin-top:4px;display:none;background:#fff5f5;padding:5px 7px;border-radius:4px}
+.error-msg.show{display:block}
+.success-msg{color:#188038;font-size:11px;font-weight:700;margin-top:6px;display:none;background:#e6f4ea;padding:8px;border-radius:4px;text-align:center}
+.success-msg.show{display:block}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:999;box-shadow:0 -2px 8px rgba(0,0,0,.06)}
+.bottom-nav a{text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;white-space:nowrap;text-align:center}
+.bottom-nav a span{white-space:nowrap}
 </style>
 </head>
 <body>
 <div class="top-strip">🔥 Use Coupon For Extra Discount At 20%, 40%, 50%, 80% And More....</div>
-<div class="search-wrapper"><div class="search-box"><input id="mainSearch" placeholder="Search for products, brands and more" oninput="liveSearch(this.value)"><button>⌕</button><div id="searchResults" class="search-results"></div></div></div>
+<div class="search-wrapper"><div class="search-box"><input id="mainSearch" placeholder="Search for products, brands and more" oninput="liveSearch(this.value)" autocomplete="off"><button>⌕</button><div id="searchResults" class="search-results"></div></div></div>
 
 <div class="detail-wrap">
   <div class="detail-left">
@@ -55,21 +60,22 @@ body{background:#fff;padding-bottom:90px}
   </div>
   <div class="detail-right">
     <h2 id="pName"></h2>
-    <div class="rating-top"><span id="pRatingBadge" class="rating-badge">4.4 ★</span><span id="pRatingCount" class="rating-count">(2,431 Ratings)</span><span style="color:#2874f0;font-size:12px;font-weight:700"> • Assured</span></div>
+    <div class="rating-top"><span id="pRatingBadge" class="rating-badge">0 ★</span><span id="pRatingCount" class="rating-count">(0 Ratings)</span><span style="color:#2874f0;font-size:12px;font-weight:700"> • Assured</span></div>
     <div style="margin:10px 0"><span id="pOld" class="old-price"></span> <span id="pPrice" class="price"></span> <span id="pOff" style="color:#388e3c;font-weight:800"></span></div>
     <p style="font-size:12px">Coupon Code: <b id="pCoupon" style="color:#2874f0;background:#e6efff;padding:3px 8px;border-radius:3px;border:1px dashed #2874f0"></b> <span style="color:#26a541;font-weight:700">- Copy & Apply</span></p>
     <div class="coupon-row"><input id="couponInput" placeholder="Enter Coupon Code"><button id="cBtn" onclick="applyCoupon()">APPLY</button></div>
-    <p id="couponMsg" style="font-size:12px;color:#388e3c;font-weight:700;display:none">✓ Coupon Applied! Extra Discount Added</p>
+    <p id="couponMsg" class="success-msg"></p><p id="couponErr" class="error-msg"></p>
     <div id="pSpec" class="spec-box"></div>
-    <div style="display:flex;gap:10px"><button class="btn-cart" onclick="addToCart()">ADD TO CART</button><button class="btn-buy" onclick="buyNow()">BUY NOW</button></div>
+    <div style="display:flex;gap:10px;margin-bottom:10px"><button class="btn-cart" onclick="addToCart()">ADD TO CART</button><button class="btn-buy" onclick="buyNow()">BUY NOW</button></div>
+    <p id="cartMsg" class="success-msg"></p>
   </div>
 </div>
 
 <div class="review-section">
   <div class="review-head">Ratings & Reviews</div>
-  <div style="display:flex;align-items:center;gap:10px">
-    <div style="font-size:28px;font-weight:800">4.4 <span style="color:#ff9f00;font-size:18px">★</span></div>
-    <div style="font-size:12px;color:#878787">2,431 Ratings &<br>412 Reviews</div>
+  <div style="display:flex;align-items:center;gap:10px" id="ratingSummary">
+    <div id="avgBig" style="font-size:28px;font-weight:800">0 <span style="color:#878787;font-size:18px">★</span></div>
+    <div id="avgCount" style="font-size:12px;color:#878787">0 Ratings &<br>0 Reviews</div>
   </div>
 
   <div style="margin-top:14px;background:#fff;border:1px solid #f0f0f0;border-radius:6px;padding:12px">
@@ -81,6 +87,7 @@ body{background:#fff;padding-bottom:90px}
       <span class="star" onclick="setStar(4)">★</span>
       <span class="star" onclick="setStar(5)">★</span>
     </div>
+    <p id="err-review" class="error-msg"></p>
     <textarea id="reviewText" placeholder="Write your review..." style="width:100%;margin-top:10px;padding:10px;border:1px solid #e0e0e0;border-radius:4px;height:70px;outline:none"></textarea>
 
     <div class="upload-box">
@@ -90,15 +97,23 @@ body{background:#fff;padding-bottom:90px}
     </div>
 
     <button onclick="submitReview()" style="margin-top:12px;background:#2874f0;color:#fff;border:none;padding:10px 20px;border-radius:4px;font-weight:700;cursor:pointer;width:100%">SUBMIT REVIEW</button>
+    <p id="reviewMsg" class="success-msg"></p>
   </div>
 
   <div id="reviewList" style="margin-top:16px">
-    <div class="review-card"><b>Rahul S. • </b><span style="background:#388e3c;color:#fff;padding:2px 6px;border-radius:3px;font-size:11px">5 ★</span><p style="font-size:12px;margin-top:4px">Best powerbank in this price. Battery backup is awesome!</p><img src="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=200"></div>
-    <div class="review-card"><b>Priya M. • </b><span style="background:#388e3c;color:#fff;padding:2px 6px;border-radius:3px;font-size:11px">4 ★</span><p style="font-size:12px;margin-top:4px">Good quality, fast charging working fine.</p></div>
+    <div id="noReviewBox" style="text-align:center;padding:30px 10px;background:#fafafa;border:1px dashed #e0e0e0;border-radius:8px">
+      <div style="font-size:36px">⭐</div>
+      <p style="font-size:13px;font-weight:700;margin-top:8px">No reviews yet</p>
+      <p style="font-size:11px;color:#878787;margin-top:4px">Be the first to review this product and help others</p>
+    </div>
   </div>
 </div>
 
-<div class="bottom-nav"><a href="index.html">🏠 Home</a><a href="account.html">👤 Account</a><a href="cart.html">🛒 Cart (<span id="cartCount">0</span>)</a></div>
+<div class="bottom-nav">
+  <a href="index.html"><span>🏠</span><span>Home</span></a>
+  <a href="account.html"><span>👤</span><span>Account</span></a>
+  <a href="cart.html"><span>🛒 Cart (<span id="cartCount">0</span>)</span></a>
+</div>
 
 <script>
 const categoryData={
@@ -148,32 +163,77 @@ if(!product){
   document.getElementById('mainImg').src = product.img;
   document.getElementById('pSpec').innerText = product.desc + "\n\n" + product.spec;
   document.getElementById('thumbs').innerHTML = [product.img,product.img,product.img,product.img].map((t,i)=>`<img src="${t}" class="${i==0?'active':''}" onclick="changeImg(this,'${t}')">`).join('');
-  let r=(3.8+Math.random()).toFixed(1); let c=Math.floor(1000+Math.random()*4000);
-  document.getElementById('pRatingBadge').innerText=r+" ★";
-  document.getElementById('pRatingCount').innerText="("+c+" Ratings)";
 }
 
 function changeImg(el,src){document.getElementById('mainImg').src=src;document.querySelectorAll('#thumbs img').forEach(i=>i.classList.remove('active'));el.classList.add('active')}
 function applyCoupon(){
   let input=document.getElementById('couponInput').value.trim().toUpperCase();
+  document.getElementById('couponMsg').classList.remove('show');
+  document.getElementById('couponErr').classList.remove('show');
   if(input===product.coupon.toUpperCase()){
     let disc=getDiscount(product.coupon);
     finalPrice=Math.round(product.originalPrice - (product.originalPrice*disc/100));
     document.getElementById('pPrice').innerText="₹"+finalPrice;
     document.getElementById('cBtn').innerText="APPLIED ✓";
     document.getElementById('cBtn').style.background="#388e3c";
-    document.getElementById('couponMsg').style.display="block";
-  } else { alert("Wrong coupon! Correct is: "+product.coupon); }
+    document.getElementById('couponMsg').innerText="✓ Coupon Applied! Extra Discount Added";
+    document.getElementById('couponMsg').classList.add('show');
+  } else {
+    document.getElementById('couponErr').innerText="Invalid coupon! Valid code is: "+product.coupon;
+    document.getElementById('couponErr').classList.add('show');
+  }
 }
-function addToCart(){cart.push({name:product.name,price:finalPrice,img:product.img});localStorage.setItem('rekavo_cart',JSON.stringify(cart));alert(product.name+" added to cart ₹"+finalPrice);location.href='cart.html';}
+function addToCart(){
+  cart.push({name:product.name,price:finalPrice,img:product.img});
+  localStorage.setItem('rekavo_cart',JSON.stringify(cart));
+  document.getElementById('cartCount').innerText=cart.length;
+  document.getElementById('cartMsg').innerText=product.name+" added to cart ₹"+finalPrice+" ✓";
+  document.getElementById('cartMsg').classList.add('show');
+  setTimeout(()=>location.href='cart.html',600);
+}
 function buyNow(){cart=[{name:product.name,price:finalPrice,img:product.img}];localStorage.setItem('rekavo_cart',JSON.stringify(cart));location.href='cart.html';}
 
-// FIXED RATING + PHOTO UPLOAD LOGIC
+// ===== REVIEW SYSTEM WITH COUNT =====
 let currentStar=0; let uploadedPhoto="";
+let reviewKey = 'rekavo_reviews_'+cat+'_'+idx;
+let reviews = JSON.parse(localStorage.getItem(reviewKey) || '[]');
+
+function updateRatingUI(){
+  if(reviews.length===0){
+    document.getElementById('pRatingBadge').innerText="0 ★";
+    document.getElementById('pRatingBadge').style.background="#878787";
+    document.getElementById('pRatingCount').innerText="(0 Ratings)";
+    document.getElementById('avgBig').innerHTML=`0 <span style="color:#878787;font-size:18px">★</span>`;
+    document.getElementById('avgCount').innerHTML=`0 Ratings &<br>0 Reviews`;
+    return;
+  }
+  let total = reviews.reduce((s,r)=>s+r.star,0);
+  let avg = (total / reviews.length).toFixed(1);
+  document.getElementById('pRatingBadge').innerText=avg+" ★";
+  document.getElementById('pRatingBadge').style.background="#388e3c";
+  document.getElementById('pRatingCount').innerText="("+reviews.length+" Ratings)";
+  document.getElementById('avgBig').innerHTML=`${avg} <span style="color:#ff9f00;font-size:18px">★</span>`;
+  document.getElementById('avgCount').innerHTML=`${reviews.length} Ratings &<br>${reviews.length} Reviews`;
+}
+
+function loadReviews(){
+  if(reviews.length===0) return;
+  document.getElementById('reviewList').innerHTML="";
+  reviews.slice().reverse().forEach(r=>{
+    let div=document.createElement('div'); div.className='review-card';
+    div.innerHTML=`<b>${r.name||'Customer'} • </b><span style="background:#388e3c;color:#fff;padding:2px 6px;border-radius:3px;font-size:11px">${r.star} ★</span><p style="font-size:12px;margin-top:6px">${r.text}</p>${r.photo?`<img src="${r.photo}">`:''}`;
+    document.getElementById('reviewList').appendChild(div);
+  });
+  updateRatingUI();
+}
+
 function setStar(n){
   currentStar=n;
-  let stars=document.querySelectorAll('#starBox.star');
-  stars.forEach((s,i)=>{ if(i < n) s.classList.add('active'); else s.classList.remove('active'); });
+  document.querySelectorAll('#starBox.star').forEach((s,i)=>{
+    if(i < n) s.classList.add('active');
+    else s.classList.remove('active');
+  });
+  document.getElementById('err-review').classList.remove('show');
 }
 function previewPhoto(e){
   let file=e.target.files[0];
@@ -190,19 +250,43 @@ function previewPhoto(e){
 }
 function submitReview(){
   let txt=document.getElementById('reviewText').value.trim();
-  if(currentStar==0){alert("Please select stars");return}
-  if(txt==""){alert("Please write review");return}
-  let div=document.createElement('div'); div.className='review-card';
-  div.innerHTML=`<b>You • </b><span style="background:#388e3c;color:#fff;padding:2px 6px;border-radius:3px;font-size:11px">${currentStar} ★</span><p style="font-size:12px;margin-top:6px">${txt}</p>${uploadedPhoto?`<img src="${uploadedPhoto}">`:''}`;
-  document.getElementById('reviewList').prepend(div);
+  if(currentStar==0){
+    document.getElementById('err-review').innerText="Please select a star rating";
+    document.getElementById('err-review').classList.add('show');
+    return;
+  }
+  if(txt==""){
+    document.getElementById('err-review').innerText="Please write your review";
+    document.getElementById('err-review').classList.add('show');
+    return;
+  }
+
+  let newRev = {star:currentStar, text:txt, photo:uploadedPhoto, name:'You'};
+  reviews.push(newRev);
+  localStorage.setItem(reviewKey, JSON.stringify(reviews));
+
+  document.getElementById('reviewList').innerHTML="";
+  reviews.slice().reverse().forEach(r=>{
+    let div=document.createElement('div'); div.className='review-card';
+    div.innerHTML=`<b>${r.name} • </b><span style="background:#388e3c;color:#fff;padding:2px 6px;border-radius:3px;font-size:11px">${r.star} ★</span><p style="font-size:12px;margin-top:6px">${r.text}</p>${r.photo?`<img src="${r.photo}">`:''}`;
+    document.getElementById('reviewList').appendChild(div);
+  });
+
+  document.getElementById('reviewMsg').innerText="Review submitted! Total: "+reviews.length+" ✓";
+  document.getElementById('reviewMsg').classList.add('show');
+  updateRatingUI();
+
   document.getElementById('reviewText').value="";
   currentStar=0;
   document.querySelectorAll('#starBox.star').forEach(s=>s.classList.remove('active'));
   document.getElementById('photoPreview').style.display='none';
   document.getElementById('reviewPhoto').value="";
   uploadedPhoto="";
-  alert("Review Submitted ✓");
 }
+
+// Initial load
+loadReviews();
+updateRatingUI();
 </script>
 </body>
 </html>
