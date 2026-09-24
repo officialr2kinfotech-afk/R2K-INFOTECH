@@ -6,60 +6,108 @@
 <title>My Cart - REKAVO</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,sans-serif}
-body{background:#f1f3f6;padding-bottom:70px}
-.top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:7px 12px;font-size:12px;font-weight:800}
-.search-wrapper{background:#2874f0;padding:10px 12px;position:sticky;top:0;z-index:99}
-.search-box{width:100%;display:flex;background:#fff;border-radius:2px;overflow:hidden;height:42px}
-.search-box input{flex:1;border:none;padding:0 14px;outline:none}
-.search-box button{background:#fff;border:none;color:#2874f0;padding:0 18px;font-size:20px;font-weight:900}
-
-/* Empty Cart - Clean */
-.empty-cart-wrap{background:#fff;min-height:75vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px;text-align:center}
-.trolley-big{font-size:90px;margin-bottom:15px;background:#f7f7f7;width:150px;height:150px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.empty-title{font-size:18px;font-weight:700;margin-bottom:22px}
-.btn-login{background:#2874f0;color:#fff;border:none;padding:11px 70px;border-radius:4px;font-weight:700;font-size:15px;cursor:pointer}
-.continue-link{color:#2874f0;margin-top:16px;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer}
-
-.cart-box{background:#fff;padding:12px;margin:8px;border-radius:4px}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:999}
-.bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;white-space:nowrap;flex:1}
+body{background:#f1f3f6;padding-bottom:120px}
+.top{position:sticky;top:0;background:#fff;padding:14px;display:flex;align-items:center;gap:14px;z-index:10;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.top b{font-size:16px}
+.cart-item{background:#fff;margin-bottom:8px;padding:12px}
+.badge{color:#26a541;background:#e6f4ea;font-size:11px;font-weight:700;padding:3px 6px;border-radius:3px;display:inline-block;margin-bottom:8px}
+.item-row{display:flex;gap:12px}
+.item-row img{width:88px;height:88px;object-fit:contain;border:1px solid #f0f0f0;border-radius:6px}
+.item-info{flex:1}
+.item-name{font-size:14px;font-weight:500;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.item-size{font-size:12px;color:#878787;margin-top:4px}
+.item-rating{font-size:12px;margin-top:6px;display:flex;align-items:center;gap:6px;color:#878787}
+.stars{color:#26a541;font-size:13px}
+.price-row{display:flex;align-items:center;gap:10px;margin-top:14px}
+.qty-box{border:1px solid #e0e0e0;border-radius:4px;padding:6px 10px;font-size:13px;font-weight:700;background:#fff;display:flex;align-items:center;gap:6px;cursor:pointer}
+.off{color:#26a541;font-size:14px;font-weight:700}
+.old{text-decoration:line-through;color:#878787;font-size:14px}
+.new{font-size:18px;font-weight:800}
+.delivery{font-size:12px;margin-top:10px}
+.action-row{display:flex;border-top:1px solid #f0f0f0;margin-top:12px}
+.action-row button{flex:1;background:#fff;border:none;padding:14px 6px;font-size:13px;font-weight:600;color:#616161;display:flex;align-items:center;justify-content:center;gap:6px;border-right:1px solid #f0f0f0;cursor:pointer}
+.action-row button:last-child{border-right:none}
+.bottom-bar{position:fixed;bottom:52px;left:0;right:0;background:#fff;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 -2px 10px rgba(0,0,0,.15);z-index:99}
+.place-btn{background:#fb641b;color:#fff;border:none;padding:14px 38px;border-radius:4px;font-weight:800;font-size:15px}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:100}
+.bottom-nav a{text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;white-space:nowrap}
 .bottom-nav a.active{color:#2874f0}
+.empty{padding:80px 20px;text-align:center;background:#fff}
 </style>
 </head>
 <body>
-<div class="top-strip">🔥 Use Coupon For Extra Discount At 20%, 40%, 50%, 80% And More....</div>
-<div class="search-wrapper"><div class="search-box"><input placeholder="Search for products" onclick="location.href='index.html'"><button>⌕</button></div></div>
-
+<div class="top"><span onclick="history.back()" style="font-size:20px;cursor:pointer">←</span><b>My Cart (<span id="count">0</span>)</b></div>
 <div id="cartContainer"></div>
 
+<div class="bottom-bar" id="bottomBar" style="display:none">
+  <div><div id="totalOld" style="font-size:13px;color:#878787;text-decoration:line-through">0</div><div id="totalNew" style="font-size:20px;font-weight:800">₹0</div></div>
+  <button class="place-btn" onclick="placeOrder()">Place order</button>
+</div>
+
 <div class="bottom-nav">
-<a href="index.html"><span>🏠</span><span>Home</span></a>
-<a href="account.html"><span>👤</span><span>Account</span></a>
-<a href="cart.html" class="active"><span>🛒</span><span>Cart (<span id="cartCount">0</span>)</span></a>
+  <a href="index.html"><span>🏠</span>Home</a>
+  <a href="account.html"><span>👤</span>Account</a>
+  <a href="cart.html" class="active"><span>🛒</span>Cart (<span id="navCount">0</span>)</a>
 </div>
 
 <script>
-let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
-document.getElementById('cartCount').innerText = cart.length;
-let container = document.getElementById('cartContainer');
-
-if(cart.length === 0){
-  container.innerHTML = `
-    <div class="empty-cart-wrap">
-      <div class="trolley-big">🛒</div>
-      <div class="empty-title">Missing Cart items?</div>
-      <button class="btn-login" onclick="location.href='account.html'">Login</button>
-      <a class="continue-link" href="index.html">Continue Shopping</a>
-    </div>
-  `;
-} else {
-  let html = '<div class="cart-box"><b>Your Items</b>';
-  cart.forEach(i=>{
-    html+=`<div style="display:flex;gap:10px;padding:10px;border:1px solid #f0f0f0;margin-top:8px;border-radius:4px"><img src="${i.img}" style="width:60px;height:60px;object-fit:contain"><div><div style="font-size:13px;font-weight:600">${i.name}</div><div style="color:#388e3c;font-weight:800">₹${i.price}</div></div></div>`;
-  });
-  html+='</div>';
-  container.innerHTML = html;
+let user = JSON.parse(localStorage.getItem('rekavo_user')||'null');
+if(!user){
+  document.getElementById('cartContainer').innerHTML=`<div class="empty"><p style="font-size:16px;font-weight:700">Please login to view your cart</p><button onclick="location.href='account.html'" style="margin-top:14px;background:#2874f0;color:#fff;border:none;padding:10px 22px;border-radius:4px;font-weight:700">Login Now</button></div>`;
+}else{
+  renderCart();
 }
+function renderCart(){
+  let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+  document.getElementById('count').innerText=cart.length;
+  document.getElementById('navCount').innerText=cart.length;
+  if(cart.length==0){
+    document.getElementById('cartContainer').innerHTML=`<div class="empty"><p>Your cart is empty</p><button onclick="location.href='index.html'" style="margin-top:12px;background:#2874f0;color:#fff;border:none;padding:8px 16px;border-radius:4px">Shop Now</button></div>`;
+    document.getElementById('bottomBar').style.display='none';
+    return;
+  }
+  document.getElementById('bottomBar').style.display='flex';
+  let totalOld=0, totalNew=0;
+  document.getElementById('cartContainer').innerHTML = cart.map((p,i)=>{
+    let off = p.originalPrice? Math.round(((p.originalPrice-p.price)/p.originalPrice)*100) : 37;
+    totalOld+= (p.originalPrice||Math.round(p.price*1.6))*(p.qty||1);
+    totalNew+= p.price*(p.qty||1);
+    return `<div class="cart-item">
+      <div class="badge">Big Billion Days Price</div>
+      <div class="item-row">
+        <img src="${p.img}">
+        <div class="item-info">
+          <div class="item-name">${p.name} - Original REKAVO Product</div>
+          <div class="item-size">Color: Black, Warranty: 6 Months</div>
+          <div class="item-rating"><span class="stars">★★★★★</span> 4.4 • (10,671) <span style="color:#2874f0;font-weight:700">✓Assured</span></div>
+        </div>
+      </div>
+      <div class="price-row">
+        <div class="qty-box" onclick="changeQty(${i})">Qty: ${p.qty||1} ▼</div>
+        <span class="off">↓${off}%</span>
+        <span class="old">₹${p.originalPrice||Math.round(p.price*1.6)}</span>
+        <span class="new">₹${p.price}</span>
+      </div>
+      <div class="delivery">Delivery by ${new Date(Date.now()+3*86400000).toLocaleDateString('en-IN',{day:'numeric',month:'short'})} | <span style="color:#26a541">Free</span></div>
+      <div class="action-row">
+        <button onclick="saveLater(${i})">⤓ Save for later</button>
+        <button onclick="removeItem(${i})">🗑 Remove</button>
+        <button onclick="buyNowItem(${i})">⚡ Buy this now</button>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('totalOld').innerText='₹'+totalOld.toLocaleString('en-IN');
+  document.getElementById('totalNew').innerText='₹'+totalNew.toLocaleString('en-IN');
+}
+function changeQty(i){
+  let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+  let q=prompt("Enter Qty (1-5)", cart[i].qty||1);
+  if(q){ cart[i].qty=Math.min(5,Math.max(1,parseInt(q)||1)); localStorage.setItem('rekavo_cart',JSON.stringify(cart)); renderCart(); }
+}
+function removeItem(i){ let c=JSON.parse(localStorage.getItem('rekavo_cart')||'[]'); c.splice(i,1); localStorage.setItem('rekavo_cart',JSON.stringify(c)); renderCart(); }
+function saveLater(i){ alert("Saved for later!"); removeItem(i); }
+function buyNowItem(i){ let c=JSON.parse(localStorage.getItem('rekavo_cart')||'[]'); let item=c[i]; localStorage.setItem('rekavo_cart',JSON.stringify([item])); location.href='checkout.html'; }
+function placeOrder(){ location.href='checkout.html'; }
 </script>
 </body>
 </html>
