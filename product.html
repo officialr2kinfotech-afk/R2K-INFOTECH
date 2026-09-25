@@ -184,14 +184,18 @@ function applyCoupon(){
   }
 }
 function addToCart(){
-  cart.push({name:product.name,price:finalPrice,img:product.img});
+  cart.push({name:product.name,price:finalPrice,img:product.img,desc:product.desc,spec:product.spec,original:product.originalPrice,mrp:product.originalPrice,coupon:product.coupon});
   localStorage.setItem('rekavo_cart',JSON.stringify(cart));
   document.getElementById('cartCount').innerText=cart.length;
   document.getElementById('cartMsg').innerText=product.name+" added to cart ₹"+finalPrice+" ✓";
   document.getElementById('cartMsg').classList.add('show');
   setTimeout(()=>location.href='cart.html',600);
 }
-function buyNow(){cart=[{name:product.name,price:finalPrice,img:product.img}];localStorage.setItem('rekavo_cart',JSON.stringify(cart));location.href='cart.html';}
+function buyNow(){
+  let single=[{name:product.name,price:finalPrice,img:product.img,desc:product.desc,spec:product.spec,original:product.originalPrice,mrp:product.originalPrice,coupon:product.coupon}];
+  localStorage.setItem('rekavo_cart',JSON.stringify(single));
+  location.href='cart.html';
+}
 
 // ===== REVIEW SYSTEM WITH COUNT =====
 let currentStar=0; let uploadedPhoto="";
