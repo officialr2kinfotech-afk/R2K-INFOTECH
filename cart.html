@@ -5,152 +5,126 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Cart - REKAVO</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto, Arial, sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,sans-serif}
 body{background:#f1f3f6;padding-bottom:140px}
-.top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:6px;font-size:12px;font-weight:800}
-.header{background:#fff;padding:12px 16px;display:flex;align-items:center;gap:16px;box-shadow:0 1px 2px rgba(0,0,0,.1);position:sticky;top:0;z-index:99}
+.top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:7px;font-size:12px;font-weight:800}
+.header{background:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 2px rgba(0,0,0,.1);position:sticky;top:0;z-index:99}
 .header h1{font-size:16px;font-weight:500}
 
-/* Empty */
-.empty-wrap{background:#fff;min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
-.empty-icon{font-size:80px;background:#f5f5f5;width:130px;height:130px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:15px}
-.empty-title{font-size:16px;font-weight:600;margin-bottom:20px}
+/* Empty Cases - IF ELSE SAFE */
+.empty-wrap{background:#fff;min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
+.empty-icon{font-size:70px;background:#f5f5f5;width:120px;height:120px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.empty-title{font-size:16px;font-weight:600;margin-bottom:18px}
 .btn-blue{background:#2874f0;color:#fff;border:none;padding:10px 50px;border-radius:3px;font-weight:600;cursor:pointer}
-.btn-blue-shop{background:#2874f0;color:#fff;border:none;padding:12px 40px;border-radius:3px;font-weight:600;cursor:pointer}
-.link-blue{color:#2874f0;font-size:13px;margin-top:14px;font-weight:600;text-decoration:none}
 
-/* Flipkart Cart Card - Exactly like screenshot */
-.cart-card{background:#fff;margin-bottom:8px;padding:12px 12px 0 12px}
-.bbd-tag{background:#e6f4ea;color:#008c37;display:inline-block;padding:2px 6px;font-size:12px;font-weight:500;border-radius:2px;margin-bottom:8px}
-.item-top{display:flex;gap:12px}
-.item-img{width:85px;height:85px;border:1px solid #f0f0f0;border-radius:4px;object-fit:contain;padding:4px}
+/* Cart Card - Clean, No Fake Data */
+.cart-card{background:#fff;margin-bottom:8px;padding:12px;border-radius:2px}
+.item-top{display:flex;gap:12px;cursor:pointer}
+.item-img{width:90px;height:90px;object-fit:contain;border:1px solid #f0f0f0;border-radius:4px;flex-shrink:0}
 .item-right{flex:1}
-.item-title{font-size:14px;font-weight:400;line-height:18px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.item-variant{font-size:12px;color:#878787;margin-top:3px}
-.rating-row{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:12px;color:#878787}
-.stars{color:#008c37;font-size:14px}
-.assured{height:16px}
-.qty-price-row{display:flex;align-items:center;gap:12px;margin-top:12px}
-.qty-box{border:1px solid #c2c2c2;border-radius:3px;padding:6px 10px;font-size:13px;font-weight:600;background:#fff;cursor:pointer}
-.off-green{color:#008c37;font-weight:700;font-size:16px}
-.cut-price{color:#878787;text-decoration:line-through;font-size:14px;margin-left:4px}
-.main-price{font-weight:700;font-size:18px;margin-left:4px}
-.protect-fee{font-size:12px;color:#212121;margin-top:6px}
-.delivery{font-size:12px;color:#212121;margin-top:12px;padding-bottom:12px}
-.only-few{color:#d00;font-size:12px;font-weight:600;margin-top:6px}
+.item-name{font-size:14px;line-height:18px;font-weight:400;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.item-price{font-size:16px;font-weight:700;margin-top:8px}
+.item-price span.cut{font-size:13px;color:#878787;text-decoration:line-through;font-weight:400;margin-left:6px}
+.item-stock{font-size:12px;color:#388e3c;margin-top:4px}
 
-/* Action Row */
-.action-row{display:flex;border-top:1px solid #f0f0f0;margin-top:0}
-.action-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:14px 0;font-size:13px;font-weight:600;color:#212121;background:#fff;border:none;border-right:1px solid #f0f0f0;cursor:pointer}
-.action-btn:last-child{border-right:none}
-.action-btn:active{background:#f5f5f5}
+/* Qty - Small list, not popup */
+.qty-row{display:flex;align-items:center;gap:10px;margin-top:10px}
+.qty-label{font-size:13px;color:#555}
+.qty-select{border:1px solid #c2c2c2;border-radius:2px;padding:4px 6px;font-size:13px;background:#fff;min-width:55px}
 
-/* Bottom Price Bar */
-.bottom-bar{position:fixed;bottom:52px;left:0;right:0;background:#fff;display:flex;justify-content:space-between;align-items:center;padding:10px 12px;box-shadow:0 -2px 10px rgba(0,0,0,.15);z-index:998}
-.total-price{line-height:16px}
-.total-price small{color:#878787;text-decoration:line-through;font-size:13px;display:block}
-.total-price b{font-size:18px}
-.place-btn{background:#ffc200;color:#212121;border:none;padding:14px 40px;border-radius:4px;font-weight:700;font-size:14px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+/* Action Buttons */
+.action-row{display:flex;border-top:1px solid #f0f0f0;margin-top:12px}
+.action-btn{flex:1;padding:13px 0;text-align:center;font-size:13px;font-weight:600;background:#fff;border:none;border-right:1px solid #f0f0f0;cursor:pointer;text-transform:uppercase}
+.action-btn:last-child{border:none}
+.action-btn.remove{color:#212121}
+.action-btn.buy{color:#2874f0}
 
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:6px 0;border-top:1px solid #e0e0e0;z-index:999}
+/* Bottom Bar */
+.bottom-bar{position:fixed;bottom:52px;left:0;right:0;background:#fff;display:flex;justify-content:space-between;align-items:center;padding:10px 12px;box-shadow:0 -2px 8px rgba(0,0,0,.15);z-index:998}
+.place-btn{background:#fb641b;color:#fff;border:none;padding:13px 35px;border-radius:3px;font-weight:700;font-size:14px;cursor:pointer}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:6px 0;border-top:1px solid #ddd;z-index:999}
 .bottom-nav a{text-decoration:none;color:#555;font-size:11px;display:flex;flex-direction:column;align-items:center;flex:1}
 .bottom-nav a.active{color:#2874f0}
 </style>
 </head>
 <body>
-<div class="top-strip">🔥 Extra Discount 20%, 40%, 50%, 80% Coupon Available</div>
-<div class="header"><span onclick="history.back()" style="font-size:20px;cursor:pointer">←</span><h1>My Cart</h1></div>
+<div class="top-strip">🔥 Extra Discount Coupons Available</div>
+<div class="header"><span onclick="history.back()">←</span><h1>My Cart</h1></div>
 
 <div id="cartContainer"></div>
 <div id="bottomBar"></div>
 
 <div class="bottom-nav">
-<a href="index.html"><span style="font-size:22px">⌂</span>Home</a>
-<a href="#"><span style="font-size:22px">⊞</span>Categories</a>
-<a href="account.html"><span style="font-size:22px">👤</span>Account</a>
-<a href="cart.html" class="active"><span style="font-size:22px">🛒</span>Cart</a>
+<a href="index.html">Home</a>
+<a href="account.html">Account</a>
+<a href="cart.html" class="active">Cart (<span id="cartCount">0</span>)</a>
 </div>
 
 <script>
-function getCart(){
-  let c=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
-  return c.map(i=>{ if(!i.qty) i.qty=1; return i; });
-}
+function getCart(){ let c=JSON.parse(localStorage.getItem('rekavo_cart')||'[]'); return c.map(i=>{ if(!i.qty) i.qty=1; return i; }); }
 function saveCart(c){ localStorage.setItem('rekavo_cart', JSON.stringify(c)); render(); }
+
+function openProduct(idx){
+  let cart=getCart();
+  localStorage.setItem('rekavo_selected_product', JSON.stringify(cart[idx]));
+  location.href='product.html';
+}
 
 function render(){
   let cart=getCart();
   let user=localStorage.getItem('rekavo_user');
+  document.getElementById('cartCount').innerText=cart.length;
   let con=document.getElementById('cartContainer');
   let bar=document.getElementById('bottomBar');
 
-  // === IF-ELSE FOR EMPTY CART - DONO CASE ===
   if(cart.length===0){
     if(user){
-      con.innerHTML=`<div class="empty-wrap"><div class="empty-icon">🛒</div><div class="empty-title">Your cart is empty!</div><button class="btn-blue-shop" onclick="location.href='index.html'">Shop now</button></div>`;
-    } else {
-      con.innerHTML=`<div class="empty-wrap"><div class="empty-icon">🛒</div><div class="empty-title">Missing Cart items?</div><button class="btn-blue" onclick="location.href='account.html'">Login</button><a class="link-blue" href="index.html">Continue Shopping</a></div>`;
+      con.innerHTML=`<div class="empty-wrap"><div class="empty-icon">🛒</div><div class="empty-title">Your cart is empty!</div><button class="btn-blue" onclick="location.href='index.html'">Shop now</button></div>`;
+    }else{
+      con.innerHTML=`<div class="empty-wrap"><div class="empty-icon">🛒</div><div class="empty-title">Missing Cart items?</div><button class="btn-blue" onclick="location.href='account.html'">Login</button></div>`;
     }
     bar.innerHTML=''; return;
   }
 
-  let html=''; let total=0; let mrpTotal=0;
+  let html=''; let total=0;
   cart.forEach((item, idx)=>{
-    let original = item.original || Math.round(item.price*1.8);
-    let off = Math.round(((original-item.price)/original)*100);
-    total += item.price * item.qty;
-    mrpTotal += original * item.qty;
-
+    let itemTotal = item.price * item.qty;
+    total+=itemTotal;
     html+=`
     <div class="cart-card">
-      <div class="bbd-tag">Big Billion Days Price</div>
-      <div class="item-top">
-        <img class="item-img" src="${item.img}" onerror="this.src='https://via.placeholder.com/80'">
+      <div class="item-top" onclick="openProduct(${idx})">
+        <img class="item-img" src="${item.img}">
         <div class="item-right">
-          <div class="item-title">${item.name}</div>
-          <div class="item-variant">${item.variant || 'Black, True Wireless'}</div>
-          <div class="rating-row"><span class="stars">★★★★☆</span> 4.0 <span>• (17,767)</span></div>
-          <div class="qty-price-row">
-            <select class="qty-box" onchange="changeQty(${idx}, this.value)">
-              <option ${item.qty==1?'selected':''} value="1">Qty: 1</option>
-              <option ${item.qty==2?'selected':''} value="2">Qty: 2</option>
-              <option ${item.qty==3?'selected':''} value="3">Qty: 3</option>
-              <option ${item.qty==4?'selected':''} value="4">Qty: 4</option>
-              <option ${item.qty==5?'selected':''} value="5">Qty: 5</option>
-            </select>
-            <span class="off-green">↓${off}%</span>
-            <span class="cut-price">₹${original.toLocaleString()}</span>
-            <span class="main-price">₹${item.price.toLocaleString()}</span>
-          </div>
-          <div class="protect-fee">+ ₹19 Protect Promise Fee <span style="border:1px solid #888;border-radius:50%;padding:0 4px;font-size:10px">i</span></div>
+          <div class="item-name">${item.name}</div>
+          <div class="item-price">₹${itemTotal.toLocaleString()} ${item.original? `<span class="cut">₹${(item.original*item.qty).toLocaleString()}</span>`:''}</div>
+          <div class="item-stock">In Stock • Free Delivery</div>
         </div>
       </div>
-      ${item.qty>=2? '<div class="only-few">Only few left</div>' : ''}
-      <div class="delivery">Delivery by Oct 1, Thu</div>
+      <div class="qty-row">
+        <span class="qty-label">Qty:</span>
+        <select class="qty-select" onchange="changeQty(${idx}, this.value)" onclick="event.stopPropagation()">
+          <option value="1" ${item.qty==1?'selected':''}>1</option>
+          <option value="2" ${item.qty==2?'selected':''}>2</option>
+          <option value="3" ${item.qty==3?'selected':''}>3</option>
+          <option value="4" ${item.qty==4?'selected':''}>4</option>
+          <option value="5" ${item.qty==5?'selected':''}>5</option>
+        </select>
+      </div>
       <div class="action-row">
-        <button class="action-btn" onclick="saveLater(${idx})"><span>⤓</span> Save for later</button>
-        <button class="action-btn" onclick="removeItem(${idx})"><span>🗑</span> Remove</button>
-        <button class="action-btn" onclick="buyNow(${idx})"><span>⚡</span> Buy this now</button>
+        <button class="action-btn remove" onclick="removeItem(${idx})">Remove</button>
+        <button class="action-btn buy" onclick="buyNow(${idx})">Buy this now</button>
       </div>
     </div>`;
   });
   con.innerHTML=html;
-  bar.innerHTML=`
-    <div class="bottom-bar">
-      <div class="total-price"><small>₹${mrpTotal.toLocaleString()}</small><b>₹${total.toLocaleString()}</b></div>
-      <button class="place-btn" onclick="placeOrder()">Place order</button>
-    </div>`;
+  bar.innerHTML=`<div class="bottom-bar"><div style="font-weight:700;font-size:18px">₹${total.toLocaleString()}</div><button class="place-btn" onclick="placeOrder()">PLACE ORDER</button></div>`;
 }
 
-function changeQty(idx, val){ let c=getCart(); c[idx].qty=parseInt(val); saveCart(c); }
-function removeItem(idx){ if(confirm('Remove this item?')){ let c=getCart(); c.splice(idx,1); saveCart(c); } }
-function saveLater(idx){ alert('Saved for later!'); removeItem(idx); }
+function changeQty(idx,val){ let c=getCart(); c[idx].qty=parseInt(val); saveCart(c); }
+function removeItem(idx){ if(confirm('Remove?')){ let c=getCart(); c.splice(idx,1); saveCart(c); } }
 function buyNow(idx){ let c=getCart(); localStorage.setItem('rekavo_buy_now', JSON.stringify(c[idx])); location.href='checkout.html'; }
-function placeOrder(){
-  let u=localStorage.getItem('rekavo_user');
-  if(!u){ location.href='account.html'; return; }
-  location.href='checkout.html';
-}
+function placeOrder(){ let u=localStorage.getItem('rekavo_user'); if(!u){ location.href='account.html'; return; } location.href='checkout.html'; }
 render();
 </script>
 </body>
