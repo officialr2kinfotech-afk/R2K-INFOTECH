@@ -1,0 +1,11 @@
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout</title>
+<style>body{font-family:Roboto;background:#f1f3f6;padding:15px}.box{background:#fff;padding:20px;border-radius:4px;margin-top:50px;text-align:center}
+button{background:#2874f0;color:#fff;border:none;padding:12px 30px;border-radius:4px;margin-top:15px;font-weight:700}</style>
+</head><body>
+<div class="box"><h3>Checkout</h3><p id="total"></p><button onclick="alert('Order Placed!'); localStorage.removeItem('rekavo_cart'); location.href='index.html'">Confirm Order</button></div>
+<script>
+let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+let buy=JSON.parse(localStorage.getItem('rekavo_buy_now')||'null');
+let t=0; if(buy){ t=buy.price*buy.qty; } else { cart.forEach(i=>t+=i.price*i.qty); }
+document.getElementById('total').innerText='Total Payable: ₹'+t;
+</script></body></html>
