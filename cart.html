@@ -10,13 +10,9 @@ body{background:#f1f3f6;padding-bottom:135px}
 .top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:7px;font-size:12px;font-weight:700}
 .header{background:#fff;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 1px rgba(0,0,0,.1);position:sticky;top:0;z-index:10}
 .header h1{font-size:18px;font-weight:600}
-
-/* Empty State */
 .empty-wrap{background:#fff;min-height:65vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center}
 .empty-img{width:150px;height:150px;background:#f9f9f9;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:80px;margin-bottom:15px}
 .btn-blue{background:#2874f0;color:#fff;border:none;padding:11px 40px;border-radius:2px;font-weight:600;font-size:14px}
-
-/* Product Card - Professional */
 .cart-card{background:#fff;margin-bottom:8px;padding:12px 12px 0 12px;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0}
 .item-top{display:flex;gap:12px}
 .item-img-wrap{width:88px;height:88px;border:1px solid #f0f0f0;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -29,8 +25,6 @@ body{background:#f1f3f6;padding-bottom:135px}
 .price-now{font-size:18px;font-weight:700}
 .price-cut{font-size:13px;color:#878787;text-decoration:line-through}
 .off{font-size:13px;color:#388e3c;font-weight:600}
-
-/* Qty + Actions */
 .qty-action-row{display:flex;align-items:center;gap:20px;padding:14px 0 12px 0}
 .qty-box{display:flex;align-items:center;border:1px solid #c2c2c2;border-radius:20px;overflow:hidden}
 .qty-btn{width:28px;height:28px;border:none;background:#fff;font-size:16px;font-weight:600;cursor:pointer}
@@ -38,18 +32,12 @@ body{background:#f1f3f6;padding-bottom:135px}
 .action-links{display:flex;gap:22px;font-size:13px;font-weight:600;color:#212121;text-transform:uppercase}
 .action-links span{cursor:pointer}
 .action-links span:last-child{color:#2874f0}
-
-/* Price Details */
 .price-detail-card{background:#fff;padding:14px 16px;margin-bottom:8px}
 .price-detail-card h3{font-size:14px;font-weight:600;border-bottom:1px dashed #e0e0e0;padding-bottom:12px;margin-bottom:12px}
 .price-row2{display:flex;justify-content:space-between;font-size:13px;padding:5px 0}
 .price-row2.total{font-weight:700;font-size:15px;border-top:1px dashed #e0e0e0;margin-top:10px;padding-top:12px}
-
-/* Bottom Fixed */
 .bottom-bar{position:fixed;bottom:50px;left:0;right:0;background:#fff;display:flex;justify-content:space-between;align-items:center;padding:8px 12px 8px 16px;box-shadow:0 -2px 10px rgba(0,0,0,.15);z-index:20}
 .place-btn{background:#fb641b;color:#fff;border:none;padding:14px 40px;border-radius:2px;font-weight:700;font-size:14px;letter-spacing:.3px}
-
-/* Bottom Nav */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:6px 0 4px 0;border-top:1px solid #e0e0e0;z-index:21}
 .bottom-nav a{text-decoration:none;color:#878787;font-size:11px;display:flex;flex-direction:column;align-items:center;flex:1}
 .bottom-nav a.active{color:#2874f0}
@@ -59,41 +47,33 @@ body{background:#f1f3f6;padding-bottom:135px}
 <body>
 <div class="top-strip">🔥 Extra Discount Coupons Available</div>
 <div class="header"><span onclick="history.back()" style="cursor:pointer">←</span><h1>My Cart (<span id="cartCount">0</span>)</h1></div>
-
 <div id="cartContainer"></div>
 <div id="priceContainer"></div>
 <div id="bottomBar"></div>
-
 <div class="bottom-nav">
 <a href="index.html"><span class="nav-ico">🏠</span>Home</a>
 <a href="account.html"><span class="nav-ico">👤</span>Account</a>
 <a href="cart.html" class="active"><span class="nav-ico">🛒</span>Cart</a>
 </div>
-
 <script>
 function getCart(){let c=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');return c.map(i=>{if(!i.qty)i.qty=1;return i;})}
 function saveCart(c){localStorage.setItem('rekavo_cart',JSON.stringify(c));render();}
 function openProduct(i){localStorage.setItem('rekavo_selected_product',JSON.stringify(getCart()[i]));location.href='product.html';}
-
 function render(){
  let cart=getCart();
- // Merge same products
  let merged={};
  cart.forEach(it=>{let k=it.name; if(merged[k]) merged[k].qty+=it.qty; else merged[k]={...it};});
  cart=Object.values(merged);
  localStorage.setItem('rekavo_cart',JSON.stringify(cart));
-
  document.getElementById('cartCount').innerText=cart.reduce((s,i)=>s+i.qty,0);
  let con=document.getElementById('cartContainer');
  let priceCon=document.getElementById('priceContainer');
  let bar=document.getElementById('bottomBar');
-
  if(cart.length===0){
   let user=localStorage.getItem('rekavo_user');
   con.innerHTML=`<div class="empty-wrap"><div class="empty-img">🛒</div><div style="font-size:16px;font-weight:600">${user?'Your cart is empty!':'Missing Cart items?'}</div><div style="font-size:12px;color:#878787;margin:8px 0 18px 0">Shop now to add items</div><button class="btn-blue" onclick="location.href='${user?'index.html':'account.html'}'">${user?'Shop now':'Login'}</button></div>`;
   priceCon.innerHTML='';bar.innerHTML='';return;
  }
-
  let html='', totalMRP=0, totalNow=0;
  cart.forEach((item,idx)=>{
   let cut = item.original || item.mrp || Math.round(item.price*1.3);
@@ -112,12 +92,11 @@ function render(){
    </div>
    <div class="qty-action-row">
     <div class="qty-box"><button class="qty-btn" onclick="changeQty(${idx},-1)">−</button><span class="qty-num">${item.qty}</span><button class="qty-btn" onclick="changeQty(${idx},1)">+</button></div>
-    <div class="action-links"><span onclick="removeItem(${idx})">Remove</span><span onclick="buyNow(${idx})">Buy This Now</span></div>
+    <div style="flex:1;display:flex;gap:8px;"><button onclick="removeItem(${idx})" style="flex:1;background:#fff;border:1px solid #ff3b3b;color:#ff3b3b;padding:8px 0;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">REMOVE</button><button onclick="buyNow(${idx})" style="flex:1;background:#0f9d58;border:1px solid #0f9d58;color:#fff;padding:8px 0;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">BUY THIS NOW</button></div>
    </div>
   </div>`;
  });
  con.innerHTML=html;
-
  let discount = totalMRP - totalNow;
  priceCon.innerHTML=`<div class="price-detail-card"><h3>PRICE DETAILS</h3><div class="price-row2"><span>Price (${cart.reduce((s,i)=>s+i.qty,0)} items)</span><span>₹${totalMRP.toLocaleString()}</span></div><div class="price-row2"><span>Discount</span><span style="color:#388e3c">- ₹${discount.toLocaleString()}</span></div><div class="price-row2"><span>Delivery Charges</span><span style="color:#388e3c">FREE</span></div><div class="price-row2 total"><span>Total Amount</span><span>₹${totalNow.toLocaleString()}</span></div></div>`;
  bar.innerHTML=`<div class="bottom-bar"><div><div style="font-size:12px;color:#878787;text-decoration:line-through">₹${totalMRP.toLocaleString()}</div><div style="font-weight:800;font-size:18px">₹${totalNow.toLocaleString()}</div></div><button class="place-btn" onclick="location.href='checkout.html'">PLACE ORDER</button></div>`;
