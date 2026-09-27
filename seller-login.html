@@ -25,7 +25,7 @@ body{min-height:100vh;background:#fff;display:flex;flex-direction:column}
 .card h2{font-size:28px;font-weight:800;color:#111}
 .card p.small{color:#6b7280;font-size:14px;margin:8px 0 26px}
 label{font-size:11px;font-weight:800;letter-spacing:.8px;color:#111;margin-bottom:8px;display:block;text-transform:uppercase}
-input{width:100%;padding:14px 16px;border:2px solid #f0f0f0;background:#f9f9fb;border-radius:12px;font-size:15px;outline:none;margin-bottom:18px}
+input{width:100%;padding:14px 16px;border:2px solid #f0f0f0;background:#f9f9fb;border-radius:12px;font-size:15px;outline:none;margin-bottom:18px;transition:.2s}
 input:focus{border-color:#ff6a00;background:#fff}
 .btn{width:100%;background:linear-gradient(90deg,#ff6a00,#ff2d00);color:#fff;border:none;padding:15px;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 10px 22px rgba(255,86,0,0.3)}
 .extra{text-align:center;margin-top:20px;font-size:14px;color:#6b7280}
@@ -40,7 +40,7 @@ input:focus{border-color:#ff6a00;background:#fff}
 </style>
 </head>
 <body>
-<div class="topbar">STOP DREAMING. START SELLING. <span>YOUR EMPIRE AWAITS.With Rekavo</span> 🔥</div>
+<div class="topbar">STOP DREAMING. START SELLING. <span>YOUR EMPIRE AWAITS. With Rekavo</span> 🔥</div>
 <div class="wrapper">
   <div class="left">
     <h1>Be Proud To Be A <br><i>Rekavo Seller.</i></h1>
@@ -56,13 +56,40 @@ input:focus{border-color:#ff6a00;background:#fff}
       <h2>Seller Login</h2>
       <p class="small">Access your Seller Central Dashboard</p>
       <label>Email / Mobile Number</label>
-      <input type="text" placeholder="Enter Mobile/Email">
+      <input type="text" id="loginId" placeholder="Enter Mobile / Email">
       <label>Password</label>
-      <input type="password" placeholder="Enter Password">
-      <button class="btn">Login to Dashboard →</button>
+      <input type="password" id="loginPass" placeholder="Enter Password">
+      <button class="btn" id="loginBtn">Login to Dashboard →</button>
       <div class="extra">New Here? <a href="seller-register.html">Create Seller Account</a></div>
     </div>
   </div>
 </div>
+
+<script>
+document.getElementById('loginBtn').onclick = function(){
+  let id = document.getElementById('loginId').value.trim();
+  let pass = document.getElementById('loginPass').value.trim();
+
+  if(!id){
+    alert("Mobile / Email khali hai!");
+    return;
+  }
+  // Agar sirf number hai to 10 digit check
+  if(/^[0-9]+$/.test(id) && !/^[0-9]{10}$/.test(id)){
+    alert("Mobile number sirf 10 digit ka hona chahiye!");
+    return;
+  }
+  if(!pass){
+    alert("Password daalo bhai!");
+    return;
+  }
+  if(pass.length < 6){
+    alert("Password kam se kam 6 character ka hona chahiye");
+    return;
+  }
+  alert("Login Success! Dashboard pe ja rahe ho...");
+  window.location.href = "seller-dashboard.html";
+}
+</script>
 </body>
 </html>
