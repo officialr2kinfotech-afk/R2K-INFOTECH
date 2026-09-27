@@ -3,49 +3,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rekavo Seller Login</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Rekavo Seller - Grow Your Business</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
-body{background:#f8f9fa;min-height:100vh;display:flex;flex-direction:column}
-.header{ background:#111; padding:14px 20px; display:flex; align-items:center; justify-content:center; }
-.header span{ color:white; font-weight:700; font-size:22px; letter-spacing:0.5px; }
-.header span b{ color:#ff6a00; }
-.main{ flex:1; display:flex; align-items:center; justify-content:center; padding:20px; }
-.card{ background:white; width:100%; max-width:440px; border-radius:16px; padding:36px 32px; box-shadow:0 10px 40px rgba(0,0,0,0.07); border:1px solid #efefef; }
-.badge{ background:#fff3eb; color:#ff6a00; font-size:12px; font-weight:700; padding:6px 12px; border-radius:20px; display:inline-block; margin-bottom:16px; letter-spacing:0.5px; }
-.card h1{ font-size:26px; font-weight:700; color:#111; margin-bottom:8px; }
-.card p.desc{ font-size:14px; color:#6b7280; margin-bottom:28px; }
-.label{ font-size:13px; font-weight:600; color:#111; margin-bottom:8px; display:block; }
-.input-wrap{ position:relative; margin-bottom:18px; }
-.input-wrap input{ width:100%; padding:14px 16px; border:1.5px solid #e5e7eb; border-radius:10px; font-size:14.5px; outline:none; transition:0.2s; }
-.input-wrap input:focus{ border-color:#ff6a00; box-shadow:0 0 0 3px rgba(255,106,0,0.1); }
-.btn{ width:100%; background:#ff6a00; color:white; border:none; padding:15px; border-radius:10px; font-size:16px; font-weight:700; cursor:pointer; transition:0.2s; margin-top:8px; }
-.btn:hover{ background:#e65f00; transform:translateY(-1px); }
-.footer-links{ text-align:center; margin-top:22px; font-size:14px; color:#4b5563; }
-.footer-links a{ color:#0066c0; font-weight:600; text-decoration:none; }
-.footer-links a:hover{ text-decoration:underline; }
-.trust{ display:flex; gap:16px; justify-content:center; margin-top:24px; font-size:12px; color:#9ca3af; }
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',sans-serif}
+body{min-height:100vh;background:#fff;display:flex;flex-direction:column}
+.topbar{background:#0f0f0f;color:#fff;padding:12px;text-align:center;font-size:13px;letter-spacing:.5px}
+.topbar b{color:#ff8a3d}
+.wrapper{flex:1;display:flex;min-height:calc(100vh - 40px)}
+.left{
+  width:52%;background: radial-gradient(120% 120% at 20% 20%, #ff8a3d 0%, #ff5a00 25%, #7c2bff 65%, #1e0a4a 100%);
+  color:white;padding:50px 44px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden
+}
+.left::after{content:'';position:absolute;width:400px;height:400px;background:rgba(255,255,255,0.1);border-radius:50%;top:-100px;right:-100px}
+.left h1{font-size:42px;font-weight:800;line-height:1.1;margin-bottom:16px;position:relative;z-index:1}
+.left h1 span{background:linear-gradient(90deg,#ffde59,#ffffff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.left p.sub{font-size:16px;opacity:0.9;line-height:1.6;margin-bottom:32px;z-index:1}
+.points{display:flex;flex-direction:column;gap:16px;z-index:1}
+.point{background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.15);padding:14px 18px;border-radius:12px;display:flex;gap:12px;align-items:center;font-size:14.5px;font-weight:500}
+.right{width:48%;display:flex;align-items:center;justify-content:center;padding:24px;background:#fcfcfd}
+.card{width:100%;max-width:400px}
+.card h2{font-size:28px;font-weight:800;color:#111;margin-bottom:6px}
+.card p.small{color:#6b7280;font-size:14px;margin-bottom:28px}
+label{font-size:12px;font-weight:700;letter-spacing:.5px;color:#111;margin-bottom:8px;display:block;text-transform:uppercase}
+input{width:100%;padding:14px 16px;border:2px solid #f0f0f0;background:#f9f9fb;border-radius:12px;font-size:15px;outline:none;margin-bottom:18px;transition:.2s}
+input:focus{border-color:#ff6a00;background:#fff}
+.btn{width:100%;background:linear-gradient(90deg,#ff6a00,#ff3c00);color:#fff;border:none;padding:15px;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(255,106,0,0.3);transition:.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(255,106,0,0.4)}
+.extra{text-align:center;margin-top:20px;font-size:14px;color:#6b7280}
+.extra a{color:#ff5a00;font-weight:700;text-decoration:none}
+@media(max-width:900px){
+  .wrapper{flex-direction:column}
+  .left,.right{width:100%}
+  .left{padding:36px 24px}
+  .left h1{font-size:32px}
+}
 </style>
 </head>
 <body>
-<div class="header"><span>REKA<b>VO</b> SELLER</span></div>
-<div class="main">
-  <div class="card">
-    <div class="badge">REKAVO SELLER CENTRAL</div>
-    <h1>Welcome back</h1>
-    <p class="desc">Login to manage your orders, products & payments</p>
-    
-    <label class="label">Email or Mobile Number</label>
-    <div class="input-wrap"><input type="text" placeholder="Enter email or mobile"></div>
-    
-    <label class="label">Password</label>
-    <div class="input-wrap"><input type="password" placeholder="Enter your password"></div>
-    
-    <button class="btn">Login to Seller Account</button>
-    
-    <div class="footer-links">New to Rekavo? <a href="seller-register.html">Create Seller Account</a></div>
-    <div class="trust"><span>🔒 Secure Login</span><span>•</span><span>24x7 Support</span></div>
+<div class="topbar">Join 10,000+ Sellers Growing with <b>REKAVO</b> 🚀</div>
+<div class="wrapper">
+  <div class="left">
+    <h1>Be Proud to be a <br><span>Rekavo Seller</span></h1>
+    <p class="sub">Apna business desh bhar pahuchao. Zero listing fees, fast payments & full support.</p>
+    <div class="points">
+      <div class="point">💰 Fast Payment - Har 7 din me settlement</div>
+      <div class="point">📦 Pan India Delivery - Hum karenge deliver</div>
+      <div class="point">🚀 Grow 3X Faster - Crores of customers</div>
+    </div>
+  </div>
+  <div class="right">
+    <div class="card">
+      <h2>Seller Login</h2>
+      <p class="small">Welcome back! Apni seller journey continue karo.</p>
+      <label>Email / Mobile</label>
+      <input type="text" placeholder="seller@email.com">
+      <label>Password</label>
+      <input type="password" placeholder="••••••••">
+      <button class="btn">Login & Start Selling →</button>
+      <div class="extra">New Seller? <a href="seller-register.html">Become a Seller - Free</a></div>
+    </div>
   </div>
 </div>
 </body>
