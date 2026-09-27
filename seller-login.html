@@ -3,65 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seller Login - Rekavo</title>
+<title>Rekavo Seller Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family: Arial, sans-serif;}
-  body{
-    background:#f5f5f5;
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:16px;
-  }
-  .card{
-    background:white;
-    width:100%;
-    max-width:420px;
-    padding:32px 28px;
-    border-radius:12px;
-    box-shadow:0 4px 20px rgba(0,0,0,0.08);
-  }
-  h2{font-size:24px;margin-bottom:6px;color:#111;}
-  p.sub{font-size:14px;color:#666;margin-bottom:24px;}
-  input{
-    width:100%;
-    padding:14px 14px;
-    border:1px solid #ddd;
-    border-radius:8px;
-    margin-bottom:16px;
-    font-size:15px;
-    outline:none;
-  }
-  input:focus{border-color:#ff6a00;}
-  .btn{
-    width:100%;
-    background:#ff6a00;
-    color:white;
-    border:none;
-    padding:14px;
-    border-radius:8px;
-    font-size:16px;
-    font-weight:600;
-    cursor:pointer;
-    margin-top:4px;
-  }
-  .btn:hover{background:#e65f00;}
-  .link{
-    margin-top:18px;
-    font-size:14px;
-  }
-  .link a{color:#0b7dda;text-decoration:none;font-weight:600;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background:#f8f9fa;min-height:100vh;display:flex;flex-direction:column}
+.header{ background:#111; padding:14px 20px; display:flex; align-items:center; justify-content:center; }
+.header span{ color:white; font-weight:700; font-size:22px; letter-spacing:0.5px; }
+.header span b{ color:#ff6a00; }
+.main{ flex:1; display:flex; align-items:center; justify-content:center; padding:20px; }
+.card{ background:white; width:100%; max-width:440px; border-radius:16px; padding:36px 32px; box-shadow:0 10px 40px rgba(0,0,0,0.07); border:1px solid #efefef; }
+.badge{ background:#fff3eb; color:#ff6a00; font-size:12px; font-weight:700; padding:6px 12px; border-radius:20px; display:inline-block; margin-bottom:16px; letter-spacing:0.5px; }
+.card h1{ font-size:26px; font-weight:700; color:#111; margin-bottom:8px; }
+.card p.desc{ font-size:14px; color:#6b7280; margin-bottom:28px; }
+.label{ font-size:13px; font-weight:600; color:#111; margin-bottom:8px; display:block; }
+.input-wrap{ position:relative; margin-bottom:18px; }
+.input-wrap input{ width:100%; padding:14px 16px; border:1.5px solid #e5e7eb; border-radius:10px; font-size:14.5px; outline:none; transition:0.2s; }
+.input-wrap input:focus{ border-color:#ff6a00; box-shadow:0 0 0 3px rgba(255,106,0,0.1); }
+.btn{ width:100%; background:#ff6a00; color:white; border:none; padding:15px; border-radius:10px; font-size:16px; font-weight:700; cursor:pointer; transition:0.2s; margin-top:8px; }
+.btn:hover{ background:#e65f00; transform:translateY(-1px); }
+.footer-links{ text-align:center; margin-top:22px; font-size:14px; color:#4b5563; }
+.footer-links a{ color:#0066c0; font-weight:600; text-decoration:none; }
+.footer-links a:hover{ text-decoration:underline; }
+.trust{ display:flex; gap:16px; justify-content:center; margin-top:24px; font-size:12px; color:#9ca3af; }
 </style>
 </head>
 <body>
+<div class="header"><span>REKA<b>VO</b> SELLER</span></div>
+<div class="main">
   <div class="card">
-    <h2>Seller Login</h2>
-    <p class="sub">Login to your seller account</p>
-    <input type="text" placeholder="Email / Mobile Number">
-    <input type="password" placeholder="Password">
-    <button class="btn">Login</button>
-    <div class="link">New Seller? <a href="seller-register.html">Register Here</a></div>
+    <div class="badge">REKAVO SELLER CENTRAL</div>
+    <h1>Welcome back</h1>
+    <p class="desc">Login to manage your orders, products & payments</p>
+    
+    <label class="label">Email or Mobile Number</label>
+    <div class="input-wrap"><input type="text" placeholder="Enter email or mobile"></div>
+    
+    <label class="label">Password</label>
+    <div class="input-wrap"><input type="password" placeholder="Enter your password"></div>
+    
+    <button class="btn">Login to Seller Account</button>
+    
+    <div class="footer-links">New to Rekavo? <a href="seller-register.html">Create Seller Account</a></div>
+    <div class="trust"><span>🔒 Secure Login</span><span>•</span><span>24x7 Support</span></div>
   </div>
+</div>
 </body>
 </html>
