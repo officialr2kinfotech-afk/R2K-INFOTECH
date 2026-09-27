@@ -25,11 +25,13 @@ body{min-height:100vh;background:#fff;display:flex;flex-direction:column}
 .sec:last-child{border:none;margin:0;padding:0}
 .sec-title{font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:#ff5a00;margin-bottom:12px}
 label{font-size:12px;font-weight:700;color:#222;margin-bottom:6px;display:block}
-label span.opt{color:#999;font-weight:600;text-transform:none}
-input{width:100%;padding:12px 14px;border:2px solid #f0f0f0;background:#f9f9fb;border-radius:10px;font-size:14px;outline:none;margin-bottom:10px;transition:.2s}
+label span.opt{color:#999;font-weight:600}
+.input-wrap{margin-bottom:10px}
+input{width:100%;padding:12px 14px;border:2px solid #f0f0f0;background:#f9f9fb;border-radius:10px;font-size:14px;outline:none;transition:.2s}
 input:focus{border-color:#ff6a00;background:#fff}
+input.error{border-color:#ff2d00!important;background:#fff5f5!important}
+.error-msg{color:#e11d48;font-size:11.5px;font-weight:600;margin-top:5px;display:none}
 .grid2{display:flex;gap:10px}
-.grid2 input{flex:1}
 .btn{width:100%;background:linear-gradient(90deg,#ff6a00,#ff2d00);color:#fff;border:none;padding:15px;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 10px 22px rgba(255,86,0,0.3);margin-top:10px}
 .extra{text-align:center;margin-top:18px;font-size:13.5px;color:#6b7280}
 .extra a{color:#ff5a00;font-weight:700;text-decoration:none}
@@ -56,43 +58,34 @@ input:focus{border-color:#ff6a00;background:#fff}
 
       <div class="sec">
         <div class="sec-title">1. Store Details</div>
-        <label>Store / Business Name *</label>
-        <input type="text" id="store" placeholder="Ex: R2K Electronics">
+        <div class="input-wrap"><label>Store / Business Name *</label><input type="text" id="store" placeholder="Ex: R2K Electronics"><div class="error-msg"></div></div>
       </div>
 
       <div class="sec">
         <div class="sec-title">2. Contact Details</div>
-        <label>Mobile Number *</label>
-        <input type="text" id="mobile" placeholder="Enter 10 digit mobile">
-        <label>Email Address *</label>
-        <input type="email" id="email" placeholder="seller@business.com">
-        <label>Create Password *</label>
-        <input type="password" id="pass" placeholder="Min. 8 characters">
+        <div class="input-wrap"><label>Mobile Number *</label><input type="text" id="mobile" placeholder="Enter 10 digit mobile"><div class="error-msg"></div></div>
+        <div class="input-wrap"><label>Email Address *</label><input type="email" id="email" placeholder="seller@business.com"><div class="error-msg"></div></div>
+        <div class="input-wrap"><label>Create Password *</label><input type="password" id="pass" placeholder="Min. 8 characters"><div class="error-msg"></div></div>
       </div>
 
       <div class="sec">
-        <div class="sec-title">3. Tax & Identity <span style="color:#6b7280;text-transform:none">(Optional - Can add later)</span></div>
-        <label>GSTIN Number <span class="opt">- Optional</span></label>
-        <input type="text" class="optional" placeholder="22AAAAA0000A1Z5 (if you have)">
-        <label>PAN Card Number <span class="opt">- Optional</span></label>
-        <input type="text" class="optional" placeholder="ABCDE1234F (if you have)">
+        <div class="sec-title">3. Tax & Identity (Optional)</div>
+        <div class="input-wrap"><label>GSTIN Number <span class="opt">- Optional</span></label><input type="text" class="optional" placeholder="22AAAAA0000A1Z5 (if you have)"></div>
+        <div class="input-wrap"><label>PAN Card Number <span class="opt">- Optional</span></label><input type="text" class="optional" placeholder="ABCDE1234F (if you have)"></div>
       </div>
 
       <div class="sec">
         <div class="sec-title">4. Pickup Address</div>
-        <label>Full Pickup Address *</label>
-        <input type="text" id="address" placeholder="House No, Street, City">
-        <label>Pincode *</label>
-        <input type="text" id="pincode" placeholder="Enter 6 digit pincode">
+        <div class="input-wrap"><label>Full Pickup Address *</label><input type="text" id="address" placeholder="House No, Street, City"><div class="error-msg"></div></div>
+        <div class="input-wrap"><label>Pincode *</label><input type="text" id="pincode" placeholder="Enter 6 digit pincode"><div class="error-msg"></div></div>
       </div>
 
       <div class="sec">
         <div class="sec-title">5. Bank Details for Payments *</div>
-        <label>Account Holder Name *</label>
-        <input type="text" id="holder" placeholder="As per bank records">
+        <div class="input-wrap"><label>Account Holder Name *</label><input type="text" id="holder" placeholder="As per bank records"><div class="error-msg"></div></div>
         <div class="grid2">
-          <input type="text" id="acno" placeholder="Account Number *">
-          <input type="text" id="ifsc" placeholder="IFSC Code *">
+          <div class="input-wrap" style="flex:1"><input type="text" id="acno" placeholder="Account Number *"><div class="error-msg"></div></div>
+          <div class="input-wrap" style="flex:1"><input type="text" id="ifsc" placeholder="IFSC Code *"><div class="error-msg"></div></div>
         </div>
       </div>
 
@@ -103,30 +96,67 @@ input:focus{border-color:#ff6a00;background:#fff}
 </div>
 
 <script>
+function showErr(input, msg){
+  input.classList.add('error');
+  let err = input.parentElement.querySelector('.error-msg');
+  if(err){ err.innerText = msg; err.style.display='block'; }
+}
+function clearErr(input){
+  input.classList.remove('error');
+  let err = input.parentElement.querySelector('.error-msg');
+  if(err){ err.style.display='none'; }
+}
+document.querySelectorAll('input').forEach(inp => {
+  inp.addEventListener('input', () => clearErr(inp));
+  inp.addEventListener('focus', () => clearErr(inp));
+});
+
 document.getElementById('regBtn').onclick = function(){
-  const requiredIds = ['store','mobile','email','pass','address','pincode','holder','acno','ifsc'];
-  for(let id of requiredIds){
-    let el = document.getElementById(id);
+  let valid = true;
+  const fields = [
+    {id:'store', msg:'Store name is required'},
+    {id:'mobile', msg:'Mobile number is required'},
+    {id:'email', msg:'Email address is required'},
+    {id:'pass', msg:'Password is required'},
+    {id:'address', msg:'Pickup address is required'},
+    {id:'pincode', msg:'Pincode is required'},
+    {id:'holder', msg:'Account holder name is required'},
+    {id:'acno', msg:'Account number is required'},
+    {id:'ifsc', msg:'IFSC code is required'},
+  ];
+
+  for(let f of fields){
+    let el = document.getElementById(f.id);
     if(!el.value.trim()){
-      alert(el.placeholder + " - Ye field bharna zaruri hai!");
-      el.style.borderColor = "red";
-      el.focus();
-      return false;
+      showErr(el, f.msg);
+      valid = false;
     }
-    el.style.borderColor = "#f0f0f0";
   }
+
   let mobile = document.getElementById('mobile').value.trim();
-  if(!/^[0-9]{10}$/.test(mobile)){
-    alert("Mobile number sirf 10 digit ka hona chahiye!");
-    return false;
+  if(mobile && !/^[0-9]{10}$/.test(mobile)){
+    showErr(document.getElementById('mobile'), "Mobile number must be 10 digits");
+    valid = false;
   }
-  let pincode = document.getElementById('pincode').value.trim();
-  if(!/^[0-9]{6}$/.test(pincode)){
-    alert("Pincode 6 digit ka hona chahiye!");
-    return false;
+  let email = document.getElementById('email').value.trim();
+  if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    showErr(document.getElementById('email'), "Enter a valid email address");
+    valid = false;
   }
-  alert("Seller Registered Successfully! GST/PAN baad me add kar sakte ho. Ab login karo.");
-  window.location.href = "seller-login.html";
+  let pass = document.getElementById('pass').value.trim();
+  if(pass && pass.length < 8){
+    showErr(document.getElementById('pass'), "Password must be at least 8 characters");
+    valid = false;
+  }
+  let pin = document.getElementById('pincode').value.trim();
+  if(pin && !/^[0-9]{6}$/.test(pin)){
+    showErr(document.getElementById('pincode'), "Pincode must be 6 digits");
+    valid = false;
+  }
+
+  if(valid){
+    window.location.href = "seller-login.html";
+  }
 }
 </script>
 </body>
