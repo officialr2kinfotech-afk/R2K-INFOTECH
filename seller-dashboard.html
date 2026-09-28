@@ -2,105 +2,75 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rekavo Seller Central</title>
+<title>Rekavo Seller Central - Pro</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>*{font-family:'Inter',sans-serif} body{background:#F2F3F5}</style>
 </head>
 <body>
-<!-- HEADER -->
-<header class="bg-[#131A22] text-white h-[56px] flex items-center justify-between px-4 sticky top-0 z-50">
-  <div class="flex items-center gap-3"><i class="fa-solid fa-bars md:hidden text-lg"></i><div class="font-extrabold text-[15px] tracking-wider">REKAVO <span class="text-[#FF9900] font-black">SELLER CENTRAL</span></div></div>
-  <div class="flex items-center gap-3">
-    <div class="hidden md:flex items-center gap-2 bg-[#232F3E] px-3 py-1.5 rounded-full text-xs"><div class="w-6 h-6 bg-[#FF9900] rounded-full flex items-center justify-center font-bold text-black">R</div><span id="sellerEmailTop" class="text-gray-300">seller@rekavo.in</span></div>
-    <button onclick="logout()" class="bg-white text-black px-5 py-2 rounded-full text-[13px] font-bold hover:bg-gray-200">Logout</button>
-  </div>
+<header class="bg-[#131A22] h-[56px] flex items-center justify-between px-4 sticky top-0 z-50 text-white">
+<div class="font-black text-[14px]">REKAVO <span class="text-[#FF9900]">SELLER</span></div>
+<div class="flex gap-2 items-center"><span id="sEmail" class="text-[11px] bg-[#232F3E] px-3 py-1.5 rounded-full"></span><button onclick="localStorage.clear();location.href='seller-login.html'" class="bg-white text-black px-4 py-1.5 rounded-full text-[12px] font-bold">Logout</button></div>
 </header>
 
-<div class="max-w-[1280px] mx-auto p-3 md:p-5">
-  <!-- 4 CARDS - PREMIUM -->
-  <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-    <div class="bg-white rounded-[16px] p-4 border border-gray-200 shadow-sm">
-      <div class="flex justify-between items-start"><p class="text-[11px] font-bold tracking-widest text-gray-400">TOTAL SALES</p><div class="w-8 h-8 bg-[#FFF4E6] rounded-full flex items-center justify-center text-[#FF9900]"><i class="fa-solid fa-chart-line text-xs"></i></div></div>
-      <h2 id="totalSales" class="text-[28px] font-extrabold mt-2 tracking-tight">₹0</h2>
-      <p class="text-[11px] mt-2 text-gray-400">Lifetime sales</p>
-    </div>
-    <div class="bg-white rounded-[16px] p-4 border border-gray-200 shadow-sm">
-      <div class="flex justify-between items-start"><p class="text-[11px] font-bold tracking-widest text-gray-400">ORDERS</p><div class="w-8 h-8 bg-[#E6F0FF] rounded-full flex items-center justify-center text-[#0066C0]"><i class="fa-solid fa-bag-shopping text-xs"></i></div></div>
-      <h2 id="totalOrders" class="text-[28px] font-extrabold mt-2 tracking-tight">0</h2>
-      <p class="text-[11px] mt-2"><span class="bg-[#F0F2F2] px-2 py-1 rounded-full font-bold">Real Orders</span></p>
-    </div>
-    <div class="bg-white rounded-[16px] p-4 border border-gray-200 shadow-sm">
-      <div class="flex justify-between items-start"><p class="text-[11px] font-bold tracking-widest text-gray-400">INVENTORY</p><div class="w-8 h-8 bg-[#FFE6E6] rounded-full flex items-center justify-center text-[#C40000]"><i class="fa-solid fa-box text-xs"></i></div></div>
-      <h2 id="totalProducts" class="text-[28px] font-extrabold mt-2 tracking-tight">0</h2>
-      <p id="lowStock" class="text-[11px] mt-2 font-bold text-[#C40000] bg-[#FFF0F0] inline-block px-2 py-1 rounded-full">0 low stock</p>
-    </div>
-    <div class="bg-white rounded-[16px] p-4 border border-gray-200 shadow-sm bg-gradient-to-br from-white to-[#FFFBF0]">
-      <div class="flex justify-between items-start"><p class="text-[11px] font-bold tracking-widest text-gray-400">EARNINGS</p><div class="w-8 h-8 bg-[#E6F6E6] rounded-full flex items-center justify-center text-[#067D62]"><i class="fa-solid fa-wallet text-xs"></i></div></div>
-      <h2 id="totalEarn" class="text-[28px] font-extrabold mt-2 tracking-tight">₹0</h2>
-      <p class="text-[11px] mt-2"><span class="bg-[#E6F6E6] text-[#067D62] px-2.5 py-1 rounded-full font-bold">90% payout • 7 days</span></p>
-    </div>
-  </div>
-
-  <div class="grid lg:grid-cols-3 gap-3 mt-3">
-    <div class="lg:col-span-2 bg-white rounded-[16px] p-5 border border-gray-200 shadow-sm">
-      <div class="flex justify-between items-center mb-4"><h3 class="font-extrabold text-[14px] tracking-tight">SALES OVERVIEW</h3><span class="text-[11px] bg-black text-white px-3 py-1 rounded-full">Last 7 days</span></div>
-      <canvas id="salesChart" height="160"></canvas>
-    </div>
-    <div class="bg-white rounded-[16px] p-5 border border-gray-200 shadow-sm">
-      <h3 class="font-extrabold text-[14px] tracking-tight mb-4">TO-DO LIST</h3>
-      <div class="space-y-3" id="todoList">
-        <!-- JS will fill -->
-      </div>
-      <button onclick="openModal()" class="w-full mt-5 bg-[#FFD814] hover:bg-[#F7CA00] border border-[#F2C200] py-3 rounded-full font-bold text-[13px] shadow-sm"><i class="fa-solid fa-plus mr-2"></i>Add Your First Product</button>
-    </div>
-  </div>
-
-  <div class="bg-white rounded-[16px] mt-3 border border-gray-200 shadow-sm">
-    <div class="p-4 flex justify-between items-center border-b"><h3 class="font-extrabold text-[14px]">ACTIVE LISTINGS</h3><span id="listCount" class="text-[11px] bg-[#F0F2F2] px-3 py-1 rounded-full font-bold">0 Products</span></div>
-    <div id="productList" class="p-2"></div>
-  </div>
+<div class="flex max-w-[1400px] mx-auto">
+<!-- SIDEBAR -->
+<div class="w-[260px] bg-white min-h-screen border-r hidden md:block sticky top-[56px] h-fit p-3">
+<p class="text-[10px] font-black tracking-widest text-gray-400 px-3 mt-2">MAIN</p>
+<nav id="sideNav" class="mt-2 space-y-1 text-[13px] font-bold"></nav>
+<div class="mt-6 p-3 bg-[#FFF8E1] rounded-xl border border-[#FFECB3]"><p class="text-[12px] font-black">💡 Auto Mode ON</p><p class="text-[11px] text-gray-600 mt-1">Orders, Payments, Performance sab automatic chal raha hai. Tujhe bas Product daalna hai.</p></div>
 </div>
 
-<!-- ADD MODAL - PREMIUM -->
-<div id="addModal" class="fixed inset-0 bg-black/70 hidden z-[99] p-4 flex items-center justify-center">
-  <div class="bg-white w-full max-w-[440px] rounded-[20px] p-6">
-    <div class="flex justify-between"><h3 class="font-extrabold text-[16px]">Add New Product</h3><button onclick="closeModal()" class="w-8 h-8 bg-gray-100 rounded-full"><i class="fa-solid fa-xmark text-xs"></i></button></div>
-    <input id="pName" placeholder="Product Name - ex: boAt Rockerz 255" class="w-full mt-5 bg-[#F5F6F7] border border-transparent focus:border-black focus:bg-white p-3.5 rounded-xl text-[14px] outline-none">
-    <div class="flex gap-3 mt-3"><input id="pPrice" type="number" placeholder="Price ₹" class="w-1/2 bg-[#F5F6F7] border border-transparent focus:border-black focus:bg-white p-3.5 rounded-xl text-[14px] outline-none"><input id="pStock" type="number" placeholder="Stock" class="w-1/2 bg-[#F5F6F7] border border-transparent focus:border-black focus:bg-white p-3.5 rounded-xl text-[14px] outline-none"></div>
-    <div class="flex gap-3 mt-4"><button onclick="closeModal()" class="w-1/2 bg-[#F0F2F2] py-3.5 rounded-full font-bold text-[13px]">Cancel</button><button onclick="saveP()" class="w-1/2 bg-[#131A22] text-white py-3.5 rounded-full font-bold text-[13px]">Save & List</button></div>
-  </div>
+<!-- CONTENT -->
+<div class="flex-1 p-3 md:p-5">
+<!-- STATS -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+<div class="bg-white p-4 rounded-2xl border"><p class="text-[10px] font-black text-gray-400 tracking-widest">TOTAL SALES</p><h2 id="kpiSales" class="text-[24px] font-black mt-1">₹0</h2></div>
+<div class="bg-white p-4 rounded-2xl border"><p class="text-[10px] font-black text-gray-400 tracking-widest">NEW ORDERS</p><h2 id="kpiOrders" class="text-[24px] font-black mt-1">0</h2></div>
+<div class="bg-white p-4 rounded-2xl border"><p class="text-[10px] font-black text-gray-400 tracking-widest">INVENTORY</p><h2 id="kpiProd" class="text-[24px] font-black mt-1">0</h2></div>
+<div class="bg-white p-4 rounded-2xl border"><p class="text-[10px] font-black text-gray-400 tracking-widest">PAYOUT</p><h2 id="kpiPay" class="text-[24px] font-black mt-1">₹0</h2></div>
 </div>
+
+<!-- TABS CONTAINER -->
+<div id="tab-dashboard" class="tab mt-4"><div class="bg-white rounded-2xl p-5 border"><h3 class="font-black text-[14px]">SALES OVERVIEW (Auto)</h3><canvas id="chart" height="120"></canvas></div><div id="dashTodo" class="bg-white rounded-2xl p-5 border mt-3"></div></div>
+<div id="tab-orders" class="tab hidden mt-4 bg-white rounded-2xl border"><div class="p-4 border-b flex justify-between"><h3 class="font-black text-[14px]">ORDERS MANAGEMENT</h3><span class="text-[10px] bg-green-100 text-green-700 px-2 py-1 rounded-full font-bold">AUTO - Customer order karte hi yaha ayega</span></div><div id="orderList" class="p-4 text-center py-10 text-[13px] text-gray-400"></div></div>
+<div id="tab-inventory" class="tab hidden mt-4 bg-white rounded-2xl border"><div class="p-4 border-b flex justify-between"><h3 class="font-black text-[14px]">INVENTORY (Manual + Auto Stock Cut)</h3><button onclick="openM()" class="bg-black text-white px-4 py-1.5 rounded-full text-[12px]">+ Add Product</button></div><div id="prodList" class="p-2"></div></div>
+<div id="tab-pricing" class="tab hidden mt-4 bg-white rounded-2xl border p-5"><h3 class="font-black">PRICING & COUPONS</h3><p class="text-[12px] text-gray-500 mt-2">Yaha tu coupon bana sakta hai - REKAVO100. Ye manual hai, ek baar banaya toh auto apply hoga checkout pe.</p><input id="coupon" placeholder="Coupon Code" class="mt-4 bg-gray-100 p-3 rounded-xl w-full text-[13px]"><button class="mt-2 bg-[#FFD814] px-4 py-2 rounded-full font-bold text-[12px]">Create Coupon</button></div>
+<div id="tab-payments" class="tab hidden mt-4 bg-white rounded-2xl border p-5"><h3 class="font-black">PAYMENTS</h3><p class="text-[12px] text-gray-500 mt-1">Abhi demo me manual dikh raha hai. Baad me Razorpay X se automatic bank transfer hoga.</p><div class="mt-4 grid grid-cols-2 gap-3"><div class="bg-[#F6F6F6] p-3 rounded-xl"><p class="text-[10px] font-bold">PENDING</p><h2 class="font-black" id="payPend">₹0</h2></div><div class="bg-[#E6F6E6] p-3 rounded-xl"><p class="text-[10px] font-bold">PAID</p><h2 class="font-black">₹0</h2></div></div></div>
+<div id="tab-returns" class="tab hidden mt-4 bg-white rounded-2xl border p-5"><h3 class="font-black">RETURNS / RTO</h3><p class="text-[12px] text-gray-500">Customer return marega toh yaha auto ayega. Tujhe bas Accept karna hai.</p></div>
+<div id="tab-performance" class="tab hidden mt-4 bg-white rounded-2xl border p-5"><h3 class="font-black">PERFORMANCE (100% Auto)</h3><div class="mt-3 space-y-2 text-[13px]"><div class="flex justify-between p-3 bg-gray-50 rounded-xl"><span>Late Shipment Rate</span><span class="font-bold text-green-600">0% (Good)</span></div><div class="flex justify-between p-3 bg-gray-50 rounded-xl"><span>Order Defect Rate</span><span class="font-bold text-green-600">0%</span></div></div></div>
+<div id="tab-marketing" class="tab hidden mt-4 bg-white rounded-2xl border p-5"><h3 class="font-black">MARKETING - SPONSORED ADS</h3><p class="text-[12px] text-gray-500">Apna product upar dikhana hai? Yaha se ad ON karo. Budget set karo, auto chalega.</p></div>
+<div id="tab-reports" class="tab hidden mt-4 bg-white rounded-2xl border p-5"><h3 class="font-black">REPORTS</h3><button class="mt-3 bg-black text-white px-4 py-2 rounded-full text-[12px]">Download Sales Excel</button></div>
+<div id="tab-settings" class="tab hidden mt-4 bg-white rounded-2xl border p-5"><h3 class="font-black">SETTINGS</h3><p class="text-[12px] text-gray-500 mt-2">GST, PAN, Bank - Ye ek baar bharna hai.</p><input placeholder="GST Number" class="w-full bg-gray-100 p-3 rounded-xl mt-3 text-[13px]"><input placeholder="Bank Account" class="w-full bg-gray-100 p-3 rounded-xl mt-3 text-[13px]"></div>
+</div>
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="fixed inset-0 bg-black/70 hidden z-50 flex items-center justify-center p-4"><div class="bg-white w-full max-w-[420px] p-6 rounded-[20px]"><h3 class="font-black">Add Product (Manual Entry)</h3><input id="pN" placeholder="Product Name" class="w-full bg-gray-100 p-3 rounded-xl mt-4 text-[13px]"><div class="flex gap-2 mt-2"><input id="pP" type="number" placeholder="Price" class="w-1/2 bg-gray-100 p-3 rounded-xl text-[13px]"><input id="pS" type="number" placeholder="Stock" class="w-1/2 bg-gray-100 p-3 rounded-xl text-[13px]"></div><div class="flex gap-2 mt-4"><button onclick="closeM()" class="w-1/2 bg-gray-100 py-3 rounded-full font-bold text-[12px]">Cancel</button><button onclick="save()" class="w-1/2 bg-black text-white py-3 rounded-full font-bold text-[12px]">Save</button></div></div></div>
 
 <script>
-let products = JSON.parse(localStorage.getItem('rekavo_products')||'[]');
-if(localStorage.getItem('rekavo_seller_logged')!=='true'){ /* window.location.href='seller-login.html' */ }
-document.getElementById('sellerEmailTop').innerText = localStorage.getItem('rekavo_seller_email')||'seller@rekavo.in';
-function openModal(){document.getElementById('addModal').classList.remove('hidden')}
-function closeModal(){document.getElementById('addModal').classList.add('hidden')}
-function logout(){localStorage.removeItem('rekavo_seller_logged');location.href='seller-login.html'}
-function saveP(){
-  const n=document.getElementById('pName').value.trim(), pr=parseInt(document.getElementById('pPrice').value), st=parseInt(document.getElementById('pStock').value);
-  if(!n||!pr||!st) return alert('Sab bhar');
-  products.push({id:Date.now(), name:n, price:pr, stock:st});
-  localStorage.setItem('rekavo_products', JSON.stringify(products)); closeModal(); render();
-  document.getElementById('pName').value='';document.getElementById('pPrice').value='';document.getElementById('pStock').value='';
-}
+let products=JSON.parse(localStorage.getItem('rekavo_products')||'[]');
+let tabs=[['dashboard','Dashboard'],['orders','Orders'],['inventory','Inventory'],['pricing','Pricing'],['payments','Payments'],['returns','Returns & RTO'],['performance','Performance'],['marketing','Marketing'],['reports','Reports'],['settings','Settings']];
+document.getElementById('sEmail').innerText=localStorage.getItem('rekavo_seller_email')||'Seller';
+let nav=document.getElementById('sideNav');
+tabs.forEach(t=>{let a=document.createElement('a');a.innerHTML=`<i class="fa-solid fa-circle-dot w-5 text-[10px]"></i> ${t[1]}`;a.className="flex items-center gap-2 px-3 py-2.5 rounded-xl cursor-pointer hover:bg-gray-100";a.onclick=()=>showTab(t[0]);a.id='nav-'+t[0];nav.appendChild(a);});
+function showTab(id){document.querySelectorAll('.tab').forEach(e=>e.classList.add('hidden'));document.getElementById('tab-'+id).classList.remove('hidden');document.querySelectorAll('#sideNav a').forEach(e=>e.classList.remove('bg-black','text-white'));document.getElementById('nav-'+id).classList.add('bg-black','text-white');}
+function openM(){document.getElementById('modal').classList.remove('hidden')}function closeM(){document.getElementById('modal').classList.add('hidden')}
+function save(){let n=document.getElementById('pN').value,p=parseInt(document.getElementById('pP').value),s=parseInt(document.getElementById('pS').value);if(!n||!p||!s)return alert('bhar');products.push({id:Date.now(),name:n,price:p,stock:s});localStorage.setItem('rekavo_products',JSON.stringify(products));closeM();render();document.getElementById('pN').value='';document.getElementById('pP').value='';document.getElementById('pS').value='';}
 function render(){
-  document.getElementById('totalProducts').innerText=products.length;
-  document.getElementById('listCount').innerText=products.length+' Products';
-  document.getElementById('totalSales').innerText='₹'+products.reduce((a,b)=>a+b.price*b.stock,0).toLocaleString('en-IN');
-  document.getElementById('totalEarn').innerText='₹'+Math.floor(products.reduce((a,b)=>a+b.price*b.stock,0)*0.9).toLocaleString('en-IN');
-  document.getElementById('totalOrders').innerText=products.length?products.length*2:0;
-  document.getElementById('lowStock').innerText=products.filter(p=>p.stock<6).length+' low stock';
-  document.getElementById('todoList').innerHTML=products.length?`<div class="bg-[#FFFBEB] border border-[#FDE68A] p-3 rounded-xl flex gap-3"><div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">⚡</div><div><p class="font-bold text-[12px]">${products.length} products live</p><p class="text-[11px] text-gray-500">Great start! Add more to grow.</p></div></div><div class="bg-[#F0FDF4] border border-[#BBF7D0] p-3 rounded-xl flex gap-3"><div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">💰</div><div><p class="font-bold text-[12px]">Earnings active</p><p class="text-[11px] text-gray-500">Payout every 7 days</p></div></div>`:`<div class="bg-[#FFFBEB] border border-[#FDE68A] p-3 rounded-xl"><p class="font-bold text-[12px]">⚡ 0 products live</p><p class="text-[11px] text-gray-500 mt-1">Add your first product to start selling across India</p></div><div class="bg-[#F5F3FF] border border-[#DDD6FE] p-3 rounded-xl mt-3"><p class="font-bold text-[12px]">💡 Seller Tip</p><p class="text-[11px] text-gray-500 mt-1">Stock 5 se kam hua toh low stock me ayega</p></div>`;
-  document.getElementById('productList').innerHTML=products.length?products.map(p=>`<div class="flex items-center justify-between p-3 hover:bg-[#F9FAFB] rounded-xl"><div class="flex items-center gap-3"><div class="w-11 h-11 bg-[#F5F6F7] rounded-xl flex items-center justify-center font-bold">${p.name[0]}</div><div><p class="font-bold text-[13px]">${p.name}</p><p class="text-[11px] text-gray-500">${p.stock} units • ₹${p.price}</p></div></div><div class="flex items-center gap-3"><span class="text-[11px] font-bold bg-[#E6F6E6] text-[#067D62] px-2.5 py-1 rounded-full">Active</span><button onclick="delP(${p.id})" class="w-7 h-7 bg-[#FFF0F0] text-[#C40000] rounded-full"><i class="fa-solid fa-trash text-[11px]"></i></button></div></div>`).join(''):`<div class="text-center py-12"><div class="w-16 h-16 bg-[#F5F6F7] rounded-full flex items-center justify-center mx-auto text-xl">📦</div><p class="font-extrabold mt-4 text-[14px]">No products yet</p><p class="text-[12px] text-gray-400 mt-1">List your first product and start your empire</p></div>`;
+document.getElementById('kpiProd').innerText=products.length;
+document.getElementById('kpiSales').innerText='₹'+products.reduce((a,b)=>a+b.price*b.stock,0).toLocaleString('en-IN');
+document.getElementById('kpiPay').innerText='₹'+Math.floor(products.reduce((a,b)=>a+b.price*b.stock,0)*0.9).toLocaleString('en-IN');
+document.getElementById('payPend').innerText='₹'+Math.floor(products.reduce((a,b)=>a+b.price*b.stock,0)*0.9).toLocaleString('en-IN');
+document.getElementById('kpiOrders').innerText=products.length?products.length*3:0;
+document.getElementById('dashTodo').innerHTML=`<p class="font-black text-[13px]">TO-DO (Auto Generated)</p><p class="text-[12px] text-gray-500 mt-2">${products.length?products.length+' products live hai. Orders ka wait kar.':'Pehle Inventory me ja ke 1 product add kar. Baaki sab auto ho jayega.'}</p>`;
+document.getElementById('prodList').innerHTML=products.length?products.map(p=>`<div class="flex justify-between p-3 border-b"><div><p class="font-bold text-[13px]">${p.name}</p><p class="text-[11px] text-gray-500">${p.stock} stock</p></div><p class="font-black">₹${p.price}</p></div>`).join(''):`<div class="text-center py-10 text-[13px] text-gray-400">No products. Add kar bhai.</div>`;
+document.getElementById('orderList').innerHTML=products.length?`<div class="text-left space-y-2">${products.map(p=>`<div class="p-3 bg-gray-50 rounded-xl flex justify-between"><div><p class="font-bold text-[12px]">Order #${p.id.toString().slice(-5)} - ${p.name}</p><p class="text-[11px] text-gray-500">Customer: Rahul, COD - Auto Aaya Hai</p></div><span class="text-[10px] bg-yellow-100 px-2 py-1 rounded-full h-fit font-bold">New</span></div>`).join('')}</div>`:`<div>No orders yet - Customer kharidega toh yaha automatic ayega</div>`;
 }
-function delP(id){products=products.filter(p=>p.id!==id);localStorage.setItem('rekavo_products', JSON.stringify(products));render()}
-new Chart(document.getElementById('salesChart'),{type:'line',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{data:products.length?[5,12,8,20,15,25,30]:[0,0,0,0,0,0,0],borderColor:'#FF9900',backgroundColor:'rgba(255,153,0,0.1)',fill:true,tension:0.4,borderWidth:2,pointRadius:0}]},options:{plugins:{legend:{display:false}},scales:{y:{display:false},x:{grid:{display:false},ticks:{font:{size:11}}}},maintainAspectRatio:false}});
-render();
+showTab('dashboard');render();
+new Chart(document.getElementById('chart'),{type:'bar',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{data:[0,0,products.length*2,0,products.length*5,0,0],backgroundColor:'#131A22',borderRadius:8}]},options:{plugins:{legend:{display:false}}}});
 </script>
 </body>
 </html>
