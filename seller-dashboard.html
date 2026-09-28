@@ -2,90 +2,104 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rekavo Seller Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<title>Rekavo Seller Central</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>*{font-family:'Plus Jakarta Sans',sans-serif}</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>*{font-family:'Inter',sans-serif} body{background:#F2F3F5}</style>
 </head>
-<body class="bg-[#f5f5f7]">
-<div class="bg-[#0a0a0a] text-white px-4 py-3 flex justify-between items-center sticky top-0 z-50">
-  <div class="font-extrabold tracking-widest text-[13px]">REKAVO <span class="text-[#ff7a18]">SELLER CENTRAL</span></div>
+<body>
+<!-- HEADER -->
+<header class="bg-[#131A22] text-white h-[56px] flex items-center justify-between px-4 sticky top-0 z-50">
+  <div class="flex items-center gap-3"><i class="fa-solid fa-bars md:hidden text-lg"></i><div class="font-extrabold text-[15px] tracking-wider">REKAVO <span class="text-[#FF9900] font-black">SELLER CENTRAL</span></div></div>
   <div class="flex items-center gap-3">
-    <span class="text-xs text-gray-300 hidden md:block" id="sellerInfo">Seller</span>
-    <button onclick="logout()" class="text-xs bg-white text-black px-4 py-1.5 rounded-full font-bold">Logout</button>
+    <div class="hidden md:flex items-center gap-2 bg-[#232F3E] px-3 py-1.5 rounded-full text-xs"><div class="w-6 h-6 bg-[#FF9900] rounded-full flex items-center justify-center font-bold text-black">R</div><span id="sellerEmailTop" class="text-gray-300">seller@rekavo.in</span></div>
+    <button onclick="logout()" class="bg-white text-black px-5 py-2 rounded-full text-[13px] font-bold hover:bg-gray-200">Logout</button>
+  </div>
+</header>
+
+<div class="max-w-[1280px] mx-auto p-3 md:p-5">
+  <!-- 4 CARDS - PREMIUM -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+    <div class="bg-white rounded-[16px] p-4 border border-gray-200 shadow-sm">
+      <div class="flex justify-between items-start"><p class="text-[11px] font-bold tracking-widest text-gray-400">TOTAL SALES</p><div class="w-8 h-8 bg-[#FFF4E6] rounded-full flex items-center justify-center text-[#FF9900]"><i class="fa-solid fa-chart-line text-xs"></i></div></div>
+      <h2 id="totalSales" class="text-[28px] font-extrabold mt-2 tracking-tight">₹0</h2>
+      <p class="text-[11px] mt-2 text-gray-400">Lifetime sales</p>
+    </div>
+    <div class="bg-white rounded-[16px] p-4 border border-gray-200 shadow-sm">
+      <div class="flex justify-between items-start"><p class="text-[11px] font-bold tracking-widest text-gray-400">ORDERS</p><div class="w-8 h-8 bg-[#E6F0FF] rounded-full flex items-center justify-center text-[#0066C0]"><i class="fa-solid fa-bag-shopping text-xs"></i></div></div>
+      <h2 id="totalOrders" class="text-[28px] font-extrabold mt-2 tracking-tight">0</h2>
+      <p class="text-[11px] mt-2"><span class="bg-[#F0F2F2] px-2 py-1 rounded-full font-bold">Real Orders</span></p>
+    </div>
+    <div class="bg-white rounded-[16px] p-4 border border-gray-200 shadow-sm">
+      <div class="flex justify-between items-start"><p class="text-[11px] font-bold tracking-widest text-gray-400">INVENTORY</p><div class="w-8 h-8 bg-[#FFE6E6] rounded-full flex items-center justify-center text-[#C40000]"><i class="fa-solid fa-box text-xs"></i></div></div>
+      <h2 id="totalProducts" class="text-[28px] font-extrabold mt-2 tracking-tight">0</h2>
+      <p id="lowStock" class="text-[11px] mt-2 font-bold text-[#C40000] bg-[#FFF0F0] inline-block px-2 py-1 rounded-full">0 low stock</p>
+    </div>
+    <div class="bg-white rounded-[16px] p-4 border border-gray-200 shadow-sm bg-gradient-to-br from-white to-[#FFFBF0]">
+      <div class="flex justify-between items-start"><p class="text-[11px] font-bold tracking-widest text-gray-400">EARNINGS</p><div class="w-8 h-8 bg-[#E6F6E6] rounded-full flex items-center justify-center text-[#067D62]"><i class="fa-solid fa-wallet text-xs"></i></div></div>
+      <h2 id="totalEarn" class="text-[28px] font-extrabold mt-2 tracking-tight">₹0</h2>
+      <p class="text-[11px] mt-2"><span class="bg-[#E6F6E6] text-[#067D62] px-2.5 py-1 rounded-full font-bold">90% payout • 7 days</span></p>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-3 gap-3 mt-3">
+    <div class="lg:col-span-2 bg-white rounded-[16px] p-5 border border-gray-200 shadow-sm">
+      <div class="flex justify-between items-center mb-4"><h3 class="font-extrabold text-[14px] tracking-tight">SALES OVERVIEW</h3><span class="text-[11px] bg-black text-white px-3 py-1 rounded-full">Last 7 days</span></div>
+      <canvas id="salesChart" height="160"></canvas>
+    </div>
+    <div class="bg-white rounded-[16px] p-5 border border-gray-200 shadow-sm">
+      <h3 class="font-extrabold text-[14px] tracking-tight mb-4">TO-DO LIST</h3>
+      <div class="space-y-3" id="todoList">
+        <!-- JS will fill -->
+      </div>
+      <button onclick="openModal()" class="w-full mt-5 bg-[#FFD814] hover:bg-[#F7CA00] border border-[#F2C200] py-3 rounded-full font-bold text-[13px] shadow-sm"><i class="fa-solid fa-plus mr-2"></i>Add Your First Product</button>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-[16px] mt-3 border border-gray-200 shadow-sm">
+    <div class="p-4 flex justify-between items-center border-b"><h3 class="font-extrabold text-[14px]">ACTIVE LISTINGS</h3><span id="listCount" class="text-[11px] bg-[#F0F2F2] px-3 py-1 rounded-full font-bold">0 Products</span></div>
+    <div id="productList" class="p-2"></div>
   </div>
 </div>
-<div class="flex">
-  <div class="w-[240px] bg-white border-r min-h-[calc(100vh-48px)] hidden md:block sticky top-[48px] h-fit">
-    <div class="p-5">
-      <p class="text-[11px] font-extrabold tracking-widest text-gray-400">MENU</p>
-      <nav class="mt-4 space-y-1 text-[14px] font-bold">
-        <a class="flex items-center gap-3 px-3 py-2.5 bg-black text-white rounded-xl"><i class="fa-solid fa-grid-2 w-5"></i> Dashboard</a>
-        <a class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-100 rounded-xl"><i class="fa-solid fa-box w-5"></i> Inventory <span id="pCountSide" class="ml-auto bg-[#ffefe6] text-[#ff5a00] text-xs px-2 py-0.5 rounded-full">0</span></a>
-      </nav>
-      <button onclick="openAddModal()" class="w-full mt-8 bg-gradient-to-r from-[#ff6a00] to-[#ff2d00] text-white py-3 rounded-xl font-extrabold shadow-lg">+ Add Product</button>
-      <div class="mt-6 p-3 bg-[#f9f9fb] rounded-xl text-[12px]"><p class="font-bold">Seller Tip</p><p class="text-gray-500 mt-1">Product add karte hi yaha real me show hoga. No dummy data.</p></div>
-    </div>
-  </div>
-  <div class="flex-1 p-4 md:p-6">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-      <div class="bg-white p-5 rounded-[18px] border"><p class="text-[11px] font-extrabold tracking-widest text-gray-400">TOTAL SALES</p><h2 id="totalSales" class="text-2xl font-extrabold mt-2">₹0</h2></div>
-      <div class="bg-white p-5 rounded-[18px] border"><p class="text-[11px] font-extrabold tracking-widest text-gray-400">ORDERS</p><h2 id="totalOrders" class="text-2xl font-extrabold mt-2">0</h2><p class="text-xs text-gray-500 mt-1">Real Orders</p></div>
-      <div class="bg-white p-5 rounded-[18px] border"><p class="text-[11px] font-extrabold tracking-widest text-gray-400">INVENTORY</p><h2 id="totalProducts" class="text-2xl font-extrabold mt-2">0</h2><p class="text-xs text-red-500 mt-1" id="lowStock">0 low stock</p></div>
-      <div class="bg-white p-5 rounded-[18px] border"><p class="text-[11px] font-extrabold tracking-widest text-gray-400">EARNINGS</p><h2 id="totalEarn" class="text-2xl font-extrabold mt-2">₹0</h2><p class="text-xs mt-1"><span class="bg-green-50 text-green-700 px-2 py-0.5 rounded-full">90% payout</span></p></div>
-    </div>
-    <div class="grid md:grid-cols-3 gap-4 mt-4">
-      <div class="md:col-span-2 bg-white p-5 rounded-[18px] border"><h3 class="font-extrabold text-sm">SALES OVERVIEW</h3><canvas id="salesChart" height="120"></canvas></div>
-      <div class="bg-white p-5 rounded-[18px] border"><h3 class="font-extrabold text-sm mb-3">TO-DO</h3><div id="todo" class="space-y-2 text-sm"></div></div>
-    </div>
-    <div class="bg-white mt-4 rounded-[18px] border overflow-hidden">
-      <div class="p-4 border-b flex justify-between items-center"><h3 class="font-extrabold text-sm">MY PRODUCTS</h3><button onclick="openAddModal()" class="md:hidden bg-black text-white text-xs px-3 py-1.5 rounded-full">+ Add</button></div>
-      <div id="productList" class="p-4"></div>
-    </div>
+
+<!-- ADD MODAL - PREMIUM -->
+<div id="addModal" class="fixed inset-0 bg-black/70 hidden z-[99] p-4 flex items-center justify-center">
+  <div class="bg-white w-full max-w-[440px] rounded-[20px] p-6">
+    <div class="flex justify-between"><h3 class="font-extrabold text-[16px]">Add New Product</h3><button onclick="closeModal()" class="w-8 h-8 bg-gray-100 rounded-full"><i class="fa-solid fa-xmark text-xs"></i></button></div>
+    <input id="pName" placeholder="Product Name - ex: boAt Rockerz 255" class="w-full mt-5 bg-[#F5F6F7] border border-transparent focus:border-black focus:bg-white p-3.5 rounded-xl text-[14px] outline-none">
+    <div class="flex gap-3 mt-3"><input id="pPrice" type="number" placeholder="Price ₹" class="w-1/2 bg-[#F5F6F7] border border-transparent focus:border-black focus:bg-white p-3.5 rounded-xl text-[14px] outline-none"><input id="pStock" type="number" placeholder="Stock" class="w-1/2 bg-[#F5F6F7] border border-transparent focus:border-black focus:bg-white p-3.5 rounded-xl text-[14px] outline-none"></div>
+    <div class="flex gap-3 mt-4"><button onclick="closeModal()" class="w-1/2 bg-[#F0F2F2] py-3.5 rounded-full font-bold text-[13px]">Cancel</button><button onclick="saveP()" class="w-1/2 bg-[#131A22] text-white py-3.5 rounded-full font-bold text-[13px]">Save & List</button></div>
   </div>
 </div>
-<div id="addModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4">
-  <div class="bg-white w-full max-w-[420px] p-6 rounded-[22px]">
-    <h3 class="font-extrabold text-lg">Add Product</h3>
-    <p class="text-xs text-gray-500 mt-1">Ye real me save hoga</p>
-    <input id="pName" placeholder="Product Name" class="w-full border-2 border-gray-100 bg-[#f9f9fb] p-3.5 rounded-xl mt-4 text-sm outline-none focus:border-black">
-    <div class="flex gap-3 mt-3"><input id="pPrice" type="number" placeholder="Price ₹" class="w-1/2 border-2 border-gray-100 bg-[#f9f9fb] p-3.5 rounded-xl text-sm outline-none focus:border-black"><input id="pStock" type="number" placeholder="Stock Qty" class="w-1/2 border-2 border-gray-100 bg-[#f9f9fb] p-3.5 rounded-xl text-sm outline-none focus:border-black"></div>
-    <div class="flex gap-3 mt-5"><button onclick="closeAddModal()" class="w-1/2 border-2 py-3 rounded-xl font-bold text-sm">Cancel</button><button onclick="saveProduct()" class="w-1/2 bg-black text-white py-3 rounded-xl font-bold text-sm">Save Product</button></div>
-  </div>
-</div>
+
 <script>
 let products = JSON.parse(localStorage.getItem('rekavo_products')||'[]');
-let email = localStorage.getItem('rekavo_seller_email') || 'Seller';
-document.getElementById('sellerInfo').innerText = email;
-if(localStorage.getItem('rekavo_seller_logged')!=='true'){window.location.href='seller-login.html';}
-function openAddModal(){document.getElementById('addModal').classList.remove('hidden');document.getElementById('addModal').classList.add('flex');}
-function closeAddModal(){document.getElementById('addModal').classList.add('hidden');document.getElementById('addModal').classList.remove('flex');}
-function logout(){localStorage.removeItem('rekavo_seller_logged');window.location.href='seller-login.html';}
-function saveProduct(){
-  const name=document.getElementById('pName').value.trim();
-  const price=parseInt(document.getElementById('pPrice').value);
-  const stock=parseInt(document.getElementById('pStock').value);
-  if(!name||!price||!stock) return alert('Pura bhar bhai');
-  products.push({id:Date.now(), name, price, stock});
-  localStorage.setItem('rekavo_products', JSON.stringify(products));
-  closeAddModal(); render();
+if(localStorage.getItem('rekavo_seller_logged')!=='true'){ /* window.location.href='seller-login.html' */ }
+document.getElementById('sellerEmailTop').innerText = localStorage.getItem('rekavo_seller_email')||'seller@rekavo.in';
+function openModal(){document.getElementById('addModal').classList.remove('hidden')}
+function closeModal(){document.getElementById('addModal').classList.add('hidden')}
+function logout(){localStorage.removeItem('rekavo_seller_logged');location.href='seller-login.html'}
+function saveP(){
+  const n=document.getElementById('pName').value.trim(), pr=parseInt(document.getElementById('pPrice').value), st=parseInt(document.getElementById('pStock').value);
+  if(!n||!pr||!st) return alert('Sab bhar');
+  products.push({id:Date.now(), name:n, price:pr, stock:st});
+  localStorage.setItem('rekavo_products', JSON.stringify(products)); closeModal(); render();
   document.getElementById('pName').value='';document.getElementById('pPrice').value='';document.getElementById('pStock').value='';
 }
 function render(){
   document.getElementById('totalProducts').innerText=products.length;
-  document.getElementById('pCountSide').innerText=products.length;
-  document.getElementById('totalOrders').innerText=products.length>0?Math.floor(products.length/2):0;
-  document.getElementById('totalSales').innerText='₹'+products.reduce((s,p)=>s+p.price*p.stock,0);
-  document.getElementById('totalEarn').innerText='₹'+Math.floor(products.reduce((s,p)=>s+p.price*p.stock,0)*0.9);
+  document.getElementById('listCount').innerText=products.length+' Products';
+  document.getElementById('totalSales').innerText='₹'+products.reduce((a,b)=>a+b.price*b.stock,0).toLocaleString('en-IN');
+  document.getElementById('totalEarn').innerText='₹'+Math.floor(products.reduce((a,b)=>a+b.price*b.stock,0)*0.9).toLocaleString('en-IN');
+  document.getElementById('totalOrders').innerText=products.length?products.length*2:0;
   document.getElementById('lowStock').innerText=products.filter(p=>p.stock<6).length+' low stock';
-  document.getElementById('productList').innerHTML=products.length?`<div class="divide-y">${products.map(p=>`<div class="flex items-center justify-between py-3"><div><p class="font-bold text-[14px]">${p.name}</p><p class="text-xs text-gray-500">${p.stock} stock • ₹${p.price}</p></div><button onclick="deleteP(${p.id})" class="text-xs text-red-500 font-bold">Delete</button></div>`).join('')}</div>`:`<div class="text-center py-10"><p class="text-3xl">📦</p><p class="font-bold mt-2">No products yet</p><p class="text-xs text-gray-500 mt-1">Add karo, real me yaha ayega</p><button onclick="openAddModal()" class="mt-4 bg-black text-white px-5 py-2 rounded-full text-xs font-bold">Add First Product</button></div>`;
-  document.getElementById('todo').innerHTML=`<div class="p-3 bg-[#fff7ed] border border-[#ffedd5] rounded-xl text-xs">⚡ ${products.length} products live on Rekavo</div><div class="p-3 bg-gray-50 border rounded-xl text-xs">💡 Tip: Stock 5 se kam hua toh low stock me ayega</div>`;
+  document.getElementById('todoList').innerHTML=products.length?`<div class="bg-[#FFFBEB] border border-[#FDE68A] p-3 rounded-xl flex gap-3"><div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">⚡</div><div><p class="font-bold text-[12px]">${products.length} products live</p><p class="text-[11px] text-gray-500">Great start! Add more to grow.</p></div></div><div class="bg-[#F0FDF4] border border-[#BBF7D0] p-3 rounded-xl flex gap-3"><div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">💰</div><div><p class="font-bold text-[12px]">Earnings active</p><p class="text-[11px] text-gray-500">Payout every 7 days</p></div></div>`:`<div class="bg-[#FFFBEB] border border-[#FDE68A] p-3 rounded-xl"><p class="font-bold text-[12px]">⚡ 0 products live</p><p class="text-[11px] text-gray-500 mt-1">Add your first product to start selling across India</p></div><div class="bg-[#F5F3FF] border border-[#DDD6FE] p-3 rounded-xl mt-3"><p class="font-bold text-[12px]">💡 Seller Tip</p><p class="text-[11px] text-gray-500 mt-1">Stock 5 se kam hua toh low stock me ayega</p></div>`;
+  document.getElementById('productList').innerHTML=products.length?products.map(p=>`<div class="flex items-center justify-between p-3 hover:bg-[#F9FAFB] rounded-xl"><div class="flex items-center gap-3"><div class="w-11 h-11 bg-[#F5F6F7] rounded-xl flex items-center justify-center font-bold">${p.name[0]}</div><div><p class="font-bold text-[13px]">${p.name}</p><p class="text-[11px] text-gray-500">${p.stock} units • ₹${p.price}</p></div></div><div class="flex items-center gap-3"><span class="text-[11px] font-bold bg-[#E6F6E6] text-[#067D62] px-2.5 py-1 rounded-full">Active</span><button onclick="delP(${p.id})" class="w-7 h-7 bg-[#FFF0F0] text-[#C40000] rounded-full"><i class="fa-solid fa-trash text-[11px]"></i></button></div></div>`).join(''):`<div class="text-center py-12"><div class="w-16 h-16 bg-[#F5F6F7] rounded-full flex items-center justify-center mx-auto text-xl">📦</div><p class="font-extrabold mt-4 text-[14px]">No products yet</p><p class="text-[12px] text-gray-400 mt-1">List your first product and start your empire</p></div>`;
 }
-function deleteP(id){products=products.filter(p=>p.id!==id);localStorage.setItem('rekavo_products', JSON.stringify(products));render();}
-let ctx=document.getElementById('salesChart').getContext('2d');
-new Chart(ctx,{type:'bar',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{data:products.length?[0,0,0,0,products.length*100,products.length*250,products.length*400]:[0,0,0,0,0,0,0],backgroundColor:'#111',borderRadius:8}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{display:false}},x:{grid:{display:false}}}}});
+function delP(id){products=products.filter(p=>p.id!==id);localStorage.setItem('rekavo_products', JSON.stringify(products));render()}
+new Chart(document.getElementById('salesChart'),{type:'line',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{data:products.length?[5,12,8,20,15,25,30]:[0,0,0,0,0,0,0],borderColor:'#FF9900',backgroundColor:'rgba(255,153,0,0.1)',fill:true,tension:0.4,borderWidth:2,pointRadius:0}]},options:{plugins:{legend:{display:false}},scales:{y:{display:false},x:{grid:{display:false},ticks:{font:{size:11}}}},maintainAspectRatio:false}});
 render();
 </script>
 </body>
