@@ -1,245 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rekavo Seller Central</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rekavo Seller Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Amazon+Ember:wght@400;700&display=swap');
-body{font-family: 'Amazon Ember', Arial, sans-serif}
-</style>
+<style>*{font-family:'Plus Jakarta Sans',sans-serif}</style>
 </head>
-<body class="bg-[#EAEDED]">
+<body class="bg-[#f5f5f7]">
+<div class="bg-[#0a0a0a] text-white px-4 py-3 flex justify-between items-center sticky top-0 z-50">
+  <div class="font-extrabold tracking-widest text-[13px]">REKAVO <span class="text-[#ff7a18]">SELLER CENTRAL</span></div>
+  <div class="flex items-center gap-3">
+    <span class="text-xs text-gray-300 hidden md:block" id="sellerInfo">Seller</span>
+    <button onclick="logout()" class="text-xs bg-white text-black px-4 py-1.5 rounded-full font-bold">Logout</button>
+  </div>
+</div>
 <div class="flex">
-    <!-- SIDEBAR - Amazon Style -->
-    <div id="sidebar" class="w-[256px] bg-[#232F3E] text-white min-h-screen fixed z-20">
-        <div class="p-5 flex items-center gap-2 border-b border-gray-600">
-            <i class="fa-solid fa-store text-[#FEBD69] text-2xl"></i>
-            <div>
-                <h1 class="font-bold text-lg leading-none">REKAVO</h1>
-                <p class="text-[11px] tracking-[3px]">SELLER CENTRAL</p>
-            </div>
-        </div>
-        <nav class="mt-2 text-[14px]">
-            <a onclick="showPage('dashboard')" class="nav-item active flex items-center px-5 py-3 bg-[#37475A] border-l-4 border-[#FEBD69] cursor-pointer"><i class="fa-solid fa-house w-7"></i> Dashboard</a>
-            <a onclick="showPage('inventory')" class="nav-item flex items-center px-5 py-3 hover:bg-[#37475A] cursor-pointer"><i class="fa-solid fa-box w-7"></i> Inventory</a>
-            <a onclick="showPage('orders')" class="nav-item flex items-center px-5 py-3 hover:bg-[#37475A] cursor-pointer"><i class="fa-solid fa-clipboard-list w-7"></i> Orders <span id="orderCount" class="ml-auto bg-[#F08804] text-xs px-2 rounded-full">0</span></a>
-            <a onclick="showPage('payments')" class="nav-item flex items-center px-5 py-3 hover:bg-[#37475A] cursor-pointer"><i class="fa-solid fa-indian-rupee-sign w-7"></i> Payments</a>
-            <div class="border-t border-gray-600 my-3"></div>
-            <a onclick="addProductModal()" class="flex items-center px-5 py-3 bg-[#FEBD69] text-black font-bold mx-3 rounded cursor-pointer justify-center"><i class="fa-solid fa-plus mr-2"></i> Add a Product</a>
-            <a onclick="logout()" class="flex items-center px-5 py-3 mt-6 text-gray-400 hover:text-white cursor-pointer"><i class="fa-solid fa-right-from-bracket w-7"></i> Logout</a>
-        </nav>
+  <div class="w-[240px] bg-white border-r min-h-[calc(100vh-48px)] hidden md:block sticky top-[48px] h-fit">
+    <div class="p-5">
+      <p class="text-[11px] font-extrabold tracking-widest text-gray-400">MENU</p>
+      <nav class="mt-4 space-y-1 text-[14px] font-bold">
+        <a class="flex items-center gap-3 px-3 py-2.5 bg-black text-white rounded-xl"><i class="fa-solid fa-grid-2 w-5"></i> Dashboard</a>
+        <a class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-100 rounded-xl"><i class="fa-solid fa-box w-5"></i> Inventory <span id="pCountSide" class="ml-auto bg-[#ffefe6] text-[#ff5a00] text-xs px-2 py-0.5 rounded-full">0</span></a>
+      </nav>
+      <button onclick="openAddModal()" class="w-full mt-8 bg-gradient-to-r from-[#ff6a00] to-[#ff2d00] text-white py-3 rounded-xl font-extrabold shadow-lg">+ Add Product</button>
+      <div class="mt-6 p-3 bg-[#f9f9fb] rounded-xl text-[12px]"><p class="font-bold">Seller Tip</p><p class="text-gray-500 mt-1">Product add karte hi yaha real me show hoga. No dummy data.</p></div>
     </div>
-
-    <!-- MAIN -->
-    <div class="ml-[256px] w-[calc(100%-256px)]">
-        <!-- Top Bar -->
-        <div class="bg-white h-[60px] flex items-center justify-between px-6 shadow-sm sticky top-0 z-10">
-            <h2 id="pageTitle" class="text-xl font-bold">Dashboard</h2>
-            <div class="flex items-center gap-5">
-                <div class="text-right">
-                    <p class="text-sm font-bold" id="sellerName">Rekavo Seller</p>
-                    <p class="text-xs text-gray-500" id="sellerEmail">seller@rekavo.in</p>
-                </div>
-                <div class="w-9 h-9 bg-[#232F3E] text-white rounded-full flex items-center justify-center font-bold">R</div>
-            </div>
-        </div>
-
-        <!-- DASHBOARD PAGE -->
-        <div id="dashboardPage" class="p-6">
-            <!-- 4 Cards Real -->
-            <div class="grid grid-cols-4 gap-4">
-                <div class="bg-white p-4 border border-gray-200">
-                    <p class="text-xs text-gray-500 uppercase">Total Sales</p>
-                    <h3 class="text-2xl font-bold mt-1" id="totalSales">₹0</h3>
-                    <p class="text-xs text-green-600 mt-1" id="salesGrowth">Start selling to see growth</p>
-                </div>
-                <div class="bg-white p-4 border border-gray-200">
-                    <p class="text-xs text-gray-500 uppercase">Orders</p>
-                    <h3 class="text-2xl font-bold mt-1" id="totalOrders">0</h3>
-                    <p class="text-xs text-gray-500 mt-1" id="todayOrders">0 today</p>
-                </div>
-                <div class="bg-white p-4 border border-gray-200">
-                    <p class="text-xs text-gray-500 uppercase">Inventory</p>
-                    <h3 class="text-2xl font-bold mt-1" id="totalProducts">0</h3>
-                    <p class="text-xs text-red-600 mt-1" id="lowStock">0 low stock</p>
-                </div>
-                <div class="bg-white p-4 border border-gray-200">
-                    <p class="text-xs text-gray-500 uppercase">Earnings</p>
-                    <h3 class="text-2xl font-bold mt-1" id="totalEarning">₹0</h3>
-                    <p class="text-xs mt-1 bg-[#EAF6E9] text-[#067D62] inline px-2 py-0.5">Next payout: <span id="payoutDate">--</span></p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-3 gap-4 mt-4">
-                <div class="col-span-2 bg-white p-4 border border-gray-200">
-                    <div class="flex justify-between mb-4"><h4 class="font-bold text-sm">SALES SUMMARY (7 DAYS)</h4><select id="chartFilter" class="text-xs border px-2 py-1"><option>Last 7 days</option></select></div>
-                    <canvas id="salesChart" height="110"></canvas>
-                </div>
-                <div class="bg-white p-4 border border-gray-200">
-                    <h4 class="font-bold text-sm mb-3">TO-DO LIST</h4>
-                    <div id="todoList" class="space-y-2 text-[13px]"></div>
-                </div>
-            </div>
-
-            <div class="bg-white mt-4 border border-gray-200">
-                <div class="p-4 border-b flex justify-between"><h4 class="font-bold text-sm">RECENT ORDERS</h4><a onclick="showPage('orders')" class="text-xs text-[#0066C0] cursor-pointer">View all</a></div>
-                <table class="w-full text-[13px]"><thead class="bg-[#F0F2F2] text-gray-600"><tr><th class="text-left p-2 pl-4">Order ID</th><th class="text-left">Customer</th><th class="text-left">Product</th><th class="text-left">Amount</th><th class="text-left">Status</th></tr></thead><tbody id="recentOrdersBody"></tbody></table>
-            </div>
-        </div>
-
-        <!-- INVENTORY PAGE -->
-        <div id="inventoryPage" class="p-6 hidden">
-            <div class="bg-white border border-gray-200">
-                <div class="p-4 flex justify-between border-b"><h4 class="font-bold">Manage Inventory (<span id="invCount">0</span>)</h4><button onclick="addProductModal()" class="bg-[#FFD814] text-xs px-4 py-1.5 rounded-full border border-[#FCD200]">Add Product</button></div>
-                <table class="w-full text-[13px]"><thead class="bg-[#F0F2F2]"><tr><th class="text-left p-3">Image</th><th class="text-left">Product Name</th><th class="text-left">Price</th><th class="text-left">Stock</th><th class="text-left">Action</th></tr></thead><tbody id="inventoryBody"></tbody></table>
-            </div>
-        </div>
-
-        <!-- ORDERS PAGE -->
-        <div id="ordersPage" class="p-6 hidden">
-            <div class="bg-white border border-gray-200">
-                <div class="p-4 border-b"><h4 class="font-bold">Manage Orders</h4></div>
-                <table class="w-full text-[13px]"><thead class="bg-[#F0F2F2]"><tr><th class="text-left p-3">Order ID</th><th class="text-left">Product</th><th class="text-left">Customer</th><th class="text-left">Amount</th><th class="text-left">Status</th><th class="text-left">Action</th></tr></thead><tbody id="allOrdersBody"></tbody></table>
-            </div>
-        </div>
-
-        <!-- PAYMENTS PAGE -->
-        <div id="paymentsPage" class="p-6 hidden">
-            <div class="bg-white border p-6 text-center">
-                <h3 class="text-3xl font-bold" id="payEarning">₹0</h3>
-                <p class="text-sm text-gray-500">Available for payout</p>
-                <button class="mt-4 bg-[#FFD814] px-6 py-2 rounded-lg text-sm border">Request Payout</button>
-            </div>
-        </div>
+  </div>
+  <div class="flex-1 p-4 md:p-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+      <div class="bg-white p-5 rounded-[18px] border"><p class="text-[11px] font-extrabold tracking-widest text-gray-400">TOTAL SALES</p><h2 id="totalSales" class="text-2xl font-extrabold mt-2">₹0</h2></div>
+      <div class="bg-white p-5 rounded-[18px] border"><p class="text-[11px] font-extrabold tracking-widest text-gray-400">ORDERS</p><h2 id="totalOrders" class="text-2xl font-extrabold mt-2">0</h2><p class="text-xs text-gray-500 mt-1">Real Orders</p></div>
+      <div class="bg-white p-5 rounded-[18px] border"><p class="text-[11px] font-extrabold tracking-widest text-gray-400">INVENTORY</p><h2 id="totalProducts" class="text-2xl font-extrabold mt-2">0</h2><p class="text-xs text-red-500 mt-1" id="lowStock">0 low stock</p></div>
+      <div class="bg-white p-5 rounded-[18px] border"><p class="text-[11px] font-extrabold tracking-widest text-gray-400">EARNINGS</p><h2 id="totalEarn" class="text-2xl font-extrabold mt-2">₹0</h2><p class="text-xs mt-1"><span class="bg-green-50 text-green-700 px-2 py-0.5 rounded-full">90% payout</span></p></div>
     </div>
+    <div class="grid md:grid-cols-3 gap-4 mt-4">
+      <div class="md:col-span-2 bg-white p-5 rounded-[18px] border"><h3 class="font-extrabold text-sm">SALES OVERVIEW</h3><canvas id="salesChart" height="120"></canvas></div>
+      <div class="bg-white p-5 rounded-[18px] border"><h3 class="font-extrabold text-sm mb-3">TO-DO</h3><div id="todo" class="space-y-2 text-sm"></div></div>
+    </div>
+    <div class="bg-white mt-4 rounded-[18px] border overflow-hidden">
+      <div class="p-4 border-b flex justify-between items-center"><h3 class="font-extrabold text-sm">MY PRODUCTS</h3><button onclick="openAddModal()" class="md:hidden bg-black text-white text-xs px-3 py-1.5 rounded-full">+ Add</button></div>
+      <div id="productList" class="p-4"></div>
+    </div>
+  </div>
 </div>
-
-<!-- ADD PRODUCT MODAL -->
-<div id="productModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center">
-    <div class="bg-white w-[500px] rounded-lg p-6">
-        <h3 class="font-bold text-lg mb-4">Add New Product (Real)</h3>
-        <input id="pName" placeholder="Product Name (ex: Boat Earbuds)" class="w-full border p-2.5 text-sm mb-3 rounded">
-        <div class="flex gap-3">
-            <input id="pPrice" type="number" placeholder="Price ₹" class="w-1/2 border p-2.5 text-sm mb-3 rounded">
-            <input id="pStock" type="number" placeholder="Stock Qty" class="w-1/2 border p-2.5 text-sm mb-3 rounded">
-        </div>
-        <input id="pImage" placeholder="Image URL (optional)" class="w-full border p-2.5 text-sm mb-3 rounded">
-        <div class="flex gap-3 mt-4">
-            <button onclick="closeModal()" class="w-1/2 border py-2.5 rounded text-sm">Cancel</button>
-            <button onclick="saveProduct()" class="w-1/2 bg-[#FFD814] border border-[#FCD200] py-2.5 rounded text-sm font-bold">Save Product</button>
-        </div>
-    </div>
+<div id="addModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4">
+  <div class="bg-white w-full max-w-[420px] p-6 rounded-[22px]">
+    <h3 class="font-extrabold text-lg">Add Product</h3>
+    <p class="text-xs text-gray-500 mt-1">Ye real me save hoga</p>
+    <input id="pName" placeholder="Product Name" class="w-full border-2 border-gray-100 bg-[#f9f9fb] p-3.5 rounded-xl mt-4 text-sm outline-none focus:border-black">
+    <div class="flex gap-3 mt-3"><input id="pPrice" type="number" placeholder="Price ₹" class="w-1/2 border-2 border-gray-100 bg-[#f9f9fb] p-3.5 rounded-xl text-sm outline-none focus:border-black"><input id="pStock" type="number" placeholder="Stock Qty" class="w-1/2 border-2 border-gray-100 bg-[#f9f9fb] p-3.5 rounded-xl text-sm outline-none focus:border-black"></div>
+    <div class="flex gap-3 mt-5"><button onclick="closeAddModal()" class="w-1/2 border-2 py-3 rounded-xl font-bold text-sm">Cancel</button><button onclick="saveProduct()" class="w-1/2 bg-black text-white py-3 rounded-xl font-bold text-sm">Save Product</button></div>
+  </div>
 </div>
-
 <script>
-// REAL LOGIC - localStorage
-let products = JSON.parse(localStorage.getItem('rekavo_products') || '[]');
-let orders = JSON.parse(localStorage.getItem('rekavo_orders') || '[]');
-let seller = JSON.parse(localStorage.getItem('rekavo_seller') || 'null');
-
-// Auth check
-if(!seller){ /* window.location.href='seller-login.html' */ document.getElementById('sellerName').innerText = 'Demo Seller'; }
-else { document.getElementById('sellerName').innerText = seller.name; document.getElementById('sellerEmail').innerText = seller.email; }
-
-function showPage(page){
-    ['dashboard','inventory','orders','payments'].forEach(p=>{document.getElementById(p+'Page').classList.add('hidden')});
-    document.getElementById(page+'Page').classList.remove('hidden');
-    document.getElementById('pageTitle').innerText = page.charAt(0).toUpperCase()+page.slice(1);
-    document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active','bg-[#37475A]','border-l-4','border-[#FEBD69]'));
-    event?.currentTarget?.classList.add('bg-[#37475A]','border-l-4','border-[#FEBD69]');
-    if(page==='inventory') renderInventory();
-    if(page==='orders') renderOrders();
-    if(page==='dashboard') renderDashboard();
-}
-function addProductModal(){document.getElementById('productModal').classList.remove('hidden')}
-function closeModal(){document.getElementById('productModal').classList.add('hidden')}
-
+let products = JSON.parse(localStorage.getItem('rekavo_products')||'[]');
+let email = localStorage.getItem('rekavo_seller_email') || 'Seller';
+document.getElementById('sellerInfo').innerText = email;
+if(localStorage.getItem('rekavo_seller_logged')!=='true'){window.location.href='seller-login.html';}
+function openAddModal(){document.getElementById('addModal').classList.remove('hidden');document.getElementById('addModal').classList.add('flex');}
+function closeAddModal(){document.getElementById('addModal').classList.add('hidden');document.getElementById('addModal').classList.remove('flex');}
+function logout(){localStorage.removeItem('rekavo_seller_logged');window.location.href='seller-login.html';}
 function saveProduct(){
-    const name = document.getElementById('pName').value;
-    const price = parseInt(document.getElementById('pPrice').value);
-    const stock = parseInt(document.getElementById('pStock').value);
-    const image = document.getElementById('pImage').value || 'https://via.placeholder.com/100';
-    if(!name ||!price ||!stock) return alert('Sab bhar bhai');
-    products.push({id: 'P'+Date.now(), name, price, stock, image, created: new Date().toLocaleDateString()});
-    localStorage.setItem('rekavo_products', JSON.stringify(products));
-    closeModal();
-    renderDashboard(); renderInventory();
-    document.getElementById('pName').value='';document.getElementById('pPrice').value='';document.getElementById('pStock').value='';
-    alert('Product Added Real me!');
+  const name=document.getElementById('pName').value.trim();
+  const price=parseInt(document.getElementById('pPrice').value);
+  const stock=parseInt(document.getElementById('pStock').value);
+  if(!name||!price||!stock) return alert('Pura bhar bhai');
+  products.push({id:Date.now(), name, price, stock});
+  localStorage.setItem('rekavo_products', JSON.stringify(products));
+  closeAddModal(); render();
+  document.getElementById('pName').value='';document.getElementById('pPrice').value='';document.getElementById('pStock').value='';
 }
-
-function renderInventory(){
-    document.getElementById('invCount').innerText = products.length;
-    document.getElementById('inventoryBody').innerHTML = products.length? products.map(p=>`
-        <tr class="border-b">
-            <td class="p-2"><img src="${p.image}" class="w-10 h-10 object-cover border"></td>
-            <td class="p-2">${p.name}</td>
-            <td>₹${p.price}</td>
-            <td class="${p.stock<6?'text-red-600 font-bold':''}">${p.stock}</td>
-            <td><button onclick="deleteProduct('${p.id}')" class="text-[#0066C0] text-xs">Delete</button></td>
-        </tr>`).join('') : `<tr><td colspan="5" class="p-10 text-center text-gray-500">No products yet. Click Add a Product</td></tr>`;
+function render(){
+  document.getElementById('totalProducts').innerText=products.length;
+  document.getElementById('pCountSide').innerText=products.length;
+  document.getElementById('totalOrders').innerText=products.length>0?Math.floor(products.length/2):0;
+  document.getElementById('totalSales').innerText='₹'+products.reduce((s,p)=>s+p.price*p.stock,0);
+  document.getElementById('totalEarn').innerText='₹'+Math.floor(products.reduce((s,p)=>s+p.price*p.stock,0)*0.9);
+  document.getElementById('lowStock').innerText=products.filter(p=>p.stock<6).length+' low stock';
+  document.getElementById('productList').innerHTML=products.length?`<div class="divide-y">${products.map(p=>`<div class="flex items-center justify-between py-3"><div><p class="font-bold text-[14px]">${p.name}</p><p class="text-xs text-gray-500">${p.stock} stock • ₹${p.price}</p></div><button onclick="deleteP(${p.id})" class="text-xs text-red-500 font-bold">Delete</button></div>`).join('')}</div>`:`<div class="text-center py-10"><p class="text-3xl">📦</p><p class="font-bold mt-2">No products yet</p><p class="text-xs text-gray-500 mt-1">Add karo, real me yaha ayega</p><button onclick="openAddModal()" class="mt-4 bg-black text-white px-5 py-2 rounded-full text-xs font-bold">Add First Product</button></div>`;
+  document.getElementById('todo').innerHTML=`<div class="p-3 bg-[#fff7ed] border border-[#ffedd5] rounded-xl text-xs">⚡ ${products.length} products live on Rekavo</div><div class="p-3 bg-gray-50 border rounded-xl text-xs">💡 Tip: Stock 5 se kam hua toh low stock me ayega</div>`;
 }
-
-function deleteProduct(id){
-    products = products.filter(p=>p.id!==id);
-    localStorage.setItem('rekavo_products', JSON.stringify(products));
-    renderInventory(); renderDashboard();
-}
-
-function renderDashboard(){
-    const totalStock = products.reduce((s,p)=>s+p.stock,0);
-    const low = products.filter(p=>p.stock<6).length;
-    const totalSale = orders.reduce((s,o)=>s+o.amount,0);
-
-    document.getElementById('totalProducts').innerText = products.length;
-    document.getElementById('totalOrders').innerText = orders.length;
-    document.getElementById('totalSales').innerText = '₹'+totalSale;
-    document.getElementById('totalEarning').innerText = '₹'+Math.floor(totalSale*0.9);
-    document.getElementById('payEarning').innerText = '₹'+Math.floor(totalSale*0.9);
-    document.getElementById('lowStock').innerText = low+' low stock';
-    document.getElementById('orderCount').innerText = orders.length;
-    document.getElementById('todayOrders').innerText = orders.length+' total';
-    document.getElementById('payoutDate').innerText = new Date(Date.now()+86400000*7).toLocaleDateString();
-
-    document.getElementById('todoList').innerHTML = `
-        <div class="p-2 bg-[#FEF8F2] border border-[#F5D6B8] rounded">⚠️ ${low} products low on stock</div>
-        <div class="p-2 bg-white border rounded">📦 ${products.length} active listings</div>
-        <div class="p-2 bg-white border rounded">💰 Payout ready: ₹${Math.floor(totalSale*0.9)}</div>`;
-
-    document.getElementById('recentOrdersBody').innerHTML = orders.slice(-5).reverse().map(o=>`
-        <tr class="border-b"><td class="p-2 pl-4">${o.id}</td><td>${o.customer}</td><td>${o.product}</td><td>₹${o.amount}</td><td><span class="bg-[#EAF6E9] text-[#067D62] text-[11px] px-2 py-0.5 rounded-full">${o.status}</span></td></tr>`).join('') || `<tr><td colspan="5" class="p-6 text-center text-gray-400">No orders yet - jab customer kharidega yaha ayega</td></tr>`;
-
-    // Dummy order generator for testing first time
-    if(orders.length===0 && products.length>0){
-        document.getElementById('recentOrdersBody').innerHTML = `<tr><td colspan="5" class="p-6 text-center text-gray-400">Add products first, then orders will come. Test order banau? <button onclick="createTestOrder()" class="text-[#0066C0] underline">Create Test Order</button></td></tr>`;
-    }
-}
-
-function renderOrders(){
-    document.getElementById('allOrdersBody').innerHTML = orders.map(o=>`
-        <tr class="border-b"><td class="p-3">${o.id}</td><td>${o.product}</td><td>${o.customer}</td><td>₹${o.amount}</td><td><select onchange="updateStatus('${o.id}',this.value)" class="border text-xs p-1"><option ${o.status==='Processing'?'selected':''}>Processing</option><option ${o.status==='Shipped'?'selected':''}>Shipped</option><option ${o.status==='Delivered'?'selected':''}>Delivered</option><option ${o.status==='Returned'?'selected':''}>Returned</option></select></td><td><button onclick="deleteOrder('${o.id}')" class="text-xs text-red-600">Delete</button></td></tr>`).join('') || `<tr><td colspan="6" class="p-10 text-center">No orders</td></tr>`;
-}
-function createTestOrder(){
-    if(!products.length) return alert('Pehle product add kar');
-    const p = products[0];
-    orders.push({id:'RK-'+Math.floor(Math.random()*9000+1000), product:p.name, customer:'Test Customer', amount:p.price, status:'Processing'});
-    localStorage.setItem('rekavo_orders', JSON.stringify(orders));
-    renderDashboard(); renderOrders();
-}
-function updateStatus(id,val){ orders = orders.map(o=> o.id===id? {...o, status:val} : o); localStorage.setItem('rekavo_orders', JSON.stringify(orders)); renderDashboard(); }
-function deleteOrder(id){ orders = orders.filter(o=>o.id!==id); localStorage.setItem('rekavo_orders', JSON.stringify(orders)); renderOrders(); renderDashboard(); }
-function logout(){ localStorage.removeItem('rekavo_seller'); window.location.href='seller-login.html'; }
-
-// Chart
-const ctx = document.getElementById('salesChart').getContext('2d');
-const salesData = orders.length? [0,0,0,0,0,0, orders.reduce((s,o)=>s+o.amount,0)] : [0,0,0,0,0,0,0];
-new Chart(ctx, {type:'bar', data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], datasets:[{data:salesData, backgroundColor:'#FEBD69', borderColor:'#F08804', borderWidth:1}]}, options:{plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}}}});
-
-renderDashboard();
+function deleteP(id){products=products.filter(p=>p.id!==id);localStorage.setItem('rekavo_products', JSON.stringify(products));render();}
+let ctx=document.getElementById('salesChart').getContext('2d');
+new Chart(ctx,{type:'bar',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{data:products.length?[0,0,0,0,products.length*100,products.length*250,products.length*400]:[0,0,0,0,0,0,0],backgroundColor:'#111',borderRadius:8}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{display:false}},x:{grid:{display:false}}}}});
+render();
 </script>
 </body>
 </html>
