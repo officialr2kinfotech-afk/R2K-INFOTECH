@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rekavo Seller Hub</title>
+<title>Rekavo Seller Hub - Flipkart Style</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -13,11 +13,11 @@
 
 <header class="bg-[#2874F0] h-[56px] flex items-center justify-between px-4 sticky top-0 z-50 text-white">
   <div class="flex items-center gap-3">
-    <button class="w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-bars"></i></button>
-    <div class="flex items-center gap-1.5"><div class="w-7 h-7 bg-white rounded-full flex items-center justify-center text-[#2874F0] font-black text-[14px]">R</div><div class="leading-none"><p class="font-black text-[13px]">Rekavo Seller</p><p class="text-[10px] font-bold opacity-90 -mt-0.5 tracking-widest">HUB</p></div></div>
+    <button class="w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-bars text-[18px]"></i></button>
+    <div class="flex items-center gap-1.5"><div class="w-7 h-7 bg-white rounded-full flex items-center justify-center text-[#2874F0] font-black text-[14px]">R</div><div class="leading-none"><p class="font-black text-[13px] tracking-wide">Rekavo Seller</p><p class="text-[10px] font-bold opacity-90 -mt-0.5 tracking-widest">HUB</p></div></div>
   </div>
   <div class="flex items-center gap-4">
-    <button onclick="openPage('Notifications')"><i class="fa-regular fa-bell text-[20px]"></i></button>
+    <button onclick="alert('No new notifications')"><i class="fa-regular fa-bell text-[20px]"></i></button>
     <button id="dotBtn" class="w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-ellipsis-vertical text-[18px]"></i></button>
   </div>
 </header>
@@ -28,11 +28,11 @@
 </div>
 
 <div id="dotMenu" class="hidden fixed top-[56px] right-2 w-[220px] bg-white rounded-xl shadow-2xl border z-[60] overflow-hidden">
-  <button onclick="openInventoryPage()" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b"><i class="fa-solid fa-cubes w-4"></i> Inventory</button>
-  <button onclick="openPage('Pricing')" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b"><i class="fa-solid fa-tag w-4"></i> Pricing</button>
-  <button onclick="openPage('Returns')" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b"><i class="fa-solid fa-rotate-left w-4"></i> Returns</button>
-  <button onclick="openPage('Performance')" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b"><i class="fa-solid fa-star w-4"></i> Performance</button>
-  <button onclick="openPage('Settings')" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50"><i class="fa-solid fa-gear w-4"></i> Settings</button>
+  <button onclick="openInventory()" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b text-left"><i class="fa-solid fa-cubes w-4"></i> Inventory</button>
+  <button onclick="alert('Pricing page')" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b text-left"><i class="fa-solid fa-tag w-4"></i> Pricing</button>
+  <button onclick="alert('Returns - Real data 0')" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b text-left"><i class="fa-solid fa-rotate-left w-4"></i> Returns</button>
+  <button onclick="alert('Performance page')" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b text-left"><i class="fa-solid fa-star w-4"></i> Performance</button>
+  <button onclick="alert('Settings page')" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 text-left"><i class="fa-solid fa-gear w-4"></i> Settings</button>
 </div>
 
 <main class="max-w-[520px] mx-auto p-3 space-y-3">
@@ -40,25 +40,33 @@
     <div class="flex justify-between items-start">
       <div class="flex gap-3">
         <div class="w-11 h-11 bg-[#E3F2FD] rounded-full flex items-center justify-center text-[#2874F0]"><i class="fa-solid fa-box-open"></i></div>
-        <div><p class="text-[13px] font-medium text-gray-600">Orders to Dispatch</p><h1 id="ordersCount" class="text-[28px] font-black leading-none mt-1">0</h1><p class="text-[11px] text-gray-400 mt-1.5">Real Orders</p></div>
+        <div><p class="text-[13px] font-medium text-gray-600">Orders to Dispatch</p><h1 id="ordersCount" class="text-[28px] font-black leading-none mt-1">0</h1><p class="text-[11px] text-gray-400 mt-1.5">Real orders only</p></div>
       </div>
       <i class="fa-solid fa-chevron-right text-gray-300 text-[12px] mt-2"></i>
     </div>
-    <button onclick="openPage('Orders')" class="mt-4 w-full bg-[#2874F0] text-white py-2.5 rounded-lg font-bold text-[13px]">Ship Now <i class="fa-solid fa-arrow-right ml-2 text-[11px]"></i></button>
+    <button onclick="alert('No orders yet - real data')" class="mt-4 w-full bg-[#2874F0] text-white py-2.5 rounded-lg font-bold text-[13px]">Ship Now <i class="fa-solid fa-arrow-right ml-2 text-[11px]"></i></button>
   </div>
+
   <div class="grid grid-cols-2 gap-3">
-    <div class="bg-white rounded-xl border p-4"><div class="w-9 h-9 bg-[#FFF3E0] rounded-full flex items-center justify-center text-[#EF6C00]"><i class="fa-solid fa-rotate-left text-[14px]"></i></div><p class="text-[12px] text-gray-500 mt-3">Returns</p><h2 class="text-[22px] font-black mt-0.5">0</h2></div>
-    <div class="bg-white rounded-xl border p-4"><div class="w-9 h-9 bg-[#E8F5E9] rounded-full flex items-center justify-center text-[#2E7D32]"><i class="fa-solid fa-indian-rupee-sign text-[14px]"></i></div><p class="text-[12px] text-gray-500 mt-3">Payments</p><h2 id="payAmount" class="text-[22px] font-black mt-0.5">₹0</h2></div>
+    <div class="bg-white rounded-xl border p-4">
+      <div class="w-9 h-9 bg-[#FFF3E0] rounded-full flex items-center justify-center text-[#EF6C00] text-[14px]"><i class="fa-solid fa-rotate-left"></i></div>
+      <p class="text-[12px] text-gray-500 mt-3">Returns</p><h2 class="text-[22px] font-black mt-0.5">0</h2>
+    </div>
+    <div class="bg-white rounded-xl border p-4">
+      <div class="w-9 h-9 bg-[#E8F5E9] rounded-full flex items-center justify-center text-[#2E7D32] text-[14px]"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+      <p class="text-[12px] text-gray-500 mt-3">Payments</p><h2 id="payAmount" class="text-[22px] font-black mt-0.5">₹0</h2>
+    </div>
   </div>
+
   <div class="bg-white rounded-xl border p-4">
     <div class="flex justify-between items-center">
-      <div class="flex items-center gap-3"><div class="w-9 h-9 bg-[#F3E5F5] rounded-full flex items-center justify-center text-[#8E24AA]"><i class="fa-solid fa-cubes"></i></div><div><p class="text-[13px] font-bold">Inventory</p><p class="text-[11px] text-gray-400">Tap to see all items</p></div></div>
+      <div class="flex items-center gap-3"><div class="w-9 h-9 bg-[#F3E5F5] rounded-full flex items-center justify-center text-[#8E24AA]"><i class="fa-solid fa-cubes"></i></div><div><p class="text-[13px] font-bold">Inventory</p><p class="text-[11px] text-gray-400">Tap to see all</p></div></div>
       <h2 id="invCount" class="text-[22px] font-black">0</h2>
     </div>
     <div class="mt-3 pt-3 border-t flex justify-between items-center"><p class="text-[11px] text-gray-500"><span id="lowStock" class="font-bold text-[#D32F2F]">0</span> low stock items</p><button onclick="openAdd()" class="text-[12px] font-bold text-[#2874F0]">+ Add Item</button></div>
     <div id="invList" class="mt-3 space-y-2"></div>
-    <button onclick="openInventoryPage()" class="w-full mt-3 text-[12px] font-bold text-[#2874F0] border py-2 rounded-lg">View All Inventory</button>
   </div>
+
   <div class="bg-white rounded-xl border p-4">
     <div class="flex justify-between items-center"><h3 class="font-bold text-[13px]">Business Insights</h3><span class="text-[10px] font-bold bg-gray-100 px-2.5 py-1 rounded-full">Last 7 Days</span></div>
     <canvas id="salesChart" height="160" class="mt-4"></canvas>
@@ -68,125 +76,127 @@
 <div class="fixed bottom-0 left-0 right-0 bg-white border-t h-[68px] z-40">
   <div class="max-w-[520px] mx-auto h-full flex justify-around items-center relative px-2">
     <button class="flex flex-col items-center text-[#2874F0] w-14"><i class="fa-solid fa-house text-[18px]"></i><span class="text-[10px] font-bold mt-1">Home</span></button>
-    <button onclick="openPage('Orders')" class="flex flex-col items-center text-gray-400 w-14"><i class="fa-solid fa-box text-[18px]"></i><span class="text-[10px] font-bold mt-1">Orders</span></button>
+    <button onclick="alert('No orders yet')" class="flex flex-col items-center text-gray-400 w-14"><i class="fa-solid fa-box text-[18px]"></i><span class="text-[10px] font-bold mt-1">Orders</span></button>
     <div class="w-[80px]"></div>
     <div class="absolute left-1/2 -translate-x-1/2 -top-5 flex flex-col items-center">
       <button onclick="openAdd()" class="w-[58px] h-[58px] bg-[#2874F0] rounded-full flex items-center justify-center text-white shadow-[0_6px_16px_rgba(40,116,240,0.5)] border-[4px] border-[#F0F2F5] active:scale-95 transition-all"><i class="fa-solid fa-plus text-[22px]"></i></button>
       <span class="text-[10px] font-black mt-1 tracking-wider text-[#212121]">Add Item</span>
     </div>
-    <button onclick="openInventoryPage()" class="flex flex-col items-center text-gray-400 w-14"><i class="fa-solid fa-cubes text-[18px]"></i><span class="text-[10px] font-bold mt-1">Inventory</span></button>
-    <button onclick="openPage('Payments')" class="flex flex-col items-center text-gray-400 w-14"><i class="fa-solid fa-wallet text-[18px]"></i><span class="text-[10px] font-bold mt-1">Payments</span></button>
+    <button onclick="openInventory()" class="flex flex-col items-center text-gray-400 w-14"><i class="fa-solid fa-cubes text-[18px]"></i><span class="text-[10px] font-bold mt-1">Inventory</span></button>
+    <button onclick="alert('Payments - Real ₹0')" class="flex flex-col items-center text-gray-400 w-14"><i class="fa-solid fa-wallet text-[18px]"></i><span class="text-[10px] font-bold mt-1">Payments</span></button>
   </div>
 </div>
 
 <div id="addModal" class="fixed inset-0 bg-black/60 hidden z-[99] flex items-end md:items-center justify-center">
   <div class="bg-white w-full max-w-[520px] rounded-t-[22px] md:rounded-[22px] p-5 max-h-[92vh] overflow-y-auto">
+    <div class="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-4 md:hidden"></div>
     <div class="flex justify-between items-center"><h3 class="font-black text-[15px]">Add New Item</h3><button onclick="closeAdd()" class="w-8 h-8 bg-gray-100 rounded-full"><i class="fa-solid fa-xmark text-[12px]"></i></button></div>
     <div id="photoBox" class="mt-4 border-2 border-dashed rounded-xl bg-[#FAFBFF] overflow-hidden">
-      <div id="uploadBtns" class="p-4"><p class="text-[12px] font-bold text-center mb-3">Upload Product Photo</p><div class="grid grid-cols-2 gap-3"><button onclick="document.getElementById('camInput').click()" class="bg-[#2874F0] text-white py-3 rounded-xl font-bold text-[12px] flex flex-col items-center gap-1"><i class="fa-solid fa-camera text-[16px]"></i>Camera</button><button onclick="document.getElementById('galInput').click()" class="bg-white border py-3 rounded-xl font-bold text-[12px] flex flex-col items-center gap-1"><i class="fa-solid fa-images text-[16px]"></i>Gallery</button></div></div>
-      <img id="prev" class="hidden w-full h-[180px] object-cover"><button id="changePhotoBtn" onclick="document.getElementById('galInput').click()" class="hidden w-full bg-black/70 text-white text-[11px] py-1">Change Photo</button>
+      <div id="uploadBtns" class="p-4">
+        <p class="text-[12px] font-bold text-center mb-3">Upload Product Photo</p>
+        <div class="grid grid-cols-2 gap-3">
+          <button onclick="document.getElementById('camInput').click()" class="bg-[#2874F0] text-white py-3 rounded-xl font-bold text-[12px] flex flex-col items-center gap-1"><i class="fa-solid fa-camera text-[16px]"></i>Camera</button>
+          <button onclick="document.getElementById('galInput').click()" class="bg-white border py-3 rounded-xl font-bold text-[12px] flex flex-col items-center gap-1"><i class="fa-solid fa-images text-[16px]"></i>Gallery</button>
+        </div>
+      </div>
+      <img id="prev" class="hidden w-full h-[180px] object-cover">
     </div>
-    <input type="file" id="camInput" accept="image/*" capture="environment" class="hidden" onchange="preview(event)"><input type="file" id="galInput" accept="image/*" class="hidden" onchange="preview(event)">
-    <input id="pName" placeholder="Item Name *" class="w-full mt-4 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border">
-    <textarea id="pDesc" placeholder="Item Description - Quality, Features, Material..." rows="3" class="w-full mt-3 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border resize-none"></textarea>
-    <div class="flex gap-3 mt-3"><input id="pPrice" type="number" placeholder="Price ₹ *" class="w-1/2 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border"><input id="pStock" type="number" placeholder="Stock Qty *" class="w-1/2 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border"></div>
+    <input type="file" id="camInput" accept="image/*" capture="environment" class="hidden" onchange="preview(event)">
+    <input type="file" id="galInput" accept="image/*" class="hidden" onchange="preview(event)">
+    <input id="pName" placeholder="Item Name *" class="w-full mt-4 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none focus:border-[#2874F0] border border-transparent focus:bg-white">
+    <textarea id="pDesc" placeholder="Item Description / Product Details - Quality, Features, Material..." rows="3" class="w-full mt-3 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none focus:border-[#2874F0] border border-transparent focus:bg-white resize-none"></textarea>
+    <div class="flex gap-3 mt-3">
+      <input id="pPrice" type="number" placeholder="Price ₹ *" class="w-1/2 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border border-transparent focus:border-[#2874F0]">
+      <input id="pStock" type="number" placeholder="Stock Qty *" class="w-1/2 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border border-transparent focus:border-[#2874F0]">
+    </div>
     <button onclick="saveProd()" class="w-full mt-5 bg-[#FB641B] text-white py-3.5 rounded-xl font-black text-[13px]">ADD ITEM TO STORE</button>
+    <p class="text-[10px] text-center text-gray-400 mt-2">This item will be visible on main website - index.html</p>
   </div>
 </div>
 
 <div id="inventoryPage" class="fixed inset-0 bg-[#F0F2F5] hidden z-[100] overflow-y-auto">
-  <div class="bg-[#2874F0] h-[56px] flex items-center gap-3 px-4 text-white sticky top-0 z-10"><button onclick="closeInventoryPage()" class="w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-arrow-left"></i></button><h2 class="font-bold text-[15px]">My Inventory</h2><span id="invPageCount" class="ml-auto bg-white/20 px-2.5 py-1 rounded-full text-[11px] font-bold">0 Items</span></div>
-  <div class="max-w-[520px] mx-auto p-3"><div class="bg-white rounded-xl border p-3 flex items-center gap-2"><i class="fa-solid fa-magnifying-glass text-gray-400 text-[14px] ml-1"></i><input id="searchInput" oninput="filterInventory()" placeholder="Search items - Name, Category, Price..." class="flex-1 outline-none text-[13px] bg-transparent"></div><div id="fullInvList" class="mt-3 space-y-2"></div></div>
+  <div class="bg-[#2874F0] h-[56px] flex items-center gap-3 px-4 text-white sticky top-0"><button onclick="closeInventory()" class="w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-arrow-left"></i></button><h2 class="font-bold text-[15px]">My Inventory</h2><span id="invPageCount" class="ml-auto bg-white/20 px-2.5 py-1 rounded-full text-[11px] font-bold">0 Items</span></div>
+  <div class="max-w-[520px] mx-auto p-3">
+    <div class="bg-white rounded-xl border p-3 flex items-center gap-2"><i class="fa-solid fa-magnifying-glass text-gray-400 text-[14px] ml-1"></i><input id="searchInput" oninput="filterInventory()" placeholder="Search items..." class="flex-1 outline-none text-[13px] bg-transparent"></div>
+    <div id="fullInvList" class="mt-3 space-y-2"></div>
+  </div>
 </div>
 
-<!-- PRODUCT DETAIL PAGE WITH EDIT -->
 <div id="detailPage" class="fixed inset-0 bg-white hidden z-[110] overflow-y-auto">
-  <div class="bg-[#2874F0] h-[56px] flex items-center gap-3 px-4 text-white sticky top-0"><button onclick="closeDetailPage()" class="w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-arrow-left"></i></button><h2 class="font-bold text-[15px]">Product Details</h2><button onclick="openEditModal()" class="ml-auto bg-white text-[#2874F0] px-4 py-1.5 rounded-full text-[12px] font-black"><i class="fa-solid fa-pen mr-1"></i>EDIT</button></div>
+  <div class="bg-[#2874F0] h-[56px] flex items-center gap-3 px-4 text-white sticky top-0"><button onclick="closeDetail()" class="w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-arrow-left"></i></button><h2 class="font-bold text-[15px]">Product Details</h2><button onclick="openEdit()" class="ml-auto bg-white text-[#2874F0] px-4 py-1.5 rounded-full text-[12px] font-black">EDIT</button></div>
   <div class="max-w-[520px] mx-auto">
     <img id="detailImg" class="w-full h-[300px] object-cover bg-gray-100">
     <div class="p-4">
       <div class="flex justify-between items-start"><h1 id="detailName" class="font-black text-[18px] flex-1"></h1><span id="detailCat" class="bg-[#E8F5E9] text-[#2E7D32] px-3 py-1 rounded-full text-[11px] font-bold ml-2"></span></div>
       <p id="detailDesc" class="text-[13px] text-gray-600 mt-3 leading-relaxed"></p>
       <div class="grid grid-cols-2 gap-3 mt-5">
-        <div class="bg-[#F0F2F5] p-3 rounded-xl"><p class="text-[11px] text-gray-500">Price</p><p id="detailPrice" class="font-black text-[18px] mt-1"></p><p id="detailDiscount" class="text-[11px] text-green-600 font-bold mt-1"></p></div>
-        <div class="bg-[#F0F2F5] p-3 rounded-xl"><p class="text-[11px] text-gray-500">Stock Available</p><p id="detailStock" class="font-black text-[18px] mt-1"></p></div>
+        <div class="bg-[#F0F2F5] p-3 rounded-xl"><p class="text-[11px] text-gray-500">Price</p><p id="detailPrice" class="font-black text-[18px] mt-1"></p></div>
+        <div class="bg-[#F0F2F5] p-3 rounded-xl"><p class="text-[11px] text-gray-500">Stock</p><p id="detailStock" class="font-black text-[18px] mt-1"></p></div>
       </div>
-      <div class="mt-5 p-3 bg-[#E3F2FD] rounded-xl flex justify-between text-[12px]"><span>Status: Live on Website</span><span class="font-bold text-[#2874F0]">● Active</span></div>
-      <button onclick="openEditModal()" class="w-full mt-4 bg-[#2874F0] text-white py-3 rounded-xl font-bold text-[13px]"><i class="fa-solid fa-pen-to-square mr-2"></i>EDIT PRICE / DESCRIPTION / DISCOUNT</button>
-      <button onclick="deleteCurrentProd()" class="w-full mt-3 border border-red-200 text-red-600 py-3 rounded-xl font-bold text-[13px]">Delete Item</button>
+      <button onclick="openEdit()" class="w-full mt-5 bg-[#2874F0] text-white py-3 rounded-xl font-bold text-[13px]">EDIT PRICE / DESCRIPTION</button>
+      <button onclick="deleteProd()" class="w-full mt-3 border border-red-200 text-red-600 py-3 rounded-xl font-bold text-[13px]">Delete</button>
     </div>
   </div>
 </div>
 
-<!-- EDIT MODAL -->
 <div id="editModal" class="fixed inset-0 bg-black/60 hidden z-[120] flex items-end md:items-center justify-center">
   <div class="bg-white w-full max-w-[520px] rounded-t-[22px] md:rounded-[22px] p-5 max-h-[92vh] overflow-y-auto">
-    <div class="flex justify-between items-center"><h3 class="font-black text-[15px]">Edit Item</h3><button onclick="closeEditModal()" class="w-8 h-8 bg-gray-100 rounded-full"><i class="fa-solid fa-xmark text-[12px]"></i></button></div>
-    <div class="mt-4">
-      <img id="editPrev" class="w-full h-[160px] object-cover rounded-xl bg-gray-100 mb-3">
-      <button onclick="document.getElementById('editImgInput').click()" class="w-full border py-2 rounded-xl text-[12px] font-bold mb-4">Change Photo</button>
-      <input type="file" id="editImgInput" accept="image/*" class="hidden" onchange="editPreview(event)">
-      <input id="editName" placeholder="Item Name" class="w-full bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border mb-3">
-      <textarea id="editDesc" placeholder="Description" rows="3" class="w-full bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border resize-none mb-3"></textarea>
-      <div class="grid grid-cols-2 gap-3">
-        <input id="editPrice" type="number" placeholder="Price ₹" class="bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border">
-        <input id="editStock" type="number" placeholder="Stock Qty" class="bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border">
-      </div>
-      <div class="mt-3"><input id="editDiscount" type="number" placeholder="Discount % (e.g. 10 for 10% OFF)" class="w-full bg-[#FFF8E1] p-3.5 rounded-xl text-[13px] outline-none border border-[#FFECB3]"></div>
-      <button onclick="saveEdit()" class="w-full mt-5 bg-[#FB641B] text-white py-3.5 rounded-xl font-black text-[13px]">SAVE CHANGES</button>
-    </div>
+    <div class="flex justify-between items-center"><h3 class="font-black text-[15px]">Edit Item</h3><button onclick="closeEdit()" class="w-8 h-8 bg-gray-100 rounded-full"><i class="fa-solid fa-xmark text-[12px]"></i></button></div>
+    <img id="editPrev" class="w-full h-[160px] object-cover rounded-xl bg-gray-100 mt-4 mb-3">
+    <input id="editName" placeholder="Item Name" class="w-full bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border mb-3">
+    <textarea id="editDesc" placeholder="Description" rows="3" class="w-full bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border resize-none mb-3"></textarea>
+    <div class="flex gap-3"><input id="editPrice" type="number" placeholder="Price" class="w-1/2 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border"><input id="editStock" type="number" placeholder="Stock" class="w-1/2 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border"></div>
+    <button onclick="saveEdit()" class="w-full mt-5 bg-[#FB641B] text-white py-3.5 rounded-xl font-black text-[13px]">SAVE CHANGES</button>
   </div>
 </div>
-
-<div id="pageModal" class="fixed inset-0 bg-white hidden z-[90] overflow-y-auto"><div class="bg-[#2874F0] h-[56px] flex items-center gap-3 px-4 text-white sticky top-0"><button onclick="closePage()" class="w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-arrow-left"></i></button><h2 id="pageTitle" class="font-bold text-[15px]">Page</h2></div><div class="p-10 text-center max-w-[520px] mx-auto"><p class="text-[13px] text-gray-500">Real data will show here when orders come. Currently 0.</p></div></div>
 
 <script>
 let products=JSON.parse(localStorage.getItem('rekavo_products')||'[]');
-let tempImg=''; let editTempImg=''; let currentProdId=null;
-document.getElementById('sellerName').innerText=localStorage.getItem('rekavo_seller_email')?.split('@')[0] || 'Seller';
-document.getElementById('dotBtn').onclick=()=>document.getElementById('dotMenu').classList.toggle('hidden');
-window.onclick=(e)=>{if(!e.target.closest('#dotBtn') &&!e.target.closest('#dotMenu'))document.getElementById('dotMenu').classList.add('hidden');}
+let tempImg=''; let currentId=null; let editImg='';
+document.getElementById('sellerName').innerText=localStorage.getItem('rekavo_seller_email')?.split('@')[0] || '6264329345';
+document.getElementById('dotBtn').onclick=(e)=>{e.stopPropagation(); document.getElementById('dotMenu').classList.toggle('hidden')};
+document.addEventListener('click',(e)=>{if(!e.target.closest('#dotMenu') &&!e.target.closest('#dotBtn')) document.getElementById('dotMenu').classList.add('hidden')});
+
 function openAdd(){document.getElementById('addModal').classList.remove('hidden')}
 function closeAdd(){document.getElementById('addModal').classList.add('hidden')}
-function openPage(t){document.getElementById('pageTitle').innerText=t; document.getElementById('pageModal').classList.remove('hidden'); document.getElementById('dotMenu').classList.add('hidden')}
-function closePage(){document.getElementById('pageModal').classList.add('hidden')}
-function openInventoryPage(){document.getElementById('inventoryPage').classList.remove('hidden'); document.getElementById('dotMenu').classList.add('hidden'); renderFullInventory(products);}
-function closeInventoryPage(){document.getElementById('inventoryPage').classList.add('hidden')}
-function filterInventory(){let q=document.getElementById('searchInput').value.toLowerCase(); let filtered=products.filter(p=> (p.name+p.category+p.price).toLowerCase().includes(q)); renderFullInventory(filtered);}
-function renderFullInventory(list){
-  document.getElementById('invPageCount').innerText=list.length+' Items';
-  document.getElementById('fullInvList').innerHTML=list.map(p=>`
-    <div onclick="openDetail(${p.id})" class="bg-white rounded-xl border p-3 flex gap-3 cursor-pointer active:bg-gray-50">
-      <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center font-bold border flex-shrink-0">${p.img?`<img src="${p.img}" class="w-full h-full object-cover">`:p.name[0]}</div>
-      <div class="flex-1"><p class="font-bold text-[13px]">${p.name}</p><p class="text-[11px] text-gray-500 mt-0.5">${p.category} • ${p.desc? p.desc.slice(0,40):''}</p><div class="flex gap-3 mt-1.5"><span class="text-[13px] font-black">₹${p.price}</span>${p.discount?`<span class="text-[10px] bg-[#FFEBEE] text-red-600 px-2 py-0.5 rounded-full font-bold">${p.discount}% OFF</span>`:''}<span class="text-[11px] bg-[#F0F2F5] px-2 py-0.5 rounded-full">Stock: ${p.stock}</span></div></div>
-      <i class="fa-solid fa-chevron-right text-gray-300 text-[11px] mt-2"></i>
-    </div>
-  `).join('') || '<p class="text-center text-gray-400 text-[13px] py-10">No items found.</p>';
+function openInventory(){document.getElementById('inventoryPage').classList.remove('hidden'); document.getElementById('dotMenu').classList.add('hidden'); renderFull(products)}
+function closeInventory(){document.getElementById('inventoryPage').classList.add('hidden')}
+function closeDetail(){document.getElementById('detailPage').classList.add('hidden')}
+function openEdit(){let p=products.find(x=>x.id===currentId); if(!p) return; document.getElementById('editPrev').src=p.img||''; editImg=p.img||''; document.getElementById('editName').value=p.name; document.getElementById('editDesc').value=p.desc||''; document.getElementById('editPrice').value=p.price; document.getElementById('editStock').value=p.stock; document.getElementById('editModal').classList.remove('hidden')}
+function closeEdit(){document.getElementById('editModal').classList.add('hidden')}
+function preview(e){let f=e.target.files[0]; if(!f) return; let r=new FileReader(); r.onload=()=>{tempImg=r.result; let pr=document.getElementById('prev'); pr.src=tempImg; pr.classList.remove('hidden'); document.getElementById('uploadBtns').classList.add('hidden')}; r.readAsDataURL(f)}
+function autoCategory(n,d){let t=(n+" "+d).toLowerCase(); if(t.match(/(mobile|phone|charger|power bank|earphone|buds|watch|speaker|trimmer|light|led|usb|cable)/)) return "Electronics"; if(t.match(/(shoe|sneaker|chappal|sandal)/)) return "Footwear"; if(t.match(/(shirt|jeans|kurta|dress|saree|tshirt|fashion)/)) return "Fashion"; if(t.match(/(cover|case)/)) return "Cover"; return "General"}
+function saveProd(){
+ let n=document.getElementById('pName').value.trim();
+ let d=document.getElementById('pDesc').value.trim();
+ let pv=document.getElementById('pPrice').value;
+ let sv=document.getElementById('pStock').value;
+ if(!n) return alert('Item Name required');
+ if(!pv) return alert('Price required');
+ if(!sv) return alert('Stock required');
+ let cat=autoCategory(n,d);
+ let item={id:Date.now(),name:n,desc:d,price:parseInt(pv),stock:parseInt(sv),category:cat,img:tempImg||''};
+ products.push(item);
+ localStorage.setItem('rekavo_products',JSON.stringify(products));
+ localStorage.setItem('rekavo_all_products',JSON.stringify(products));
+ closeAdd(); render();
+ document.getElementById('pName').value=''; document.getElementById('pDesc').value=''; document.getElementById('pPrice').value=''; document.getElementById('pStock').value=''; tempImg=''; document.getElementById('prev').classList.add('hidden'); document.getElementById('uploadBtns').classList.remove('hidden');
 }
-function openDetail(id){
-  let p=products.find(x=>x.id===id); if(!p) return; currentProdId=id;
-  document.getElementById('detailImg').src=p.img||''; document.getElementById('detailName').innerText=p.name; document.getElementById('detailCat').innerText=p.category; document.getElementById('detailDesc').innerText=p.desc||'No description'; document.getElementById('detailPrice').innerText='₹'+p.price; document.getElementById('detailDiscount').innerText=p.discount? p.discount+'% OFF - Now ₹'+ Math.floor(p.price - (p.price*p.discount/100)) : ''; document.getElementById('detailStock').innerText=p.stock+' Units'; document.getElementById('detailPage').classList.remove('hidden');
+function render(){
+ document.getElementById('ordersCount').innerText=0;
+ document.getElementById('payAmount').innerText='₹0';
+ document.getElementById('invCount').innerText=products.length;
+ document.getElementById('lowStock').innerText=products.filter(p=>p.stock<5).length;
+ document.getElementById('invList').innerHTML=products.slice(-3).reverse().map(p=>`<div onclick="openDetailPage(${p.id})" class="flex items-center gap-3 p-2.5 bg-[#F8F9FA] rounded-xl border cursor-pointer"><div class="w-11 h-11 bg-white rounded-lg overflow-hidden flex items-center justify-center font-bold border">${p.img?`<img src="${p.img}" class="w-full h-full object-cover">`:p.name[0]}</div><div class="flex-1"><p class="font-bold text-[12px] truncate">${p.name}</p><p class="text-[11px] text-gray-500 truncate">${p.category} • ₹${p.price} • Stock: ${p.stock}</p></div><span class="text-[10px] bg-[#E8F5E9] text-[#2E7D32] px-2 py-1 rounded-full font-bold">${p.category}</span></div>`).join('') || '<p class="text-[11px] text-gray-400 text-center py-3">No items yet. Tap Add Item</p>';
 }
-function closeDetailPage(){document.getElementById('detailPage').classList.add('hidden')}
-function deleteCurrentProd(){if(!currentProdId) return; if(!confirm('Delete this item permanently?')) return; products=products.filter(p=>p.id!==currentProdId); localStorage.setItem('rekavo_products',JSON.stringify(products)); localStorage.setItem('rekavo_all_products',JSON.stringify(products)); closeDetailPage(); closeInventoryPage(); render();}
-function openEditModal(){
-  let p=products.find(x=>x.id===currentProdId); if(!p) return;
-  document.getElementById('editPrev').src=p.img||''; editTempImg=p.img||''; document.getElementById('editName').value=p.name; document.getElementById('editDesc').value=p.desc||''; document.getElementById('editPrice').value=p.price; document.getElementById('editStock').value=p.stock; document.getElementById('editDiscount').value=p.discount||''; document.getElementById('editModal').classList.remove('hidden');
+function renderFull(list){
+ document.getElementById('invPageCount').innerText=list.length+' Items';
+ document.getElementById('fullInvList').innerHTML=list.map(p=>`<div onclick="openDetailPage(${p.id})" class="bg-white rounded-xl border p-3 flex gap-3 cursor-pointer"><div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center font-bold border flex-shrink-0">${p.img?`<img src="${p.img}" class="w-full h-full object-cover">`:p.name[0]}</div><div class="flex-1"><p class="font-bold text-[13px]">${p.name}</p><p class="text-[11px] text-gray-500 mt-0.5">${p.category} • ${p.desc? p.desc.slice(0,40):''}</p><div class="flex gap-2 mt-1.5"><span class="text-[13px] font-black">₹${p.price}</span><span class="text-[11px] bg-[#F0F2F5] px-2 py-0.5 rounded-full">Stock: ${p.stock}</span></div></div></div>`).join('') || '<p class="text-center text-gray-400 text-[13px] py-10">No items</p>';
 }
-function closeEditModal(){document.getElementById('editModal').classList.add('hidden')}
-function editPreview(e){let file=e.target.files[0]; if(!file) return; let r=new FileReader(); r.onload=()=>{editTempImg=r.result; document.getElementById('editPrev').src=editTempImg;}; r.readAsDataURL(file);}
-function saveEdit(){
-  let idx=products.findIndex(x=>x.id===currentProdId); if(idx===-1) return;
-  let n=document.getElementById('editName').value.trim(); let d=document.getElementById('editDesc').value.trim(); let pr=parseInt(document.getElementById('editPrice').value); let st=parseInt(document.getElementById('editStock').value); let disc=parseInt(document.getElementById('editDiscount').value)||0;
-  if(!n||!pr||!st) return alert('Name, Price, Stock required');
-  products[idx].name=n; products[idx].desc=d; products[idx].price=pr; products[idx].stock=st; products[idx].discount=disc; products[idx].img=editTempImg;
-  localStorage.setItem('rekavo_products',JSON.stringify(products)); localStorage.setItem('rekavo_all_products',JSON.stringify(products));
-  closeEditModal(); openDetail(currentProdId); render(); renderFullInventory(products);
-}
-function preview(e){let file=e.target.files[0]; if(!file) return; let r=new FileReader(); r.onload=()=>{tempImg=r.result; let p=document.getElementById('prev'); p.src=tempImg; p.classList.remove('hidden'); document.getElementById('uploadBtns').classList.add('hidden'); document.getElementById('changePhotoBtn').classList.remove('hidden');}; r.readAsDataURL(file);}
-function autoCategory(name, desc){let t = (name + " " + desc).toLowerCase(); if(t.match(/(power bank|charger|earphone|headphone|buds|cable|mobile|phone|watch|speaker|trimmer|light|led|usb)/)) return "Electronics"; if(t.match(/(shoe|sneaker|chappal|sandal|loafer)/)) return "Footwear"; if(t.match(/(shirt|jeans|kurta|dress|saree|tshirt|fashion)/)) return "Fashion"; if(t.match(/(cover|case)/)) return "Cover"; if(t.match(/(bag|wallet|belt)/)) return "Accessories"; return "General";}
-function saveProd(){let n=document.getElementById('pName').value.trim(); let d=document.getElementById('pDesc').value.trim(); let pVal=document.getElementById('pPrice').value; let sVal=document.getElementById('pStock').value; if(!n) return alert('Item Name required'); if(!pVal) return alert('Price required'); if(!sVal) return alert('Stock required'); let p=parseInt(pVal); let s=parseInt(sVal); let cat = autoCategory(n, d); let newItem={id:Date.now(),name:n,desc:d,price:p,stock:s,category:cat,img:tempImg||'',discount:0}; products.push(newItem); localStorage.setItem('rekavo_products',JSON.stringify(products)); localStorage.setItem('rekavo_all_products',JSON.stringify(products)); closeAdd(); render(); document.getElementById('pName').value='';document.getElementById('pDesc').value='';document.getElementById('pPrice').value='';document.getElementById('pStock').value='';tempImg='';document.getElementById('prev').classList.add('hidden');document.getElementById('uploadBtns').classList.remove('hidden');document.getElementById('changePhotoBtn').classList.add('hidden');}
-function render(){document.getElementById('ordersCount').innerText = 0; document.getElementById('payAmount').innerText = '₹0'; document.getElementById('invCount').innerText = products.length; document.getElementById('lowStock').innerText = products.filter(p=>p.stock<5).length; document.getElementById('invList').innerHTML=products.slice(-3).reverse().map(p=>`<div onclick="openDetail(${p.id})" class="flex items-center gap-3 p-2.5 bg-[#F8F9FA] rounded-xl border cursor-pointer"><div class="w-11 h-11 bg-white rounded-lg overflow-hidden flex items-center justify-center font-bold border">${p.img?`<img src="${p.img}" class="w-full h-full object-cover">`:p.name[0]}</div><div class="flex-1"><p class="font-bold text-[12px] truncate">${p.name}</p><p class="text-[11px] text-gray-500 truncate">${p.category} • ₹${p.price} ${p.discount?`• ${p.discount}% OFF`:''} • Stock: ${p.stock}</p></div><span class="text-[10px] bg-[#E8F5E9] text-[#2E7D32] px-2 py-1 rounded-full font-bold">${p.category}</span></div>`).join('') || '<p class="text-[11px] text-gray-400 text-center py-3">No items yet.</p>';}
+function filterInventory(){let q=document.getElementById('searchInput').value.toLowerCase(); let f=products.filter(p=>(p.name+p.category+p.price).toLowerCase().includes(q)); renderFull(f)}
+function openDetailPage(id){let p=products.find(x=>x.id===id); if(!p) return; currentId=id; document.getElementById('detailImg').src=p.img||''; document.getElementById('detailName').innerText=p.name; document.getElementById('detailCat').innerText=p.category; document.getElementById('detailDesc').innerText=p.desc||'No description'; document.getElementById('detailPrice').innerText='₹'+p.price; document.getElementById('detailStock').innerText=p.stock+' Units'; document.getElementById('detailPage').classList.remove('hidden')}
+function saveEdit(){let idx=products.findIndex(x=>x.id===currentId); if(idx==-1) return; let n=document.getElementById('editName').value.trim(); let d=document.getElementById('editDesc').value.trim(); let pr=parseInt(document.getElementById('editPrice').value); let st=parseInt(document.getElementById('editStock').value); if(!n||!pr||!st) return alert('Fill all'); products[idx].name=n; products[idx].desc=d; products[idx].price=pr; products[idx].stock=st; localStorage.setItem('rekavo_products',JSON.stringify(products)); localStorage.setItem('rekavo_all_products',JSON.stringify(products)); closeEdit(); openDetailPage(currentId); render(); renderFull(products)}
+function deleteProd(){if(!currentId) return; if(!confirm('Delete permanently?')) return; products=products.filter(p=>p.id!==currentId); localStorage.setItem('rekavo_products',JSON.stringify(products)); localStorage.setItem('rekavo_all_products',JSON.stringify(products)); closeDetail(); closeInventory(); render()}
 render();
 try{ new Chart(document.getElementById('salesChart'),{type:'bar',data:{labels:['Mon',[STRIPPED] Sales',data:[0,[STRIPPED] beginAtZero:true},x:{grid:{display:false}}}}}); }catch(e){}
 </script>
