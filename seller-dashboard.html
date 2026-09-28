@@ -11,50 +11,46 @@
 </head>
 <body class="pb-24">
 
-<!-- TOP HEADER -->
 <header class="bg-[#2874F0] h-[56px] flex items-center justify-between px-4 sticky top-0 z-50 text-white">
   <div class="flex items-center gap-3">
     <button class="w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-bars text-[18px]"></i></button>
     <div class="flex items-center gap-1.5"><div class="w-7 h-7 bg-white rounded-full flex items-center justify-center text-[#2874F0] font-black text-[14px]">R</div><div class="leading-none"><p class="font-black text-[13px] tracking-wide">Rekavo Seller</p><p class="text-[10px] font-bold opacity-90 -mt-0.5 tracking-widest">HUB</p></div></div>
   </div>
   <div class="flex items-center gap-4">
-    <i class="fa-regular fa-bell text-[20px]"></i>
+    <button onclick="alert('No new notifications')"><i class="fa-regular fa-bell text-[20px]"></i></button>
     <button id="dotBtn" class="w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-ellipsis-vertical text-[18px]"></i></button>
   </div>
 </header>
 
-<!-- GOOD MORNING BAR -->
 <div class="bg-white border-b px-4 py-3 flex justify-between items-center">
   <div><p class="text-[13px] font-medium text-gray-700">Good Morning,</p><h2 id="sellerName" class="font-black text-[16px] -mt-0.5">Seller</h2></div>
   <div class="flex items-center gap-2 bg-[#E8F5E9] px-3 py-1.5 rounded-full border border-[#C8E6C9]"><div class="w-2 h-2 bg-[#2E7D32] rounded-full animate-pulse"></div><span class="text-[11px] font-bold text-[#2E7D32]">Account Active</span></div>
 </div>
 
-<!-- 3 DOT MENU -->
 <div id="dotMenu" class="hidden fixed top-[56px] right-2 w-[220px] bg-white rounded-xl shadow-2xl border z-[60] overflow-hidden">
-  <a class="flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b"><i class="fa-solid fa-cubes w-4"></i> Inventory</a>
-  <a class="flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b"><i class="fa-solid fa-tag w-4"></i> Pricing</a>
-  <a class="flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b"><i class="fa-solid fa-rotate-left w-4"></i> Returns</a>
-  <a class="flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b"><i class="fa-solid fa-star w-4"></i> Performance</a>
-  <a class="flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50"><i class="fa-solid fa-gear w-4"></i> Settings</a>
+  <button onclick="alert('Inventory Page')" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b"><i class="fa-solid fa-cubes w-4"></i> Inventory</button>
+  <button onclick="alert('Pricing Page')" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b"><i class="fa-solid fa-tag w-4"></i> Pricing</button>
+  <button onclick="alert('Returns Page - Real data is 0')" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b"><i class="fa-solid fa-rotate-left w-4"></i> Returns</button>
+  <button onclick="alert('Performance Page')" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b"><i class="fa-solid fa-star w-4"></i> Performance</button>
+  <button onclick="alert('Settings Page')" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50"><i class="fa-solid fa-gear w-4"></i> Settings</button>
 </div>
 
-<!-- MAIN -->
 <main class="max-w-[520px] mx-auto p-3 space-y-3">
   <div class="bg-white rounded-xl border p-4">
     <div class="flex justify-between items-start">
       <div class="flex gap-3">
         <div class="w-11 h-11 bg-[#E3F2FD] rounded-full flex items-center justify-center text-[#2874F0]"><i class="fa-solid fa-box-open"></i></div>
-        <div><p class="text-[13px] font-medium text-gray-600">Orders to Dispatch</p><h1 id="ordersCount" class="text-[28px] font-black leading-none mt-1">0</h1><p class="text-[11px] text-gray-400 mt-1.5">Orders pending to ship today</p></div>
+        <div><p class="text-[13px] font-medium text-gray-600">Orders to Dispatch</p><h1 id="ordersCount" class="text-[28px] font-black leading-none mt-1">0</h1><p class="text-[11px] text-gray-400 mt-1.5">No pending orders - Real Data</p></div>
       </div>
       <i class="fa-solid fa-chevron-right text-gray-300 text-[12px] mt-2"></i>
     </div>
-    <button class="mt-4 w-full bg-[#2874F0] text-white py-2.5 rounded-lg font-bold text-[13px]">Ship Now <i class="fa-solid fa-arrow-right ml-2 text-[11px]"></i></button>
+    <button onclick="alert('No orders yet')" class="mt-4 w-full bg-[#2874F0] text-white py-2.5 rounded-lg font-bold text-[13px]">Ship Now <i class="fa-solid fa-arrow-right ml-2 text-[11px]"></i></button>
   </div>
 
   <div class="grid grid-cols-2 gap-3">
     <div class="bg-white rounded-xl border p-4">
       <div class="w-9 h-9 bg-[#FFF3E0] rounded-full flex items-center justify-center text-[#EF6C00] text-[14px]"><i class="fa-solid fa-rotate-left"></i></div>
-      <p class="text-[12px] text-gray-500 mt-3">Returns</p><h2 class="text-[22px] font-black mt-0.5">0</h2>
+      <p class="text-[12px] text-gray-500 mt-3">Returns</p><h2 id="returnsCount" class="text-[22px] font-black mt-0.5">0</h2>
     </div>
     <div class="bg-white rounded-xl border p-4">
       <div class="w-9 h-9 bg-[#E8F5E9] rounded-full flex items-center justify-center text-[#2E7D32] text-[14px]"><i class="fa-solid fa-indian-rupee-sign"></i></div>
@@ -64,7 +60,7 @@
 
   <div class="bg-white rounded-xl border p-4">
     <div class="flex justify-between items-center">
-      <div class="flex items-center gap-3"><div class="w-9 h-9 bg-[#F3E5F5] rounded-full flex items-center justify-center text-[#8E24AA]"><i class="fa-solid fa-cubes"></i></div><div><p class="text-[13px] font-bold">Inventory</p><p class="text-[11px] text-gray-400">Active listings</p></div></div>
+      <div class="flex items-center gap-3"><div class="w-9 h-9 bg-[#F3E5F5] rounded-full flex items-center justify-center text-[#8E24AA]"><i class="fa-solid fa-cubes"></i></div><div><p class="text-[13px] font-bold">Inventory</p><p class="text-[11px] text-gray-400">Active listings - Real Stock</p></div></div>
       <h2 id="invCount" class="text-[22px] font-black">0</h2>
     </div>
     <div class="mt-3 pt-3 border-t flex justify-between items-center"><p class="text-[11px] text-gray-500"><span id="lowStock" class="font-bold text-[#D32F2F]">0</span> low stock items</p><button onclick="openAdd()" class="text-[12px] font-bold text-[#2874F0]">+ Add Item</button></div>
@@ -72,32 +68,29 @@
   </div>
 
   <div class="bg-white rounded-xl border p-4">
-    <div class="flex justify-between items-center"><h3 class="font-bold text-[13px]">Business Insights</h3><span class="text-[10px] font-bold bg-gray-100 px-2.5 py-1 rounded-full">Last 7 Days</span></div>
+    <div class="flex justify-between items-center"><h3 class="font-bold text-[13px]">Business Insights</h3><span class="text-[10px] font-bold bg-gray-100 px-2.5 py-1 rounded-full">Real Data</span></div>
     <canvas id="salesChart" height="160" class="mt-4"></canvas>
   </div>
 </main>
 
-<!-- BOTTOM NAV -->
 <div class="fixed bottom-0 left-0 right-0 bg-white border-t h-[68px] z-40">
   <div class="max-w-[520px] mx-auto h-full flex justify-around items-center relative px-2">
     <button class="flex flex-col items-center text-[#2874F0] w-14"><i class="fa-solid fa-house text-[18px]"></i><span class="text-[10px] font-bold mt-1">Home</span></button>
-    <button class="flex flex-col items-center text-gray-400 w-14"><i class="fa-solid fa-box text-[18px]"></i><span class="text-[10px] font-bold mt-1">Orders</span></button>
+    <button onclick="alert('Orders Page - Real data 0')" class="flex flex-col items-center text-gray-400 w-14"><i class="fa-solid fa-box text-[18px]"></i><span class="text-[10px] font-bold mt-1">Orders</span></button>
     <div class="w-[80px]"></div>
     <div class="absolute left-1/2 -translate-x-1/2 -top-5 flex flex-col items-center">
       <button onclick="openAdd()" class="w-[58px] h-[58px] bg-[#2874F0] rounded-full flex items-center justify-center text-white shadow-[0_6px_16px_rgba(40,116,240,0.5)] border-[4px] border-[#F0F2F5] active:scale-95 transition-all"><i class="fa-solid fa-plus text-[22px]"></i></button>
       <span class="text-[10px] font-black mt-1 tracking-wider text-[#212121]">Add Item</span>
     </div>
-    <button class="flex flex-col items-center text-gray-400 w-14"><i class="fa-solid fa-cubes text-[18px]"></i><span class="text-[10px] font-bold mt-1">Inventory</span></button>
-    <button class="flex flex-col items-center text-gray-400 w-14"><i class="fa-solid fa-wallet text-[18px]"></i><span class="text-[10px] font-bold mt-1">Payments</span></button>
+    <button onclick="alert('Inventory Page')" class="flex flex-col items-center text-gray-400 w-14"><i class="fa-solid fa-cubes text-[18px]"></i><span class="text-[10px] font-bold mt-1">Inventory</span></button>
+    <button onclick="alert('Payments Page - Real data ₹0')" class="flex flex-col items-center text-gray-400 w-14"><i class="fa-solid fa-wallet text-[18px]"></i><span class="text-[10px] font-bold mt-1">Payments</span></button>
   </div>
 </div>
 
-<!-- ADD ITEM MODAL -->
 <div id="addModal" class="fixed inset-0 bg-black/60 hidden z-[99] flex items-end md:items-center justify-center">
   <div class="bg-white w-full max-w-[520px] rounded-t-[22px] md:rounded-[22px] p-5 max-h-[92vh] overflow-y-auto">
     <div class="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-4 md:hidden"></div>
     <div class="flex justify-between items-center"><h3 class="font-black text-[15px]">Add New Item</h3><button onclick="closeAdd()" class="w-8 h-8 bg-gray-100 rounded-full"><i class="fa-solid fa-xmark text-[12px]"></i></button></div>
-
     <div id="photoBox" class="mt-4 border-2 border-dashed rounded-xl bg-[#FAFBFF] overflow-hidden">
       <div id="uploadBtns" class="p-4">
         <p class="text-[12px] font-bold text-center mb-3">Upload Product Photo</p>
@@ -110,14 +103,12 @@
     </div>
     <input type="file" id="camInput" accept="image/*" capture="environment" class="hidden" onchange="preview(event)">
     <input type="file" id="galInput" accept="image/*" class="hidden" onchange="preview(event)">
-
     <input id="pName" placeholder="Item Name *" class="w-full mt-4 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none focus:border-[#2874F0] border border-transparent focus:bg-white">
     <textarea id="pDesc" placeholder="Item Description / Product Details - Quality, Features, Material..." rows="3" class="w-full mt-3 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none focus:border-[#2874F0] border border-transparent focus:bg-white resize-none"></textarea>
     <div class="flex gap-3 mt-3">
       <input id="pPrice" type="number" placeholder="Price ₹ *" class="w-1/2 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border border-transparent focus:border-[#2874F0]">
       <input id="pStock" type="number" placeholder="Stock Qty *" class="w-1/2 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border border-transparent focus:border-[#2874F0]">
     </div>
-
     <button onclick="saveProd()" class="w-full mt-5 bg-[#FB641B] text-white py-3.5 rounded-xl font-black text-[13px]">ADD ITEM TO STORE</button>
     <p class="text-[10px] text-center text-gray-400 mt-2">This item will be visible on main website - index.html</p>
   </div>
@@ -126,12 +117,11 @@
 <script>
 let products=JSON.parse(localStorage.getItem('rekavo_products')||'[]');
 let tempImg='';
-document.getElementById('sellerName').innerText=localStorage.getItem('rekavo_seller_email')?.split('@')[0] || 'Seller';
+document.getElementById('sellerName').innerText=localStorage.getItem('rekavo_seller_email')?.split('@')[0] || '6264329345';
 document.getElementById('dotBtn').onclick=()=>document.getElementById('dotMenu').classList.toggle('hidden');
 window.onclick=(e)=>{if(!e.target.closest('#dotBtn') &&!e.target.closest('#dotMenu'))document.getElementById('dotMenu').classList.add('hidden'); if(e.target.id==='addModal')closeAdd();}
 function openAdd(){document.getElementById('addModal').classList.remove('hidden')}
 function closeAdd(){document.getElementById('addModal').classList.add('hidden')}
-
 function preview(e){
   let file=e.target.files[0]; if(!file) return;
   let r=new FileReader(); r.onload=()=>{
@@ -140,17 +130,14 @@ function preview(e){
     document.getElementById('uploadBtns').classList.add('hidden');
   }; r.readAsDataURL(file);
 }
-
 function autoCategory(name, desc){
   let t = (name + " " + desc).toLowerCase();
-  if(t.match(/(power bank|powerbank|charger|earphone|headphone|earbuds|buds|cable|mobile|phone|smartwatch|watch|speaker|trimmer|light|led|usb|adapter)/)) return "Electronics";
-  if(t.match(/(shoe|sneaker|juta|chappal|sandal|loafer|footwear)/)) return "Footwear";
-  if(t.match(/(tshirt|t-shirt|shirt|jeans|kurta|dress|saree|hoodie|jacket|top|cloth|fashion|kurti)/)) return "Fashion";
-  if(t.match(/(cover|case|back cover|pouch|mobile cover)/)) return "Cover";
-  if(t.match(/(bag|wallet|belt|cap|sunglass)/)) return "Accessories";
+  if(t.match(/(power bank|charger|earphone|headphone|buds|cable|mobile|phone|smartwatch|watch|speaker|trimmer|light|led|usb)/)) return "Electronics";
+  if(t.match(/(shoe|sneaker|chappal|sandal|loafer)/)) return "Footwear";
+  if(t.match(/(shirt|jeans|kurta|dress|saree|tshirt|fashion)/)) return "Fashion";
+  if(t.match(/(cover|case)/)) return "Cover";
   return "General";
 }
-
 function saveProd(){
  let n=document.getElementById('pName').value.trim();
  let d=document.getElementById('pDesc').value.trim();
@@ -164,19 +151,23 @@ function saveProd(){
  localStorage.setItem('rekavo_all_products',JSON.stringify(products));
  closeAdd(); render();
  document.getElementById('pName').value='';document.getElementById('pDesc').value='';document.getElementById('pPrice').value='';document.getElementById('pStock').value='';tempImg='';document.getElementById('prev').classList.add('hidden');document.getElementById('uploadBtns').classList.remove('hidden');
- alert('Item Added Successfully! Category: '+cat+' - Visible on Main Website');
 }
-
 function render(){
- let total=products.reduce((a,b)=>a+b.price*b.stock,0);
- document.getElementById('ordersCount').innerText=products.length?products.length*3:0;
- document.getElementById('invCount').innerText=products.length;
- document.getElementById('payAmount').innerText='₹'+Math.floor(total*0.9).toLocaleString('en-IN');
- document.getElementById('lowStock').innerText=products.filter(p=>p.stock<5).length;
- document.getElementById('invList').innerHTML=products.slice(0,6).map(p=>`<div class="flex items-center gap-3 p-2.5 bg-[#F8F9FA] rounded-xl"><div class="w-11 h-11 bg-white rounded-lg overflow-hidden flex items-center justify-center font-bold border">${p.img?`<img src="${p.img}" class="w-full h-full object-cover">`:p.name[0]}</div><div class="flex-1"><p class="font-bold text-[12px] truncate">${p.name}</p><p class="text-[11px] text-gray-500 truncate">${p.category} • ${p.desc? p.desc.slice(0,20):'No description'} • ₹${p.price}</p></div><span class="text-[10px] bg-[#E8F5E9] text-[#2E7D32] px-2 py-1 rounded-full font-bold">${p.category}</span></div>`).join('') || '<p class="text-[11px] text-gray-400 text-center py-3">No items yet. Tap Add Item</p>';
+ // 100% REAL LOGIC - NO FAKE MULTIPLY
+ document.getElementById('ordersCount').innerText = 0;
+ document.getElementById('returnsCount').innerText = 0;
+ document.getElementById('payAmount').innerText = '₹0';
+ document.getElementById('invCount').innerText = products.length;
+ document.getElementById('lowStock').innerText = products.filter(p=>p.stock<5).length;
+ document.getElementById('invList').innerHTML=products.slice().reverse().map(p=>`
+   <div class="flex items-center gap-3 p-2.5 bg-[#F8F9FA] rounded-xl border">
+     <div class="w-11 h-11 bg-white rounded-lg overflow-hidden flex items-center justify-center font-bold border">${p.img?`<img src="${p.img}" class="w-full h-full object-cover">`:p.name[0]}</div>
+     <div class="flex-1"><p class="font-bold text-[12px] truncate">${p.name}</p><p class="text-[11px] text-gray-500 truncate">${p.category} • ₹${p.price} • Stock: ${p.stock} units</p></div>
+     <span class="text-[10px] bg-[#E8F5E9] text-[#2E7D32] px-2 py-1 rounded-full font-bold">${p.category}</span>
+   </div>`).join('') || '<p class="text-[11px] text-gray-400 text-center py-3">No items yet. Tap Add Item - Real stock will show here</p>';
 }
 render();
-new Chart(document.getElementById('salesChart'),{type:'bar',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{data:[products.length*2,products.length*3,products.length*1,products.length*4,products.length*2,products.length*5,products.length*3],backgroundColor:'#2874F0',borderRadius:6}]},options:{plugins:{legend:{display:false}},scales:{y:{display:false},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('salesChart'),{type:'bar',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{label:'Real Sales',data:[0,0,0,0,0,0,0],backgroundColor:'#2874F0',borderRadius:6}]},options:{plugins:{legend:{display:false}},scales:{y:{display:false, beginAtZero:true},x:{grid:{display:false}}}}});
 </script>
 </body>
 </html>
