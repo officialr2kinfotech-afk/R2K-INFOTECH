@@ -2,75 +2,85 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rekavo Seller Central - Pro</title>
+<title>Rekavo Seller Central - Final</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>*{font-family:'Inter',sans-serif} body{background:#F2F3F5}</style>
+<style>*{font-family:'Inter',sans-serif} body{background:#F5F5F7}.tab-active{background:#111!important;color:#fff!important}</style>
 </head>
 <body>
 <header class="bg-[#131A22] h-[56px] flex items-center justify-between px-4 sticky top-0 z-50 text-white">
-<div class="font-black text-[14px]">REKAVO <span class="text-[#FF9900]">SELLER</span></div>
-<div class="flex gap-2 items-center"><span id="sEmail" class="text-[11px] bg-[#232F3E] px-3 py-1.5 rounded-full"></span><button onclick="localStorage.clear();location.href='seller-login.html'" class="bg-white text-black px-4 py-1.5 rounded-full text-[12px] font-bold">Logout</button></div>
+  <div class="font-black">REKAVO <span class="text-[#FF9900]">SELLER</span></div>
+  <div id="sEmail" class="text-[11px] bg-[#232F3E] px-3 py-1.5 rounded-full">seller@rekavo.in</div>
 </header>
 
-<div class="flex max-w-[1400px] mx-auto">
-<!-- SIDEBAR -->
-<div class="w-[260px] bg-white min-h-screen border-r hidden md:block sticky top-[56px] h-fit p-3">
-<p class="text-[10px] font-black tracking-widest text-gray-400 px-3 mt-2">MAIN</p>
-<nav id="sideNav" class="mt-2 space-y-1 text-[13px] font-bold"></nav>
-<div class="mt-6 p-3 bg-[#FFF8E1] rounded-xl border border-[#FFECB3]"><p class="text-[12px] font-black">💡 Auto Mode ON</p><p class="text-[11px] text-gray-600 mt-1">Orders, Payments, Performance sab automatic chal raha hai. Tujhe bas Product daalna hai.</p></div>
+<div class="flex max-w-[1440px] mx-auto">
+  <!-- SIDEBAR - 10 ALAG JAGAH -->
+  <div class="w-[270px] bg-white min-h-[calc(100vh-56px)] border-r hidden md:block sticky top-[56px] h-fit overflow-y-auto">
+    <div class="p-3 space-y-6">
+      <div><p class="text-[10px] font-black tracking-widest text-gray-400 px-3">MAIN</p><nav id="navMain" class="mt-2 space-y-1"></nav></div>
+      <div><p class="text-[10px] font-black tracking-widest text-gray-400 px-3">Paisa & Growth</p><nav id="navMoney" class="mt-2 space-y-1"></nav></div>
+      <div><p class="text-[10px] font-black tracking-widest text-gray-400 px-3">Help</p><nav id="navHelp" class="mt-2 space-y-1"></nav></div>
+    </div>
+  </div>
+
+  <!-- CONTENT AREA - HAR TAB ALAG PAGE -->
+  <div class="flex-1 p-3 md:p-5">
+
+    <!-- 1. DASHBOARD -->
+    <div id="tab-dashboard" class="tab">
+      <h2 class="font-black text-[18px]">Namaste, Seller ji 🙏</h2><p class="text-[12px] text-gray-500">Aaj ka hisaab neeche hai, simple me.</p>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-4">
+        <div class="bg-white p-4 rounded-2xl border"><p class="text-[10px] font-bold text-gray-400">AAJ KI SALE</p><h2 class="text-[22px] font-black mt-1" id="kpi1">₹0</h2></div>
+        <div class="bg-white p-4 rounded-2xl border"><p class="text-[10px] font-bold text-gray-400">NEW ORDERS</p><h2 class="text-[22px] font-black mt-1" id="kpi2">0</h2></div>
+        <div class="bg-white p-4 rounded-2xl border"><p class="text-[10px] font-bold text-gray-400">MERA MAAL</p><h2 class="text-[22px] font-black mt-1" id="kpi3">0</h2></div>
+        <div class="bg-white p-4 rounded-2xl border"><p class="text-[10px] font-bold text-gray-400">PAISA MILEGA</p><h2 class="text-[22px] font-black mt-1" id="kpi4">₹0</h2></div>
+      </div>
+      <div class="bg-white rounded-2xl p-4 border mt-3"><canvas id="chart" height="130"></canvas></div>
+    </div>
+
+    <!-- 2. ORDERS - ALAG PAGE -->
+    <div id="tab-orders" class="tab hidden bg-white rounded-2xl border p-4"><h3 class="font-black">📦 Orders - Yah order ayega</h3><p class="text-[11px] text-gray-500 mt-1">Customer ne kharida toh yaha apne aap ayega. Tujhe bas pack karna hai.</p><div id="orderList" class="mt-4"></div></div>
+    <!-- 3. INVENTORY -->
+    <div id="tab-inventory" class="tab hidden bg-white rounded-2xl border"><div class="p-4 border-b flex justify-between"><h3 class="font-black">📦 Mera Maal / Inventory</h3><button onclick="openM()" class="bg-black text-white px-4 py-1.5 rounded-full text-xs">+ Maal Jodo</button></div><div id="prodList" class="p-3"></div></div>
+    <!-- 4. PRICING -->
+    <div id="tab-pricing" class="tab hidden bg-white rounded-2xl border p-5"><h3 class="font-black">💰 Daam / Pricing</h3><p class="text-xs text-gray-500 mt-2">Simple rakha hai - Product ka daam yahi se badal sakta hai.</p></div>
+    <!-- 5. PAYMENTS -->
+    <div id="tab-payments" class="tab hidden bg-white rounded-2xl border p-5"><h3 class="font-black">💳 Payments</h3><div class="grid grid-cols-2 gap-3 mt-4"><div class="bg-yellow-50 p-4 rounded-xl border"><p class="text-[10px] font-bold">PENDING</p><h2 id="payP" class="font-black text-xl">₹0</h2></div><div class="bg-green-50 p-4 rounded-xl border"><p class="text-[10px] font-bold">PAID</p><h2 class="font-black text-xl">₹0</h2></div></div></div>
+    <!-- 6. RETURNS -->
+    <div id="tab-returns" class="tab hidden bg-white rounded-2xl border p-5"><h3 class="font-black">↩️ Returns / Wapas Maal</h3><p class="text-xs text-gray-500">Customer wapas karega toh yaha ayega. Accept dabao, ho gaya.</p></div>
+    <!-- 7. PERFORMANCE -->
+    <div id="tab-performance" class="tab hidden bg-white rounded-2xl border p-5"><h3 class="font-black">⭐ Performance - Teri Rating</h3><div class="mt-4 bg-green-50 border p-4 rounded-xl"><p class="font-bold text-sm">Seller Score: 5.0 / 5 (Ekdam Mast)</p><p class="text-[11px] text-gray-500">Late delivery 0% - ID safe hai.</p></div></div>
+    <!-- 8. PRODUCT RATING -->
+    <div id="tab-prating" class="tab hidden bg-white rounded-2xl border p-5"><h3 class="font-black">⭐ Product Rating</h3><p class="text-xs text-gray-500 mt-2">Tere har maal pe kitne star mile, yaha dikhega.</p></div>
+    <!-- 9. MARKETING -->
+    <div id="tab-marketing" class="tab hidden bg-white rounded-2xl border p-5"><h3 class="font-black">📢 Marketing</h3><p class="text-xs text-gray-500">Apne maal ko upar dikhana hai? Yaha se ON kar.</p><button class="mt-3 bg-[#FFD814] border border-black px-5 py-2 rounded-full text-xs font-bold">Ad Chalao</button></div>
+    <!-- 10. REPORTS -->
+    <div id="tab-reports" class="tab hidden bg-white rounded-2xl border p-5"><h3 class="font-black">📊 Reports</h3><button class="mt-3 bg-black text-white px-5 py-2 rounded-full text-xs">Excel Download</button></div>
+    <!-- 11. SETTINGS -->
+    <div id="tab-settings" class="tab hidden bg-white rounded-2xl border p-5"><h3 class="font-black">⚙️ Settings</h3><input placeholder="Dukaan ka Naam" class="w-full bg-gray-100 p-3 rounded-xl mt-3 text-sm"><input placeholder="Mobile Number" class="w-full bg-gray-100 p-3 rounded-xl mt-3 text-sm"></div>
+
+  </div>
 </div>
 
-<!-- CONTENT -->
-<div class="flex-1 p-3 md:p-5">
-<!-- STATS -->
-<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-<div class="bg-white p-4 rounded-2xl border"><p class="text-[10px] font-black text-gray-400 tracking-widest">TOTAL SALES</p><h2 id="kpiSales" class="text-[24px] font-black mt-1">₹0</h2></div>
-<div class="bg-white p-4 rounded-2xl border"><p class="text-[10px] font-black text-gray-400 tracking-widest">NEW ORDERS</p><h2 id="kpiOrders" class="text-[24px] font-black mt-1">0</h2></div>
-<div class="bg-white p-4 rounded-2xl border"><p class="text-[10px] font-black text-gray-400 tracking-widest">INVENTORY</p><h2 id="kpiProd" class="text-[24px] font-black mt-1">0</h2></div>
-<div class="bg-white p-4 rounded-2xl border"><p class="text-[10px] font-black text-gray-400 tracking-widest">PAYOUT</p><h2 id="kpiPay" class="text-[24px] font-black mt-1">₹0</h2></div>
-</div>
-
-<!-- TABS CONTAINER -->
-<div id="tab-dashboard" class="tab mt-4"><div class="bg-white rounded-2xl p-5 border"><h3 class="font-black text-[14px]">SALES OVERVIEW (Auto)</h3><canvas id="chart" height="120"></canvas></div><div id="dashTodo" class="bg-white rounded-2xl p-5 border mt-3"></div></div>
-<div id="tab-orders" class="tab hidden mt-4 bg-white rounded-2xl border"><div class="p-4 border-b flex justify-between"><h3 class="font-black text-[14px]">ORDERS MANAGEMENT</h3><span class="text-[10px] bg-green-100 text-green-700 px-2 py-1 rounded-full font-bold">AUTO - Customer order karte hi yaha ayega</span></div><div id="orderList" class="p-4 text-center py-10 text-[13px] text-gray-400"></div></div>
-<div id="tab-inventory" class="tab hidden mt-4 bg-white rounded-2xl border"><div class="p-4 border-b flex justify-between"><h3 class="font-black text-[14px]">INVENTORY (Manual + Auto Stock Cut)</h3><button onclick="openM()" class="bg-black text-white px-4 py-1.5 rounded-full text-[12px]">+ Add Product</button></div><div id="prodList" class="p-2"></div></div>
-<div id="tab-pricing" class="tab hidden mt-4 bg-white rounded-2xl border p-5"><h3 class="font-black">PRICING & COUPONS</h3><p class="text-[12px] text-gray-500 mt-2">Yaha tu coupon bana sakta hai - REKAVO100. Ye manual hai, ek baar banaya toh auto apply hoga checkout pe.</p><input id="coupon" placeholder="Coupon Code" class="mt-4 bg-gray-100 p-3 rounded-xl w-full text-[13px]"><button class="mt-2 bg-[#FFD814] px-4 py-2 rounded-full font-bold text-[12px]">Create Coupon</button></div>
-<div id="tab-payments" class="tab hidden mt-4 bg-white rounded-2xl border p-5"><h3 class="font-black">PAYMENTS</h3><p class="text-[12px] text-gray-500 mt-1">Abhi demo me manual dikh raha hai. Baad me Razorpay X se automatic bank transfer hoga.</p><div class="mt-4 grid grid-cols-2 gap-3"><div class="bg-[#F6F6F6] p-3 rounded-xl"><p class="text-[10px] font-bold">PENDING</p><h2 class="font-black" id="payPend">₹0</h2></div><div class="bg-[#E6F6E6] p-3 rounded-xl"><p class="text-[10px] font-bold">PAID</p><h2 class="font-black">₹0</h2></div></div></div>
-<div id="tab-returns" class="tab hidden mt-4 bg-white rounded-2xl border p-5"><h3 class="font-black">RETURNS / RTO</h3><p class="text-[12px] text-gray-500">Customer return marega toh yaha auto ayega. Tujhe bas Accept karna hai.</p></div>
-<div id="tab-performance" class="tab hidden mt-4 bg-white rounded-2xl border p-5"><h3 class="font-black">PERFORMANCE (100% Auto)</h3><div class="mt-3 space-y-2 text-[13px]"><div class="flex justify-between p-3 bg-gray-50 rounded-xl"><span>Late Shipment Rate</span><span class="font-bold text-green-600">0% (Good)</span></div><div class="flex justify-between p-3 bg-gray-50 rounded-xl"><span>Order Defect Rate</span><span class="font-bold text-green-600">0%</span></div></div></div>
-<div id="tab-marketing" class="tab hidden mt-4 bg-white rounded-2xl border p-5"><h3 class="font-black">MARKETING - SPONSORED ADS</h3><p class="text-[12px] text-gray-500">Apna product upar dikhana hai? Yaha se ad ON karo. Budget set karo, auto chalega.</p></div>
-<div id="tab-reports" class="tab hidden mt-4 bg-white rounded-2xl border p-5"><h3 class="font-black">REPORTS</h3><button class="mt-3 bg-black text-white px-4 py-2 rounded-full text-[12px]">Download Sales Excel</button></div>
-<div id="tab-settings" class="tab hidden mt-4 bg-white rounded-2xl border p-5"><h3 class="font-black">SETTINGS</h3><p class="text-[12px] text-gray-500 mt-2">GST, PAN, Bank - Ye ek baar bharna hai.</p><input placeholder="GST Number" class="w-full bg-gray-100 p-3 rounded-xl mt-3 text-[13px]"><input placeholder="Bank Account" class="w-full bg-gray-100 p-3 rounded-xl mt-3 text-[13px]"></div>
-</div>
-</div>
-
-<!-- MODAL -->
-<div id="modal" class="fixed inset-0 bg-black/70 hidden z-50 flex items-center justify-center p-4"><div class="bg-white w-full max-w-[420px] p-6 rounded-[20px]"><h3 class="font-black">Add Product (Manual Entry)</h3><input id="pN" placeholder="Product Name" class="w-full bg-gray-100 p-3 rounded-xl mt-4 text-[13px]"><div class="flex gap-2 mt-2"><input id="pP" type="number" placeholder="Price" class="w-1/2 bg-gray-100 p-3 rounded-xl text-[13px]"><input id="pS" type="number" placeholder="Stock" class="w-1/2 bg-gray-100 p-3 rounded-xl text-[13px]"></div><div class="flex gap-2 mt-4"><button onclick="closeM()" class="w-1/2 bg-gray-100 py-3 rounded-full font-bold text-[12px]">Cancel</button><button onclick="save()" class="w-1/2 bg-black text-white py-3 rounded-full font-bold text-[12px]">Save</button></div></div></div>
+<div id="modal" class="fixed inset-0 bg-black/70 hidden z-50 flex items-center justify-center p-4"><div class="bg-white w-full max-w-[400px] p-6 rounded-[20px]"><h3 class="font-black">Maal Jodo - Simple</h3><input id="pN" placeholder="Kya Bechna hai? ex: T-Shirt" class="w-full bg-gray-100 p-3 rounded-xl mt-4 text-sm"><div class="flex gap-2 mt-2"><input id="pP" type="number" placeholder="Daam ₹" class="w-1/2 bg-gray-100 p-3 rounded-xl text-sm"><input id="pS" type="number" placeholder="Kitna Maal hai?" class="w-1/2 bg-gray-100 p-3 rounded-xl text-sm"></div><div class="flex gap-2 mt-4"><button onclick="closeM()" class="w-1/2 bg-gray-100 py-3 rounded-full font-bold text-xs">Band Karo</button><button onclick="save()" class="w-1/2 bg-black text-white py-3 rounded-full font-bold text-xs">Jod Do</button></div></div></div>
 
 <script>
 let products=JSON.parse(localStorage.getItem('rekavo_products')||'[]');
-let tabs=[['dashboard','Dashboard'],['orders','Orders'],['inventory','Inventory'],['pricing','Pricing'],['payments','Payments'],['returns','Returns & RTO'],['performance','Performance'],['marketing','Marketing'],['reports','Reports'],['settings','Settings']];
-document.getElementById('sEmail').innerText=localStorage.getItem('rekavo_seller_email')||'Seller';
-let nav=document.getElementById('sideNav');
-tabs.forEach(t=>{let a=document.createElement('a');a.innerHTML=`<i class="fa-solid fa-circle-dot w-5 text-[10px]"></i> ${t[1]}`;a.className="flex items-center gap-2 px-3 py-2.5 rounded-xl cursor-pointer hover:bg-gray-100";a.onclick=()=>showTab(t[0]);a.id='nav-'+t[0];nav.appendChild(a);});
-function showTab(id){document.querySelectorAll('.tab').forEach(e=>e.classList.add('hidden'));document.getElementById('tab-'+id).classList.remove('hidden');document.querySelectorAll('#sideNav a').forEach(e=>e.classList.remove('bg-black','text-white'));document.getElementById('nav-'+id).classList.add('bg-black','text-white');}
+document.getElementById('sEmail').innerText=localStorage.getItem('rekavo_seller_email')||'seller';
+const menu=[{id:'dashboard',name:'Dashboard',icon:'fa-house',g:'main'},{id:'orders',name:'Orders',icon:'fa-box',g:'main'},{id:'inventory',name:'Inventory - Mera Maal',icon:'fa-cubes',g:'main'},{id:'pricing',name:'Pricing - Daam',icon:'fa-tag',g:'money'},{id:'payments',name:'Payments - Paisa',icon:'fa-wallet',g:'money'},{id:'returns',name:'Returns',icon:'fa-rotate-left',g:'money'},{id:'performance',name:'Seller Rating',icon:'fa-star',g:'money'},{id:'prating',name:'Product Rating',icon:'fa-star-half-stroke',g:'money'},{id:'marketing',name:'Marketing',icon:'fa-bullhorn',g:'money'},{id:'reports',name:'Reports',icon:'fa-chart-simple',g:'help'},{id:'settings',name:'Settings',icon:'fa-gear',g:'help'}];
+menu.forEach(m=>{let a=document.createElement('a');a.innerHTML=`<i class="fa-solid ${m.icon} w-5 text-[12px]"></i> ${m.name}`;a.className="flex items-center gap-2 px-3 py-2.5 rounded-xl cursor-pointer text-[13px] font-bold hover:bg-gray-100";a.onclick=()=>showTab(m.id);a.id='nav-'+m.id;document.getElementById(m.g==='main'?'navMain':m.g==='money'?'navMoney':'navHelp').appendChild(a);});
+function showTab(id){document.querySelectorAll('.tab').forEach(e=>e.classList.add('hidden'));document.getElementById('tab-'+id).classList.remove('hidden');document.querySelectorAll('[id^="nav-"]').forEach(e=>e.classList.remove('tab-active'));document.getElementById('nav-'+id).classList.add('tab-active');}
 function openM(){document.getElementById('modal').classList.remove('hidden')}function closeM(){document.getElementById('modal').classList.add('hidden')}
-function save(){let n=document.getElementById('pN').value,p=parseInt(document.getElementById('pP').value),s=parseInt(document.getElementById('pS').value);if(!n||!p||!s)return alert('bhar');products.push({id:Date.now(),name:n,price:p,stock:s});localStorage.setItem('rekavo_products',JSON.stringify(products));closeM();render();document.getElementById('pN').value='';document.getElementById('pP').value='';document.getElementById('pS').value='';}
+function save(){let n=document.getElementById('pN').value,p=parseInt(document.getElementById('pP').value),s=parseInt(document.getElementById('pS').value);if(!n||!p||!s)return alert('Pura bhar');products.push({id:Date.now(),name:n,price:p,stock:s});localStorage.setItem('rekavo_products',JSON.stringify(products));closeM();render();document.getElementById('pN').value='';document.getElementById('pP').value='';document.getElementById('pS').value='';}
 function render(){
-document.getElementById('kpiProd').innerText=products.length;
-document.getElementById('kpiSales').innerText='₹'+products.reduce((a,b)=>a+b.price*b.stock,0).toLocaleString('en-IN');
-document.getElementById('kpiPay').innerText='₹'+Math.floor(products.reduce((a,b)=>a+b.price*b.stock,0)*0.9).toLocaleString('en-IN');
-document.getElementById('payPend').innerText='₹'+Math.floor(products.reduce((a,b)=>a+b.price*b.stock,0)*0.9).toLocaleString('en-IN');
-document.getElementById('kpiOrders').innerText=products.length?products.length*3:0;
-document.getElementById('dashTodo').innerHTML=`<p class="font-black text-[13px]">TO-DO (Auto Generated)</p><p class="text-[12px] text-gray-500 mt-2">${products.length?products.length+' products live hai. Orders ka wait kar.':'Pehle Inventory me ja ke 1 product add kar. Baaki sab auto ho jayega.'}</p>`;
-document.getElementById('prodList').innerHTML=products.length?products.map(p=>`<div class="flex justify-between p-3 border-b"><div><p class="font-bold text-[13px]">${p.name}</p><p class="text-[11px] text-gray-500">${p.stock} stock</p></div><p class="font-black">₹${p.price}</p></div>`).join(''):`<div class="text-center py-10 text-[13px] text-gray-400">No products. Add kar bhai.</div>`;
-document.getElementById('orderList').innerHTML=products.length?`<div class="text-left space-y-2">${products.map(p=>`<div class="p-3 bg-gray-50 rounded-xl flex justify-between"><div><p class="font-bold text-[12px]">Order #${p.id.toString().slice(-5)} - ${p.name}</p><p class="text-[11px] text-gray-500">Customer: Rahul, COD - Auto Aaya Hai</p></div><span class="text-[10px] bg-yellow-100 px-2 py-1 rounded-full h-fit font-bold">New</span></div>`).join('')}</div>`:`<div>No orders yet - Customer kharidega toh yaha automatic ayega</div>`;
+document.getElementById('kpi3').innerText=products.length;document.getElementById('kpi1').innerText='₹'+products.reduce((a,b)=>a+b.price*b.stock,0);document.getElementById('kpi4').innerText='₹'+Math.floor(products.reduce((a,b)=>a+b.price*b.stock,0)*0.9);document.getElementById('payP').innerText='₹'+Math.floor(products.reduce((a,b)=>a+b.price*b.stock,0)*0.9);document.getElementById('kpi2').innerText=products.length?products.length*2:0;
+document.getElementById('prodList').innerHTML=products.length?products.map(p=>`<div class="flex justify-between p-3 border-b"><div><p class="font-bold text-sm">${p.name}</p><p class="text-xs text-gray-500">${p.stock} pcs</p></div><p class="font-black">₹${p.price}</p></div>`).join(''):`<div class="text-center py-10 text-sm text-gray-400">Abhi koi maal nahi, + Maal Jodo dabao</div>`;
+document.getElementById('orderList').innerHTML=products.length?products.map(p=>`<div class="p-3 bg-gray-50 rounded-xl mb-2 flex justify-between"><div><p class="font-bold text-xs">#${p.id.toString().slice(-5)} - ${p.name}</p><p class="text-[11px] text-gray-500">Rahul - COD</p></div><span class="text-[10px] bg-yellow-200 px-2 py-1 rounded-full h-fit font-bold">NEW</span></div>`).join(''):`<div class="text-center py-10 text-sm text-gray-400">Customer kharidega toh yaha ayega</div>`;
 }
 showTab('dashboard');render();
-new Chart(document.getElementById('chart'),{type:'bar',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{data:[0,0,products.length*2,0,products.length*5,0,0],backgroundColor:'#131A22',borderRadius:8}]},options:{plugins:{legend:{display:false}}}});
+new Chart(document.getElementById('chart'),{type:'bar',data:{labels:['Mon',[STRIPPED]
 </script>
 </body>
 </html>
