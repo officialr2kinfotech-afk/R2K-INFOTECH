@@ -1,0 +1,14 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "seller.rekavo.in"
+        }
+      ],
+      "destination": "/seller-login.html"
+    }
+  ]
+}
