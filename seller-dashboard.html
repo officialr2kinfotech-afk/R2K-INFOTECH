@@ -2,171 +2,138 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rekavo Seller Hub - Flipkart Style</title>
+<title>Rekavo Seller Hub - Fixed</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>*{font-family:'Roboto',sans-serif} body{background:#F0F2F5}</style>
+<style>*{font-family:'Roboto',sans-serif} body{background:#F0F2F5}.no-scrollbar::-webkit-scrollbar{display:none}</style>
 </head>
-<body class="pb-24">
+<body class="pb-28">
 
-<!-- TOP HEADER -->
 <header class="bg-[#2874F0] h-[56px] flex items-center justify-between px-4 sticky top-0 z-50 text-white">
-  <div class="flex items-center gap-3">
-    <button class="w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-bars text-[18px]"></i></button>
-    <div class="flex items-center gap-1.5"><div class="w-7 h-7 bg-white rounded-full flex items-center justify-center text-[#2874F0] font-black text-[14px]">R</div><div class="leading-none"><p class="font-black text-[13px] tracking-wide">Rekavo Seller</p><p class="text-[10px] font-bold opacity-90 -mt-0.5 tracking-widest">HUB</p></div></div>
-  </div>
-  <div class="flex items-center gap-4">
-    <i class="fa-regular fa-bell text-[20px]"></i>
-    <button id="dotBtn" class="w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-ellipsis-vertical text-[18px]"></i></button>
-  </div>
+  <div class="flex items-center gap-3"><i class="fa-solid fa-bars text-[18px]"></i><div class="flex items-center gap-1.5"><div class="w-7 h-7 bg-white rounded-full flex items-center justify-center text-[#2874F0] font-black">R</div><div class="leading-none"><p class="font-black text-[13px]">Rekavo Seller</p><p class="text-[10px] font-bold opacity-90 -mt-0.5">HUB</p></div></div></div>
+  <div class="flex items-center gap-4"><i class="fa-regular fa-bell text-[20px]"></i><button id="dotBtn"><i class="fa-solid fa-ellipsis-vertical text-[18px]"></i></button></div>
 </header>
 
-<!-- GOOD MORNING BAR - SAME AS OLD -->
 <div class="bg-white border-b px-4 py-3 flex justify-between items-center">
-  <div><p class="text-[13px] font-medium text-gray-700">Good Morning,</p><h2 id="sellerName" class="font-black text-[16px] -mt-0.5">Seller</h2></div>
-  <div class="flex items-center gap-2 bg-[#E8F5E9] px-3 py-1.5 rounded-full border border-[#C8E6C9]"><div class="w-2 h-2 bg-[#2E7D32] rounded-full animate-pulse"></div><span class="text-[11px] font-bold text-[#2E7D32]">Account Active</span></div>
+  <div><p class="text-[13px] text-gray-600">Good Morning,</p><h2 id="sellerName" class="font-black text-[16px] -mt-1">Seller</h2></div>
+  <div class="flex items-center gap-2 bg-[#E8F5E9] px-3 py-1.5 rounded-full border"><div class="w-2 h-2 bg-[#2E7D32] rounded-full animate-pulse"></div><span class="text-[11px] font-bold text-[#2E7D32]">Active</span></div>
 </div>
 
-<!-- 3 DOT MENU -->
-<div id="dotMenu" class="hidden fixed top-[56px] right-2 w-[220px] bg-white rounded-xl shadow-2xl border z-[60] overflow-hidden">
-  <a class="flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b"><i class="fa-solid fa-cubes w-4"></i> Inventory</a>
-  <a class="flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b"><i class="fa-solid fa-tag w-4"></i> Pricing</a>
-  <a class="flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b"><i class="fa-solid fa-rotate-left w-4"></i> Returns</a>
-  <a class="flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b"><i class="fa-solid fa-star w-4"></i> Performance</a>
-  <a class="flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50"><i class="fa-solid fa-gear w-4"></i> Settings</a>
-</div>
-
-<!-- MAIN - SAME AS OLD -->
 <main class="max-w-[520px] mx-auto p-3 space-y-3">
-  <div class="bg-white rounded-xl border p-4">
-    <div class="flex justify-between items-start">
-      <div class="flex gap-3">
-        <div class="w-11 h-11 bg-[#E3F2FD] rounded-full flex items-center justify-center text-[#2874F0]"><i class="fa-solid fa-box-open"></i></div>
-        <div><p class="text-[13px] font-medium text-gray-600">Orders to Dispatch</p><h1 id="ordersCount" class="text-[28px] font-black leading-none mt-1">0</h1><p class="text-[11px] text-gray-400 mt-1.5">Orders pending to ship today</p></div>
-      </div>
-      <i class="fa-solid fa-chevron-right text-gray-300 text-[12px] mt-2"></i>
-    </div>
-    <button class="mt-4 w-full bg-[#2874F0] text-white py-2.5 rounded-lg font-bold text-[13px]">Ship Now <i class="fa-solid fa-arrow-right ml-2 text-[11px]"></i></button>
-  </div>
-
+  <div class="bg-white rounded-xl border p-4"><div class="flex gap-3"><div class="w-11 h-11 bg-[#E3F2FD] rounded-full flex items-center justify-center text-[#2874F0]"><i class="fa-solid fa-box-open"></i></div><div><p class="text-[13px] text-gray-600">Orders to Dispatch</p><h1 id="ordersCount" class="text-[28px] font-black leading-none mt-1">0</h1></div></div><button class="mt-4 w-full bg-[#2874F0] text-white py-2.5 rounded-lg font-bold text-[13px]">Ship Now</button></div>
   <div class="grid grid-cols-2 gap-3">
-    <div class="bg-white rounded-xl border p-4">
-      <div class="w-9 h-9 bg-[#FFF3E0] rounded-full flex items-center justify-center text-[#EF6C00] text-[14px]"><i class="fa-solid fa-rotate-left"></i></div>
-      <p class="text-[12px] text-gray-500 mt-3">Returns</p><h2 class="text-[22px] font-black mt-0.5">0</h2>
-    </div>
-    <div class="bg-white rounded-xl border p-4">
-      <div class="w-9 h-9 bg-[#E8F5E9] rounded-full flex items-center justify-center text-[#2E7D32] text-[14px]"><i class="fa-solid fa-indian-rupee-sign"></i></div>
-      <p class="text-[12px] text-gray-500 mt-3">Payments</p><h2 id="payAmount" class="text-[22px] font-black mt-0.5">₹0</h2>
-    </div>
+    <div class="bg-white rounded-xl border p-4"><div class="w-9 h-9 bg-[#FFF3E0] rounded-full flex items-center justify-center text-[#EF6C00]"><i class="fa-solid fa-rotate-left"></i></div><p class="text-[12px] text-gray-500 mt-3">Returns</p><h2 class="text-[22px] font-black">0</h2></div>
+    <div class="bg-white rounded-xl border p-4"><div class="w-9 h-9 bg-[#E8F5E9] rounded-full flex items-center justify-center text-[#2E7D32]"><i class="fa-solid fa-indian-rupee-sign"></i></div><p class="text-[12px] text-gray-500 mt-3">Payments</p><h2 id="payAmount" class="text-[22px] font-black">₹0</h2></div>
   </div>
-
-  <div class="bg-white rounded-xl border p-4">
-    <div class="flex justify-between items-center">
-      <div class="flex items-center gap-3"><div class="w-9 h-9 bg-[#F3E5F5] rounded-full flex items-center justify-center text-[#8E24AA]"><i class="fa-solid fa-cubes"></i></div><div><p class="text-[13px] font-bold">Inventory</p><p class="text-[11px] text-gray-400">Active listings</p></div></div>
-      <h2 id="invCount" class="text-[22px] font-black">0</h2>
-    </div>
-    <div class="mt-3 pt-3 border-t flex justify-between items-center"><p class="text-[11px] text-gray-500"><span id="lowStock" class="font-bold text-[#D32F2F]">0</span> low stock items</p><button onclick="openAdd()" class="text-[12px] font-bold text-[#2874F0]">+ Add Item</button></div>
-    <div id="invList" class="mt-3 space-y-2"></div>
-  </div>
-
-  <div class="bg-white rounded-xl border p-4">
-    <div class="flex justify-between items-center"><h3 class="font-bold text-[13px]">Business Insights</h3><span class="text-[10px] font-bold bg-gray-100 px-2.5 py-1 rounded-full">Last 7 Days</span></div>
-    <canvas id="salesChart" height="160" class="mt-4"></canvas>
-  </div>
+  <div class="bg-white rounded-xl border p-4"><div class="flex justify-between"><div class="flex items-center gap-3"><div class="w-9 h-9 bg-[#F3E5F5] rounded-full flex items-center justify-center text-[#8E24AA]"><i class="fa-solid fa-cubes"></i></div><div><p class="text-[13px] font-bold">Inventory</p><p class="text-[11px] text-gray-400">Active items</p></div></div><h2 id="invCount" class="text-[22px] font-black">0</h2></div><div id="invList" class="mt-3 space-y-2"></div></div>
 </main>
 
-<!-- BOTTOM NAV - FIXED CENTER ADD ITEM -->
-<div class="fixed bottom-0 left-0 right-0 bg-white border-t h-[68px] z-40">
-  <div class="max-w-[520px] mx-auto h-full flex justify-around items-center relative px-2">
+<!-- BOTTOM NAV - ADD ITEM CENTER FIXED -->
+<div class="fixed bottom-0 left-0 right-0 bg-white border-t h-[70px] z-[40]">
+  <div class="max-w-[520px] mx-auto h-full flex justify-around items-center relative px-1">
     <button class="flex flex-col items-center text-[#2874F0] w-14"><i class="fa-solid fa-house text-[18px]"></i><span class="text-[10px] font-bold mt-1">Home</span></button>
     <button class="flex flex-col items-center text-gray-400 w-14"><i class="fa-solid fa-box text-[18px]"></i><span class="text-[10px] font-bold mt-1">Orders</span></button>
-
-    <div class="w-[80px]"></div> <!-- gap for center -->
-    <div class="absolute left-1/2 -translate-x-1/2 -top-5 flex flex-col items-center">
-      <button onclick="openAdd()" class="w-[58px] h-[58px] bg-[#2874F0] rounded-full flex items-center justify-center text-white shadow-[0_6px_16px_rgba(40,116,240,0.5)] border-[4px] border-[#F0F2F5] active:scale-95 transition-all"><i class="fa-solid fa-plus text-[22px]"></i></button>
-      <span class="text-[10px] font-black mt-1 tracking-wider text-[#212121]">Add Item</span>
+    <div class="w-[80px]"></div>
+    <div class="absolute left-1/2 -translate-x-1/2 -top-6 flex flex-col items-center z-10">
+      <button type="button" onclick="openAdd()" class="w-[62px] h-[62px] bg-[#2874F0] rounded-full flex items-center justify-center text-white shadow-[0_6px_18px_rgba(40,116,240,0.5)] border-[5px] border-[#F0F2F5] active:scale-90"><i class="fa-solid fa-plus text-[24px]"></i></button>
+      <span class="text-[10px] font-black mt-1">Add Item</span>
     </div>
-
     <button class="flex flex-col items-center text-gray-400 w-14"><i class="fa-solid fa-cubes text-[18px]"></i><span class="text-[10px] font-bold mt-1">Inventory</span></button>
     <button class="flex flex-col items-center text-gray-400 w-14"><i class="fa-solid fa-wallet text-[18px]"></i><span class="text-[10px] font-bold mt-1">Payments</span></button>
   </div>
 </div>
 
-<!-- ADD ITEM MODAL - UPDATED WITH DESC + CAMERA + GALLERY -->
-<div id="addModal" class="fixed inset-0 bg-black/60 hidden z-[99] flex items-end md:items-center justify-center">
-  <div class="bg-white w-full max-w-[520px] rounded-t-[22px] md:rounded-[22px] p-5 max-h-[92vh] overflow-y-auto">
-    <div class="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-4 md:hidden"></div>
-    <div class="flex justify-between items-center"><h3 class="font-black text-[15px]">Add New Item</h3><button onclick="closeAdd()" class="w-8 h-8 bg-gray-100 rounded-full"><i class="fa-solid fa-xmark text-[12px]"></i></button></div>
+<!-- ADD ITEM MODAL - 100% WORKING -->
+<div id="addModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-[999] flex items-end sm:items-center justify-center">
+  <div class="bg-white w-full max-w-[520px] rounded-t-[22px] sm:rounded-[22px] p-5 max-h-[92vh] overflow-y-auto no-scrollbar">
+    <div class="flex justify-between items-center"><h3 class="font-black text-[15px]">Add New Item</h3><button type="button" onclick="closeAdd()" class="w-8 h-8 bg-gray-100 rounded-full"><i class="fa-solid fa-xmark text-[12px]"></i></button></div>
 
-    <!-- PHOTO AREA -->
     <div id="photoBox" class="mt-4 border-2 border-dashed rounded-xl bg-[#FAFBFF] overflow-hidden">
       <div id="uploadBtns" class="p-4">
-        <p class="text-[12px] font-bold text-center mb-3">Upload Product Photo</p>
+        <p class="text-[12px] font-bold text-center mb-3">Product Photo *</p>
         <div class="grid grid-cols-2 gap-3">
-          <button onclick="document.getElementById('camInput').click()" class="bg-[#2874F0] text-white py-3 rounded-xl font-bold text-[12px] flex flex-col items-center gap-1"><i class="fa-solid fa-camera text-[16px]"></i>Camera</button>
-          <button onclick="document.getElementById('galInput').click()" class="bg-white border py-3 rounded-xl font-bold text-[12px] flex flex-col items-center gap-1"><i class="fa-solid fa-images text-[16px]"></i>Gallery</button>
+          <button type="button" onclick="document.getElementById('camInput').click()" class="bg-[#2874F0] text-white py-3 rounded-xl font-bold text-[12px] flex flex-col items-center gap-1"><i class="fa-solid fa-camera text-[16px]"></i>Camera</button>
+          <button type="button" onclick="document.getElementById('galInput').click()" class="bg-white border py-3 rounded-xl font-bold text-[12px] flex flex-col items-center gap-1"><i class="fa-solid fa-images text-[16px]"></i>Gallery</button>
         </div>
       </div>
-      <img id="prev" class="hidden w-full h-[180px] object-cover">
+      <div id="imgPreviewWrap" class="hidden relative"><img id="prev" class="w-full h-[180px] object-cover"><button type="button" onclick="removeImg()" class="absolute top-2 right-2 w-7 h-7 bg-black/70 text-white rounded-full text-[11px]"><i class="fa-solid fa-xmark"></i></button></div>
     </div>
-    <input type="file" id="camInput" accept="image/*" capture="environment" class="hidden" onchange="preview(event)">
-    <input type="file" id="galInput" accept="image/*" class="hidden" onchange="preview(event)">
+    <input type="file" id="camInput" accept="image/*" capture="environment" class="hidden">
+    <input type="file" id="galInput" accept="image/*" class="hidden">
 
-    <!-- FIELDS -->
-    <input id="pName" placeholder="Item Name *" class="w-full mt-4 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none focus:border-[#2874F0] border border-transparent focus:bg-white">
-    <textarea id="pDesc" placeholder="Item Description / Details - Kya hai, kaise hai, quality kya hai..." rows="3" class="w-full mt-3 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none focus:border-[#2874F0] border border-transparent focus:bg-white resize-none"></textarea>
+    <input id="pName" placeholder="Item Name * ex: Wireless Earbuds" class="w-full mt-4 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border focus:border-[#2874F0] focus:bg-white">
+    <textarea id="pDesc" placeholder="Description * ex: Battery 20hr, Bluetooth 5.3, Warranty 1 year" rows="3" class="w-full mt-3 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border focus:border-[#2874F0] focus:bg-white resize-none"></textarea>
+
     <div class="flex gap-3 mt-3">
-      <input id="pPrice" type="number" placeholder="Price ₹ *" class="w-1/2 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border border-transparent focus:border-[#2874F0]">
-      <input id="pStock" type="number" placeholder="Stock Qty *" class="w-1/2 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border border-transparent focus:border-[#2874F0]">
+      <input id="pPrice" type="number" placeholder="Price ₹ *" class="w-1/2 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border focus:border-[#2874F0]">
+      <input id="pStock" type="number" placeholder="Stock Qty *" class="w-1/2 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border focus:border-[#2874F0]">
     </div>
 
-    <button onclick="saveProd()" class="w-full mt-5 bg-[#FB641B] text-white py-3.5 rounded-xl font-black text-[13px]">ADD ITEM TO STORE</button>
-    <p class="text-[10px] text-center text-gray-400 mt-2">This item will automatically show on index.html (main website)</p>
+    <select id="pCategory" class="w-full mt-3 bg-[#F0F2F5] p-3.5 rounded-xl text-[13px] outline-none border focus:border-[#2874F0] font-bold">
+      <option value="">Select Category *</option>
+      <option value="Electronics">📱 Electronics</option>
+      <option value="Fashion">👕 Fashion - Men / Women</option>
+      <option value="Footwear">👟 Footwear</option>
+      <option value="Home & Kitchen">🏠 Home & Kitchen</option>
+      <option value="Beauty">💄 Beauty & Personal Care</option>
+      <option value="Grocery">🛒 Grocery</option>
+      <option value="Books">📚 Books & Stationery</option>
+      <option value="Toys">🧸 Toys & Kids</option>
+    </select>
+
+    <button type="button" onclick="saveProd()" class="w-full mt-5 bg-[#FB641B] text-white py-3.5 rounded-xl font-black text-[14px] shadow">ADD ITEM TO STORE →</button>
+    <p class="text-[10px] text-center text-gray-400 mt-2">Live on main website (index.html) in selected category</p>
   </div>
 </div>
 
 <script>
-let products=JSON.parse(localStorage.getItem('rekavo_products')||'[]');
-let tempImg='';
-document.getElementById('sellerName').innerText=localStorage.getItem('rekavo_seller_email')?.split('@')[0] || 'Seller';
-document.getElementById('dotBtn').onclick=()=>document.getElementById('dotMenu').classList.toggle('hidden');
-window.onclick=(e)=>{if(!e.target.closest('#dotBtn') &&!e.target.closest('#dotMenu'))document.getElementById('dotMenu').classList.add('hidden'); if(e.target.id==='addModal')closeAdd();}
-function openAdd(){document.getElementById('addModal').classList.remove('hidden')}
-function closeAdd(){document.getElementById('addModal').classList.add('hidden')}
-function preview(e){
-  let file=e.target.files[0]; if(!file) return;
-  let r=new FileReader(); r.onload=()=>{
-    tempImg=r.result;
-    let p=document.getElementById('prev'); p.src=tempImg; p.classList.remove('hidden');
-    document.getElementById('uploadBtns').classList.add('hidden');
-  }; r.readAsDataURL(file);
+let products = JSON.parse(localStorage.getItem('rekavo_products') || '[]');
+let tempImg = '';
+document.getElementById('sellerName').innerText = localStorage.getItem('rekavo_seller_email')?.split('@')[0] || 'Seller';
+
+function openAdd(){ document.getElementById('addModal').classList.remove('hidden'); document.body.style.overflow='hidden'; }
+function closeAdd(){ document.getElementById('addModal').classList.add('hidden'); document.body.style.overflow=''; }
+
+function handleFile(file){
+ if(!file) return;
+ let r=new FileReader(); r.onload=()=>{
+   tempImg=r.result;
+   document.getElementById('prev').src=tempImg;
+   document.getElementById('imgPreviewWrap').classList.remove('hidden');
+   document.getElementById('uploadBtns').classList.add('hidden');
+ }; r.readAsDataURL(file);
 }
+document.getElementById('camInput').addEventListener('change', e=> handleFile(e.target.files[0]));
+document.getElementById('galInput').addEventListener('change', e=> handleFile(e.target.files[0]));
+function removeImg(){ tempImg=''; document.getElementById('prev').src=''; document.getElementById('imgPreviewWrap').classList.add('hidden'); document.getElementById('uploadBtns').classList.remove('hidden'); document.getElementById('camInput').value=''; document.getElementById('galInput').value=''; }
+
 function saveProd(){
  let n=document.getElementById('pName').value.trim();
  let d=document.getElementById('pDesc').value.trim();
  let p=parseInt(document.getElementById('pPrice').value);
  let s=parseInt(document.getElementById('pStock').value);
- if(!n||!p||!s) return alert('Item Name, Price, Stock bharna jaruri hai');
- let newItem={id:Date.now(),name:n,desc:d,price:p,stock:s,img:tempImg};
+ let c=document.getElementById('pCategory').value;
+ if(!n||!p||!s||!c) return alert('Name, Price, Stock, Category bharna jaruri hai');
+ if(!tempImg) return alert('Photo add karo - Camera ya Gallery se');
+ let newItem={id:Date.now(),name:n,desc:d,price:p,stock:s,category:c,img:tempImg};
  products.push(newItem);
- localStorage.setItem('rekavo_products',JSON.stringify(products));
- localStorage.setItem('rekavo_all_products',JSON.stringify(products)); // for index.html
+ localStorage.setItem('rekavo_products', JSON.stringify(products));
+ localStorage.setItem('rekavo_all_products', JSON.stringify(products));
  closeAdd(); render();
- document.getElementById('pName').value='';document.getElementById('pDesc').value='';document.getElementById('pPrice').value='';document.getElementById('pStock').value='';tempImg='';document.getElementById('prev').classList.add('hidden');document.getElementById('uploadBtns').classList.remove('hidden');
- alert('Item Added! Ab index.html pe check kar');
+ document.getElementById('pName').value=''; document.getElementById('pDesc').value=''; document.getElementById('pPrice').value=''; document.getElementById('pStock').value=''; document.getElementById('pCategory').value=''; removeImg();
+ alert('✅ Item Added in '+c+' - Ab index.html pe dikhega');
 }
 function render(){
  let total=products.reduce((a,b)=>a+b.price*b.stock,0);
  document.getElementById('ordersCount').innerText=products.length?products.length*3:0;
  document.getElementById('invCount').innerText=products.length;
  document.getElementById('payAmount').innerText='₹'+Math.floor(total*0.9).toLocaleString('en-IN');
- document.getElementById('lowStock').innerText=products.filter(p=>p.stock<5).length;
- document.getElementById('invList').innerHTML=products.slice(0,4).map(p=>`<div class="flex items-center gap-3 p-2.5 bg-[#F8F9FA] rounded-xl"><div class="w-11 h-11 bg-white rounded-lg overflow-hidden flex items-center justify-center font-bold border">${p.img?`<img src="${p.img}" class="w-full h-full object-cover">`:p.name[0]}</div><div class="flex-1"><p class="font-bold text-[12px] truncate">${p.name}</p><p class="text-[11px] text-gray-500 truncate">${p.desc||'No description'} • ₹${p.price}</p></div><span class="text-[10px] bg-[#E8F5E9] text-[#2E7D32] px-2 py-1 rounded-full font-bold">Live</span></div>`).join('') || '<p class="text-[11px] text-gray-400 text-center py-3">No items yet. Tap Add Item</p>';
+ document.getElementById('invList').innerHTML=products.slice(0,5).map(p=>`<div class="flex items-center gap-3 p-2.5 bg-[#F8F9FA] rounded-xl"><div class="w-11 h-11 bg-white rounded-lg overflow-hidden flex items-center justify-center font-bold border">${p.img?`<img src="${p.img}" class="w-full h-full object-cover">`:p.name[0]}</div><div class="flex-1"><p class="font-bold text-[12px] truncate">${p.name}</p><p class="text-[11px] text-gray-500 truncate">${p.category} • ₹${p.price} • ${p.stock} pcs</p></div><span class="text-[9px] bg-[#E8F5E9] text-[#2E7D32] px-2 py-1 rounded-full font-bold">Live</span></div>`).join('') || '<p class="text-[11px] text-gray-400 text-center py-3">No items yet. Tap Add Item in center</p>';
 }
+document.getElementById('addModal').addEventListener('click', e=> { if(e.target.id==='addModal') closeAdd(); });
 render();
-new Chart(document.getElementById('salesChart'),{type:'bar',data:{labels:['Mon',[STRIPPED]
 </script>
 </body>
 </html>
