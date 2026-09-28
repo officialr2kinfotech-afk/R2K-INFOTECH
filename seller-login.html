@@ -30,20 +30,7 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
 .btn{width:100%;background:linear-gradient(90deg,#ff6a00,#ff2d00);color:#fff;border:none;padding:15px;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 10px 22px rgba(255,86,0,0.3)}
 .extra{text-align:center;margin-top:20px;font-size:14px;color:#6b7280}
 .extra a{color:#ff5a00;font-weight:700;text-decoration:none}
-@media(max-width:900px){
-  .wrapper{flex-direction:column}
-  .left,.right{width:100%}
-  .right{order:1;padding:16px;background:#f5f5f7}
-  .left{order:2;padding:32px 22px}
-  .left h1{font-size:32px}
-  .card{
-    max-width:100%;
-    padding:28px 20px;
-    border-radius:20px;
-    border:1px solid #eee;
-    box-shadow:0 8px 30px rgba(0,0,0,0.06);
-  }
-}
+@media(max-width:900px){.wrapper{flex-direction:column}.left,.right{width:100%}.right{order:1;padding:16px;background:#f5f5f7}.left{order:2;padding:32px 22px}.left h1{font-size:32px}.card{max-width:100%;padding:28px 20px;border-radius:20px;border:1px solid #eee;box-shadow:0 8px 30px rgba(0,0,0,0.06);}}
 </style>
 </head>
 <body>
@@ -62,71 +49,42 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
     <div class="card">
       <h2>Seller Login</h2>
       <p class="small">Access your Seller Central Dashboard</p>
-      
       <div class="input-wrap">
         <label>Email / Mobile Number</label>
         <input type="text" id="loginId" placeholder="Enter Mobile / Email">
         <div class="error-msg" id="errId"></div>
       </div>
-
       <div class="input-wrap">
         <label>Password</label>
         <input type="password" id="loginPass" placeholder="Enter Password">
         <div class="error-msg" id="errPass"></div>
       </div>
-
       <button class="btn" id="loginBtn">Login to Dashboard →</button>
       <div class="extra">New Here? <a href="seller-register.html">Create Seller Account</a></div>
     </div>
   </div>
 </div>
-
 <script>
 const idEl = document.getElementById('loginId');
 const passEl = document.getElementById('loginPass');
 const errId = document.getElementById('errId');
 const errPass = document.getElementById('errPass');
-
-function showError(input, errBox, msg){
-  input.classList.add('error');
-  errBox.innerText = msg;
-  errBox.style.display = 'block';
-}
-function clearError(input, errBox){
-  input.classList.remove('error');
-  errBox.style.display = 'none';
-}
-
+function showError(input, errBox, msg){input.classList.add('error');errBox.innerText=msg;errBox.style.display='block';}
+function clearError(input, errBox){input.classList.remove('error');errBox.style.display='none';}
 idEl.addEventListener('input', () => clearError(idEl, errId));
-idEl.addEventListener('focus', () => clearError(idEl, errId));
 passEl.addEventListener('input', () => clearError(passEl, errPass));
-passEl.addEventListener('focus', () => clearError(passEl, errPass));
-
 document.getElementById('loginBtn').onclick = function(){
   let valid = true;
   let idVal = idEl.value.trim();
   let passVal = passEl.value.trim();
-
-  if(!idVal){
-    showError(idEl, errId, "Email or mobile number is required");
-    valid = false;
-  } else if(/^[0-9]+$/.test(idVal) && !/^[0-9]{10}$/.test(idVal)){
-    showError(idEl, errId, "Mobile number must be 10 digits");
-    valid = false;
-  } else if(!/^[0-9]+$/.test(idVal) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(idVal)){
-    showError(idEl, errId, "Enter a valid email address");
-    valid = false;
-  }
-
-  if(!passVal){
-    showError(passEl, errPass, "Password is required");
-    valid = false;
-  } else if(passVal.length < 6){
-    showError(passEl, errPass, "Password must be at least 6 characters");
-    valid = false;
-  }
-
+  if(!idVal){showError(idEl, errId, "Email or mobile number is required");valid=false;}
+  else if(/^[0-9]+$/.test(idVal) &&!/^[6-9][0-9]{9}$/.test(idVal)){showError(idEl, errId, "Enter valid 10 digit mobile (start with 6-9)");valid=false;}
+  else if(!/^[0-9]+$/.test(idVal) &&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(idVal)){showError(idEl, errId, "Enter a valid email address");valid=false;}
+  if(!passVal){showError(passEl, errPass, "Password is required");valid=false;}
+  else if(passVal.length < 6){showError(passEl, errPass, "Password must be at least 6 characters");valid=false;}
   if(valid){
+    localStorage.setItem('rekavo_seller_email', idVal);
+    localStorage.setItem('rekavo_seller_logged', 'true');
     window.location.href = "seller-dashboard.html";
   }
 }
