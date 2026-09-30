@@ -348,23 +348,7 @@ async function verifyForgotOtp(){
  }catch(e){showErr('err-forgotOtp','Network error');}
  btn.innerText='Validate OTP';btn.disabled=false;
 }
-async function saveNewPassword(){
- clearAllErrs(); if(!forgotOtpVerified){showErr('err-forgotPass','Verify OTP first');return;}
- let p1=document.getElementById('forgotPass').value.trim(); let p2=document.getElementById('forgotPass2').value.trim();
- if(p1.length<6){showErr('err-forgotPass','Min 6 chars');return;} if(p1!==p2){showErr('err-forgotPass2','Not match');return;}
- let btn=document.getElementById('btnSavePass');btn.innerText='Saving...';btn.disabled=true;
- try{
-   let res=await fetch(`${API_BASE}/reset-password`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp:forgotOtpVal,new_password:p1})});
-   let data=await res.json();
-   if(res.ok){showSuccess('success-forgotFinal','Password updated! Login now');setTimeout(()=>switchAuth('login'),1000);}
-   else{showErr('err-forgotPass2',data.error);}
- }catch(e){showErr('err-forgotPass2','Network error');}
- btn.innerText='Save Password';btn.disabled=false;
-}
-renderAllProducts();updateCartCount();
-</script>
-</body>
-</html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -372,9 +356,9 @@ renderAllProducts();updateCartCount();
 <title>REKAVO by R2K Infotech - Official Store</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,sans-serif}
-body{background:#f1f3f6;padding-bottom:70px}
-.top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:7px 12px;font-size:12px;font-weight:800;border-bottom:2px solid #fff;margin-bottom:2px}
-.search-wrapper{background:#2874f0;padding:10px 12px;position:sticky;top:0;z-index:99;box-shadow:0 2px 4px rgba(0,0,0,.2);border-top:2px solid #fff}
+body{background:#f1f3f6;padding-bottom:90px}
+.top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:7px 12px;font-size:12px;font-weight:800;border-bottom:2px solid #fff;margin-bottom:2px;position:sticky;top:0;z-index:100}
+.search-wrapper{background:#2874f0;padding:10px 12px;position:sticky;top:31px;z-index:99;box-shadow:0 2px 4px rgba(0,0,0,.2);border-top:2px solid #fff}
 .search-box{width:100%;display:flex;background:#fff;border-radius:2px;overflow:hidden;height:42px;position:relative}
 .search-box input{flex:1;border:none;padding:0 14px;outline:none;font-size:14px}
 .search-box button{background:#fff;border:none;color:#2874f0;padding:0 18px;font-size:20px;font-weight:900;cursor:pointer}
@@ -401,10 +385,11 @@ body{background:#f1f3f6;padding-bottom:70px}
 .trust div{background:#fff;padding:8px 2px;border-radius:4px;text-align:center;font-weight:700;font-size:11px}
 .deals{margin:8px;background:#fff;border-radius:4px;padding:12px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
 .deals h2{margin-bottom:10px;font-size:14px;font-weight:800}
-.products{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.card{border:1px solid #f0f0f0;border-radius:6px;padding:8px;text-align:center;background:#fff;position:relative}
+.products{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding-bottom:10px}
+.card{border:1px solid #f0f0f0;border-radius:6px;padding:8px;text-align:center;background:#fff;position:relative;cursor:pointer}
+.card:active{transform:scale(0.97)}
 .card img{height:90px;object-fit:contain;width:100%;cursor:pointer}
-.coupon-tag{position:absolute;top:6px;left:6px;background:#26a541;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px}
+.coupon-tag{position:absolute;top:6px;left:6px;background:#26a541;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px;z-index:2}
 .price-box{text-align:left;margin-top:6px}
 .btn-row{display:flex;gap:6px;margin-top:8px}
 .btn-add{flex:1;background:#fff;border:1px solid #2874f0;color:#2874f0;padding:7px 0;border-radius:4px;font-size:11px;font-weight:800;cursor:pointer}
@@ -425,11 +410,11 @@ body{background:#f1f3f6;padding-bottom:70px}
 .login-tab button.active{background:#2874f0;color:#fff}
 .link-row{display:flex;justify-content:space-between;margin-top:10px;font-size:11px}
 .link-row span{color:#2874f0;cursor:pointer;font-weight:600}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:999;box-shadow:0 -2px 8px rgba(0,0,0,.08)}
-.bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;align-items:center;padding:8px 0;border-top:1px solid #ddd;z-index:999;box-shadow:0 -2px 8px rgba(0,0,0,.08);height:64px}
+.bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;white-space:nowrap}
 .bottom-nav a.active{color:#2874f0}
 .bottom-nav span.icon{font-size:20px}
-.toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:25px;font-size:12px;font-weight:600;z-index:10000;display:none;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.toast{position:fixed;bottom:75px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:25px;font-size:12px;font-weight:600;z-index:10000;display:none;box-shadow:0 4px 12px rgba(0,0,0,.3)}
 .toast.show{display:block;animation:pop.3s ease}
 @keyframes pop{0%{transform:translateX(-50%) translateY(20px);opacity:0}100%{transform:translateX(-50%) translateY(0);opacity:1}}
 @media(min-width:769px){.products{grid-template-columns:repeat(5,1fr)}}
@@ -443,7 +428,7 @@ body{background:#f1f3f6;padding-bottom:70px}
 
 <div class="deals"><h2>Shop By Category</h2><div class="products"><div class="card" onclick="location.href='category.html?cat=powerbank'"><img src="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300"><b>Power Bank</b></div><div class="card" onclick="location.href='category.html?cat=neckband'"><img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300"><b>Neckband</b></div><div class="card" onclick="location.href='category.html?cat=earbuds'"><img src="https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=300"><b>Earbuds</b></div><div class="card" onclick="location.href='category.html?cat=cable'"><img src="https://images.unsplash.com/photo-1625842268584-8f3296236761?w=300"><b>Cable</b></div><div class="card" onclick="location.href='category.html?cat=charger'"><img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300"><b>Charger</b></div></div></div>
 
-<div class="deals"><h2>🔥 Hot Deals For You - Buy Now + Coupon</h2><div class="products" id="allProductsGrid"></div></div>
+<div class="deals"><h2>🔥 Hot Deals For You - Premium Picks</h2><div class="products" id="allProductsGrid"></div></div>
 
 <div id="toast" class="toast">✅ Your item has been added to your cart</div>
 
@@ -490,7 +475,7 @@ body{background:#f1f3f6;padding-bottom:70px}
 </div>
 </div></div>
 
-<div class="bottom-nav"><a href="index.html" class="active"><span class="icon">🏠</span><span>Home</span></a><a href="account.html"><span class="icon">👤</span><span>Account</span></a><a href="cart.html"><span class="icon">🛒</span><span>Cart (<span id="cartCount">0</span>)</span></a></div>
+<div class="bottom-nav"><a href="index.html" class="active"><span class="icon">🏠</span><span>Home</span></a><a href="account.html"><span class="icon">👤</span><span>Account</span></a><a href="cart.html" style="white-space:nowrap"><span class="icon">🛒</span><span style="white-space:nowrap">Cart (<span id="cartCount">0</span>)</span></a></div>
 
 <script>
 const API_BASE="https://rekavo-backend.vercel.app";
@@ -506,38 +491,32 @@ function liveSearch(q){
  let html="";keywordSuggestions.forEach(k=>{let boldText=k.text.replace(query,`<b>${query}</b>`);html+=`<div class="sr-item" onclick="document.getElementById('mainSearch').value='${k.text}'; liveSearch('${k.text}')"><div class="sr-left"><div class="sr-kw-icon">⌕</div><div class="sr-mid"><span style="font-size:13px">${boldText}</span> <span class="sr-cat">In ${k.cat.charAt(0).toUpperCase()+k.cat.slice(1)}</span></div></div><div class="sr-arrow">↗</div></div>`});filteredProducts.forEach(p=>{html+=`<div class="sr-item" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'"><div class="sr-left"><img src="${p.img}"><div class="sr-mid"><div style="font-size:13px;font-weight:600">${p.name}</div><div style="font-size:12px;color:#388e3c">₹${p.price}</div></div></div><div class="sr-arrow">❯</div></div>`});if(html===""){html=`<div class="sr-item"><div class="sr-left"><div class="sr-kw-icon">😕</div><div class="sr-mid" style="font-size:13px">No results for "${q}"</div></div></div>`;}box.innerHTML=html;box.classList.add('show');
 }
 
-// ===== REAL CART LOGIC - CROSS DEVICE - INSTANT =====
+// ===== FIXED CART LOGIC - NO ZERO ON HOME =====
 function getUser(){try{return JSON.parse(localStorage.getItem('rekavo_user'))}catch(e){return null}}
 function showToast(msg){let t=document.getElementById('toast');t.innerText=msg||"✅ Your item has been added to your cart";t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000)}
 
 function updateCartCount(){
- // 1. INSTANT - pehle local se dikhao, 0 kabhi nahi
- let localCart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
- let localCount=localCart.reduce((s,i)=>s+(i.qty||1),0);
- let el=document.getElementById('cartCount');
- if(el) el.innerText = localCount>0? localCount : '0';
-
- // 2. Background me server se sync (user_id se)
+ // FIX 1: Instant local se - kabhi 0 force nahi
+ try{
+  let localCart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+  let localCount=localCart.reduce((s,i)=>s+(i.qty||1),0);
+  let el=document.getElementById('cartCount');
+  if(el) el.innerText = localCount;
+ }catch(e){}
+ // Background sync - sirf tab update jab server pe data ho, warna local ko 0 mat karo
  let user=getUser();
  if(user && user.user_id){
    fetch(`${API_BASE}/api/cart/get?user_id=${encodeURIComponent(user.user_id)}`)
-  .then(r=>r.json()).then(data=>{
+ .then(r=>r.json()).then(data=>{
      if(Array.isArray(data) && data.length>0){
-       // server wala hi final hai
        document.getElementById('cartCount').innerText=data.reduce((s,i)=>s+(i.qty||1),0);
        localStorage.setItem('rekavo_cart',JSON.stringify(data));
      }
-   }).catch(()=>{});
- } else if(user && user.email){
-   fetch(`${API_BASE}/cart/get?email=${encodeURIComponent(user.email)}`)
-  .then(r=>r.json()).then(data=>{
-     if(Array.isArray(data)) document.getElementById('cartCount').innerText=data.reduce((s,i)=>s+(i.qty||1),0);
    }).catch(()=>{});
  }
 }
 
 function addToCartDirect(product){
- // 1. INSTANT UPDATE - no wait
  let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
  let pid=product.product_id||product.id||product.name;
  let found=cart.find(c=> (c.product_id===pid) );
@@ -547,12 +526,9 @@ function addToCartDirect(product){
  let cnt=cart.reduce((s,i)=>s+(i.qty||1),0);
  let cc=document.getElementById('cartCount'); if(cc) cc.innerText=cnt;
  showToast(`✅ ${product.name} added to cart`);
-
- // 2. Background me backend pe bhejo - page switch nahi, wait nahi
  let user=getUser();
  if(user){
    let payload={user_id:user.user_id, email:user.email, product_id:pid, name:product.name, price:product.price, qty:1, image:product.img||product.image};
-   // naya API pehle try, purana fallback
    fetch(`${API_BASE}/api/cart/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(()=>{
      fetch(`${API_BASE}/cart/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(()=>{});
    });
@@ -566,21 +542,23 @@ function buyNowDirect(product){
  location.href='checkout.html';
 }
 
+// ===== FIX 3: HOT DEALS - SIRF 4 PREMIUM, BINA BUTTON KE =====
 function renderAllProducts(){
- let all=getAllProducts();
  let grid=document.getElementById('allProductsGrid');
+ let premium=[
+   {...categoryData.powerbank[2], cat:'powerbank', idx:2},
+   {...categoryData.earbuds[1], cat:'earbuds', idx:1},
+   {...categoryData.charger[1], cat:'charger', idx:1},
+   {...categoryData.neckband[1], cat:'neckband', idx:1}
+ ];
  let html='';
- all.forEach(p=>{
+ premium.forEach(p=>{
    let off=Math.round((p.originalPrice-p.price)/p.originalPrice*100);
-   html+=`<div class="card">
-    <div class="coupon-tag">COUPON: EXTRA ${off}% OFF</div>
-    <img src="${p.img}" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'">
+   html+=`<div class="card" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'">
+    <div class="coupon-tag">EXTRA ${off}% OFF</div>
+    <img src="${p.img}">
     <div style="font-size:12px;font-weight:700;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name}</div>
-    <div class="price-box"><span style="font-size:14px;font-weight:800">₹${p.price}</span> <span style="font-size:11px;color:#878787;text-decoration:line-through">₹${p.originalPrice}</span> <span style="font-size:11px;color:#26a541;font-weight:700">${off}% off</span><div style="font-size:10px;color:#ff6161;font-weight:700;margin-top:2px">+ Extra 20% with Coupon</div></div>
-    <div class="btn-row">
-      <button class="btn-add" onclick='addToCartDirect(${JSON.stringify(p).replace(/'/g,"&#39;")})'>ADD TO CART</button>
-      <button class="btn-buy" onclick='buyNowDirect(${JSON.stringify(p).replace(/'/g,"&#39;")})'>BUY NOW</button>
-    </div>
+    <div class="price-box"><span style="font-size:14px;font-weight:800">₹${p.price}</span> <span style="font-size:11px;color:#878787;text-decoration:line-through">₹${p.originalPrice}</span> <span style="font-size:11px;color:#26a541;font-weight:700">${off}% off</span><div style="font-size:10px;color:#ff6161;font-weight:700;margin-top:2px">+ Extra Coupon</div></div>
    </div>`;
  });
  grid.innerHTML=html;
@@ -614,7 +592,6 @@ function isValidEmailFormat(email){
  let domainName=domain.split(".")[0].toLowerCase(); if(fakeDomains.includes(domainName)) return false; if(domainName.length<3) return false; return true;
 }
 function isDisposableEmail(email){let d=email.split("@")[1]?.toLowerCase()||"";return disposableDomains.some(x=>d.includes(x));}
-
 let regData={};
 async function sendRegOtp(){
  clearAllErrs();
