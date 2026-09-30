@@ -1,11 +1,204 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout</title>
-<style>body{font-family:Roboto;background:#f1f3f6;padding:15px}.box{background:#fff;padding:20px;border-radius:4px;margin-top:50px;text-align:center}
-button{background:#2874f0;color:#fff;border:none;padding:12px 30px;border-radius:4px;margin-top:15px;font-weight:700}</style>
-</head><body>
-<div class="box"><h3>Checkout</h3><p id="total"></p><button onclick="alert('Order Placed!'); localStorage.removeItem('rekavo_cart'); location.href='index.html'">Confirm Order</button></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout - REKAVO | Amazon Style</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,Arial,sans-serif}
+body{background:#f1f3f6;padding-bottom:100px}
+.top-bar{background:#2874f0;color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:20}
+.card{background:#fff;margin:8px;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,.1);overflow:hidden}
+.card-head{padding:14px 16px;font-weight:800;font-size:15px;border-bottom:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center}
+.card-body{padding:12px 16px}
+.addr-card{border:2px solid #e0e0e0;border-radius:8px;padding:12px;margin-bottom:10px;cursor:pointer;position:relative}
+.addr-card.selected{border-color:#2874f0;background:#f5f8ff}
+.addr-card.check{position:absolute;top:10px;right:10px;width:20px;height:20px;border:2px solid #2874f0;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.addr-card.selected.check{background:#2874f0;color:#fff}
+.input{width:100%;height:42px;border:1px solid #dbdbdb;border-radius:6px;padding:0 12px;outline:none;margin:6px 0;font-size:13px}
+.input:focus{border-color:#2874f0}
+.row2{display:flex;gap:8px}
+.btn{width:100%;height:46px;border:none;border-radius:6px;font-weight:800;font-size:14px;cursor:pointer}
+.btn-blue{background:#2874f0;color:#fff}
+.btn-orange{background:#fb641b;color:#fff}
+.btn-outline{background:#fff;color:#2874f0;border:1px solid #2874f0}
+.pay-opt{border:1px solid #e0e0e0;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center;cursor:pointer}
+.pay-opt.selected{border-color:#2874f0;background:#f5f8ff}
+.price-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0}
+.price-row.total{font-weight:800;font-size:16px;border-top:1px dashed #e0e0e0;margin-top:8px;padding-top:10px}
+.success-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:99999;padding:20px}
+.success-overlay.show{display:flex}
+.success-box{background:#fff;border-radius:16px;padding:24px;max-width:380px;width:100%;text-align:center;animation:pop.5s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes pop{0%{transform:scale(.5)}100%{transform:scale(1)}}
+.confetti{font-size:60px;animation:bounce 1s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+</style>
+</head>
+<body>
+<div class="top-bar"><span onclick="history.back()" style="font-size:22px;cursor:pointer">←</span><b>Checkout - REKAVO</b></div>
+
+<div class="card">
+  <div class="card-head"><span>1. Delivery Address</span><span id="addrCount" style="font-size:11px;color:#878787"></span></div>
+  <div class="card-body" id="addressList">Loading addresses...</div>
+  <div class="card-body" style="border-top:1px solid #f0f0f0">
+    <p style="font-weight:700;font-size:13px;margin-bottom:8px">+ Add New Address</p>
+    <input id="aName" class="input" placeholder="Full Name*">
+    <input id="aPhone" class="input" placeholder="10-digit Mobile*">
+    <div class="row2"><input id="aPin" class="input" placeholder="Pincode*"><input id="aCity" class="input" placeholder="City"></div>
+    <input id="aFull" class="input" placeholder="Full Address - House No, Colony, Landmark*">
+    <input id="aState" class="input" placeholder="State">
+    <button class="btn btn-outline" style="margin-top:8px" onclick="saveNewAddress()">SAVE AND DELIVER HERE</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head"><span>2. Order Summary</span><span style="font-size:12px;color:#2874f0" onclick="location.href='cart.html'">Edit</span></div>
+  <div class="card-body" id="orderItems"></div>
+</div>
+
+<div class="card">
+  <div class="card-head">3. Payment Method</div>
+  <div class="card-body">
+    <div class="pay-opt selected" onclick="selectPay('COD',this)"><input type="radio" checked><div><b style="font-size:13px">Cash on Delivery</b><p style="font-size:11px;color:#555">Pay when you receive product</p></div></div>
+    <div class="pay-opt" onclick="selectPay('ONLINE',this)"><input type="radio"><div><b style="font-size:13px">Online Payment (UPI/Card)</b><p style="font-size:11px;color:#555">Extra 5% Discount</p></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head">Price Details</div>
+  <div class="card-body" id="priceBox"></div>
+</div>
+
+<div style="position:fixed;bottom:0;left:0;right:0;background:#fff;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 -2px 10px rgba(0,0,0,.15);z-index:20">
+  <div><div id="totalPay" style="font-weight:800;font-size:18px">₹0</div><div style="font-size:11px;color:#2874f0">View price details</div></div>
+  <button class="btn btn-orange" style="width:60%" onclick="placeOrder()">PLACE ORDER</button>
+</div>
+
+<div id="successPopup" class="success-overlay">
+  <div class="success-box">
+    <div class="confetti">🎉🎊</div>
+    <h2 style="margin-top:10px;color:#26a541">Congratulations!</h2>
+    <p style="font-size:13px;margin-top:6px;font-weight:600">Your Order is Placed Successfully!</p>
+    <p id="orderIdText" style="font-size:12px;margin-top:8px;color:#555">Order ID: #REK12345</p>
+    <div style="background:#f1f8e9;border-radius:8px;padding:10px;margin-top:12px;text-align:left">
+      <p style="font-size:11px">✓ Same order will show in My Orders</p>
+      <p style="font-size:11px">✓ Cross-device - check on any phone</p>
+      <p style="font-size:11px">✓ Delivery in 3-5 days</p>
+    </div>
+    <button class="btn btn-blue" style="margin-top:16px" onclick="goToOrders()">GO TO MY ORDERS</button>
+    <button class="btn" style="background:#fff;color:#555;border:1px solid #ddd;margin-top:8px" onclick="location.href='index.html'">CONTINUE SHOPPING</button>
+  </div>
+</div>
+
 <script>
-let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
-let buy=JSON.parse(localStorage.getItem('rekavo_buy_now')||'null');
-let t=0; if(buy){ t=buy.price*buy.qty; } else { cart.forEach(i=>t+=i.price*i.qty); }
-document.getElementById('total').innerText='Total Payable: ₹'+t;
-</script></body></html>
+const API_BASE="https://rekavo-backend.vercel.app";
+function getUser(){try{let u=JSON.parse(localStorage.getItem('rekavo_user')); if(!u) return null; u.user_id=u.user_id||u.id||u._id; return u;}catch(e){return null}}
+let selectedAddress=null; let selectedPay='COD'; let cartItems=[]; let totalAmount=0;
+
+function selectPay(mode,el){
+  selectedPay=mode;
+  document.querySelectorAll('.pay-opt').forEach(o=>{o.classList.remove('selected');o.querySelector('input').checked=false});
+  el.classList.add('selected'); el.querySelector('input').checked=true;
+}
+
+async function loadAddresses(){
+  let user=getUser(); if(!user){document.getElementById('addressList').innerHTML='<p style="font-size:12px">Please login first <a href="account.html">Login</a></p>';return;}
+  try{
+    let res=await fetch(`${API_BASE}/address/get?user_id=${user.user_id}`);
+    let addrs=await res.json(); if(!Array.isArray(addrs)) addrs=[];
+    document.getElementById('addrCount').innerText=`${addrs.length} saved`;
+    if(addrs.length===0){
+      document.getElementById('addressList').innerHTML='<div style="text-align:center;padding:10px"><p style="font-size:12px;color:#878787">No saved address. Add new below.</p></div>';
+      return;
+    }
+    let html=''; addrs.forEach((a,i)=>{
+      let isFirst=i===0; if(isFirst) selectedAddress=a;
+      html+=`<div class="addr-card ${isFirst?'selected':''}" onclick="chooseAddr(${i},this)"><div class="check">${isFirst?'✓':''}</div><b style="font-size:13px">${a.full_name}</b><p style="font-size:12px;color:#555;margin-top:4px">${a.full_address}, ${a.pincode}<br>Phone: ${a.phone}</p></div>`;
+    });
+    document.getElementById('addressList').innerHTML=html;
+    window._allAddr=addrs;
+  }catch(e){document.getElementById('addressList').innerHTML='Error loading addresses';}
+}
+function chooseAddr(idx,el){
+  selectedAddress=window._allAddr[idx];
+  document.querySelectorAll('.addr-card').forEach(c=>{c.classList.remove('selected');c.querySelector('.check').innerText=''});
+  el.classList.add('selected'); el.querySelector('.check').innerText='✓';
+}
+async function saveNewAddress(){
+  let fn=document.getElementById('aName').value.trim(), ph=document.getElementById('aPhone').value.trim(), pin=document.getElementById('aPin').value.trim(), full=document.getElementById('aFull').value.trim(), city=document.getElementById('aCity').value.trim(), state=document.getElementById('aState').value.trim();
+  if(!fn||!ph||!pin||!full){alert('Fill required fields');return;}
+  let user=getUser(); if(!user){alert('Login first');return;}
+  try{
+    await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id,email:user.email,full_name:fn,phone:ph,pincode:pin,full_address:full+ (city? ', '+city:'') + (state? ', '+state:''),city,state})});
+    alert('Address Saved!'); loadAddresses();
+    document.getElementById('aName').value='';document.getElementById('aPhone').value='';document.getElementById('aPin').value='';document.getElementById('aFull').value='';
+  }catch(e){alert('Error saving address');}
+}
+async function loadCart(){
+  let user=getUser();
+  let localBuy=JSON.parse(localStorage.getItem('rekavo_buy_now')||'null');
+  if(localBuy){ cartItems=[localBuy]; }
+  else if(user){
+    try{let r=await fetch(`${API_BASE}/cart/get?user_id=${user.user_id}`); let data=await r.json(); if(Array.isArray(data)) cartItems=data.map(d=>({product_id:d.product_id,name:d.name,price:d.price,qty:d.qty||1,img:d.image||d.img}));}catch(e){}
+  }else{
+    cartItems=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+  }
+  let html=''; totalAmount=0;
+  cartItems.forEach(it=>{
+    let t=it.price* (it.qty||1); totalAmount+=t;
+    html+=`<div style="display:flex;gap:10px;margin-bottom:10px"><img src="${it.img||it.image}" style="width:56px;height:56px;object-fit:contain;border:1px solid #eee;border-radius:4px"><div style="flex:1"><p style="font-size:13px;font-weight:600">${it.name}</p><p style="font-size:11px;color:#878787">Qty: ${it.qty||1}</p><p style="font-size:13px;font-weight:700">₹${t.toLocaleString()}</p></div></div>`;
+  });
+  document.getElementById('orderItems').innerHTML=html||'<p style="font-size:12px">Cart empty</p>';
+  let delivery=0, discount=0; let finalTotal=totalAmount;
+  document.getElementById('priceBox').innerHTML=`<div class="price-row"><span>Price (${cartItems.reduce((s,i)=>s+(i.qty||1),0)} items)</span><span>₹${(totalAmount+Math.round(totalAmount*0.3)).toLocaleString()}</span></div><div class="price-row"><span>Discount</span><span style="color:#388e3c">- ₹${Math.round(totalAmount*0.3).toLocaleString()}</span></div><div class="price-row"><span>Delivery Charges</span><span style="color:#388e3c">FREE</span></div><div class="price-row total"><span>Total Payable</span><span>₹${finalTotal.toLocaleString()}</span></div><p style="font-size:11px;color:#388e3c;margin-top:8px;font-weight:600">You will save ₹${Math.round(totalAmount*0.3).toLocaleString()} on this order</p>`;
+  document.getElementById('totalPay').innerText=`₹${finalTotal.toLocaleString()}`;
+}
+async function placeOrder(){
+  let user=getUser(); if(!user){alert('Please login'); location.href='account.html';return;}
+  if(!selectedAddress){alert('Please select or add delivery address');return;}
+  if(cartItems.length===0){alert('Cart empty');return;}
+  let btn=document.querySelector('[onclick="placeOrder()"]'); btn.innerText='PLACING...'; btn.disabled=true;
+  try{
+    let orderPayload={
+      user_id: user.user_id,
+      email: user.email,
+      address: selectedAddress,
+      full_name: selectedAddress.full_name,
+      phone: selectedAddress.phone,
+      pincode: selectedAddress.pincode,
+      full_address: selectedAddress.full_address,
+      items: cartItems,
+      amount: totalAmount,
+      total: totalAmount,
+      payment_method: selectedPay,
+      status: 'Placed',
+      order_id: 'REK'+Date.now()
+    };
+    let res=await fetch(`${API_BASE}/orders/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(orderPayload)});
+    // fallback to /orders/create if /add fails
+    if(!res.ok){
+      await fetch(`${API_BASE}/orders/create`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(orderPayload)});
+    }
+    // clear cart after order
+    try{
+      await fetch(`${API_BASE}/cart/clear`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id,email:user.email})});
+    }catch(e){}
+    localStorage.removeItem('rekavo_cart'); localStorage.removeItem('rekavo_buy_now');
+    document.getElementById('orderIdText').innerText='Order ID: #'+orderPayload.order_id;
+    document.getElementById('successPopup').classList.add('show');
+    // confetti effect
+    let audio=new Audio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=success-1-6297.mp3'); audio.play().catch(()=>{});
+  }catch(e){
+    alert('Order failed: '+e.message);
+  }
+  btn.innerText='PLACE ORDER'; btn.disabled=false;
+}
+function goToOrders(){location.href='account.html'; setTimeout(()=>{localStorage.setItem('open_orders','1');},100);}
+(function(){
+  let user=getUser(); if(!user){ /* allow guest but ask login on place */ }
+  loadAddresses(); loadCart();
+  if(localStorage.getItem('open_orders')){localStorage.removeItem('open_orders');}
+})();
+</script>
+</body>
+</html>
