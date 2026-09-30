@@ -323,17 +323,35 @@ async function addNewAddress(){
  await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid, email:currentUser.email,full_name:fn,phone:ph,pincode:pin,full_address:full})});
  alert('Address saved! Cross-device ready'); renderAddress();
 }
+
+// ===== INSTANT FIX - My Cart (0) flicker khatam =====
 async function updateCountsReal(){
+ // 1. INSTANT - pehle local se
+ try{
+   let localCart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+   let localCnt = localCart.reduce((s,i)=>s+(i.qty||1),0);
+   let cc = document.getElementById('cartCount'); if(cc) cc.innerText = localCnt;
+   let pc = document.getElementById('pCartCount'); if(pc) pc.innerText = localCnt;
+ }catch(e){}
+
+ // 2. Background sync - user_id se
  try{
    let uid = getUid();
+   if(!uid) return;
    let [cr,wr]=await Promise.all([
      fetch(`${API_BASE}/cart/get?user_id=${uid}`),
      fetch(`${API_BASE}/wishlist/get?user_id=${uid}`)
    ]);
    let c=await cr.json(); let w=await wr.json();
-   document.getElementById('cartCount').innerText=c.reduce((s,i)=>s+(i.qty||1),0);
-   document.getElementById('pCartCount').innerText=c.reduce((s,i)=>s+(i.qty||1),0);
-   document.getElementById('pWishCount').innerText=w.length;
+   if(Array.isArray(c)){
+     let cnt=c.reduce((s,i)=>s+(i.qty||1),0);
+     document.getElementById('cartCount').innerText=cnt;
+     document.getElementById('pCartCount').innerText=cnt;
+     localStorage.setItem('rekavo_cart',JSON.stringify(c));
+   }
+   if(Array.isArray(w)){
+     document.getElementById('pWishCount').innerText=w.length;
+   }
  }catch(e){}
 }
 
@@ -348,12 +366,26 @@ async function showLoggedInProfile(){
  document.getElementById('pEmail').innerText=u.email||'';
  document.getElementById('pMobile').innerText=u.mobile?'+91 '+u.mobile:'';
  document.getElementById('pIcon').innerText=(u.name||'R').charAt(0).toUpperCase();
- await updateCountsReal();
+ // INSTANT counts dikhao
+ updateCountsReal();
 }
-function logout(){localStorage.removeItem('rekavo_user');location.reload();}
+function logout(){localStorage.removeItem('rekavo_user');localStorage.removeItem('rekavo_cart');location.reload();}
 (function(){
- let u=localStorage.getItem('rekavo_user'); if(u){currentUser=JSON.parse(u); currentUser.user_id = currentUser.user_id || currentUser.id; showLoggedInProfile();} else {
-   let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]'); document.getElementById('cartCount').innerText=cart.length;
+ // INSTANT - page khulte hi local se count - 0 nahi dikhega
+ try{
+   let localCart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+   let cnt = localCart.reduce((s,i)=>s+(i.qty||1),0);
+   let el = document.getElementById('cartCount');
+   if(el) el.innerText = cnt;
+   let pEl = document.getElementById('pCartCount');
+   if(pEl) pEl.innerText = cnt;
+ }catch(e){}
+
+ let u=localStorage.getItem('rekavo_user'); 
+ if(u){
+   currentUser=JSON.parse(u); 
+   currentUser.user_id = currentUser.user_id || currentUser.id; 
+   showLoggedInProfile();
  }
 })();
 </script>
