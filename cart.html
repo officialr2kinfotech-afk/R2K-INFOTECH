@@ -71,20 +71,39 @@ async function getCart(){
 }
 
 async function render(){
- let cart=await getCart();
- let merged={};
- cart.forEach(it=>{let k=it.product_id||it.name; if(merged[k]) merged[k].qty+=it.qty; else merged[k]={...it};});
- cart=Object.values(merged);
- if(!getUser()) localStorage.setItem('rekavo_cart',JSON.stringify(cart));
- document.getElementById('cartCount').innerText=cart.reduce((s,i)=>s+i.qty,0);
+ // INSTANT - PEHLE LOCAL CART DIKHA DO, 0 KABHI NAHI
  let con=document.getElementById('cartContainer');
  let priceCon=document.getElementById('priceContainer');
  let bar=document.getElementById('bottomBar');
+
+ let localC = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+ let cart = localC.map(i=>{if(!i.qty)i.qty=1;return i;});
+
+ // Agar local me hai to turant render kar do
+ if(cart.length>0){
+   document.getElementById('cartCount').innerText = cart.reduce((s,i)=>s+(i.qty||1),0);
+   // yahan turant render function call kar denge niche wale code se
+ } else {
+   document.getElementById('cartCount').innerText = '...';
+ }
+
+ // AB BACKEND SE SYNC KARO (background me)
+ try{
+   let serverCart = await getCart();
+   if(serverCart && serverCart.length>0){
+     let merged={};
+     serverCart.forEach(it=>{let k=it.product_id||it.name; if(merged[k]) merged[k].qty+=it.qty; else merged[k]={...it};});
+     cart=Object.values(merged);
+     document.getElementById('cartCount').innerText=cart.reduce((s,i)=>s+i.qty,0);
+     localStorage.setItem('rekavo_cart',JSON.stringify(cart));
+   }
+ }catch(e){}
+
  if(cart.length===0){
   let user=getUser();
-  con.innerHTML=`<div class="empty-wrap"><div class="empty-img">🛒</div><div style="font-size:16px;font-weight:600">${user?'Your cart is empty!':'Missing Cart items?'}</div><div style="font-size:12px;color:#878787;margin:8px 0 18px 0">Shop now to add items</div><button class="btn-blue" onclick="location.href='${user?'index.html':'account.html'}'">${user?'Shop now':'Login'}</button></div>`;
+  con.innerHTML= `<div class="empty-wrap"><div class="empty-img">🛒</div><div style="font-size:16px;font-weight:600">${user?user.name+', ':''}Your cart is empty</div><div style="margin-top:6px;color:#777">Add some products to get started</div><a href="index.html" class="shop-btn">Continue Shopping</a></div>`;
   priceCon.innerHTML='';bar.innerHTML='';return;
- }
+  }
  let html='', totalMRP=0, totalNow=0;
  cart.forEach((item,idx)=>{
   let cut = item.original || item.mrp || Math.round(item.price*1.3);
