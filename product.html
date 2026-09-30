@@ -184,28 +184,25 @@ function applyCoupon(){
     document.getElementById('couponErr').classList.add('show');
   }
 }
-async function addToCart(){
-  let user=getUser();
+function addToCart(){
   let pid = `${cat}_${idx}`;
-  let itemData = {product_id: pid, name:product.name, price:finalPrice, qty:1, image:product.img};
-  
-  if(user && user.user_id){
-    try{
-      await fetch(`${API_BASE}/cart/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id: user.user_id, email: user.email,...itemData})});
-    }catch(e){}
-  }
-
+  // 1. INSTANT - Pehle local me add + count update + popup
   let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
-  cart.push({product_id: pid, name:product.name,price:finalPrice,img:product.img,desc:product.desc,spec:product.spec,original:product.originalPrice,mrp:product.originalPrice,coupon:product.coupon,qty:1});
+  cart.push({product_id: pid, name:product.name, price:finalPrice, qty:1, img:product.img, desc:product.desc, spec:product.spec, original:product.originalPrice, mrp:product.originalPrice, coupon:product.coupon});
   localStorage.setItem('rekavo_cart',JSON.stringify(cart));
-  document.getElementById('cartCount').innerText=cart.length;
-
-  document.getElementById('cartMsg').innerText=product.name+" added to cart ₹"+finalPrice+" ✓";
-  document.getElementById('cartMsg').classList.add('show');
+  let count = cart.reduce((s,i)=>s+(i.qty||1),0);
+  document.getElementById('cartCount').innerText = count;
   
-  setTimeout(()=>{
-    document.getElementById('cartMsg').classList.remove('show');
-  },2000);
+  // Popup instant
+  document.getElementById('cartMsg').innerText = product.name+" added to cart ₹"+finalPrice+" ✓";
+  document.getElementById('cartMsg').classList.add('show');
+  setTimeout(()=>document.getElementById('cartMsg').classList.remove('show'),2000);
+
+  // 2. BACKGROUND me server pe bhejo - wait mat karo
+  let user=getUser();
+  if(user && user.user_id){
+    fetch(`${API_BASE}/cart/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id, email:user.email, product_id:pid, name:product.name, price:finalPrice, qty:1, image:product.img})}).catch(()=>{});
+  }
 }
 function buyNow(){
   let pid = `${cat}_${idx}`;
