@@ -164,21 +164,28 @@ function updateCartCount(){
 }
 function addToCartDirect(product){
  let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
- let pid=product.product_id||product.id||product.name;
- let found=cart.find(c=> (c.product_id===pid) );
- if(found) found.qty+=1;
- else cart.push({product_id:pid,name:product.name,price:product.price,qty:1,img:product.img||product.image,cat:product.cat,idx:product.idx,original:product.originalPrice||product.original});
+ let pid = product.product_id || product.id || (product.cat+'_'+product.idx) || product.name;
+ let found=cart.find(c=> (c.product_id===pid) || (c.id===pid) );
+ if(found){ found.qty=(found.qty||1)+1; }
+ else {
+  cart.push({
+    product_id: pid,
+    id: pid,
+    name: product.name,
+    price: product.price,
+    qty: 1,
+    img: product.img || product.image,
+    image: product.img || product.image,
+    cat: product.cat,
+    idx: product.idx,
+    originalPrice: product.originalPrice || product.original
+  });
+ }
  localStorage.setItem('rekavo_cart',JSON.stringify(cart));
  let cnt=cart.reduce((s,i)=>s+(i.qty||1),0);
- let cc=document.getElementById('cartCount'); if(cc) cc.innerText=cnt;
- showToast(`✅ ${product.name} added to cart`);
- let user=getUser();
- if(user){
-   let payload={user_id:user.user_id, email:user.email, product_id:pid, name:product.name, price:product.price, qty:1, image:product.img||product.image};
-   fetch(`${API_BASE}/api/cart/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(()=>{
-     fetch(`${API_BASE}/cart/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(()=>{});
-   });
- }
+ document.getElementById('cartCount').innerText=cnt;
+ document.getElementById('bCount') && (document.getElementById('bCount').innerText=cnt);
+ showToast(`✅ ${product.name} added`);
 }
 function buyNowDirect(product){
  let user=getUser();
