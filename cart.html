@@ -15,10 +15,10 @@ body{background:#f1f3f6;padding-bottom:135px}
 .btn-blue{background:#2874f0;color:#fff;border:none;padding:11px 40px;border-radius:2px;font-weight:600;font-size:14px}
 .cart-card{background:#fff;margin-bottom:8px;padding:12px 12px 0 12px;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0}
 .item-top{display:flex;gap:12px}
-.item-img-wrap{width:88px;height:88px;border:1px solid #f0f0f0;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.item-img-wrap{width:88px;height:88px;border:1px solid #f0f0f0;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer}
 .item-img{max-width:100%;max-height:100%;object-fit:contain}
 .item-info{flex:1}
-.item-name{font-size:14px;line-height:19px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.item-name{font-size:14px;line-height:19px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
 .delivery{font-size:12px;color:#388e3c;margin-top:6px;font-weight:500}
 .seller{font-size:11px;color:#878787;margin-top:3px}
 .price-row{margin-top:8px;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
@@ -53,24 +53,16 @@ body{background:#f1f3f6;padding-bottom:135px}
 <a href="cart.html" class="active"><span class="nav-ico">🛒</span>Cart</a>
 </div>
 <script>
-const API_BASE="https://rekavo-backend.vercel.app";
 function getUser(){try{let u=JSON.parse(localStorage.getItem('rekavo_user')); if(!u) return null; u.user_id = u.user_id || u.id || u._id; return u;}catch(e){return null}}
 
-async function getCart(){
- let user=getUser();
- if(user && user.user_id){
-   try{
-     let r=await fetch(`${API_BASE}/cart/get?user_id=${user.user_id}`);
-     let data=await r.json();
-     if(!Array.isArray(data)) data=[];
-     return data.map(d=>({product_id:d.product_id,name:d.name,price:d.price,qty:d.qty||1,img:d.image,original:d.price*1.3}));
-   }catch(e){console.log(e)}
- }
- let c=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
- return c.map(i=>{if(!i.qty)i.qty=1;return i;});
+function openProduct(product_id){
+ if(!product_id) return;
+ location.href = `product.html?id=${encodeURIComponent(product_id)}`;
 }
 
-function renderInstant(cart){
+function render(){
+ let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+ cart = cart.map(i=>{if(!i.qty)i.qty=1;return i;});
  let con=document.getElementById('cartContainer');
  let priceCon=document.getElementById('priceContainer');
  let bar=document.getElementById('bottomBar');
@@ -82,6 +74,7 @@ function renderInstant(cart){
  document.getElementById('cartCount').innerText = cart.reduce((s,i)=>s+(i.qty||1),0);
  let html='', totalMRP=0, totalNow=0;
  cart.forEach((item,idx)=>{
+  let pid = item.product_id || item.id;
   let cut = item.original || item.mrp || Math.round(item.price*1.3);
   let itemTotal = item.price * item.qty;
   let cutTotal = cut * item.qty;
@@ -90,17 +83,17 @@ function renderInstant(cart){
   html+=`
   <div class="cart-card">
    <div class="item-top">
-    <div class="item-img-wrap"><img class="item-img" src="${item.img||item.image}"></div>
+    <div class="item-img-wrap" onclick="openProduct('${pid}')"><img class="item-img" src="${item.img||item.image}"></div>
     <div class="item-info">
-     <div class="item-name">${item.name} ${item.qty > 1? `(x${item.qty})` : ''}</div>
+     <div class="item-name" onclick="openProduct('${pid}')">${item.name} ${item.qty > 1? `(x${item.qty})` : ''}</div>
      <div class="seller">Seller: Rekavo Retail • Coupon Applied</div>
      <div class="price-row"><span class="price-now">₹${itemTotal.toLocaleString()}</span><span style="font-size:11px;color:#878787"> (₹${item.price.toLocaleString()} x ${item.qty})</span><span class="price-cut">₹${cutTotal.toLocaleString()}</span><span class="off">${Math.round((cut-item.price)/cut*100)}% Off</span></div>
      <div class="delivery">Free Delivery • Delivery by Tomorrow</div>
     </div>
    </div>
    <div class="qty-action-row">
-    <div class="qty-box"><button class="qty-btn" onclick="changeQty('${item.product_id}',${idx},-1)">−</button><span class="qty-num">${item.qty}</span><button class="qty-btn" onclick="changeQty('${item.product_id}',${idx},1)">+</button></div>
-    <div style="flex:1;display:flex;gap:8px;"><button onclick="removeItem('${item.product_id}',${idx})" style="flex:1;background:#fff;border:1px solid #ff3b3b;color:#ff3b3b;padding:8px 0;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">REMOVE</button><button onclick="buyNow(${idx})" style="flex:1;background:#0f9d58;border:1px solid #0f9d58;color:#fff;padding:8px 0;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">BUY THIS NOW</button></div>
+    <div class="qty-box"><button class="qty-btn" onclick="changeQty(${idx},-1)">−</button><span class="qty-num">${item.qty}</span><button class="qty-btn" onclick="changeQty(${idx},1)">+</button></div>
+    <div style="flex:1;display:flex;gap:8px;"><button onclick="removeItem(${idx})" style="flex:1;background:#fff;border:1px solid #ff3b3b;color:#ff3b3b;padding:8px 0;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">REMOVE</button><button onclick="buyNow(${idx})" style="flex:1;background:#0f9d58;border:1px solid #0f9d58;color:#fff;padding:8px 0;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">BUY THIS NOW</button></div>
    </div>
   </div>`;
  });
@@ -110,56 +103,18 @@ function renderInstant(cart){
  bar.innerHTML=`<div class="bottom-bar"><div><div style="font-size:12px;color:#878787;text-decoration:line-through">₹${totalMRP.toLocaleString()}</div><div style="font-weight:800;font-size:18px">₹${totalNow.toLocaleString()}</div></div><button class="place-btn" onclick="location.href='checkout.html'">PLACE ORDER</button></div>`;
 }
 
-async function render(){
- // INSTANT - PEHLE LOCAL
- let localC = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
- let cart = localC.map(i=>{if(!i.qty)i.qty=1;return i;});
- renderInstant(cart);
-
- // BACKGROUND SYNC
- try{
-   let user=getUser();
-   if(user && user.user_id){
-     let serverCart = await getCart();
-     if(serverCart && serverCart.length>0){
-       // merge server is source of truth
-       let merged={};
-       serverCart.forEach(it=>{let k=it.product_id||it.name; if(merged[k]) merged[k].qty+=it.qty; else merged[k]={...it};});
-       let finalCart=Object.values(merged);
-       localStorage.setItem('rekavo_cart',JSON.stringify(finalCart));
-       renderInstant(finalCart);
-     }
-   }
- }catch(e){}
-}
-
-function changeQty(product_id,idx,d){
- // INSTANT local update
+function changeQty(idx,d){
  let c=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
  if(!c[idx]) return;
  c[idx].qty+=d;if(c[idx].qty<1)c[idx].qty=1;if(c[idx].qty>5)c[idx].qty=5;
  localStorage.setItem('rekavo_cart',JSON.stringify(c));
- renderInstant(c);
-
- // Background server
- let user=getUser();
- if(user && user.user_id){
-   fetch(`${API_BASE}/cart/remove`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id,email:user.email,product_id})}).then(()=>{
-     fetch(`${API_BASE}/cart/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id,email:user.email,product_id:c[idx].product_id,name:c[idx].name,price:c[idx].price,qty:c[idx].qty,image:c[idx].img||c[idx].image})}).catch(()=>{});
-   }).catch(()=>{});
- }
+ render();
 }
 
-function removeItem(product_id,idx){
+function removeItem(idx){
  if(!confirm('Remove this item?'))return;
- // INSTANT local
  let c=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');c.splice(idx,1);localStorage.setItem('rekavo_cart',JSON.stringify(c));
- renderInstant(c);
- // Background server
- let user=getUser();
- if(user && user.user_id){
-   fetch(`${API_BASE}/cart/remove`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id,email:user.email,product_id})}).catch(()=>{});
- }
+ render();
 }
 
 function buyNow(i){let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');localStorage.setItem('rekavo_buy_now',JSON.stringify(cart[i]));location.href='checkout.html';}
