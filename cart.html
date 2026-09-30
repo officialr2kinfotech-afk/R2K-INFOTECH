@@ -70,40 +70,16 @@ async function getCart(){
  return c.map(i=>{if(!i.qty)i.qty=1;return i;});
 }
 
-async function render(){
- // INSTANT - PEHLE LOCAL CART DIKHA DO, 0 KABHI NAHI
+function renderInstant(cart){
  let con=document.getElementById('cartContainer');
  let priceCon=document.getElementById('priceContainer');
  let bar=document.getElementById('bottomBar');
-
- let localC = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
- let cart = localC.map(i=>{if(!i.qty)i.qty=1;return i;});
-
- // Agar local me hai to turant render kar do
- if(cart.length>0){
-   document.getElementById('cartCount').innerText = cart.reduce((s,i)=>s+(i.qty||1),0);
-   // yahan turant render function call kar denge niche wale code se
- } else {
-   document.getElementById('cartCount').innerText = '...';
- }
-
- // AB BACKEND SE SYNC KARO (background me)
- try{
-   let serverCart = await getCart();
-   if(serverCart && serverCart.length>0){
-     let merged={};
-     serverCart.forEach(it=>{let k=it.product_id||it.name; if(merged[k]) merged[k].qty+=it.qty; else merged[k]={...it};});
-     cart=Object.values(merged);
-     document.getElementById('cartCount').innerText=cart.reduce((s,i)=>s+i.qty,0);
-     localStorage.setItem('rekavo_cart',JSON.stringify(cart));
-   }
- }catch(e){}
-
  if(cart.length===0){
   let user=getUser();
-  con.innerHTML= `<div class="empty-wrap"><div class="empty-img">🛒</div><div style="font-size:16px;font-weight:600">${user?user.name+', ':''}Your cart is empty</div><div style="margin-top:6px;color:#777">Add some products to get started</div><a href="index.html" class="shop-btn">Continue Shopping</a></div>`;
-  priceCon.innerHTML='';bar.innerHTML='';return;
-  }
+  con.innerHTML= `<div class="empty-wrap"><div class="empty-img">🛒</div><div style="font-size:16px;font-weight:600">${user?user.name+', ':''}Your cart is empty</div><div style="margin-top:6px;color:#777">Add some products to get started</div><a href="index.html" style="display:inline-block;margin-top:15px;background:#2874f0;color:#fff;text-decoration:none;padding:10px 20px;border-radius:4px;font-weight:600">Continue Shopping</a></div>`;
+  priceCon.innerHTML='';bar.innerHTML='';document.getElementById('cartCount').innerText='0';return;
+ }
+ document.getElementById('cartCount').innerText = cart.reduce((s,i)=>s+(i.qty||1),0);
  let html='', totalMRP=0, totalNow=0;
  cart.forEach((item,idx)=>{
   let cut = item.original || item.mrp || Math.round(item.price*1.3);
@@ -134,34 +110,59 @@ async function render(){
  bar.innerHTML=`<div class="bottom-bar"><div><div style="font-size:12px;color:#878787;text-decoration:line-through">₹${totalMRP.toLocaleString()}</div><div style="font-weight:800;font-size:18px">₹${totalNow.toLocaleString()}</div></div><button class="place-btn" onclick="location.href='checkout.html'">PLACE ORDER</button></div>`;
 }
 
-async function changeQty(product_id,idx,d){
- let user=getUser();
- if(user && user.user_id){
-   let cart=await getCart();
-   let item=cart[idx];
-   let newQty=item.qty+d; if(newQty<1)newQty=1; if(newQty>5)newQty=5;
-   await fetch(`${API_BASE}/cart/remove`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id,email:user.email,product_id})});
-   await fetch(`${API_BASE}/cart/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id,email:user.email,product_id:item.product_id,name:item.name,price:item.price,qty:newQty,image:item.img||item.image})});
- }else{
-   let c=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
-   c[idx].qty+=d;if(c[idx].qty<1)c[idx].qty=1;if(c[idx].qty>5)c[idx].qty=5;
-   localStorage.setItem('rekavo_cart',JSON.stringify(c));
- }
- render();
+async function render(){
+ // INSTANT - PEHLE LOCAL
+ let localC = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+ let cart = localC.map(i=>{if(!i.qty)i.qty=1;return i;});
+ renderInstant(cart);
+
+ // BACKGROUND SYNC
+ try{
+   let user=getUser();
+   if(user && user.user_id){
+     let serverCart = await getCart();
+     if(serverCart && serverCart.length>0){
+       // merge server is source of truth
+       let merged={};
+       serverCart.forEach(it=>{let k=it.product_id||it.name; if(merged[k]) merged[k].qty+=it.qty; else merged[k]={...it};});
+       let finalCart=Object.values(merged);
+       localStorage.setItem('rekavo_cart',JSON.stringify(finalCart));
+       renderInstant(finalCart);
+     }
+   }
+ }catch(e){}
 }
 
-async function removeItem(product_id,idx){
+function changeQty(product_id,idx,d){
+ // INSTANT local update
+ let c=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+ if(!c[idx]) return;
+ c[idx].qty+=d;if(c[idx].qty<1)c[idx].qty=1;if(c[idx].qty>5)c[idx].qty=5;
+ localStorage.setItem('rekavo_cart',JSON.stringify(c));
+ renderInstant(c);
+
+ // Background server
+ let user=getUser();
+ if(user && user.user_id){
+   fetch(`${API_BASE}/cart/remove`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id,email:user.email,product_id})}).then(()=>{
+     fetch(`${API_BASE}/cart/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id,email:user.email,product_id:c[idx].product_id,name:c[idx].name,price:c[idx].price,qty:c[idx].qty,image:c[idx].img||c[idx].image})}).catch(()=>{});
+   }).catch(()=>{});
+ }
+}
+
+function removeItem(product_id,idx){
  if(!confirm('Remove this item?'))return;
+ // INSTANT local
+ let c=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');c.splice(idx,1);localStorage.setItem('rekavo_cart',JSON.stringify(c));
+ renderInstant(c);
+ // Background server
  let user=getUser();
  if(user && user.user_id){
-   await fetch(`${API_BASE}/cart/remove`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id,email:user.email,product_id})});
- }else{
-   let c=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');c.splice(idx,1);localStorage.setItem('rekavo_cart',JSON.stringify(c));
+   fetch(`${API_BASE}/cart/remove`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id,email:user.email,product_id})}).catch(()=>{});
  }
- render();
 }
 
-function buyNow(i){getCart().then(cart=>{localStorage.setItem('rekavo_buy_now',JSON.stringify(cart[i]));location.href='checkout.html';});}
+function buyNow(i){let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');localStorage.setItem('rekavo_buy_now',JSON.stringify(cart[i]));location.href='checkout.html';}
 
 render();
 </script>
