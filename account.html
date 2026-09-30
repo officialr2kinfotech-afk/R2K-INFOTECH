@@ -35,7 +35,7 @@ body{background:#f1f3f6;padding-bottom:70px}
 .error-msg.show{display:block}
 .success-msg{color:#188038;font-size:11px;font-weight:700;margin-top:6px;display:none;background:#e6f4ea;padding:8px;border-radius:4px;text-align:center}
 .success-msg.show{display:block}
-.hidden{display:none!important}
+.hidden{display:none !important}
 .otp-box{background:#f8f9ff;border:1px dashed #2874f0;border-radius:8px;padding:15px;margin-top:10px;text-align:center}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:99}
 .bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
@@ -170,16 +170,6 @@ body{background:#f1f3f6;padding-bottom:70px}
 const API_BASE = "https://rekavo-backend.vercel.app";
 let regData={}, forgotKey="", forgotOtpVerified=false, currentUser=null;
 
-function getUserWithId(){
-  try{
-    const u = JSON.parse(localStorage.getItem('rekavo_user')||'null');
-    if(!u) return null;
-    // normalize
-    const id = u.id || u._id || u.user_id || u.userId;
-    return {...u, user_id: id, id: id};
-  }catch(e){return null;}
-}
-
 function switchTab(t){document.getElementById('loginForm').classList.toggle('hidden',t!=='login');document.getElementById('registerForm').classList.toggle('hidden',t!=='register');document.getElementById('forgotForm').classList.toggle('hidden',t!=='forgot');}
 function showErr(id,msg){let el=document.getElementById(id);el.innerText=msg;el.classList.add('show');}
 function showSuccess(id,msg){let el=document.getElementById(id);el.innerText=msg;el.classList.add('show');}
@@ -202,18 +192,18 @@ async function createAccount(){
  clearErrs(); let p=document.getElementById('createPass').value.trim(); let cp=document.getElementById('confirmPass').value.trim(); if(p.length<6){showErr('err-createPass','Min 6 chars');return;} if(p!==cp){showErr('err-confirmPass','Not match');return;}
  let btn=document.getElementById('createAccBtn');btn.innerText='Creating...';btn.disabled=true;
  try{let res=await fetch(`${API_BASE}/verify-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:regData.email,otp:regData.tempOtp,name:regData.name,phone:regData.mobile,password:p})});let data=await res.json();if(res.ok){
-   const uid = data.user.id || data.user._id || data.id;
-   localStorage.setItem('rekavo_user',JSON.stringify({id: uid, user_id: uid, name:data.user.name,mobile:data.user.phone,email:data.user.email}));
-   showSuccess('success-regFinal','Account Created!');setTimeout(()=>{location.href='index.html';},600);}else{showErr('err-confirmPass',data.error);}}catch(e){showErr('err-confirmPass','Network error');}
+  let uid = data.user.id || data.user._id || data.user.user_id;
+  localStorage.setItem('rekavo_user',JSON.stringify({id:uid, user_id:uid, name:data.user.name,mobile:data.user.phone,email:data.user.email}));
+  showSuccess('success-regFinal','Account Created!');setTimeout(()=>{location.href='index.html';},600);}else{showErr('err-confirmPass',data.error);}}catch(e){showErr('err-confirmPass','Network error');}
  btn.innerText='Create Account';btn.disabled=false;
 }
 async function handleLogin(){
  clearErrs(); let email=document.getElementById('loginEmail').value.trim().toLowerCase(); let pass=document.getElementById('loginPass').value.trim(); if(!email||!pass){showErr('err-loginEmail','Enter email & pass');return;}
- let btn=document.querySelector('#loginForm.btn');btn.innerText='Logging...';btn.disabled=true;
+ let btn=document.querySelector('#loginForm .btn');btn.innerText='Logging...';btn.disabled=true;
  try{let res=await fetch(`${API_BASE}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});let data=await res.json();if(res.ok){
-   const uid = data.user.id || data.user._id || data.userId || data.id;
-   localStorage.setItem('rekavo_user',JSON.stringify({id: uid, user_id: uid, name:data.user.name,mobile:data.user.phone,email:data.user.email}));
-   showSuccess('success-login',`Welcome ${data.user.name}`);setTimeout(()=>{location.href='index.html';},600);}else{showErr('err-loginEmail',data.error);}}catch(e){showErr('err-loginEmail','Network error');}
+  let uid = data.user.id || data.user._id || data.user.user_id || data.userId;
+  localStorage.setItem('rekavo_user',JSON.stringify({id:uid, user_id:uid, name:data.user.name,mobile:data.user.phone,email:data.user.email}));
+  showSuccess('success-login',`Welcome ${data.user.name}`);setTimeout(()=>{location.href='index.html';},600);}else{showErr('err-loginEmail',data.error);}}catch(e){showErr('err-loginEmail','Network error');}
  btn.innerText='Login with Password';btn.disabled=false;
 }
 async function sendForgotOtp(){
@@ -245,15 +235,17 @@ function openPage(type){
 }
 function closePage(type){document.getElementById(`page-${type}`).classList.add('hidden');}
 
+// ===== GATE FIX - user_id se =====
+function getUid(){ return currentUser ? (currentUser.user_id || currentUser.id) : null; }
+
 async function renderCart(){
  let el=document.getElementById('cartContent');
  el.innerHTML='<div style="padding:20px;text-align:center">Loading real cart...</div>';
  try{
-   let uid = currentUser.user_id || currentUser.id;
+   let uid = getUid();
    let res=await fetch(`${API_BASE}/cart/get?user_id=${uid}`);
    let cart=await res.json();
-   if(!Array.isArray(cart)) cart=[];
-   if(cart.length===0){el.innerHTML=`<div class="empty-box"><h3>🛒 Your cart is empty</h3><p>Cross-device cart - same on all devices</p><button class="btn btn-blue" style="margin-top:12px;width:auto;padding:0 20px" onclick="location.href='index.html'">Continue Shopping</button></div>`;return;}
+   if(cart.length===0){el.innerHTML=`<div class="empty-box"><h3>🛒 Your cart is empty</h3><p>This is REAL database cart - same on all devices</p><button class="btn btn-blue" style="margin-top:12px;width:auto;padding:0 20px" onclick="location.href='index.html'">Continue Shopping</button></div>`;return;}
    let html=`<div style="padding:12px">`;
    cart.forEach((c,i)=>{
      html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center">
@@ -268,20 +260,19 @@ async function renderCart(){
 }
 async function removeRealCart(pid){
  if(!confirm('Remove?'))return;
- let uid = currentUser.user_id || currentUser.id;
- await fetch(`${API_BASE}/cart/remove`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id: uid, email: currentUser.email, product_id:pid})});
+ let uid = getUid();
+ await fetch(`${API_BASE}/cart/remove`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid, email:currentUser.email, product_id:pid})});
  renderCart(); updateCountsReal();
 }
 async function renderWishlist(){
  let el=document.getElementById('wishlistContent');
  el.innerHTML='<div style="padding:20px;text-align:center">Loading wishlist...</div>';
  try{
-   let uid = currentUser.user_id || currentUser.id;
+   let uid = getUid();
    let res=await fetch(`${API_BASE}/wishlist/get?user_id=${uid}`);
    let wish=await res.json();
-   if(!Array.isArray(wish)) wish=[];
-   if(wish.length===0){el.innerHTML=`<div class="empty-box"><h3>❤️ Your wishlist is empty</h3><p>Cross-device wishlist</p><button class="btn btn-blue" style="margin-top:12px;width:auto;padding:0 20px" onclick="location.href='index.html'">Explore Products</button></div>`;return;}
-   let html=`<div style="padding:12px">`;
+   if(wish.length===0){el.innerHTML=`<div class="empty-box"><h3>❤️ Your wishlist is empty</h3><p>REAL database wishlist - same on all devices</p><button class="btn btn-blue" style="margin-top:12px;width:auto;padding:0 20px" onclick="location.href='index.html'">Explore Products</button></div>`;return;}
+   let html=`<div style="padding:12px">`; 
    wish.forEach((w,i)=>{
      html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center">
        <img src="${w.image||''}" style="width:50px;height:50px;object-fit:contain;border:1px solid #eee;border-radius:4px">
@@ -295,14 +286,13 @@ async function renderOrders(){
  let el=document.getElementById('ordersContent');
  el.innerHTML='<div style="padding:20px;text-align:center">Loading orders...</div>';
  try{
-   let uid = currentUser.user_id || currentUser.id;
+   let uid = getUid();
    let res=await fetch(`${API_BASE}/orders/get?user_id=${uid}`);
    let orders=await res.json();
-   if(!Array.isArray(orders)) orders=[];
    if(orders.length===0){el.innerHTML=`<div class="empty-box"><h3>📦 Your order list is empty</h3><p>No orders yet. REAL database - same on all devices</p><button class="btn btn-blue" style="margin-top:12px;width:auto;padding:0 20px" onclick="location.href='index.html'">Shop Now</button></div>`;return;}
-   let html=`<div style="padding:12px">`;
-   orders.slice().reverse().forEach(o=>{
-     html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px"><b>Order #${o.order_id||o.id||o._id}</b><p style="font-size:12px;color:#555">Status: ${o.status||'Placed'}</p><p style="font-size:12px">₹${o.amount||o.total||0}</p><p style="font-size:11px;color:#878787">${o.date||o.createdAt||''}</p><div style="margin-top:6px;font-size:11px;color:#333">${(o.items||[]).map(it=>it.name||'').join(', ')}</div></div>`;
+   let html=`<div style="padding:12px">`; 
+   orders.forEach(o=>{
+     html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px"><b>Order #${o.order_id||o.id}</b><p style="font-size:12px;color:#555">Status: ${o.status}</p><p style="font-size:12px">₹${o.amount||o.total}</p><p style="font-size:11px;color:#878787">${o.date||''}</p></div>`;
    });
    html+=`</div>`; el.innerHTML=html;
  }catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3><p>${e.message}</p></div>`;}
@@ -311,10 +301,9 @@ async function renderAddress(){
  let el=document.getElementById('addressContent');
  el.innerHTML='<div style="padding:20px;text-align:center">Loading addresses...</div>';
  try{
-   let uid = currentUser.user_id || currentUser.id;
+   let uid = getUid();
    let res=await fetch(`${API_BASE}/address/get?user_id=${uid}`);
    let addr=await res.json();
-   if(!Array.isArray(addr)) addr=[];
    if(addr.length===0){el.innerHTML=`<div class="empty-box"><h3>🏠 No address available</h3><p>REAL database address - same on all devices</p><div style="margin-top:12px"><input id="newAddrName" class="input" placeholder="Full Name"><input id="newAddrPhone" class="input" placeholder="Phone"><input id="newAddrPin" class="input" placeholder="Pincode"><input id="newAddrFull" class="input" placeholder="Full Address"><button class="btn btn-blue" onclick="addNewAddress()">+ Add Address</button></div></div>`;return;}
    let html=`<div style="padding:12px">`;
    addr.forEach((a,i)=>{
@@ -330,19 +319,18 @@ async function addNewAddress(){
  let pin=document.getElementById('newAddrPin').value.trim();
  let full=document.getElementById('newAddrFull').value.trim();
  if(!fn||!ph||!pin||!full){alert('Fill all');return;}
- let uid = currentUser.user_id || currentUser.id;
- await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id: uid, email:currentUser.email,full_name:fn,phone:ph,pincode:pin,full_address:full})});
+ let uid = getUid();
+ await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid, email:currentUser.email,full_name:fn,phone:ph,pincode:pin,full_address:full})});
  alert('Address saved! Cross-device ready'); renderAddress();
 }
 async function updateCountsReal(){
  try{
-   let uid = currentUser.user_id || currentUser.id;
+   let uid = getUid();
    let [cr,wr]=await Promise.all([
      fetch(`${API_BASE}/cart/get?user_id=${uid}`),
      fetch(`${API_BASE}/wishlist/get?user_id=${uid}`)
    ]);
    let c=await cr.json(); let w=await wr.json();
-   if(!Array.isArray(c)) c=[]; if(!Array.isArray(w)) w=[];
    document.getElementById('cartCount').innerText=c.reduce((s,i)=>s+(i.qty||1),0);
    document.getElementById('pCartCount').innerText=c.reduce((s,i)=>s+(i.qty||1),0);
    document.getElementById('pWishCount').innerText=w.length;
@@ -350,7 +338,9 @@ async function updateCountsReal(){
 }
 
 async function showLoggedInProfile(){
- let u=getUserWithId(); if(!u) return; currentUser=u;
+ let u=JSON.parse(localStorage.getItem('rekavo_user')||'null'); if(!u) return; 
+ u.user_id = u.user_id || u.id;
+ currentUser=u;
  document.getElementById('overlay').classList.add('hidden');
  document.getElementById('mainBlurBg').style.display='none';
  document.getElementById('profileSection').classList.remove('hidden');
@@ -362,8 +352,8 @@ async function showLoggedInProfile(){
 }
 function logout(){localStorage.removeItem('rekavo_user');location.reload();}
 (function(){
- let u=getUserWithId(); if(u){currentUser=u; showLoggedInProfile();} else {
-   let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]'); document.getElementById('cartCount').innerText=cart.reduce((s,i)=>s+(i.qty||1),0);
+ let u=localStorage.getItem('rekavo_user'); if(u){currentUser=JSON.parse(u); currentUser.user_id = currentUser.user_id || currentUser.id; showLoggedInProfile();} else {
+   let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]'); document.getElementById('cartCount').innerText=cart.length;
  }
 })();
 </script>
