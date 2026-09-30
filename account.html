@@ -75,20 +75,20 @@ body{background:#f1f3f6;padding-bottom:70px}
 </div>
 
 <div id="page-cart" class="page-section hidden">
-  <div class="page-header"><span onclick="closePage('cart')" style="font-size:22px;cursor:pointer">←</span><b>My Cart</b></div>
-  <div id="cartContent"></div>
+  <div class="page-header"><span onclick="closePage('cart')" style="font-size:22px;cursor:pointer">←</span><b>My Cart - REAL DATABASE</b></div>
+  <div id="cartContent"><div style="padding:20px;text-align:center">Loading...</div></div>
 </div>
 <div id="page-orders" class="page-section hidden">
   <div class="page-header"><span onclick="closePage('orders')" style="font-size:22px;cursor:pointer">←</span><b>My Orders</b></div>
-  <div id="ordersContent"></div>
+  <div id="ordersContent"><div style="padding:20px;text-align:center">Loading...</div></div>
 </div>
 <div id="page-wishlist" class="page-section hidden">
   <div class="page-header"><span onclick="closePage('wishlist')" style="font-size:22px;cursor:pointer">←</span><b>My Wishlist</b></div>
-  <div id="wishlistContent"></div>
+  <div id="wishlistContent"><div style="padding:20px;text-align:center">Loading...</div></div>
 </div>
 <div id="page-address" class="page-section hidden">
   <div class="page-header"><span onclick="closePage('address')" style="font-size:22px;cursor:pointer">←</span><b>My Addresses</b></div>
-  <div id="addressContent"></div>
+  <div id="addressContent"><div style="padding:20px;text-align:center">Loading...</div></div>
 </div>
 <div id="page-help" class="page-section hidden">
   <div class="page-header"><span onclick="closePage('help')" style="font-size:22px;cursor:pointer">←</span><b>Help Center</b></div>
@@ -170,11 +170,6 @@ body{background:#f1f3f6;padding-bottom:70px}
 const API_BASE = "https://rekavo-backend.vercel.app";
 let regData={}, forgotKey="", forgotOtpVerified=false, currentUser=null;
 
-function getCartKey(){ return currentUser ? `rekavo_cart_${currentUser.email}` : 'rekavo_cart'; }
-function getWishKey(){ return currentUser ? `rekavo_wish_${currentUser.email}` : 'rekavo_wish'; }
-function getOrderKey(){ return currentUser ? `rekavo_orders_${currentUser.email}` : 'rekavo_orders'; }
-function getAddrKey(){ return currentUser ? `rekavo_addr_${currentUser.email}` : 'rekavo_addr'; }
-
 function switchTab(t){document.getElementById('loginForm').classList.toggle('hidden',t!=='login');document.getElementById('registerForm').classList.toggle('hidden',t!=='register');document.getElementById('forgotForm').classList.toggle('hidden',t!=='forgot');}
 function showErr(id,msg){let el=document.getElementById(id);el.innerText=msg;el.classList.add('show');}
 function showSuccess(id,msg){let el=document.getElementById(id);el.innerText=msg;el.classList.add('show');}
@@ -234,38 +229,101 @@ function openPage(type){
 }
 function closePage(type){document.getElementById(`page-${type}`).classList.add('hidden');}
 
-function renderCart(){
- let cart=JSON.parse(localStorage.getItem(getCartKey())||'[]');
+// ===== REAL CROSS-DEVICE - DATABASE SE =====
+async function renderCart(){
  let el=document.getElementById('cartContent');
- if(cart.length===0){el.innerHTML=`<div class="empty-box"><h3>🛒 Your cart is empty</h3><p>Add products to see them here</p><button class="btn btn-blue" style="margin-top:12px;width:auto;padding:0 20px" onclick="location.href='index.html'">Continue Shopping</button></div>`;return;}
- let html=`<div style="padding:12px">`; cart.forEach((c,i)=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between"><span>${c.name||'Product '+(i+1)}</span><span>₹${c.price||0}</span></div>`}); html+=`</div>`; el.innerHTML=html;
+ el.innerHTML='<div style="padding:20px;text-align:center">Loading real cart...</div>';
+ try{
+   let res=await fetch(`${API_BASE}/cart/get?email=${encodeURIComponent(currentUser.email)}`);
+   let cart=await res.json();
+   if(cart.length===0){el.innerHTML=`<div class="empty-box"><h3>🛒 Your cart is empty</h3><p>This is REAL database cart - same on all devices</p><button class="btn btn-blue" style="margin-top:12px;width:auto;padding:0 20px" onclick="location.href='index.html'">Continue Shopping</button></div>`;return;}
+   let html=`<div style="padding:12px">`;
+   cart.forEach((c,i)=>{
+     html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center">
+       <img src="${c.image||''}" style="width:50px;height:50px;object-fit:contain;border:1px solid #eee;border-radius:4px">
+       <div style="flex:1"><b style="font-size:13px">${c.name}</b><p style="font-size:12px;color:#555">Qty: ${c.qty} • ₹${c.price}</p></div>
+       <button onclick="removeRealCart('${c.product_id}')" style="color:#ff3b3b;border:1px solid #ff3b3b;background:#fff;padding:6px 10px;border-radius:6px;font-size:11px;font-weight:700">REMOVE</button>
+     </div>`;
+   });
+   html+=`</div><div style="padding:0 12px"><button class="btn btn-blue" onclick="location.href='cart.html'">Go to Cart Page</button></div>`;
+   el.innerHTML=html;
+ }catch(e){el.innerHTML=`<div class="empty-box"><h3>Error loading cart</h3><p>${e.message}</p></div>`;}
 }
-function renderOrders(){
- let orders=JSON.parse(localStorage.getItem(getOrderKey())||'[]');
- let el=document.getElementById('ordersContent');
- if(orders.length===0){el.innerHTML=`<div class="empty-box"><h3>📦 Your order list is empty</h3><p>No orders yet. Your pending, success & cancelled orders will appear here</p><button class="btn btn-blue" style="margin-top:12px;width:auto;padding:0 20px" onclick="location.href='index.html'">Shop Now</button></div>`;return;}
- let html=`<div style="padding:12px">`; orders.forEach(o=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px"><b>Order #${o.id}</b><p style="font-size:12px;color:#555">Status: ${o.status}</p><p style="font-size:12px">₹${o.total}</p></div>`}); html+=`</div>`; el.innerHTML=html;
+async function removeRealCart(pid){
+ if(!confirm('Remove?'))return;
+ await fetch(`${API_BASE}/cart/remove`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:currentUser.email,product_id:pid})});
+ renderCart(); updateCountsReal();
 }
-function renderWishlist(){
- let wish=JSON.parse(localStorage.getItem(getWishKey())||'[]');
+async function renderWishlist(){
  let el=document.getElementById('wishlistContent');
- if(wish.length===0){el.innerHTML=`<div class="empty-box"><h3>❤️ Your wishlist is empty</h3><p>Save your favourite products here</p><button class="btn btn-blue" style="margin-top:12px;width:auto;padding:0 20px" onclick="location.href='index.html'">Explore Products</button></div>`;return;}
- let html=`<div style="padding:12px">`; wish.forEach((w,i)=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px">${w.name||'Product '+(i+1)}</div>`}); html+=`</div>`; el.innerHTML=html;
+ el.innerHTML='<div style="padding:20px;text-align:center">Loading wishlist...</div>';
+ try{
+   let res=await fetch(`${API_BASE}/wishlist/get?email=${encodeURIComponent(currentUser.email)}`);
+   let wish=await res.json();
+   if(wish.length===0){el.innerHTML=`<div class="empty-box"><h3>❤️ Your wishlist is empty</h3><p>REAL database wishlist - same on all devices</p><button class="btn btn-blue" style="margin-top:12px;width:auto;padding:0 20px" onclick="location.href='index.html'">Explore Products</button></div>`;return;}
+   let html=`<div style="padding:12px">`; 
+   wish.forEach((w,i)=>{
+     html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center">
+       <img src="${w.image||''}" style="width:50px;height:50px;object-fit:contain;border:1px solid #eee;border-radius:4px">
+       <div style="flex:1"><b style="font-size:13px">${w.name}</b><p style="font-size:12px">₹${w.price}</p></div>
+     </div>`;
+   });
+   html+=`</div>`; el.innerHTML=html;
+ }catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3><p>${e.message}</p></div>`;}
 }
-function renderAddress(){
- let addr=JSON.parse(localStorage.getItem(getAddrKey())||'[]');
+async function renderOrders(){
+ let el=document.getElementById('ordersContent');
+ el.innerHTML='<div style="padding:20px;text-align:center">Loading orders...</div>';
+ try{
+   let res=await fetch(`${API_BASE}/orders/get?email=${encodeURIComponent(currentUser.email)}`);
+   let orders=await res.json();
+   if(orders.length===0){el.innerHTML=`<div class="empty-box"><h3>📦 Your order list is empty</h3><p>No orders yet. REAL database - same on all devices</p><button class="btn btn-blue" style="margin-top:12px;width:auto;padding:0 20px" onclick="location.href='index.html'">Shop Now</button></div>`;return;}
+   let html=`<div style="padding:12px">`; 
+   orders.forEach(o=>{
+     html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px"><b>Order #${o.order_id||o.id}</b><p style="font-size:12px;color:#555">Status: ${o.status}</p><p style="font-size:12px">₹${o.amount||o.total}</p><p style="font-size:11px;color:#878787">${o.date||''}</p></div>`;
+   });
+   html+=`</div>`; el.innerHTML=html;
+ }catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3><p>${e.message}</p></div>`;}
+}
+async function renderAddress(){
  let el=document.getElementById('addressContent');
- if(addr.length===0){el.innerHTML=`<div class="empty-box"><h3>🏠 No address available</h3><p>Your saved addresses will appear here</p><button class="btn btn-blue" style="margin-top:12px;width:auto;padding:0 20px" onclick="alert('Address add feature coming')">+ Add Address</button></div>`;return;}
- let html=`<div style="padding:12px">`; addr.forEach((a,i)=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px"><b>${a.name||'Address '+(i+1)}</b><p style="font-size:12px;color:#555">${a.full||''}<br>${a.phone||''}</p></div>`}); html+=`</div>`; el.innerHTML=html;
+ el.innerHTML='<div style="padding:20px;text-align:center">Loading addresses...</div>';
+ try{
+   let res=await fetch(`${API_BASE}/address/get?email=${encodeURIComponent(currentUser.email)}`);
+   let addr=await res.json();
+   if(addr.length===0){el.innerHTML=`<div class="empty-box"><h3>🏠 No address available</h3><p>REAL database address - same on all devices</p><div style="margin-top:12px"><input id="newAddrName" class="input" placeholder="Full Name"><input id="newAddrPhone" class="input" placeholder="Phone"><input id="newAddrPin" class="input" placeholder="Pincode"><input id="newAddrFull" class="input" placeholder="Full Address"><button class="btn btn-blue" onclick="addNewAddress()">+ Add Address</button></div></div>`;return;}
+   let html=`<div style="padding:12px">`;
+   addr.forEach((a,i)=>{
+     html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px"><b>${a.full_name}</b><p style="font-size:12px;color:#555">${a.full_address}<br>${a.pincode} - ${a.phone}</p></div>`;
+   });
+   html+=`<div style="margin-top:8px"><input id="newAddrName" class="input" placeholder="Full Name"><input id="newAddrPhone" class="input" placeholder="Phone"><input id="newAddrPin" class="input" placeholder="Pincode"><input id="newAddrFull" class="input" placeholder="Full Address"><button class="btn btn-blue" onclick="addNewAddress()">+ Add Another Address</button></div></div>`;
+   el.innerHTML=html;
+ }catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3><p>${e.message}</p></div>`;}
+}
+async function addNewAddress(){
+ let fn=document.getElementById('newAddrName').value.trim();
+ let ph=document.getElementById('newAddrPhone').value.trim();
+ let pin=document.getElementById('newAddrPin').value.trim();
+ let full=document.getElementById('newAddrFull').value.trim();
+ if(!fn||!ph||!pin||!full){alert('Fill all');return;}
+ await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:currentUser.email,full_name:fn,phone:ph,pincode:pin,full_address:full})});
+ alert('Address saved! Cross-device ready'); renderAddress();
+}
+async function updateCountsReal(){
+ try{
+   let [cr,wr]=await Promise.all([
+     fetch(`${API_BASE}/cart/get?email=${encodeURIComponent(currentUser.email)}`),
+     fetch(`${API_BASE}/wishlist/get?email=${encodeURIComponent(currentUser.email)}`)
+   ]);
+   let c=await cr.json(); let w=await wr.json();
+   document.getElementById('cartCount').innerText=c.reduce((s,i)=>s+(i.qty||1),0);
+   document.getElementById('pCartCount').innerText=c.reduce((s,i)=>s+(i.qty||1),0);
+   document.getElementById('pWishCount').innerText=w.length;
+ }catch(e){}
 }
 
-function showLoggedInProfile(){
+async function showLoggedInProfile(){
  let u=JSON.parse(localStorage.getItem('rekavo_user')||'null'); if(!u) return; currentUser=u;
- let cart=JSON.parse(localStorage.getItem(getCartKey())||'[]');
- let wish=JSON.parse(localStorage.getItem(getWishKey())||'[]');
- document.getElementById('cartCount').innerText=cart.length;
- document.getElementById('pCartCount').innerText=cart.length;
- document.getElementById('pWishCount').innerText=wish.length;
  document.getElementById('overlay').classList.add('hidden');
  document.getElementById('mainBlurBg').style.display='none';
  document.getElementById('profileSection').classList.remove('hidden');
@@ -273,6 +331,7 @@ function showLoggedInProfile(){
  document.getElementById('pEmail').innerText=u.email||'';
  document.getElementById('pMobile').innerText=u.mobile?'+91 '+u.mobile:'';
  document.getElementById('pIcon').innerText=(u.name||'R').charAt(0).toUpperCase();
+ await updateCountsReal();
 }
 function logout(){localStorage.removeItem('rekavo_user');location.reload();}
 (function(){
