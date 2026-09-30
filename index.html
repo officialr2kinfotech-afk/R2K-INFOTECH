@@ -140,27 +140,13 @@ function getUser(){try{return JSON.parse(localStorage.getItem('rekavo_user'))}ca
 function showToast(msg){let t=document.getElementById('toast');t.innerText=msg||"✅ Your item has been added to your cart";t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000)}
 function updateCartCount(){
  try{
-  let localCart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
-  let localCount=localCart.reduce((s,i)=>s+(i.qty||1),0);
-  let el=document.getElementById('cartCount');
-  if(el) el.innerText = localCount;
+  let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+  let count = cart.reduce((s,i)=>s+(i.qty||1),0);
+  let el1 = document.getElementById('cartCount');
+  let el2 = document.getElementById('bCount');
+  if(el1) el1.innerText = count;
+  if(el2) el2.innerText = count;
  }catch(e){}
- let user=getUser();
- if(user && user.user_id){
-   fetch(`${API_BASE}/api/cart/get?user_id=${encodeURIComponent(user.user_id)}`)
-.then(r=>r.json()).then(data=>{
-     if(Array.isArray(data) && data.length>0){
-       let serverCount=data.reduce((s,i)=>s+(i.qty||1),0);
-       let localCart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
-       let localCount=localCart.reduce((s,i)=>s+(i.qty||1),0);
-       if(serverCount >= localCount){
-         let el=document.getElementById('cartCount');
-         if(el) el.innerText=serverCount;
-         localStorage.setItem('rekavo_cart',JSON.stringify(data));
-       }
-     }
-   }).catch(()=>{});
- }
 }
 function addToCartDirect(product){
  let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
