@@ -45,7 +45,6 @@ body{background:#fff;padding-bottom:90px}
 .success-msg.show{display:block}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:999;box-shadow:0 -2px 8px rgba(0,0,0,.06)}
 .bottom-nav a{text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;white-space:nowrap;text-align:center}
-.bottom-nav a span{white-space:nowrap}
 </style>
 </head>
 <body>
@@ -116,6 +115,7 @@ body{background:#fff;padding-bottom:90px}
 </div>
 
 <script>
+const API_BASE="https://rekavo-backend.vercel.app";
 const categoryData={
 powerbank:[
 {name:"Power Bank 10000mAh",price:499,originalPrice:1299,coupon:"REKAVOPB10K40PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400",desc:"High capacity 10000mAh power bank with 22.5W fast charging.",spec:"Capacity: 10000mAh\nInput: Type-C 18W\nOutput: 22.5W\nWarranty: 6 Months"},
@@ -140,6 +140,7 @@ charger:[
 ]
 };
 
+function getUser(){try{let u=JSON.parse(localStorage.getItem('rekavo_user')); if(!u) return null; u.user_id = u.user_id || u.id || u._id; return u;}catch(e){return null}}
 function getDiscount(code){let m=code.toUpperCase().match(/(\d{1,3})\s*PERCENT/);return m?parseInt(m[1]):0}
 function getAllProducts(){let all=[];for(let c in categoryData){categoryData[c].forEach((p,i)=>{all.push({...p,cat:c,idx:i})})}return all}
 function liveSearch(q){let box=document.getElementById('searchResults');let all=getAllProducts();let query=q.trim().toLowerCase();let filtered=query===""?all:all.filter(p=>p.name.toLowerCase().includes(query)||p.cat.includes(query));box.innerHTML=filtered.map(p=>`<div class="sr-item" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'"><img src="${p.img}" style="width:40px;height:40px;object-fit:contain"><div><div style="font-size:13px;font-weight:600">${p.name}</div><div style="font-size:12px;color:#388e3c">₹${p.price}</div></div></div>`).join('');box.classList.add('show')}
@@ -183,8 +184,20 @@ function applyCoupon(){
     document.getElementById('couponErr').classList.add('show');
   }
 }
-function addToCart(){
-  cart.push({name:product.name,price:finalPrice,img:product.img,desc:product.desc,spec:product.spec,original:product.originalPrice,mrp:product.originalPrice,coupon:product.coupon});
+async function addToCart(){
+  let user=getUser();
+  let pid = `${cat}_${idx}`;
+  let itemData = {product_id: pid, name:product.name, price:finalPrice, qty:1, image:product.img};
+  if(user && user.user_id){
+    try{
+      await fetch(`${API_BASE}/cart/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id: user.user_id, email: user.email,...itemData})});
+      document.getElementById('cartMsg').innerText=product.name+" added to REAL cart ₹"+finalPrice+" ✓ (Cross-device)";
+      document.getElementById('cartMsg').classList.add('show');
+      setTimeout(()=>location.href='cart.html',600);
+      return;
+    }catch(e){}
+  }
+  cart.push({product_id: pid, name:product.name,price:finalPrice,img:product.img,desc:product.desc,spec:product.spec,original:product.originalPrice,mrp:product.originalPrice,coupon:product.coupon});
   localStorage.setItem('rekavo_cart',JSON.stringify(cart));
   document.getElementById('cartCount').innerText=cart.length;
   document.getElementById('cartMsg').innerText=product.name+" added to cart ₹"+finalPrice+" ✓";
@@ -192,12 +205,13 @@ function addToCart(){
   setTimeout(()=>location.href='cart.html',600);
 }
 function buyNow(){
-  let single=[{name:product.name,price:finalPrice,img:product.img,desc:product.desc,spec:product.spec,original:product.originalPrice,mrp:product.originalPrice,coupon:product.coupon}];
-  localStorage.setItem('rekavo_cart',JSON.stringify(single));
-  location.href='cart.html';
+  let pid = `${cat}_${idx}`;
+  let single={product_id: pid, name:product.name,price:finalPrice,img:product.img,image:product.img,desc:product.desc,spec:product.spec,original:product.originalPrice,mrp:product.originalPrice,coupon:product.coupon,qty:1};
+  localStorage.setItem('rekavo_buy_now',JSON.stringify(single));
+  localStorage.setItem('rekavo_cart',JSON.stringify([single]));
+  location.href='checkout.html';
 }
 
-// ===== REVIEW SYSTEM WITH COUNT =====
 let currentStar=0; let uploadedPhoto="";
 let reviewKey = 'rekavo_reviews_'+cat+'_'+idx;
 let reviews = JSON.parse(localStorage.getItem(reviewKey) || '[]');
@@ -264,22 +278,18 @@ function submitReview(){
     document.getElementById('err-review').classList.add('show');
     return;
   }
-
   let newRev = {star:currentStar, text:txt, photo:uploadedPhoto, name:'You'};
   reviews.push(newRev);
   localStorage.setItem(reviewKey, JSON.stringify(reviews));
-
   document.getElementById('reviewList').innerHTML="";
   reviews.slice().reverse().forEach(r=>{
     let div=document.createElement('div'); div.className='review-card';
     div.innerHTML=`<b>${r.name} • </b><span style="background:#388e3c;color:#fff;padding:2px 6px;border-radius:3px;font-size:11px">${r.star} ★</span><p style="font-size:12px;margin-top:6px">${r.text}</p>${r.photo?`<img src="${r.photo}">`:''}`;
     document.getElementById('reviewList').appendChild(div);
   });
-
   document.getElementById('reviewMsg').innerText="Review submitted! Total: "+reviews.length+" ✓";
   document.getElementById('reviewMsg').classList.add('show');
   updateRatingUI();
-
   document.getElementById('reviewText').value="";
   currentStar=0;
   document.querySelectorAll('#starBox.star').forEach(s=>s.classList.remove('active'));
@@ -287,8 +297,6 @@ function submitReview(){
   document.getElementById('reviewPhoto').value="";
   uploadedPhoto="";
 }
-
-// Initial load
 loadReviews();
 updateRatingUI();
 </script>
