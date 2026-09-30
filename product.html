@@ -188,21 +188,24 @@ async function addToCart(){
   let user=getUser();
   let pid = `${cat}_${idx}`;
   let itemData = {product_id: pid, name:product.name, price:finalPrice, qty:1, image:product.img};
+  
   if(user && user.user_id){
     try{
       await fetch(`${API_BASE}/cart/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id: user.user_id, email: user.email,...itemData})});
-      document.getElementById('cartMsg').innerText=product.name+" added to REAL cart ₹"+finalPrice+" ✓ (Cross-device)";
-      document.getElementById('cartMsg').classList.add('show');
-      setTimeout(()=>location.href='cart.html',600);
-      return;
     }catch(e){}
   }
-  cart.push({product_id: pid, name:product.name,price:finalPrice,img:product.img,desc:product.desc,spec:product.spec,original:product.originalPrice,mrp:product.originalPrice,coupon:product.coupon});
+
+  let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+  cart.push({product_id: pid, name:product.name,price:finalPrice,img:product.img,desc:product.desc,spec:product.spec,original:product.originalPrice,mrp:product.originalPrice,coupon:product.coupon,qty:1});
   localStorage.setItem('rekavo_cart',JSON.stringify(cart));
   document.getElementById('cartCount').innerText=cart.length;
+
   document.getElementById('cartMsg').innerText=product.name+" added to cart ₹"+finalPrice+" ✓";
   document.getElementById('cartMsg').classList.add('show');
-  setTimeout(()=>location.href='cart.html',600);
+  
+  setTimeout(()=>{
+    document.getElementById('cartMsg').classList.remove('show');
+  },2000);
 }
 function buyNow(){
   let pid = `${cat}_${idx}`;
