@@ -36,8 +36,13 @@ body{background:#f1f3f6;padding-bottom:70px}
 .deals{margin:8px;background:#fff;border-radius:4px;padding:12px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
 .deals h2{margin-bottom:10px;font-size:14px;font-weight:800}
 .products{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.card{border:1px solid #f0f0f0;border-radius:6px;padding:8px;text-align:center;cursor:pointer;background:#fff}
-.card img{height:90px;object-fit:contain;width:100%}
+.card{border:1px solid #f0f0f0;border-radius:6px;padding:8px;text-align:center;background:#fff;position:relative}
+.card img{height:90px;object-fit:contain;width:100%;cursor:pointer}
+.coupon-tag{position:absolute;top:6px;left:6px;background:#26a541;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px}
+.price-box{text-align:left;margin-top:6px}
+.btn-row{display:flex;gap:6px;margin-top:8px}
+.btn-add{flex:1;background:#fff;border:1px solid #2874f0;color:#2874f0;padding:7px 0;border-radius:4px;font-size:11px;font-weight:800;cursor:pointer}
+.btn-buy{flex:1;background:#fb641b;border:1px solid #fb641b;color:#fff;padding:7px 0;border-radius:4px;font-size:11px;font-weight:800;cursor:pointer}
 .modal{display:none;position:fixed;z-index:100;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:12px}
 .modal.show{display:flex}
 .modal-content{background:#fff;width:100%;max-width:900px;border-radius:6px;position:relative;max-height:90vh;overflow-y:auto}
@@ -58,6 +63,9 @@ body{background:#f1f3f6;padding-bottom:70px}
 .bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
 .bottom-nav a.active{color:#2874f0}
 .bottom-nav span.icon{font-size:20px}
+.toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:25px;font-size:12px;font-weight:600;z-index:10000;display:none;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.toast.show{display:block;animation:pop.3s ease}
+@keyframes pop{0%{transform:translateX(-50%) translateY(20px);opacity:0}100%{transform:translateX(-50%) translateY(0);opacity:1}}
 @media(min-width:769px){.products{grid-template-columns:repeat(5,1fr)}}
 </style>
 </head>
@@ -66,64 +74,62 @@ body{background:#f1f3f6;padding-bottom:70px}
 <div class="search-wrapper"><div class="search-box"><input id="mainSearch" placeholder="Search for products, brands and more" onfocus="handleSearchFocus()" oninput="debouncedLiveSearch(this.value)" autocomplete="off"><button onclick="liveSearch(document.getElementById('mainSearch').value)">⌕</button><div id="searchResults" class="search-results"></div></div></div>
 <div class="banner"><div class="rekavo-poster"><div class="poster-tag">REKAVO • by R2K INFOTECH</div><div class="poster-title">RE<span>KAVO</span></div><div class="poster-sub">MOBILE ACCESSORIES & ELECTRONICS</div><div class="poster-desc">Mobile, Charger, Cover, Earbuds, Headphone, Speaker, Power Bank, Smart Watch - Everything at wholesale price.</div><div class="poster-badge-row"><div>★ PREMIUM</div><div>⚡ FAST DELIVERY</div><div>✓ VERIFIED</div></div></div></div>
 <div class="trust"><div>✅ 100% Genuine</div><div>💳 Prepaid Only</div><div>↩️ 7 Day Return</div><div>🔒 Secure Payment</div></div>
+
 <div class="deals"><h2>Shop By Category</h2><div class="products"><div class="card" onclick="location.href='category.html?cat=powerbank'"><img src="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300"><b>Power Bank</b></div><div class="card" onclick="location.href='category.html?cat=neckband'"><img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300"><b>Neckband</b></div><div class="card" onclick="location.href='category.html?cat=earbuds'"><img src="https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=300"><b>Earbuds</b></div><div class="card" onclick="location.href='category.html?cat=cable'"><img src="https://images.unsplash.com/photo-1625842268584-8f3296236761?w=300"><b>Cable</b></div><div class="card" onclick="location.href='category.html?cat=charger'"><img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300"><b>Charger</b></div></div></div>
 
+<div class="deals"><h2>🔥 Hot Deals For You - Buy Now + Coupon</h2><div class="products" id="allProductsGrid"></div></div>
+
+<div id="toast" class="toast">✅ Your item has been added to your cart</div>
+
 <div id="loginModal" class="modal"><div class="modal-content" style="max-width:380px;padding:16px"><span class="close" onclick="document.getElementById('loginModal').classList.remove('show')">&times;</span><h3>Please Login</h3><p style="font-size:11px;color:#878787;margin:4px 0 10px">Login to keep your orders safe</p><div class="login-tab"><button id="tabLogin" class="active" onclick="switchAuth('login')">Login</button><button id="tabSignup" onclick="switchAuth('signup')">Register</button></div>
-
 <div id="loginForm"><input id="loginMobile" type="text" placeholder="Email / Mobile Number*" class="checkout-input"><p id="err-loginMobile" class="error-msg"></p><input id="loginPass" type="password" placeholder="Password*" class="checkout-input"><p id="err-loginPass" class="error-msg"></p><p id="success-login" class="success-msg"></p><button onclick="doLogin()" style="width:100%;padding:11px;background:#fb641b;color:#fff;border:none;border-radius:6px;font-weight:700;margin-top:10px;cursor:pointer">Login</button><div class="link-row"><span onclick="switchAuth('forgot')">Forgot Password?</span><span onclick="switchAuth('signup')">New User? Register</span></div></div>
-
 <div id="signupForm" style="display:none">
 <div id="regStep1">
 <input id="signupName" type="text" placeholder="Full Name*" class="checkout-input"><p id="err-signupName" class="error-msg"></p>
 <input id="signupMobile" type="tel" placeholder="Mobile Number* (10 digits)" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)" class="checkout-input"><p id="err-signupMobile" class="error-msg"></p>
-<input id="signupEmail" type="email" placeholder="Email Address* (e.g. name@gmail.com)" class="checkout-input"><p id="err-signupEmail" class="error-msg"></p><p id="success-signup1" class="success-msg"></p>
-<button onclick="sendRegOtp()" style="width:100%;padding:11px;background:#2874f0;color:#fff;border:none;border-radius:6px;font-weight:700;margin-top:8px;cursor:pointer">Send OTP</button>
+<input id="signupEmail" type="email" placeholder="Email Address*" class="checkout-input"><p id="err-signupEmail" class="error-msg"></p><p id="success-signup1" class="success-msg"></p>
+<button id="btnSendReg" onclick="sendRegOtp()" style="width:100%;padding:11px;background:#2874f0;color:#fff;border:none;border-radius:6px;font-weight:700;margin-top:8px;cursor:pointer">Send OTP</button>
 <p style="text-align:center;margin-top:10px;font-size:11px"><span style="color:#2874f0;cursor:pointer;font-weight:600" onclick="switchAuth('login')">Already have an account? Login</span></p>
 </div>
-
 <div id="regStep2" style="display:none">
 <p id="otpInfoText" class="success-msg show" style="font-size:12px"></p>
 <input id="regOtp" type="tel" placeholder="Enter 6-digit OTP" class="checkout-input" maxlength="6"><p id="err-regOtp" class="error-msg"></p>
-<button onclick="verifyRegOtp()" style="width:100%;padding:11px;background:#ff9f00;color:#fff;border:none;border-radius:6px;font-weight:700;margin-top:8px;cursor:pointer">Validate OTP</button>
+<button id="btnVerifyReg" onclick="verifyRegOtp()" style="width:100%;padding:11px;background:#ff9f00;color:#fff;border:none;border-radius:6px;font-weight:700;margin-top:8px;cursor:pointer">Validate OTP</button>
 <p style="font-size:11px;margin-top:10px;text-align:center;color:#2874f0;cursor:pointer;font-weight:600" onclick="sendRegOtp()">Resend OTP</p>
 </div>
-
 <div id="regStep3" style="display:none">
 <p class="success-msg show">OTP Verified Successfully! Create your password</p>
-<input id="signupPass" type="password" placeholder="Create Password* (min 6 characters)" class="checkout-input"><p id="err-signupPass" class="error-msg"></p>
+<input id="signupPass" type="password" placeholder="Create Password*" class="checkout-input"><p id="err-signupPass" class="error-msg"></p>
 <input id="signupPass2" type="password" placeholder="Confirm Password*" class="checkout-input"><p id="err-signupPass2" class="error-msg"></p><p id="success-signupFinal" class="success-msg"></p>
-<button onclick="doSignupFinal()" style="width:100%;padding:11px;background:#26a541;color:#fff;border:none;border-radius:6px;font-weight:700;margin-top:8px;cursor:pointer">Register Now</button>
+<button id="btnDoSignup" onclick="doSignupFinal()" style="width:100%;padding:11px;background:#26a541;color:#fff;border:none;border-radius:6px;font-weight:700;margin-top:8px;cursor:pointer">Register Now</button>
 </div>
 </div>
-
 <div id="forgotForm" style="display:none">
 <h3 style="font-size:14px;margin-bottom:4px">Reset Password</h3>
 <p style="font-size:11px;color:#878787;margin-bottom:8px">Enter your registered email to receive OTP</p>
-<input id="forgotEmail" type="email" placeholder="Enter Registered Email Address*" class="checkout-input"><p id="err-forgotEmail" class="error-msg"></p><p id="success-forgot1" class="success-msg"></p>
+<input id="forgotEmail" type="email" placeholder="Enter Registered Email*" class="checkout-input"><p id="err-forgotEmail" class="error-msg"></p><p id="success-forgot1" class="success-msg"></p>
 <button id="sendOtpBtn" onclick="sendForgotOtp()" style="width:100%;padding:11px;background:#2874f0;color:#fff;border:none;border-radius:6px;font-weight:700;margin-top:8px;cursor:pointer">Send OTP</button>
-
 <div id="forgotOtpBox" style="display:none;margin-top:12px;border:1px dashed #2874f0;padding:12px;border-radius:8px;background:#f5f8ff">
 <p id="forgotOtpInfo" class="success-msg show" style="margin-bottom:8px"></p>
 <input id="forgotOtp" type="tel" placeholder="Enter 6-digit OTP" class="checkout-input" maxlength="6"><p id="err-forgotOtp" class="error-msg"></p>
-<button onclick="verifyForgotOtp()" style="width:100%;padding:11px;background:#ff9f00;color:#fff;border:none;border-radius:6px;font-weight:700;margin-top:8px;cursor:pointer">Validate OTP</button>
+<button id="btnVerifyForgot" onclick="verifyForgotOtp()" style="width:100%;padding:11px;background:#ff9f00;color:#fff;border:none;border-radius:6px;font-weight:700;margin-top:8px;cursor:pointer">Validate OTP</button>
 </div>
-
 <div id="newPassBox" style="display:none;margin-top:12px">
 <p id="forgotValidatedMsg" class="success-msg show">OTP Validated Successfully! ✅</p>
-<input id="forgotPass" type="password" placeholder="New Password* (min 6 characters)" class="checkout-input"><p id="err-forgotPass" class="error-msg"></p>
+<input id="forgotPass" type="password" placeholder="New Password*" class="checkout-input"><p id="err-forgotPass" class="error-msg"></p>
 <input id="forgotPass2" type="password" placeholder="Confirm New Password*" class="checkout-input"><p id="err-forgotPass2" class="error-msg"></p><p id="success-forgotFinal" class="success-msg"></p>
-<button onclick="saveNewPassword()" style="width:100%;padding:11px;background:#26a541;color:#fff;border:none;border-radius:6px;font-weight:700;margin-top:8px;cursor:pointer">Save Password</button>
+<button id="btnSavePass" onclick="saveNewPassword()" style="width:100%;padding:11px;background:#26a541;color:#fff;border:none;border-radius:6px;font-weight:700;margin-top:8px;cursor:pointer">Save Password</button>
 </div>
 <p style="text-align:center;margin-top:12px;font-size:11px"><span style="color:#2874f0;cursor:pointer;font-weight:600" onclick="switchAuth('login')">Back to Login</span></p>
 </div>
-
 </div></div>
 
 <div class="bottom-nav"><a href="index.html" class="active"><span class="icon">🏠</span><span>Home</span></a><a href="account.html"><span class="icon">👤</span><span>Account</span></a><a href="cart.html"><span class="icon">🛒</span><span>Cart (<span id="cartCount">0</span>)</span></a></div>
 
 <script>
+const API_BASE="https://rekavo-backend.vercel.app";
 const categoryData={powerbank:[{name:"Power Bank 10000mAh",price:499,originalPrice:1299,img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300"},{name:"Power Bank 20000mAh",price:799,originalPrice:1999,img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300"},{name:"Power Bank 30000mAh",price:1099,originalPrice:2999,img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300"}],neckband:[{name:"Neckband Boat 100",price:199,originalPrice:999,img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300"},{name:"Neckband 500 Premium",price:549,originalPrice:1999,img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300"}],earbuds:[{name:"Earbuds TWS 400",price:449,originalPrice:1499,img:"https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=300"},{name:"Earbuds Pro Sound",price:999,originalPrice:4999,img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=300"}],cable:[{name:"Cable Type-C 100",price:99,originalPrice:299,img:"https://images.unsplash.com/photo-1625842268584-8f3296236761?w=300"},{name:"Cable Fast 3A",price:199,originalPrice:499,img:"https://images.unsplash.com/photo-1587037542707-1dad5a1cfa9d?w=300"}],charger:[{name:"Charger 20W Fast",price:299,originalPrice:999,img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300"},{name:"Charger 65W",price:699,originalPrice:2499,img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300"}]};
-function getAllProducts(){let all=[];for(let c in categoryData){categoryData[c].forEach((p,i)=>{all.push({...p,cat:c,idx:i})})}return all}
+function getAllProducts(){let all=[];for(let c in categoryData){categoryData[c].forEach((p,i)=>{all.push({...p,cat:c,idx:i,product_id:c+'_'+i})})}return all}
 let searchTimer=null;function debouncedLiveSearch(q){clearTimeout(searchTimer);searchTimer=setTimeout(()=>liveSearch(q),250)}
 function handleSearchFocus(){window.scrollTo({top:0,behavior:'smooth'});liveSearch(document.getElementById('mainSearch').value)}
 function liveSearch(q){
@@ -133,8 +139,62 @@ function liveSearch(q){
  let keywordSuggestions=[];if(query.length>=2){const suffixMap={"power bank":["10000mah","20000mah","30000mah","fast charging"],"powerbank":["10000mah","20000mah","30000mah"],"charger":["fast charging","20w","65w"],"cable":["type c","fast charging"],"earbuds":["wireless","pro"],"neckband":["bluetooth"]};for(let key in suffixMap){if(key.includes(query)||query.includes(key)||key.replace(' ','').includes(query)){suffixMap[key].forEach(s=>{keywordSuggestions.push({text:key+" "+s,cat:key})})}}if(keywordSuggestions.length===0&&filteredProducts.length>0){filteredProducts.forEach(p=>{keywordSuggestions.push({text:p.name.toLowerCase(),cat:p.cat})})}}keywordSuggestions=keywordSuggestions.slice(0,4);
  let html="";keywordSuggestions.forEach(k=>{let boldText=k.text.replace(query,`<b>${query}</b>`);html+=`<div class="sr-item" onclick="document.getElementById('mainSearch').value='${k.text}'; liveSearch('${k.text}')"><div class="sr-left"><div class="sr-kw-icon">⌕</div><div class="sr-mid"><span style="font-size:13px">${boldText}</span> <span class="sr-cat">In ${k.cat.charAt(0).toUpperCase()+k.cat.slice(1)}</span></div></div><div class="sr-arrow">↗</div></div>`});filteredProducts.forEach(p=>{html+=`<div class="sr-item" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'"><div class="sr-left"><img src="${p.img}"><div class="sr-mid"><div style="font-size:13px;font-weight:600">${p.name}</div><div style="font-size:12px;color:#388e3c">₹${p.price}</div></div></div><div class="sr-arrow">❯</div></div>`});if(html===""){html=`<div class="sr-item"><div class="sr-left"><div class="sr-kw-icon">😕</div><div class="sr-mid" style="font-size:13px">No results for "${q}"</div></div></div>`;}box.innerHTML=html;box.classList.add('show');
 }
-let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]'),registeredUsers=JSON.parse(localStorage.getItem('rekavo_registered_users')||'[]');
-document.getElementById('cartCount').innerText=cart.length;
+
+// ===== REAL CART LOGIC - CROSS DEVICE =====
+function getUser(){try{return JSON.parse(localStorage.getItem('rekavo_user'))}catch(e){return null}}
+function showToast(msg){let t=document.getElementById('toast');t.innerText=msg||"✅ Your item has been added to your cart";t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000)}
+
+async function updateCartCount(){
+ let user=getUser();
+ if(user){
+   try{let r=await fetch(`${API_BASE}/cart/get?email=${encodeURIComponent(user.email)}`);let data=await r.json();document.getElementById('cartCount').innerText=data.reduce((s,i)=>s+(i.qty||1),0);return;}catch(e){}
+ }
+ let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');document.getElementById('cartCount').innerText=cart.reduce((s,i)=>s+(i.qty||1),0);
+}
+
+async function addToCartDirect(product){
+ let user=getUser();
+ let payload={email:user?user.email:'guest', product_id:product.product_id, name:product.name, price:product.price, qty:1, image:product.img};
+ if(user){
+   try{await fetch(`${API_BASE}/cart/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});}catch(e){console.log(e)}
+ }else{
+   let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+   let f=cart.find(c=>c.product_id===product.product_id);
+   if(f)f.qty+=1; else cart.push({product_id:product.product_id,name:product.name,price:product.price,qty:1,img:product.img,cat:product.cat,idx:product.idx,original:product.originalPrice});
+   localStorage.setItem('rekavo_cart',JSON.stringify(cart));
+ }
+ await updateCartCount();
+ showToast(`✅ ${product.name} added to cart`);
+ // NO REDIRECT - SAME PAGE
+}
+
+function buyNowDirect(product){
+ let user=getUser();
+ if(!user){document.getElementById('loginModal').classList.add('show');return;}
+ localStorage.setItem('rekavo_buy_now',JSON.stringify(product));
+ location.href='checkout.html';
+}
+
+function renderAllProducts(){
+ let all=getAllProducts();
+ let grid=document.getElementById('allProductsGrid');
+ let html='';
+ all.forEach(p=>{
+   let off=Math.round((p.originalPrice-p.price)/p.originalPrice*100);
+   html+=`<div class="card">
+    <div class="coupon-tag">COUPON: EXTRA ${off}% OFF</div>
+    <img src="${p.img}" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'">
+    <div style="font-size:12px;font-weight:700;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name}</div>
+    <div class="price-box"><span style="font-size:14px;font-weight:800">₹${p.price}</span> <span style="font-size:11px;color:#878787;text-decoration:line-through">₹${p.originalPrice}</span> <span style="font-size:11px;color:#26a541;font-weight:700">${off}% off</span><div style="font-size:10px;color:#ff6161;font-weight:700;margin-top:2px">+ Extra 20% with Coupon</div></div>
+    <div class="btn-row">
+      <button class="btn-add" onclick='addToCartDirect(${JSON.stringify(p).replace(/'/g,"&#39;")})'>ADD TO CART</button>
+      <button class="btn-buy" onclick='buyNowDirect(${JSON.stringify(p).replace(/'/g,"&#39;")})'>BUY NOW</button>
+    </div>
+   </div>`;
+ });
+ grid.innerHTML=html;
+}
+
 window.addEventListener('click',(e)=>{if(!e.target.closest('.search-wrapper')){document.getElementById('searchResults').classList.remove('show')}if(e.target.classList&&e.target.classList.contains('modal')){e.target.classList.remove('show')}})
 
 function switchAuth(t){
@@ -150,8 +210,6 @@ function switchAuth(t){
 function showErr(id,msg){let el=document.getElementById(id);if(!el)return;el.innerText=msg;el.classList.add('show');let inputId=id.replace('err-','');let inp=document.getElementById(inputId);if(inp)inp.classList.add('error')}
 function showSuccess(id,msg){let el=document.getElementById(id);if(!el)return;el.innerText=msg;el.classList.add('show')}
 function clearAllErrs(){document.querySelectorAll('.error-msg').forEach(e=>{e.innerText='';e.classList.remove('show')});document.querySelectorAll('.checkout-input').forEach(e=>e.classList.remove('error'))}
-
-// ===== EMAIL VALIDATION =====
 const disposableDomains=["tempmail","10minutemail","guerrillamail","mailinator","yopmail","temp-mail","throwaway","maildrop","disposable"];
 const fakeDomains=["xyz","abc","test","localhost","example","invalid","fake","abcd","qwerty","asdf","temp","c"];
 function isValidEmailFormat(email){
@@ -159,131 +217,118 @@ function isValidEmailFormat(email){
  if(!re.test(email)) return false;
  if(email.includes("..")) return false;
  if(email.startsWith(".")||email.includes("@.")||email.endsWith(".")) return false;
- let parts=email.split("@");
- if(parts.length!==2) return false;
- let domain=parts[1];
- if(!domain.includes(".")) return false;
- let tld=domain.split(".").pop().toLowerCase();
- if(tld.length<2) return false; // gmail.c blocked
- if(tld.length>6) return false;
- let domainName=domain.split(".")[0].toLowerCase();
- if(fakeDomains.includes(domainName)) return false;
- if(domainName.length<3) return false;
- return true;
+ let parts=email.split("@"); if(parts.length!==2) return false;
+ let domain=parts[1]; if(!domain.includes(".")) return false;
+ let tld=domain.split(".").pop().toLowerCase(); if(tld.length<2||tld.length>6) return false;
+ let domainName=domain.split(".")[0].toLowerCase(); if(fakeDomains.includes(domainName)) return false; if(domainName.length<3) return false; return true;
 }
 function isDisposableEmail(email){let d=email.split("@")[1]?.toLowerCase()||"";return disposableDomains.some(x=>d.includes(x));}
 
-let regEmailKey="",regOtpVerified=false;
-function sendRegOtp(){
+let regData={};
+async function sendRegOtp(){
  clearAllErrs();
  let name=document.getElementById('signupName').value.trim();
  let mobile=document.getElementById('signupMobile').value.trim();
  let email=document.getElementById('signupEmail').value.trim().toLowerCase();
  let hasError=false;
  if(name.length<2){showErr('err-signupName','Please enter your full name');hasError=true;}
- if(!/^[6-9][0-9]{9}$/.test(mobile)){showErr('err-signupMobile','Please enter a valid 10-digit mobile number');hasError=true;}
- if(!email){showErr('err-signupEmail','Please enter your email address');hasError=true;}
- else if(!isValidEmailFormat(email)){showErr('err-signupEmail','Please enter a valid email address (e.g. name@gmail.com)');hasError=true;}
- else if(isDisposableEmail(email)){showErr('err-signupEmail','Temporary email addresses are not allowed');hasError=true;}
- if(registeredUsers.find(u=>u.email===email)){showErr('err-signupEmail','This email is already registered. Please login');hasError=true;}
- if(registeredUsers.find(u=>u.mobile===mobile)){showErr('err-signupMobile','This mobile number is already registered');hasError=true;}
+ if(!/^[6-9][0-9]{9}$/.test(mobile)){showErr('err-signupMobile','Please enter valid mobile');hasError=true;}
+ if(!email){showErr('err-signupEmail','Enter email');hasError=true;}
+ else if(!isValidEmailFormat(email)){showErr('err-signupEmail','Valid email like name@gmail.com');hasError=true;}
+ else if(isDisposableEmail(email)){showErr('err-signupEmail','Temporary email not allowed');hasError=true;}
  if(hasError) return;
- regEmailKey=email;
- let otp=Math.floor(100000+Math.random()*900000).toString();
- localStorage.setItem('rekavo_otp_'+email,otp);
- document.getElementById('otpInfoText').innerHTML=`OTP sent to <b>${email}</b><br>Demo OTP: <b>${otp}</b>`;
- document.getElementById('otpInfoText').classList.add('show');
- document.getElementById('regStep1').style.display='none';
- document.getElementById('regStep2').style.display='block';
+ regData={name,mobile,email};
+ let btn=document.getElementById('btnSendReg');btn.innerText='Sending...';btn.disabled=true;
+ try{
+   let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+   let data=await res.json();
+   if(res.ok){document.getElementById('otpInfoText').innerText=`OTP sent to ${email}`;document.getElementById('regStep1').style.display='none';document.getElementById('regStep2').style.display='block';}
+   else{showErr('err-signupEmail',data.error||'Failed');}
+ }catch(e){showErr('err-signupEmail','Network error');}
+ btn.innerText='Send OTP';btn.disabled=false;
 }
-function verifyRegOtp(){
+async function verifyRegOtp(){
  clearAllErrs();
- document.getElementById('otpInfoText').classList.add('show');
  let otp=document.getElementById('regOtp').value.trim();
- let real=localStorage.getItem('rekavo_otp_'+regEmailKey);
- if(!otp){showErr('err-regOtp','Please enter the OTP');return;}
- if(otp!==real){showErr('err-regOtp','Invalid OTP. Correct OTP is: '+real);return;}
- regOtpVerified=true;
- document.getElementById('regStep2').style.display='none';
- document.getElementById('regStep3').style.display='block';
+ if(otp.length!==6){showErr('err-regOtp','Enter 6-digit OTP');return;}
+ let btn=document.getElementById('btnVerifyReg');btn.innerText='Verifying...';btn.disabled=true;
+ try{
+   let res=await fetch(`${API_BASE}/check-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:regData.email,otp})});
+   let data=await res.json();
+   if(res.ok&&data.success){regData.otp=otp;document.getElementById('regStep2').style.display='none';document.getElementById('regStep3').style.display='block';}
+   else{showErr('err-regOtp',data.error||'Invalid OTP');}
+ }catch(e){showErr('err-regOtp','Network error');}
+ btn.innerText='Validate OTP';btn.disabled=false;
 }
-function doSignupFinal(){
+async function doSignupFinal(){
  clearAllErrs();
- if(!regOtpVerified){showErr('err-signupPass','Please verify OTP first');return;}
- let name=document.getElementById('signupName').value.trim();
  let pass=document.getElementById('signupPass').value.trim();
  let pass2=document.getElementById('signupPass2').value.trim();
- if(pass.length<6){showErr('err-signupPass','Password must be at least 6 characters');return;}
- if(pass!==pass2){showErr('err-signupPass2','Passwords do not match');return;}
- let newUser={name,mobile:document.getElementById('signupMobile').value.trim(),email:regEmailKey,password:pass};
- registeredUsers.push(newUser);
- localStorage.setItem('rekavo_registered_users',JSON.stringify(registeredUsers));
- localStorage.setItem('rekavo_user',JSON.stringify({name,mobile:newUser.mobile,email:regEmailKey}));
- localStorage.removeItem('rekavo_otp_'+regEmailKey);
- showSuccess('success-signupFinal',`Welcome ${name}! Registration successful`);
- setTimeout(()=>location.reload(),1000);
+ if(pass.length<6){showErr('err-signupPass','Min 6 characters');return;}
+ if(pass!==pass2){showErr('err-signupPass2','Passwords not match');return;}
+ let btn=document.getElementById('btnDoSignup');btn.innerText='Creating...';btn.disabled=true;
+ try{
+   let res=await fetch(`${API_BASE}/verify-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:regData.email,otp:regData.otp,name:regData.name,phone:regData.mobile,password:pass})});
+   let data=await res.json();
+   if(res.ok){localStorage.setItem('rekavo_user',JSON.stringify({name:data.user.name,mobile:data.user.phone,email:data.user.email}));showSuccess('success-signupFinal',`Welcome ${data.user.name}!`);setTimeout(()=>location.href='index.html',600);}
+   else{showErr('err-signupPass2',data.error);}
+ }catch(e){showErr('err-signupPass2','Network error');}
+ btn.innerText='Register Now';btn.disabled=false;
 }
-function doLogin(){
+async function doLogin(){
  clearAllErrs();
- let mobile=document.getElementById('loginMobile').value.trim().toLowerCase();
+ let email=document.getElementById('loginMobile').value.trim().toLowerCase();
  let pass=document.getElementById('loginPass').value.trim();
- if(!mobile){showErr('err-loginMobile','Please enter email or mobile number');return;}
- if(!pass){showErr('err-loginPass','Please enter your password');return;}
- let user=registeredUsers.find(u=>(u.mobile===mobile||u.email===mobile)&&u.password===pass);
- if(!user){showErr('err-loginMobile','Invalid email/mobile or password');return;}
- localStorage.setItem('rekavo_user',JSON.stringify({name:user.name,mobile:user.mobile,email:user.email}));
- showSuccess('success-login',`Login successful! Welcome ${user.name}`);
- setTimeout(()=>location.reload(),800);
+ if(!email||!pass){showErr('err-loginMobile','Enter email & password');return;}
+ let btn=document.querySelector('#loginForm button');let old=btn.innerText;btn.innerText='Logging...';btn.disabled=true;
+ try{
+   let res=await fetch(`${API_BASE}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});
+   let data=await res.json();
+   if(res.ok){localStorage.setItem('rekavo_user',JSON.stringify({name:data.user.name,mobile:data.user.phone,email:data.user.email}));showSuccess('success-login',`Welcome ${data.user.name}`);setTimeout(()=>location.href='index.html',600);}
+   else{showErr('err-loginMobile',data.error);}
+ }catch(e){showErr('err-loginMobile','Network error');}
+ btn.innerText=old;btn.disabled=false;
 }
-
-// ===== FORGOT PASSWORD - FULLY ACTIVE NOW =====
-let forgotKey="",forgotOtpVerified=false;
-function sendForgotOtp(){
- clearAllErrs();
- forgotKey=document.getElementById('forgotEmail').value.trim().toLowerCase();
- if(!forgotKey){showErr('err-forgotEmail','Please enter your email address');return;}
- if(!isValidEmailFormat(forgotKey)){showErr('err-forgotEmail','Please enter a valid email address');return;}
- let user=registeredUsers.find(u=>u.email===forgotKey);
- if(!user){showErr('err-forgotEmail','This email is not registered. Please register first');return;}
- let otp=Math.floor(100000+Math.random()*900000).toString();
- localStorage.setItem('rekavo_otp_'+forgotKey,otp);
- showSuccess('success-forgot1',`OTP sent successfully to ${forgotKey}`);
- document.getElementById('forgotOtpInfo').innerHTML=`OTP sent to <b>${forgotKey}</b><br>Demo OTP: <b>${otp}</b>`;
- document.getElementById('forgotOtpInfo').classList.add('show');
- document.getElementById('forgotOtpBox').style.display='block';
- document.getElementById('sendOtpBtn').innerText='Resend OTP';
+let forgotKey="",forgotOtpVerified=false,forgotOtpVal="";
+async function sendForgotOtp(){
+ clearAllErrs(); forgotKey=document.getElementById('forgotEmail').value.trim().toLowerCase();
+ if(!forgotKey){showErr('err-forgotEmail','Enter email');return;}
+ if(!isValidEmailFormat(forgotKey)){showErr('err-forgotEmail','Valid email');return;}
+ let btn=document.getElementById('sendOtpBtn');btn.innerText='Sending...';btn.disabled=true;
+ try{
+   let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey})});
+   let data=await res.json();
+   if(res.ok){showSuccess('success-forgot1',`OTP sent to ${forgotKey}`);document.getElementById('forgotOtpInfo').innerText=`OTP sent to ${forgotKey}`;document.getElementById('forgotOtpBox').style.display='block';btn.innerText='Resend OTP';}
+   else{showErr('err-forgotEmail',data.error);btn.innerText='Send OTP';}
+ }catch(e){showErr('err-forgotEmail','Network error');btn.innerText='Send OTP';}
+ btn.disabled=false;
 }
-function verifyForgotOtp(){
- clearAllErrs();
- document.getElementById('success-forgot1').classList.add('show');
- document.getElementById('forgotOtpInfo').classList.add('show');
- let otp=document.getElementById('forgotOtp').value.trim();
- let real=localStorage.getItem('rekavo_otp_'+forgotKey);
- if(!otp){showErr('err-forgotOtp','Please enter the OTP');return;}
- if(otp!==real){showErr('err-forgotOtp','Invalid OTP. Correct OTP is: '+real);return;}
- forgotOtpVerified=true;
- document.getElementById('forgotOtpBox').style.display='none';
- document.getElementById('newPassBox').style.display='block';
- document.getElementById('forgotValidatedMsg').innerText='OTP Validated Successfully! ✅';
- document.getElementById('forgotValidatedMsg').classList.add('show');
+async function verifyForgotOtp(){
+ clearAllErrs(); let otp=document.getElementById('forgotOtp').value.trim();
+ if(otp.length!==6){showErr('err-forgotOtp','Enter OTP');return;}
+ let btn=document.getElementById('btnVerifyForgot');btn.innerText='Verifying...';btn.disabled=true;
+ try{
+   let res=await fetch(`${API_BASE}/check-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp})});
+   let data=await res.json();
+   if(res.ok&&data.success){forgotOtpVal=otp;forgotOtpVerified=true;document.getElementById('forgotOtpBox').style.display='none';document.getElementById('newPassBox').style.display='block';}
+   else{showErr('err-forgotOtp',data.error);}
+ }catch(e){showErr('err-forgotOtp','Network error');}
+ btn.innerText='Validate OTP';btn.disabled=false;
 }
-function saveNewPassword(){
- clearAllErrs();
- document.getElementById('forgotValidatedMsg').classList.add('show');
- if(!forgotOtpVerified){showErr('err-forgotPass','Please verify OTP first');return;}
- let p1=document.getElementById('forgotPass').value.trim();
- let p2=document.getElementById('forgotPass2').value.trim();
- if(p1.length<6){showErr('err-forgotPass','Password must be at least 6 characters');return;}
- if(p1!==p2){showErr('err-forgotPass2','Passwords do not match');return;}
- let user=registeredUsers.find(u=>u.email===forgotKey);
- if(user){
-   user.password=p1;
-   localStorage.setItem('rekavo_registered_users',JSON.stringify(registeredUsers));
-   localStorage.removeItem('rekavo_otp_'+forgotKey);
-   showSuccess('success-forgotFinal','Password updated successfully! Please login now');
-   setTimeout(()=>switchAuth('login'),1200);
- }
+async function saveNewPassword(){
+ clearAllErrs(); if(!forgotOtpVerified){showErr('err-forgotPass','Verify OTP first');return;}
+ let p1=document.getElementById('forgotPass').value.trim(); let p2=document.getElementById('forgotPass2').value.trim();
+ if(p1.length<6){showErr('err-forgotPass','Min 6 chars');return;} if(p1!==p2){showErr('err-forgotPass2','Not match');return;}
+ let btn=document.getElementById('btnSavePass');btn.innerText='Saving...';btn.disabled=true;
+ try{
+   let res=await fetch(`${API_BASE}/reset-password`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp:forgotOtpVal,new_password:p1})});
+   let data=await res.json();
+   if(res.ok){showSuccess('success-forgotFinal','Password updated! Login now');setTimeout(()=>switchAuth('login'),1000);}
+   else{showErr('err-forgotPass2',data.error);}
+ }catch(e){showErr('err-forgotPass2','Network error');}
+ btn.innerText='Save Password';btn.disabled=false;
 }
+renderAllProducts();updateCartCount();
 </script>
 </body>
 </html>
