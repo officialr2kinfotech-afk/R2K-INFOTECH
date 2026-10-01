@@ -71,7 +71,17 @@ body{background:#f1f3f6;padding-bottom:90px}
 <body>
 <div class="top-strip">🔥 Use Coupon For Extra Discount At 20%, 40%, 50%, 80% And More....</div>
 <div id="searchOverlay" onclick="closeSearch()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998"></div>
-<div class="search-wrapper" id="searchWrapper"><div class="search-box"><input id="mainSearch" type="search" name="q" inputmode="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="Search for products, brands and more" onfocus="handleSearchFocus()" oninput="debouncedLiveSearch(this.value)"><button onclick="liveSearch(document.getElementById('mainSearch').value)">⌕</button></div><div id="searchResults" class="search-results"></div></div>
+<div class="search-wrapper" id="searchWrapper">
+  <form autocomplete="off" onsubmit="return false;" style="width:100%">
+    <input type="text" style="display:none">
+    <input type="password" style="display:none">
+    <div class="search-box">
+      <input id="mainSearch" type="search" name="rekavo_search_q" inputmode="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-form-type="other" placeholder="Search for products, brands and more" onfocus="handleSearchFocus()" oninput="debouncedLiveSearch(this.value)">
+      <button type="button" onclick="liveSearch(document.getElementById('mainSearch').value)">⌕</button>
+    </div>
+  </form>
+  <div id="searchResults" class="search-results"></div>
+</div>
 <div class="banner"><div class="rekavo-poster"><div class="poster-tag">REKAVO • by R2K INFOTECH</div><div class="poster-title">RE<span>KAVO</span></div><div class="poster-sub">MOBILE ACCESSORIES & ELECTRONICS</div><div class="poster-desc">Mobile, Charger, Cover, Earbuds, Headphone, Speaker, Power Bank, Smart Watch - Everything at wholesale price.</div><div class="poster-badge-row"><div>★ PREMIUM</div><div>⚡ FAST DELIVERY</div><div>✓ VERIFIED</div></div></div></div>
 <div class="trust"><div>✅ 100% Genuine</div><div>💳 Prepaid Only</div><div>↩️ 7 Day Return</div><div>🔒 Secure Payment</div></div>
 <div class="deals"><h2>Shop By Category</h2><div class="products"><div class="card" onclick="location.href='category.html?cat=powerbank'"><img src="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300"><b>Power Bank</b></div><div class="card" onclick="location.href='category.html?cat=neckband'"><img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300"><b>Neckband</b></div><div class="card" onclick="location.href='category.html?cat=earbuds'"><img src="https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=300"><b>Earbuds</b></div><div class="card" onclick="location.href='category.html?cat=cable'"><img src="https://images.unsplash.com/photo-1625842268584-8f3296236761?w=300"><b>Cable</b></div><div class="card" onclick="location.href='category.html?cat=charger'"><img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300"><b>Charger</b></div></div></div>
@@ -129,228 +139,73 @@ body{background:#f1f3f6;padding-bottom:90px}
 const API_BASE="https://rekavo-backend.vercel.app";
 const categoryData={powerbank:[{name:"Power Bank 10000mAh",price:499,originalPrice:1299,img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300"},{name:"Power Bank 20000mAh",price:799,originalPrice:1999,img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300"},{name:"Power Bank 30000mAh",price:1099,originalPrice:2999,img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300"}],neckband:[{name:"Neckband Boat 100",price:199,originalPrice:999,img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300"},{name:"Neckband 500 Premium",price:549,originalPrice:1999,img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300"}],earbuds:[{name:"Earbuds TWS 400",price:449,originalPrice:1499,img:"https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=300"},{name:"Earbuds Pro Sound",price:999,originalPrice:4999,img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=300"}],cable:[{name:"Cable Type-C 100",price:99,originalPrice:299,img:"https://images.unsplash.com/photo-1625842268584-8f3296236761?w=300"},{name:"Cable Fast 3A",price:199,originalPrice:499,img:"https://images.unsplash.com/photo-1587037542707-1dad5a1cfa9d?w=300"}],charger:[{name:"Charger 20W Fast",price:299,originalPrice:999,img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300"},{name:"Charger 65W",price:699,originalPrice:2499,img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300"}]};
 function getAllProducts(){let all=[];for(let c in categoryData){categoryData[c].forEach((p,i)=>{all.push({...p,cat:c,idx:i,product_id:c+'_'+i})})}return all}
-let searchTimer=null;function debouncedLiveSearch(q){clearTimeout(searchTimer);searchTimer=setTimeout(()=>liveSearch(q),250)}
+let searchTimer=null;function debouncedLiveSearch(q){clearTimeout(searchTimer);searchTimer=setTimeout(()=>liveSearch(q),200)}
 function handleSearchFocus(){document.getElementById('searchWrapper').classList.add('active');document.getElementById('searchOverlay').style.display='block';window.scrollTo({top:0,behavior:'smooth'});}
 function closeSearch(){document.getElementById('searchWrapper').classList.remove('active');document.getElementById('searchOverlay').style.display='none';document.getElementById('searchResults').classList.remove('show');}
+function levenshtein(a,b){let m=a.length,n=b.length;let dp=Array(m+1).fill(0).map(()=>Array(n+1).fill(0));for(let i=0;i<=m;i++)dp[i][0]=i;for(let j=0;j<=n;j++)dp[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=a[i-1]==b[j-1]?dp[i-1][j-1]:Math.min(dp[i-1][j]+1,dp[i][j-1]+1,dp[i-1][j-1]+1);return dp[m][n];}
 function liveSearch(q){
- let box=document.getElementById('searchResults');let query=q.trim().toLowerCase();
+ let box=document.getElementById('searchResults');
+ let query=q.trim().toLowerCase();
  if(query===""){box.classList.remove('show');box.innerHTML="";return;}
+ if(query.length<2){box.classList.remove('show');box.innerHTML="";return;}
  let all=getAllProducts();
- let filteredProducts=all.filter(p=>p.name.toLowerCase().includes(query)||p.cat.includes(query)).slice(0,8);
- let html="";
- filteredProducts.forEach(p=>{
-   html+=`<div class="sr-item" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'"><div class="sr-left"><img src="${p.img}"><div class="sr-mid"><div style="font-size:13px;font-weight:600">${p.name}</div><div style="font-size:12px;color:#388e3c">₹${p.price}</div></div></div><div class="sr-arrow">❯</div></div>`;
+ let results=[];
+ let qWords=query.split(/\s+/);
+ all.forEach(p=>{
+   let name=p.name.toLowerCase();
+   let cat=p.cat.toLowerCase();
+   let nameWords=name.split(/\s+/);
+   let score=0;
+   if(name.startsWith(query)) score=100;
+   else if(nameWords.some(w=>w.startsWith(query))) score=90;
+   else if(cat.startsWith(query)) score=85;
+   else if(qWords.every(qw=>nameWords.some(nw=>nw.startsWith(qw))||name.includes(qw))) score=80;
+   else if(query.length>=3 && name.includes(query)) score=60;
+   else if(query.length>=3){
+     for(let nw of nameWords){
+       if(nw.length>=3 && levenshtein(nw,query)<=2){score=50;break;}
+       if(qWords.some(qw=>qw.length>=3 && levenshtein(nw,qw)<=2)){score=50;break;}
+     }
+   }
+   if(score>0) results.push({...p,score});
  });
- if(html===""){
-   html=`<div class="sr-item"><div class="sr-left"><div class="sr-kw-icon">😕</div><div class="sr-mid" style="font-size:13px">Search result not found for "${q}"</div></div></div>`;
+ results.sort((a,b)=>b.score-a.score);
+ results=results.slice(0,8);
+ if(results.length===0){
+   let sug=all.map(p=>{let d=levenshtein(p.name.toLowerCase().split(' ')[0], query.split(' ')[0]);return {...p,d};}).sort((a,b)=>a.d-b.d).slice(0,3);
+   let html=`<div style="padding:10px 12px;font-size:12px;color:#878787">No exact match for "${q}". Did you mean?</div>`;
+   sug.forEach(p=>{html+=`<div class="sr-item" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'"><div class="sr-left"><img src="${p.img}"><div class="sr-mid"><div style="font-size:13px;font-weight:600">${p.name}</div><div style="font-size:11px;color:#2874f0">Suggested</div></div></div><div class="sr-arrow">❯</div></div>`;});
+   box.innerHTML=html;box.classList.add('show');return;
  }
- box.innerHTML=html;
- box.classList.add('show');
+ let html="";results.forEach(p=>{html+=`<div class="sr-item" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'"><div class="sr-left"><img src="${p.img}"><div class="sr-mid"><div style="font-size:13px;font-weight:600">${p.name}</div><div style="font-size:12px;color:#388e3c">₹${p.price}</div></div></div><div class="sr-arrow">❯</div></div>`;});
+ box.innerHTML=html;box.classList.add('show');
 }
 function getUser(){try{return JSON.parse(localStorage.getItem('rekavo_user'))}catch(e){return null}}
 function showToast(msg){let t=document.getElementById('toast');t.innerText=msg||"✅ Your item has been added to your cart";t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000)}
-function updateCartCount(){
- try{
-  let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
-  let count = cart.reduce((s,i)=>s+(i.qty||1),0);
-  let el1 = document.getElementById('cartCount');
-  let el2 = document.getElementById('bCount');
-  if(el1) el1.innerText = count;
-  if(el2) el2.innerText = count;
- }catch(e){}
-}
-function addToCartDirect(product){
- let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
- let pid = product.product_id || product.id || (product.cat+'_'+product.idx) || product.name;
- let found=cart.find(c=> (c.product_id===pid) || (c.id===pid) );
- if(found){ found.qty=(found.qty||1)+1; }
- else {
-  cart.push({
-    product_id: pid,
-    id: pid,
-    name: product.name,
-    price: product.price,
-    qty: 1,
-    img: product.img || product.image,
-    image: product.img || product.image,
-    cat: product.cat,
-    idx: product.idx,
-    originalPrice: product.originalPrice || product.original
-  });
- }
- localStorage.setItem('rekavo_cart',JSON.stringify(cart));
- let cnt=cart.reduce((s,i)=>s+(i.qty||1),0);
- document.getElementById('cartCount').innerText=cnt;
- document.getElementById('bCount') && (document.getElementById('bCount').innerText=cnt);
- showToast(`✅ ${product.name} added`);
-}
-function buyNowDirect(product){
- let user=getUser();
- if(!user){document.getElementById('loginModal').classList.add('show');return;}
- localStorage.setItem('rekavo_buy_now',JSON.stringify(product));
- location.href='checkout.html';
-}
-function renderAllProducts(){
- let grid=document.getElementById('allProductsGrid');
- let premium=[
-   {...categoryData.powerbank[2], cat:'powerbank', idx:2},
-   {...categoryData.earbuds[1], cat:'earbuds', idx:1},
-   {...categoryData.charger[1], cat:'charger', idx:1},
-   {...categoryData.neckband[1], cat:'neckband', idx:1}
- ];
- let html='';
- premium.forEach(p=>{
-   let off=Math.round((p.originalPrice-p.price)/p.originalPrice*100);
-   html+=`<div class="card" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'">
-    <div class="coupon-tag">EXTRA ${off}% OFF</div>
-    <img src="${p.img}">
-    <div style="font-size:12px;font-weight:700;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name}</div>
-    <div class="price-box"><span style="font-size:14px;font-weight:800">₹${p.price}</span> <span style="font-size:11px;color:#878787;text-decoration:line-through">₹${p.originalPrice}</span> <span style="font-size:11px;color:#26a541;font-weight:700">${off}% off</span><div style="font-size:10px;color:#ff6161;font-weight:700;margin-top:2px">+ Extra Coupon</div></div>
-   </div>`;
- });
- grid.innerHTML=html;
-}
-window.addEventListener('click',(e)=>{if(!e.target.closest('.search-wrapper') &&!e.target.closest('#searchOverlay')){/* handled by overlay */}if(e.target.classList&&e.target.classList.contains('modal')){e.target.classList.remove('show')}})
-function switchAuth(t){
- document.getElementById('loginForm').style.display=t=='login'?'block':'none';
- document.getElementById('signupForm').style.display=t=='signup'?'block':'none';
- document.getElementById('forgotForm').style.display=t=='forgot'?'block':'none';
- document.getElementById('tabLogin').classList.toggle('active',t=='login' || t=='forgot');
- document.getElementById('tabSignup').classList.toggle('active',t=='signup');
- if(t=='signup'){document.getElementById('regStep1').style.display='block';document.getElementById('regStep2').style.display='none';document.getElementById('regStep3').style.display='none'}
- if(t=='forgot'){document.getElementById('forgotOtpBox').style.display='none';document.getElementById('newPassBox').style.display='none'}
- clearAllErrs();
-}
+function updateCartCount(){try{let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');let count=cart.reduce((s,i)=>s+(i.qty||1),0);let el1=document.getElementById('cartCount');let el2=document.getElementById('bCount');if(el1)el1.innerText=count;if(el2)el2.innerText=count;}catch(e){}}
+function addToCartDirect(product){let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');let pid=product.product_id||product.id||(product.cat+'_'+product.idx)||product.name;let found=cart.find(c=>(c.product_id===pid)||(c.id===pid));if(found){found.qty=(found.qty||1)+1;}else{cart.push({product_id:pid,id:pid,name:product.name,price:product.price,qty:1,img:product.img||product.image,image:product.img||product.image,cat:product.cat,idx:product.idx,originalPrice:product.originalPrice||product.original});}localStorage.setItem('rekavo_cart',JSON.stringify(cart));let cnt=cart.reduce((s,i)=>s+(i.qty||1),0);document.getElementById('cartCount').innerText=cnt;document.getElementById('bCount')&&(document.getElementById('bCount').innerText=cnt);showToast(`✅ ${product.name} added`);}
+function buyNowDirect(product){let user=getUser();if(!user){document.getElementById('loginModal').classList.add('show');return;}localStorage.setItem('rekavo_buy_now',JSON.stringify(product));location.href='checkout.html';}
+function renderAllProducts(){let grid=document.getElementById('allProductsGrid');let premium=[{...categoryData.powerbank[2],cat:'powerbank',idx:2},{...categoryData.earbuds[1],cat:'earbuds',idx:1},{...categoryData.charger[1],cat:'charger',idx:1},{...categoryData.neckband[1],cat:'neckband',idx:1}];let html='';premium.forEach(p=>{let off=Math.round((p.originalPrice-p.price)/p.originalPrice*100);html+=`<div class="card" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'"><div class="coupon-tag">EXTRA ${off}% OFF</div><img src="${p.img}"><div style="font-size:12px;font-weight:700;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name}</div><div class="price-box"><span style="font-size:14px;font-weight:800">₹${p.price}</span> <span style="font-size:11px;color:#878787;text-decoration:line-through">₹${p.originalPrice}</span> <span style="font-size:11px;color:#26a541;font-weight:700">${off}% off</span><div style="font-size:10px;color:#ff6161;font-weight:700;margin-top:2px">+ Extra Coupon</div></div></div>`;});grid.innerHTML=html;}
+window.addEventListener('click',(e)=>{if(e.target.classList&&e.target.classList.contains('modal')){e.target.classList.remove('show')}})
+function switchAuth(t){document.getElementById('loginForm').style.display=t=='login'?'block':'none';document.getElementById('signupForm').style.display=t=='signup'?'block':'none';document.getElementById('forgotForm').style.display=t=='forgot'?'block':'none';document.getElementById('tabLogin').classList.toggle('active',t=='login'||t=='forgot');document.getElementById('tabSignup').classList.toggle('active',t=='signup');if(t=='signup'){document.getElementById('regStep1').style.display='block';document.getElementById('regStep2').style.display='none';document.getElementById('regStep3').style.display='none'}if(t=='forgot'){document.getElementById('forgotOtpBox').style.display='none';document.getElementById('newPassBox').style.display='none'}clearAllErrs();}
 function showErr(id,msg){let el=document.getElementById(id);if(!el)return;el.innerText=msg;el.classList.add('show');let inputId=id.replace('err-','');let inp=document.getElementById(inputId);if(inp)inp.classList.add('error')}
 function showSuccess(id,msg){let el=document.getElementById(id);if(!el)return;el.innerText=msg;el.classList.add('show')}
 function clearAllErrs(){document.querySelectorAll('.error-msg').forEach(e=>{e.innerText='';e.classList.remove('show')});document.querySelectorAll('.checkout-input').forEach(e=>e.classList.remove('error'))}
 const disposableDomains=["tempmail","10minutemail","guerrillamail","mailinator","yopmail","temp-mail","throwaway","maildrop","disposable"];
 const fakeDomains=["xyz","abc","test","localhost","example","invalid","fake","abcd","qwerty","asdf","temp","c"];
-function isValidEmailFormat(email){
- const re=/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
- if(!re.test(email)) return false;
- if(email.includes("..")) return false;
- if(email.startsWith(".")||email.includes("@.")||email.endsWith(".")) return false;
- let parts=email.split("@"); if(parts.length!==2) return false;
- let domain=parts[1]; if(!domain.includes(".")) return false;
- let tld=domain.split(".").pop().toLowerCase(); if(tld.length<2||tld.length>6) return false;
- let domainName=domain.split(".")[0].toLowerCase(); if(fakeDomains.includes(domainName)) return false; if(domainName.length<3) return false; return true;
-}
+function isValidEmailFormat(email){const re=/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;if(!re.test(email))return false;if(email.includes(".."))return false;if(email.startsWith(".")||email.includes("@.")||email.endsWith("."))return false;let parts=email.split("@");if(parts.length!==2)return false;let domain=parts[1];if(!domain.includes("."))return false;let tld=domain.split(".").pop().toLowerCase();if(tld.length<2||tld.length>6)return false;let domainName=domain.split(".")[0].toLowerCase();if(fakeDomains.includes(domainName))return false;if(domainName.length<3)return false;return true;}
 function isDisposableEmail(email){let d=email.split("@")[1]?.toLowerCase()||"";return disposableDomains.some(x=>d.includes(x));}
 let regData={};
-async function sendRegOtp(){
- clearAllErrs();
- let name=document.getElementById('signupName').value.trim();
- let mobile=document.getElementById('signupMobile').value.trim();
- let email=document.getElementById('signupEmail').value.trim().toLowerCase();
- let hasError=false;
- if(name.length<2){showErr('err-signupName','Please enter your full name');hasError=true;}
- if(!/^[6-9][0-9]{9}$/.test(mobile)){showErr('err-signupMobile','Please enter valid mobile');hasError=true;}
- if(!email){showErr('err-signupEmail','Enter email');hasError=true;}
- else if(!isValidEmailFormat(email)){showErr('err-signupEmail','Valid email like name@gmail.com');hasError=true;}
- else if(isDisposableEmail(email)){showErr('err-signupEmail','Temporary email not allowed');hasError=true;}
- if(hasError) return;
- regData={name,mobile,email};
- let btn=document.getElementById('btnSendReg');btn.innerText='Sending...';btn.disabled=true;
- try{
-   let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
-   let data=await res.json();
-   if(res.ok){document.getElementById('otpInfoText').innerText=`OTP sent to ${email}`;document.getElementById('regStep1').style.display='none';document.getElementById('regStep2').style.display='block';}
-   else{showErr('err-signupEmail',data.error||'Failed');}
- }catch(e){showErr('err-signupEmail','Network error');}
- btn.innerText='Send OTP';btn.disabled=false;
-}
-async function verifyRegOtp(){
- clearAllErrs();
- let otp=document.getElementById('regOtp').value.trim();
- if(otp.length!==6){showErr('err-regOtp','Enter 6-digit OTP');return;}
- let btn=document.getElementById('btnVerifyReg');btn.innerText='Verifying...';btn.disabled=true;
- try{
-   let res=await fetch(`${API_BASE}/check-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:regData.email,otp})});
-   let data=await res.json();
-   if(res.ok&&data.success){regData.otp=otp;document.getElementById('regStep2').style.display='none';document.getElementById('regStep3').style.display='block';}
-   else{showErr('err-regOtp',data.error||'Invalid OTP');}
- }catch(e){showErr('err-regOtp','Network error');}
- btn.innerText='Validate OTP';btn.disabled=false;
-}
-async function doSignupFinal(){
- clearAllErrs();
- let pass=document.getElementById('signupPass').value.trim();
- let pass2=document.getElementById('signupPass2').value.trim();
- if(pass.length<6){showErr('err-signupPass','Min 6 characters');return;}
- if(pass!==pass2){showErr('err-signupPass2','Passwords not match');return;}
- let btn=document.getElementById('btnDoSignup');btn.innerText='Creating...';btn.disabled=true;
- try{
-   let res=await fetch(`${API_BASE}/verify-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:regData.email,otp:regData.otp,name:regData.name,phone:regData.mobile,password:pass})});
-   let data=await res.json();
-   if(res.ok){
-     let uid=data.user._id||data.user.id||data.user.user_id||data.userId;
-     localStorage.setItem('rekavo_user',JSON.stringify({user_id:uid,_id:uid,name:data.user.name,mobile:data.user.phone,email:data.user.email}));
-     showSuccess('success-signupFinal',`Welcome ${data.user.name}!`);setTimeout(()=>location.href='index.html',600);
-   }
-   else{showErr('err-signupPass2',data.error);}
- }catch(e){showErr('err-signupPass2','Network error');}
- btn.innerText='Register Now';btn.disabled=false;
-}
-async function doLogin(){
- clearAllErrs();
- let email=document.getElementById('loginMobile').value.trim().toLowerCase();
- let pass=document.getElementById('loginPass').value.trim();
- if(!email||!pass){showErr('err-loginMobile','Enter email & password');return;}
- let btn=document.querySelector('#loginForm button');let old=btn.innerText;btn.innerText='Logging...';btn.disabled=true;
- try{
-   let res=await fetch(`${API_BASE}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});
-   let data=await res.json();
-   if(res.ok){
-     let uid=data.user._id||data.user.id||data.user.user_id||data.userId;
-     localStorage.setItem('rekavo_user',JSON.stringify({user_id:uid,_id:uid,name:data.user.name,mobile:data.user.phone,email:data.user.email}));
-     showSuccess('success-login',`Welcome ${data.user.name}`);setTimeout(()=>location.href='index.html',600);
-   }
-   else{showErr('err-loginMobile',data.error);}
- }catch(e){showErr('err-loginMobile','Network error');}
- btn.innerText=old;btn.disabled=false;
-}
+async function sendRegOtp(){clearAllErrs();let name=document.getElementById('signupName').value.trim();let mobile=document.getElementById('signupMobile').value.trim();let email=document.getElementById('signupEmail').value.trim().toLowerCase();let hasError=false;if(name.length<2){showErr('err-signupName','Please enter your full name');hasError=true;}if(!/^[6-9][0-9]{9}$/.test(mobile)){showErr('err-signupMobile','Please enter valid mobile');hasError=true;}if(!email){showErr('err-signupEmail','Enter email');hasError=true;}else if(!isValidEmailFormat(email)){showErr('err-signupEmail','Valid email like name@gmail.com');hasError=true;}else if(isDisposableEmail(email)){showErr('err-signupEmail','Temporary email not allowed');hasError=true;}if(hasError)return;regData={name,mobile,email};let btn=document.getElementById('btnSendReg');btn.innerText='Sending...';btn.disabled=true;try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});let data=await res.json();if(res.ok){document.getElementById('otpInfoText').innerText=`OTP sent to ${email}`;document.getElementById('regStep1').style.display='none';document.getElementById('regStep2').style.display='block';}else{showErr('err-signupEmail',data.error||'Failed');}}catch(e){showErr('err-signupEmail','Network error');}btn.innerText='Send OTP';btn.disabled=false;}
+async function verifyRegOtp(){clearAllErrs();let otp=document.getElementById('regOtp').value.trim();if(otp.length!==6){showErr('err-regOtp','Enter 6-digit OTP');return;}let btn=document.getElementById('btnVerifyReg');btn.innerText='Verifying...';btn.disabled=true;try{let res=await fetch(`${API_BASE}/check-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:regData.email,otp})});let data=await res.json();if(res.ok&&data.success){regData.otp=otp;document.getElementById('regStep2').style.display='none';document.getElementById('regStep3').style.display='block';}else{showErr('err-regOtp',data.error||'Invalid OTP');}}catch(e){showErr('err-regOtp','Network error');}btn.innerText='Validate OTP';btn.disabled=false;}
+async function doSignupFinal(){clearAllErrs();let pass=document.getElementById('signupPass').value.trim();let pass2=document.getElementById('signupPass2').value.trim();if(pass.length<6){showErr('err-signupPass','Min 6 characters');return;}if(pass!==pass2){showErr('err-signupPass2','Passwords not match');return;}let btn=document.getElementById('btnDoSignup');btn.innerText='Creating...';btn.disabled=true;try{let res=await fetch(`${API_BASE}/verify-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:regData.email,otp:regData.otp,name:regData.name,phone:regData.mobile,password:pass})});let data=await res.json();if(res.ok){let uid=data.user._id||data.user.id||data.user.user_id||data.userId;localStorage.setItem('rekavo_user',JSON.stringify({user_id:uid,_id:uid,name:data.user.name,mobile:data.user.phone,email:data.user.email}));showSuccess('success-signupFinal',`Welcome ${data.user.name}!`);setTimeout(()=>location.href='index.html',600);}else{showErr('err-signupPass2',data.error);}}catch(e){showErr('err-signupPass2','Network error');}btn.innerText='Register Now';btn.disabled=false;}
+async function doLogin(){clearAllErrs();let email=document.getElementById('loginMobile').value.trim().toLowerCase();let pass=document.getElementById('loginPass').value.trim();if(!email||!pass){showErr('err-loginMobile','Enter email & password');return;}let btn=document.querySelector('#loginForm button');let old=btn.innerText;btn.innerText='Logging...';btn.disabled=true;try{let res=await fetch(`${API_BASE}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});let data=await res.json();if(res.ok){let uid=data.user._id||data.user.id||data.user.user_id||data.userId;localStorage.setItem('rekavo_user',JSON.stringify({user_id:uid,_id:uid,name:data.user.name,mobile:data.user.phone,email:data.user.email}));showSuccess('success-login',`Welcome ${data.user.name}`);setTimeout(()=>location.href='index.html',600);}else{showErr('err-loginMobile',data.error);}}catch(e){showErr('err-loginMobile','Network error');}btn.innerText=old;btn.disabled=false;}
 let forgotKey="",forgotOtpVerified=false,forgotOtpVal="";
-async function sendForgotOtp(){
- clearAllErrs(); forgotKey=document.getElementById('forgotEmail').value.trim().toLowerCase();
- if(!forgotKey){showErr('err-forgotEmail','Enter email');return;}
- if(!isValidEmailFormat(forgotKey)){showErr('err-forgotEmail','Valid email');return;}
- let btn=document.getElementById('sendOtpBtn');btn.innerText='Sending...';btn.disabled=true;
- try{
-   let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey})});
-   let data=await res.json();
-   if(res.ok){showSuccess('success-forgot1',`OTP sent to ${forgotKey}`);document.getElementById('forgotOtpInfo').innerText=`OTP sent to ${forgotKey}`;document.getElementById('forgotOtpBox').style.display='block';btn.innerText='Resend OTP';}
-   else{showErr('err-forgotEmail',data.error);btn.innerText='Send OTP';}
- }catch(e){showErr('err-forgotEmail','Network error');btn.innerText='Send OTP';}
- btn.disabled=false;
-}
-async function verifyForgotOtp(){
- clearAllErrs(); let otp=document.getElementById('forgotOtp').value.trim();
- if(otp.length!==6){showErr('err-forgotOtp','Enter OTP');return;}
- let btn=document.getElementById('btnVerifyForgot');btn.innerText='Verifying...';btn.disabled=true;
- try{
-   let res=await fetch(`${API_BASE}/check-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp})});
-   let data=await res.json();
-   if(res.ok&&data.success){forgotOtpVal=otp;forgotOtpVerified=true;document.getElementById('forgotOtpBox').style.display='none';document.getElementById('newPassBox').style.display='block';}
-   else{showErr('err-forgotOtp',data.error);}
- }catch(e){showErr('err-forgotOtp','Network error');}
- btn.innerText='Validate OTP';btn.disabled=false;
-}
-async function saveNewPassword(){
- clearAllErrs(); if(!forgotOtpVerified){showErr('err-forgotPass','Verify OTP first');return;}
- let p1=document.getElementById('forgotPass').value.trim(); let p2=document.getElementById('forgotPass2').value.trim();
- if(p1.length<6){showErr('err-forgotPass','Min 6 chars');return;} if(p1!==p2){showErr('err-forgotPass2','Not match');return;}
- let btn=document.getElementById('btnSavePass');btn.innerText='Saving...';btn.disabled=true;
- try{
-   let res=await fetch(`${API_BASE}/reset-password`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp:forgotOtpVal,new_password:p1})});
-   let data=await res.json();
-   if(res.ok){showSuccess('success-forgotFinal','Password updated! Login now');setTimeout(()=>switchAuth('login'),1000);}
-   else{showErr('err-forgotPass2',data.error);}
- }catch(e){showErr('err-forgotPass2','Network error');}
- btn.innerText='Save Password';btn.disabled=false;
-}
+async function sendForgotOtp(){clearAllErrs();forgotKey=document.getElementById('forgotEmail').value.trim().toLowerCase();if(!forgotKey){showErr('err-forgotEmail','Enter email');return;}if(!isValidEmailFormat(forgotKey)){showErr('err-forgotEmail','Valid email');return;}let btn=document.getElementById('sendOtpBtn');btn.innerText='Sending...';btn.disabled=true;try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey})});let data=await res.json();if(res.ok){showSuccess('success-forgot1',`OTP sent to ${forgotKey}`);document.getElementById('forgotOtpInfo').innerText=`OTP sent to ${forgotKey}`;document.getElementById('forgotOtpBox').style.display='block';btn.innerText='Resend OTP';}else{showErr('err-forgotEmail',data.error);btn.innerText='Send OTP';}}catch(e){showErr('err-forgotEmail','Network error');btn.innerText='Send OTP';}btn.disabled=false;}
+async function verifyForgotOtp(){clearAllErrs();let otp=document.getElementById('forgotOtp').value.trim();if(otp.length!==6){showErr('err-forgotOtp','Enter OTP');return;}let btn=document.getElementById('btnVerifyForgot');btn.innerText='Verifying...';btn.disabled=true;try{let res=await fetch(`${API_BASE}/check-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp})});let data=await res.json();if(res.ok&&data.success){forgotOtpVal=otp;forgotOtpVerified=true;document.getElementById('forgotOtpBox').style.display='none';document.getElementById('newPassBox').style.display='block';}else{showErr('err-forgotOtp',data.error);}}catch(e){showErr('err-forgotOtp','Network error');}btn.innerText='Validate OTP';btn.disabled=false;}
+async function saveNewPassword(){clearAllErrs();if(!forgotOtpVerified){showErr('err-forgotPass','Verify OTP first');return;}let p1=document.getElementById('forgotPass').value.trim();let p2=document.getElementById('forgotPass2').value.trim();if(p1.length<6){showErr('err-forgotPass','Min 6 chars');return;}if(p1!==p2){showErr('err-forgotPass2','Not match');return;}let btn=document.getElementById('btnSavePass');btn.innerText='Saving...';btn.disabled=true;try{let res=await fetch(`${API_BASE}/reset-password`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp:forgotOtpVal,new_password:p1})});let data=await res.json();if(res.ok){showSuccess('success-forgotFinal','Password updated! Login now');setTimeout(()=>switchAuth('login'),1000);}else{showErr('err-forgotPass2',data.error);}}catch(e){showErr('err-forgotPass2','Network error');}btn.innerText='Save Password';btn.disabled=false;}
 renderAllProducts();updateCartCount();
-window.addEventListener('DOMContentLoaded',()=>{updateCartCount(); setTimeout(updateCartCount,500);});
+window.addEventListener('DOMContentLoaded',()=>{updateCartCount();setTimeout(updateCartCount,500);});
 setInterval(updateCartCount,1500);
 </script>
 </body>
