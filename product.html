@@ -147,8 +147,17 @@ function liveSearch(q){let box=document.getElementById('searchResults');let all=
 
 let params=new URLSearchParams(location.search);
 let cat=params.get('cat');
-let idx=parseInt(params.get('idx'));
-let product = categoryData[cat]? categoryData[cat][idx] : null;
+let idx=params.get('idx');
+let pid=params.get('id');
+let pname=params.get('name');
+let saved=null; try{saved=JSON.parse(localStorage.getItem('rekavo_view_product')||'null')}catch(e){}
+let product=null;
+function getAll(){let a=[];for(let c in categoryData){categoryData[c].forEach((p,i)=>{a.push({...p,cat:c,idx:i})})}return a;}
+if(cat && idx!==null){idx=parseInt(idx);if(categoryData[cat] && categoryData[cat][idx])product=categoryData[cat][idx];}
+if(!product && pid){let all=getAll();product=all.find(p=>(p.product_id||p.id||'')==pid)||null;}
+if(!product && pname){let all=getAll();product=all.find(p=>p.name.toLowerCase()===decodeURIComponent(pname).toLowerCase())||null;}
+if(!product && saved){if(saved.cat && saved.idx!==undefined && categoryData[saved.cat] && categoryData[saved.cat][saved.idx]){product=categoryData[saved.cat][saved.idx];cat=saved.cat;idx=saved.idx;}else{product=saved;}}
+if(!product){cat='powerbank';idx=0;product=categoryData[cat][0];}
 let finalPrice = product? product.price : 0;
 let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
 document.getElementById('cartCount').innerText = cart.length;
