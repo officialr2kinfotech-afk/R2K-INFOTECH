@@ -146,8 +146,8 @@ function getAllProducts(){let all=[];for(let c in categoryData){categoryData[c].
 function liveSearch(q){let box=document.getElementById('searchResults');let all=getAllProducts();let query=q.trim().toLowerCase();let filtered=query===""?all:all.filter(p=>p.name.toLowerCase().includes(query)||p.cat.includes(query));box.innerHTML=filtered.map(p=>`<div class="sr-item" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'"><img src="${p.img}" style="width:40px;height:40px;object-fit:contain"><div><div style="font-size:13px;font-weight:600">${p.name}</div><div style="font-size:12px;color:#388e3c">₹${p.price}</div></div></div>`).join('');box.classList.add('show')}
 
 let params=new URLSearchParams(location.search);
-let cat=params.get('cat')||'powerbank';
-let idx=parseInt(params.get('idx')||'0');
+let cat=params.get('cat');
+let idx=parseInt(params.get('idx'));
 let product = categoryData[cat]? categoryData[cat][idx] : null;
 let finalPrice = product? product.price : 0;
 let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
