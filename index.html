@@ -180,12 +180,108 @@ function liveSearch(q){
  let html="";results.forEach(p=>{html+=`<div class="sr-item" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'"><div class="sr-left"><img src="${p.img}"><div class="sr-mid"><div style="font-size:13px;font-weight:600">${p.name}</div><div style="font-size:12px;color:#388e3c">₹${p.price}</div></div></div><div class="sr-arrow">❯</div></div>`;});
  box.innerHTML=html;box.classList.add('show');
 }
-function getUser(){try{return JSON.parse(localStorage.getItem('rekavo_user'))}catch(e){return null}}
+function getUser(){try{let u=JSON.parse(localStorage.getItem('rekavo_user')); if(!u) return null; u.user_id = u.user_id || u.id || u._id; return u;}catch(e){return null}}
+function getUid(){ let u=getUser(); return u? u.user_id : null; }
 function showToast(msg){let t=document.getElementById('toast');t.innerText=msg||"✅ Your item has been added to your cart";t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000)}
-function updateCartCount(){try{let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');let count=cart.reduce((s,i)=>s+(i.qty||1),0);let el1=document.getElementById('cartCount');let el2=document.getElementById('bCount');if(el1)el1.innerText=count;if(el2)el2.innerText=count;}catch(e){}}
-function addToCartDirect(product){let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');let pid=product.product_id||product.id||(product.cat+'_'+product.idx)||product.name;let found=cart.find(c=>(c.product_id===pid)||(c.id===pid));if(found){found.qty=(found.qty||1)+1;}else{cart.push({product_id:pid,id:pid,name:product.name,price:product.price,qty:1,img:product.img||product.image,image:product.img||product.image,cat:product.cat,idx:product.idx,originalPrice:product.originalPrice||product.original});}localStorage.setItem('rekavo_cart',JSON.stringify(cart));let cnt=cart.reduce((s,i)=>s+(i.qty||1),0);document.getElementById('cartCount').innerText=cnt;document.getElementById('bCount')&&(document.getElementById('bCount').innerText=cnt);showToast(`✅ ${product.name} added`);}
-function buyNowDirect(product){let user=getUser();if(!user){document.getElementById('loginModal').classList.add('show');return;}localStorage.setItem('rekavo_buy_now',JSON.stringify(product));location.href='checkout.html';}
-function renderAllProducts(){let grid=document.getElementById('allProductsGrid');let premium=[{...categoryData.powerbank[2],cat:'powerbank',idx:2},{...categoryData.earbuds[1],cat:'earbuds',idx:1},{...categoryData.charger[1],cat:'charger',idx:1},{...categoryData.neckband[1],cat:'neckband',idx:1}];let html='';premium.forEach(p=>{let off=Math.round((p.originalPrice-p.price)/p.originalPrice*100);html+=`<div class="card" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'"><div class="coupon-tag">EXTRA ${off}% OFF</div><img src="${p.img}"><div style="font-size:12px;font-weight:700;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name}</div><div class="price-box"><span style="font-size:14px;font-weight:800">₹${p.price}</span> <span style="font-size:11px;color:#878787;text-decoration:line-through">₹${p.originalPrice}</span> <span style="font-size:11px;color:#26a541;font-weight:700">${off}% off</span><div style="font-size:10px;color:#ff6161;font-weight:700;margin-top:2px">+ Extra Coupon</div></div></div>`;});grid.innerHTML=html;}
+function updateCartCount(){
+  try{
+    let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+    let map={};
+    cart.forEach(i=>{
+      let id=i.product_id||i.id;
+      if(!id) return;
+      if(map[id]) map[id].qty=(map[id].qty||1)+(i.qty||1);
+      else map[id]={...i, qty:i.qty||1};
+    });
+    let clean=Object.values(map);
+    localStorage.setItem('rekavo_cart', JSON.stringify(clean));
+    let count=clean.reduce((s,i)=>s+(i.qty||1),0);
+    let el1=document.getElementById('cartCount');if(el1)el1.innerText=count;
+    let el2=document.getElementById('bCount');if(el2)el2.innerText=count;
+  }catch(e){}
+}
+async function syncCartFromServer(){
+  let uid=getUid(); if(!uid) return;
+  try{
+    let r=await fetch(`${API_BASE}/cart/get?user_id=${uid}`);
+    let data=await r.json();
+    let arr=Array.isArray(data)? data : (data.cart||data.items||[]);
+    let map={};
+    arr.forEach(i=>{
+      let id=i.product_id||i.id;
+      if(map[id]) map[id].qty+=(i.qty||1);
+      else map[id]={product_id:id, id:id, name:i.name, price:i.price, qty:i.qty||1, img:i.image||i.img, image:i.image||i.img, originalPrice:i.original||i.originalPrice, cat:i.cat, idx:i.idx};
+    });
+    let finalCart=Object.values(map);
+    localStorage.setItem('rekavo_cart', JSON.stringify(finalCart));
+    updateCartCount();
+  }catch(e){}
+}
+async function addToCartDirect(product){
+  let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+  let pid=product.product_id||product.id||(product.cat+'_'+product.idx)||product.name;
+  let found=cart.find(c=>(c.product_id===pid)||(c.id===pid));
+  if(found){
+    found.qty=(found.qty||1)+1;
+    if(found.qty>5) found.qty=5;
+  } else {
+    cart.push({product_id:pid,id:pid,name:product.name,price:product.price,qty:1,img:product.img||product.image,image:product.img||product.image,cat:product.cat,idx:product.idx,originalPrice:product.originalPrice||product.original});
+  }
+  localStorage.setItem('rekavo_cart',JSON.stringify(cart));
+  updateCartCount();
+  showToast(`✅ ${product.name} added • Qty ${found?found.qty:1}`);
+
+  // backend pe bhi save - taaki dusre device pe dikhe
+  try{
+    let uid=getUid();
+    if(uid){
+      await fetch(`${API_BASE}/cart/add`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({user_id:uid, product_id:pid, name:product.name, price:product.price, qty: found?found.qty:1, image:product.img||product.image})
+      });
+    }
+  }catch(e){}
+}
+function buyNowDirect(product){
+  let user=getUser();
+  if(!user){
+    document.getElementById('loginModal').classList.add('show');
+    return;
+  }
+  // buy_now me daalo, pura cart overwrite mat karo
+  let pid=product.product_id||product.id||(product.cat+'_'+product.idx)||product.name;
+  let single={product_id:pid, id:pid, name:product.name, price:product.price, qty:1, img:product.img||product.image, image:product.img||product.image, cat:product.cat, idx:product.idx, originalPrice:product.originalPrice||product.original};
+  localStorage.setItem('rekavo_buy_now',JSON.stringify(single));
+  location.href='checkout.html';
+}
+function renderAllProducts(){
+  let grid=document.getElementById('allProductsGrid');
+  let premium=[
+    {...categoryData.powerbank[2],cat:'powerbank',idx:2,product_id:'powerbank_2'},
+    {...categoryData.earbuds[1],cat:'earbuds',idx:1,product_id:'earbuds_1'},
+    {...categoryData.charger[1],cat:'charger',idx:1,product_id:'charger_1'},
+    {...categoryData.neckband[1],cat:'neckband',idx:1,product_id:'neckband_1'}
+  ];
+  let html='';
+  premium.forEach(p=>{
+    let off=Math.round((p.originalPrice-p.price)/p.originalPrice*100);
+    html+=`
+    <div class="card">
+      <div onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'">
+        <div class="coupon-tag">EXTRA ${off}% OFF</div>
+        <img src="${p.img}">
+        <div style="font-size:12px;font-weight:700;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name}</div>
+        <div class="price-box"><span style="font-size:14px;font-weight:800">₹${p.price}</span> <span style="font-size:11px;color:#878787;text-decoration:line-through">₹${p.originalPrice}</span> <span style="font-size:11px;color:#26a541;font-weight:700">${off}% off</span><div style="font-size:10px;color:#ff6161;font-weight:700;margin-top:2px">+ Extra Coupon</div></div>
+      </div>
+      <div style="display:flex;gap:6px;margin-top:8px">
+        <button onclick="addToCartDirect({product_id:'${p.product_id}',name:'${p.name}',price:${p.price},img:'${p.img}',image:'${p.img}',cat:'${p.cat}',idx:${p.idx},originalPrice:${p.originalPrice}})" style="flex:1;background:#ff9f00;color:#fff;border:none;padding:7px 0;border-radius:4px;font-weight:700;font-size:11px;cursor:pointer">ADD</button>
+        <button onclick="buyNowDirect({product_id:'${p.product_id}',name:'${p.name}',price:${p.price},img:'${p.img}',image:'${p.img}',cat:'${p.cat}',idx:${p.idx},originalPrice:${p.originalPrice}})" style="flex:1;background:#fb641b;color:#fff;border:none;padding:7px 0;border-radius:4px;font-weight:700;font-size:11px;cursor:pointer">BUY</button>
+      </div>
+    </div>`;
+  });
+  grid.innerHTML=html;
+}
 window.addEventListener('click',(e)=>{if(e.target.classList&&e.target.classList.contains('modal')){e.target.classList.remove('show')}})
 function switchAuth(t){document.getElementById('loginForm').style.display=t=='login'?'block':'none';document.getElementById('signupForm').style.display=t=='signup'?'block':'none';document.getElementById('forgotForm').style.display=t=='forgot'?'block':'none';document.getElementById('tabLogin').classList.toggle('active',t=='login'||t=='forgot');document.getElementById('tabSignup').classList.toggle('active',t=='signup');if(t=='signup'){document.getElementById('regStep1').style.display='block';document.getElementById('regStep2').style.display='none';document.getElementById('regStep3').style.display='none'}if(t=='forgot'){document.getElementById('forgotOtpBox').style.display='none';document.getElementById('newPassBox').style.display='none'}clearAllErrs();}
 function showErr(id,msg){let el=document.getElementById(id);if(!el)return;el.innerText=msg;el.classList.add('show');let inputId=id.replace('err-','');let inp=document.getElementById(inputId);if(inp)inp.classList.add('error')}
@@ -204,9 +300,12 @@ let forgotKey="",forgotOtpVerified=false,forgotOtpVal="";
 async function sendForgotOtp(){clearAllErrs();forgotKey=document.getElementById('forgotEmail').value.trim().toLowerCase();if(!forgotKey){showErr('err-forgotEmail','Enter email');return;}if(!isValidEmailFormat(forgotKey)){showErr('err-forgotEmail','Valid email');return;}let btn=document.getElementById('sendOtpBtn');btn.innerText='Sending...';btn.disabled=true;try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey})});let data=await res.json();if(res.ok){showSuccess('success-forgot1',`OTP sent to ${forgotKey}`);document.getElementById('forgotOtpInfo').innerText=`OTP sent to ${forgotKey}`;document.getElementById('forgotOtpBox').style.display='block';btn.innerText='Resend OTP';}else{showErr('err-forgotEmail',data.error);btn.innerText='Send OTP';}}catch(e){showErr('err-forgotEmail','Network error');btn.innerText='Send OTP';}btn.disabled=false;}
 async function verifyForgotOtp(){clearAllErrs();let otp=document.getElementById('forgotOtp').value.trim();if(otp.length!==6){showErr('err-forgotOtp','Enter OTP');return;}let btn=document.getElementById('btnVerifyForgot');btn.innerText='Verifying...';btn.disabled=true;try{let res=await fetch(`${API_BASE}/check-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp})});let data=await res.json();if(res.ok&&data.success){forgotOtpVal=otp;forgotOtpVerified=true;document.getElementById('forgotOtpBox').style.display='none';document.getElementById('newPassBox').style.display='block';}else{showErr('err-forgotOtp',data.error);}}catch(e){showErr('err-forgotOtp','Network error');}btn.innerText='Validate OTP';btn.disabled=false;}
 async function saveNewPassword(){clearAllErrs();if(!forgotOtpVerified){showErr('err-forgotPass','Verify OTP first');return;}let p1=document.getElementById('forgotPass').value.trim();let p2=document.getElementById('forgotPass2').value.trim();if(p1.length<6){showErr('err-forgotPass','Min 6 chars');return;}if(p1!==p2){showErr('err-forgotPass2','Not match');return;}let btn=document.getElementById('btnSavePass');btn.innerText='Saving...';btn.disabled=true;try{let res=await fetch(`${API_BASE}/reset-password`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp:forgotOtpVal,new_password:p1})});let data=await res.json();if(res.ok){showSuccess('success-forgotFinal','Password updated! Login now');setTimeout(()=>switchAuth('login'),1000);}else{showErr('err-forgotPass2',data.error);}}catch(e){showErr('err-forgotPass2','Network error');}btn.innerText='Save Password';btn.disabled=false;}
-renderAllProducts();updateCartCount();
-window.addEventListener('DOMContentLoaded',()=>{updateCartCount();setTimeout(updateCartCount,500);});
-setInterval(updateCartCount,1500);
+
+// ===== INIT =====
+renderAllProducts();
+updateCartCount();
+syncCartFromServer();
+window.addEventListener('DOMContentLoaded',()=>{updateCartCount();syncCartFromServer();});
 </script>
 </body>
 </html>
