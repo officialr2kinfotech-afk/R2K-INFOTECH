@@ -3,106 +3,140 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Cart - REKAVO</title>
+<title>Cart - REKAVO</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto, Arial, sans-serif}
-body{background:#f1f3f6;padding-bottom:135px}
-.top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:7px;font-size:12px;font-weight:700}
-.header{background:#fff;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 1px rgba(0,0,0,.1);position:sticky;top:0;z-index:10}
-.header h1{font-size:18px;font-weight:600}
-.empty-wrap{background:#fff;min-height:65vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center}
-.empty-img{width:150px;height:150px;background:#f9f9f9;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:80px;margin-bottom:15px}
-.btn-blue{background:#2874f0;color:#fff;border:none;padding:11px 40px;border-radius:2px;font-weight:600;font-size:14px}
-.cart-card{background:#fff;margin-bottom:8px;padding:12px 12px 0 12px;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0}
-.item-top{display:flex;gap:12px}
-.item-img-wrap{width:88px;height:88px;border:1px solid #f0f0f0;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer}
-.item-img{max-width:100%;max-height:100%;object-fit:contain}
-.item-info{flex:1}
-.item-name{font-size:14px;line-height:19px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
-.delivery{font-size:12px;color:#388e3c;margin-top:6px;font-weight:500}
-.seller{font-size:11px;color:#878787;margin-top:3px}
-.price-row{margin-top:8px;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
-.price-now{font-size:18px;font-weight:700}
-.price-cut{font-size:13px;color:#878787;text-decoration:line-through}
-.off{font-size:13px;color:#388e3c;font-weight:600}
-.qty-action-row{display:flex;align-items:center;gap:20px;padding:14px 0 12px 0}
-.qty-box{display:flex;align-items:center;border:1px solid #c2c2c2;border-radius:20px;overflow:hidden}
-.qty-btn{width:28px;height:28px;border:none;background:#fff;font-size:16px;font-weight:600;cursor:pointer}
-.qty-num{width:32px;text-align:center;font-size:14px;font-weight:600;border-left:1px solid #c2c2c2;border-right:1px solid #c2c2c2;background:#fff;height:28px;display:flex;align-items:center;justify-content:center}
-.price-detail-card{background:#fff;padding:14px 16px;margin-bottom:8px}
-.price-detail-card h3{font-size:14px;font-weight:600;border-bottom:1px dashed #e0e0e0;padding-bottom:12px;margin-bottom:12px}
-.price-row2{display:flex;justify-content:space-between;font-size:13px;padding:5px 0}
-.price-row2.total{font-weight:700;font-size:15px;border-top:1px dashed #e0e0e0;margin-top:10px;padding-top:12px}
-.bottom-bar{position:fixed;bottom:50px;left:0;right:0;background:#fff;display:flex;justify-content:space-between;align-items:center;padding:8px 12px 8px 16px;box-shadow:0 -2px 10px rgba(0,0,0,.15);z-index:20}
-.place-btn{background:#fb641b;color:#fff;border:none;padding:14px 40px;border-radius:2px;font-weight:700;font-size:14px;letter-spacing:.3px}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:6px 0 4px 0;border-top:1px solid #e0e0e0;z-index:21}
-.bottom-nav a{text-decoration:none;color:#878787;font-size:11px;display:flex;flex-direction:column;align-items:center;flex:1}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,Arial,sans-serif}
+body{background:#f1f3f6;padding-bottom:120px}
+.top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:7px 12px;font-size:12px;font-weight:800;position:sticky;top:0;z-index:100}
+.header{background:#2874f0;color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:31px;z-index:99}
+.cart-wrap{margin:8px}
+.cart-item{background:#fff;border-radius:4px;padding:12px;display:flex;gap:12px;margin-bottom:8px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.cart-item img{width:80px;height:80px;object-fit:contain;border:1px solid #f0f0f0;border-radius:4px}
+.cart-info{flex:1}
+.cart-info b{font-size:13px}
+.cart-info div{font-size:12px;color:#555;margin-top:4px}
+.qty-row{display:flex;align-items:center;gap:8px;margin-top:8px}
+.qty-row button{width:28px;height:28px;border:1px solid #ddd;background:#fff;border-radius:50%;font-weight:700;cursor:pointer}
+.remove{color:#d93025;font-size:12px;font-weight:700;cursor:pointer;margin-top:6px;display:inline-block}
+.summary{background:#fff;border-radius:4px;padding:12px;margin:8px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.summary h3{font-size:14px;margin-bottom:8px}
+.summary div{display:flex;justify-content:space-between;font-size:13px;margin:4px 0}
+.summary b{font-size:14px}
+.checkout-btn{position:fixed;bottom:65px;left:0;right:0;background:#fff;padding:10px 12px;display:flex;gap:10px;border-top:1px solid #ddd;z-index:99}
+.checkout-btn button{flex:1;height:44px;border:none;border-radius:4px;font-weight:800;color:#fff;cursor:pointer}
+.cont{background:#fff;color:#000!important;border:1px solid #ddd!important}
+.buy{background:#fb641b}
+.empty{background:#fff;margin:20px;border-radius:8px;padding:40px 20px;text-align:center}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:100}
+.bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;flex:1}
 .bottom-nav a.active{color:#2874f0}
-.nav-ico{font-size:18px;margin-bottom:2px}
 </style>
 </head>
 <body>
-<div class="top-strip">🔥 Extra Discount Coupons Available</div>
-<div class="header"><span onclick="history.back()" style="cursor:pointer">←</span><h1>My Cart (<span id="cartCount">0</span>)</h1></div>
-<div id="cartContainer"></div>
-<div id="priceContainer"></div>
-<div id="bottomBar"></div>
-<div class="bottom-nav">
-<a href="index.html"><span class="nav-ico">🏠</span>Home</a>
-<a href="account.html"><span class="nav-ico">👤</span>Account</a>
-<a href="cart.html" class="active"><span class="nav-ico">🛒</span>Cart</a>
+<div class="top-strip">🔥 Use Coupon For Extra Discount At 20%, 40%, 50%, 80% And More....</div>
+<div class="header"><span onclick="location.href='index.html'" style="font-size:20px;cursor:pointer">←</span><b>My Cart (<span id="cartHeadCount">0</span>)</b></div>
+
+<div id="cartList" class="cart-wrap"><div style="padding:20px;text-align:center">Loading...</div></div>
+<div id="summary" class="summary" style="display:none"></div>
+
+<div class="checkout-btn" id="checkoutBtn" style="display:none">
+<button class="cont" onclick="location.href='index.html'">Continue Shopping</button>
+<button class="buy" onclick="goCheckout()">Place Order</button>
 </div>
+
+<div class="bottom-nav">
+<a href="index.html"><span>🏠</span><span>Home</span></a>
+<a href="account.html"><span>👤</span><span>Account</span></a>
+<a href="cart.html" class="active"><span>🛒</span><span>Cart (<span id="cartCount">0</span>)</span></a>
+</div>
+
 <script>
-<script>
-const API_BASE = "https://rekavo-backend.vercel.app";
-function getUser(){ try{ let u=JSON.parse(localStorage.getItem('rekavo_user')); if(!u) return null; u.user_id=u.user_id||u.id||u._id; return u; }catch(e){return null} }
+const API_BASE="https://rekavo-backend.vercel.app";
+function getUser(){try{let u=JSON.parse(localStorage.getItem('rekavo_user')); if(!u) return null; u.user_id=u.user_id||u.id||u._id; return u;}catch(e){return null}}
 
-async function loadRealCart(){
-  let u=getUser();
-  if(!u){ document.getElementById('cartContainer').innerHTML='<div class="empty-wrap"><h3>Please Login</h3><a href="account.html" style="background:#2874f0;color:#fff;padding:10px 20px;border-radius:4px;text-decoration:none">Login</a></div>'; return; }
-  document.getElementById('cartContainer').innerHTML='<div style="padding:20px;text-align:center">Loading your cart...</div>';
-  try{
-    let res=await fetch(`${API_BASE}/cart/get?user_id=${u.user_id}`);
-    let cart=await res.json();
-    renderReal(cart);
-  }catch(e){ document.getElementById('cartContainer').innerHTML='Error: '+e.message; }
-}
-
-function renderReal(cart){
-  let con=document.getElementById('cartContainer');
-  let priceCon=document.getElementById('priceContainer');
-  let bar=document.getElementById('bottomBar');
-  if(!cart || cart.length===0){
-    con.innerHTML=`<div class="empty-wrap"><div class="empty-img">🛒</div><h3>Your cart is empty!</h3><p>Naya account = 0 (Flipkart logic)</p><a href="index.html" style="margin-top:10px;background:#2874f0;color:#fff;padding:10px 20px;border-radius:4px;text-decoration:none">Shop now</a></div>`;
-    priceCon.innerHTML=''; bar.innerHTML=''; document.getElementById('cartCount').innerText='0'; return;
-  }
-  document.getElementById('cartCount').innerText=cart.reduce((s,i)=>s+(i.qty||1),0);
-  let html='', total=0;
-  cart.forEach((item,idx)=>{
-    total+=item.price*(item.qty||1);
-    html+=`<div class="cart-card"><div class="item-top"><div class="item-img-wrap"><img class="item-img" src="${item.image||item.img}"></div><div class="item-info"><div class="item-name">${item.name}</div><div class="price-row"><span class="price-now">₹${item.price}</span></div><div class="delivery">Free delivery</div></div></div><div class="qty-action-row"><div class="qty-box"><button class="qty-btn" onclick="changeQtyReal('${item.product_id||item.id}',-1)">−</button><div class="qty-num">${item.qty||1}</div><button class="qty-btn" onclick="changeQtyReal('${item.product_id||item.id}',1)">+</button></div><span style="color:#2874f0;font-weight:700;cursor:pointer" onclick="removeReal('${item.product_id||item.id}')">REMOVE</span></div></div>`;
-  });
-  con.innerHTML=html;
-  priceCon.innerHTML=`<div class="price-detail-card"><h3>PRICE DETAILS</h3><div class="price-row2"><span>Price (${cart.length} items)</span><span>₹${total}</span></div><div class="price-row2 total"><span>Total Amount</span><span>₹${total}</span></div></div>`;
-  bar.innerHTML=`<div class="bottom-bar"><div><b style="font-size:18px">₹${total}</b></div><button class="place-btn" onclick="location.href='checkout.html'">PLACE ORDER</button></div>`;
-}
-
-async function removeReal(pid){
-  let u=getUser(); if(!u) return;
-  await fetch(`${API_BASE}/cart/remove`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:u.user_id, product_id:pid})});
-  loadRealCart();
-}
-async function changeQtyReal(pid, d){
-  let u=getUser(); if(!u) return;
-  // pehle current qty nikaal ke naya bhejna
+async function loadCart(){
+ let u=getUser();
+ let cart=[];
+ if(!u){
+   cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+   renderCart(cart);
+   return;
+ }
+ try{
   let res=await fetch(`${API_BASE}/cart/get?user_id=${u.user_id}`);
-  let cart=await res.json();
-  let it=cart.find(x=>(x.product_id||x.id)==pid);
-  let newQty = (it.qty||1)+d; if(newQty<1) newQty=1;
-  await fetch(`${API_BASE}/cart/update`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:u.user_id, product_id:pid, qty:newQty})});
-  loadRealCart();
+  let data=await res.json();
+  cart=Array.isArray(data)?data:[];
+  // localStorage ko bhi update rakho taaki count sahi rahe
+  localStorage.setItem('rekavo_cart',JSON.stringify(cart.map(i=>({product_id:i.product_id||i.id, id:i.product_id||i.id, name:i.name, price:i.price, qty:i.qty||1, img:i.image||i.img, image:i.image||i.img}))));
+  renderCart(cart);
+ }catch(e){
+  cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+  renderCart(cart);
+ }
 }
-loadRealCart();
+
+function renderCart(cart){
+ let list=document.getElementById('cartList');
+ let head=document.getElementById('cartHeadCount');
+ let countEl=document.getElementById('cartCount');
+ let totalCount=cart.reduce((s,i)=>s+(i.qty||i.quantity||1),0);
+ head.innerText=totalCount;
+ countEl.innerText=totalCount;
+
+ if(cart.length===0){
+   list.innerHTML=`<div class="empty"><h3>Your cart is empty!</h3><p style="font-size:12px;color:#878787;margin-top:6px">Add items to it now.</p><button onclick="location.href='index.html'" style="margin-top:12px;padding:8px 16px;background:#2874f0;color:#fff;border:none;border-radius:4px;font-weight:700;cursor:pointer">Shop now</button></div>`;
+   document.getElementById('summary').style.display='none';
+   document.getElementById('checkoutBtn').style.display='none';
+   return;
+ }
+
+ let html='';
+ let total=0;
+ cart.forEach((item,idx)=>{
+   let qty=item.qty||item.quantity||1;
+   let price=item.price||0;
+   total+=price*qty;
+   let img=item.image||item.img||'';
+   let name=item.name||'Product';
+   let pid=item.product_id||item.id||name;
+   html+=`<div class="cart-item"><img src="${img}"><div class="cart-info"><b>${name}</b><div>₹${price} x ${qty} = ₹${price*qty}</div><div class="qty-row"><button onclick="updateQty('${pid}',${qty-1})">-</button><span>${qty}</span><button onclick="updateQty('${pid}',${qty+1})">+</button></div><span class="remove" onclick="removeItem('${pid}')">Remove</span></div></div>`;
+ });
+ list.innerHTML=html;
+
+ document.getElementById('summary').style.display='block';
+ document.getElementById('summary').innerHTML=`<h3>Price Details</h3><div><span>Price (${totalCount} items)</span><span>₹${total}</span></div><div><span>Delivery Charges</span><span style="color:#26a541">FREE</span></div><div style="border-top:1px dashed #ddd;margin-top:8px;padding-top:8px"><b>Total Amount</b><b>₹${total}</b></div>`;
+ document.getElementById('checkoutBtn').style.display='flex';
+}
+
+async function updateQty(pid,newQty){
+ if(newQty<1){ removeItem(pid); return; }
+ let u=getUser();
+ let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+ let found=cart.find(c=>(c.product_id===pid)||(c.id===pid));
+ if(found){ found.qty=newQty; }
+ localStorage.setItem('rekavo_cart',JSON.stringify(cart));
+ renderCart(cart);
+ if(u){
+   try{ await fetch(`${API_BASE}/cart/update`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:u.user_id, product_id:pid, qty:newQty})}); }catch(e){}
+   loadCart();
+ }
+}
+
+async function removeItem(pid){
+ let u=getUser();
+ let cart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+ cart=cart.filter(c=>(c.product_id!==pid && c.id!==pid));
+ localStorage.setItem('rekavo_cart',JSON.stringify(cart));
+ renderCart(cart);
+ if(u){
+   try{ await fetch(`${API_BASE}/cart/remove`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:u.user_id, product_id:pid})}); }catch(e){}
+   loadCart();
+ }
+}
+
+function goCheckout(){ location.href='checkout.html'; }
+
+loadCart();
 </script>
 </body>
 </html>
