@@ -53,16 +53,16 @@ body{background:#f1f3f6;padding-bottom:135px}
 <a href="cart.html" class="active"><span class="nav-ico">🛒</span>Cart</a>
 </div>
 <script>
+<script>
 const API_BASE = "https://rekavo-backend.vercel.app";
-function getUser(){ try{ let u=JSON.parse(localStorage.getItem('rekavo_user')); if(!u) return null; u.user_id=u.user_id||u.id; return u; }catch(e){return null} }
+function getUser(){ try{ let u=JSON.parse(localStorage.getItem('rekavo_user')); if(!u) return null; u.user_id=u.user_id||u.id||u._id; return u; }catch(e){return null} }
 
 async function loadRealCart(){
   let u=getUser();
-  if(!u){ document.getElementById('cartContainer').innerHTML='<div class="empty-wrap"><div>Login kar pehle</div><a href="account.html">Login</a></div>'; return; }
-  let uid=u.user_id;
-  document.getElementById('cartContainer').innerHTML='<div style="padding:20px;text-align:center">Loading real cart...</div>';
+  if(!u){ document.getElementById('cartContainer').innerHTML='<div class="empty-wrap"><h3>Please Login</h3><a href="account.html" style="background:#2874f0;color:#fff;padding:10px 20px;border-radius:4px;text-decoration:none">Login</a></div>'; return; }
+  document.getElementById('cartContainer').innerHTML='<div style="padding:20px;text-align:center">Loading your cart...</div>';
   try{
-    let res=await fetch(`${API_BASE}/cart/get?user_id=${uid}`);
+    let res=await fetch(`${API_BASE}/cart/get?user_id=${u.user_id}`);
     let cart=await res.json();
     renderReal(cart);
   }catch(e){ document.getElementById('cartContainer').innerHTML='Error: '+e.message; }
@@ -73,19 +73,18 @@ function renderReal(cart){
   let priceCon=document.getElementById('priceContainer');
   let bar=document.getElementById('bottomBar');
   if(!cart || cart.length===0){
-    con.innerHTML='<div class="empty-wrap"><div class="empty-img">🛒</div><div>Your cart is empty</div><a href="index.html" style="margin-top:10px;background:#2874f0;color:#fff;padding:10px 20px;border-radius:4px;text-decoration:none">Continue Shopping</a></div>';
+    con.innerHTML=`<div class="empty-wrap"><div class="empty-img">🛒</div><h3>Your cart is empty!</h3><p>Naya account = 0 (Flipkart logic)</p><a href="index.html" style="margin-top:10px;background:#2874f0;color:#fff;padding:10px 20px;border-radius:4px;text-decoration:none">Shop now</a></div>`;
     priceCon.innerHTML=''; bar.innerHTML=''; document.getElementById('cartCount').innerText='0'; return;
   }
   document.getElementById('cartCount').innerText=cart.reduce((s,i)=>s+(i.qty||1),0);
-  // ... tera wahi html render wala logic, bas cart array backend wala use kar
   let html='', total=0;
   cart.forEach((item,idx)=>{
     total+=item.price*(item.qty||1);
-    html+=`<div class="cart-card"><div class="item-top"><img src="${item.image||item.img}" style="width:80px;height:80px;object-fit:contain"><div><b>${item.name}</b><p>₹${item.price} x ${item.qty||1}</p></div></div><button onclick="removeReal('${item.product_id||item.id}')">REMOVE</button></div>`;
+    html+=`<div class="cart-card"><div class="item-top"><div class="item-img-wrap"><img class="item-img" src="${item.image||item.img}"></div><div class="item-info"><div class="item-name">${item.name}</div><div class="price-row"><span class="price-now">₹${item.price}</span></div><div class="delivery">Free delivery</div></div></div><div class="qty-action-row"><div class="qty-box"><button class="qty-btn" onclick="changeQtyReal('${item.product_id||item.id}',-1)">−</button><div class="qty-num">${item.qty||1}</div><button class="qty-btn" onclick="changeQtyReal('${item.product_id||item.id}',1)">+</button></div><span style="color:#2874f0;font-weight:700;cursor:pointer" onclick="removeReal('${item.product_id||item.id}')">REMOVE</span></div></div>`;
   });
   con.innerHTML=html;
-  priceCon.innerHTML=`<div class="price-detail-card">Total: ₹${total}</div>`;
-  bar.innerHTML=`<div class="bottom-bar"><b>₹${total}</b><button class="place-btn" onclick="location.href='checkout.html'">PLACE ORDER</button></div>`;
+  priceCon.innerHTML=`<div class="price-detail-card"><h3>PRICE DETAILS</h3><div class="price-row2"><span>Price (${cart.length} items)</span><span>₹${total}</span></div><div class="price-row2 total"><span>Total Amount</span><span>₹${total}</span></div></div>`;
+  bar.innerHTML=`<div class="bottom-bar"><div><b style="font-size:18px">₹${total}</b></div><button class="place-btn" onclick="location.href='checkout.html'">PLACE ORDER</button></div>`;
 }
 
 async function removeReal(pid){
@@ -95,10 +94,14 @@ async function removeReal(pid){
 }
 async function changeQtyReal(pid, d){
   let u=getUser(); if(!u) return;
-  await fetch(`${API_BASE}/cart/update`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:u.user_id, product_id:pid, change:d})});
+  // pehle current qty nikaal ke naya bhejna
+  let res=await fetch(`${API_BASE}/cart/get?user_id=${u.user_id}`);
+  let cart=await res.json();
+  let it=cart.find(x=>(x.product_id||x.id)==pid);
+  let newQty = (it.qty||1)+d; if(newQty<1) newQty=1;
+  await fetch(`${API_BASE}/cart/update`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:u.user_id, product_id:pid, qty:newQty})});
   loadRealCart();
 }
-
 loadRealCart();
 </script>
 </body>
