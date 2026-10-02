@@ -141,6 +141,7 @@ charger:[
 };
 
 function getUser(){try{let u=JSON.parse(localStorage.getItem('rekavo_user')); if(!u) return null; u.user_id = u.user_id || u.id || u._id; return u;}catch(e){return null}}
+function getUid(){ let u=getUser(); return u? u.user_id : null; }
 function getDiscount(code){let m=code.toUpperCase().match(/(\d{1,3})\s*PERCENT/);return m?parseInt(m[1]):0}
 function getAllProducts(){let all=[];for(let c in categoryData){categoryData[c].forEach((p,i)=>{all.push({...p,cat:c,idx:i})})}return all}
 function liveSearch(q){let box=document.getElementById('searchResults');let all=getAllProducts();let query=q.trim().toLowerCase();let filtered=query===""?all:all.filter(p=>p.name.toLowerCase().includes(query)||p.cat.includes(query));box.innerHTML=filtered.map(p=>`<div class="sr-item" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'"><img src="${p.img}" style="width:40px;height:40px;object-fit:contain"><div><div style="font-size:13px;font-weight:600">${p.name}</div><div style="font-size:12px;color:#388e3c">₹${p.price}</div></div></div>`).join('');box.classList.add('show')}
@@ -159,8 +160,20 @@ if(!product && pname){let all=getAll();product=all.find(p=>p.name.toLowerCase()=
 if(!product && saved){if(saved.cat && saved.idx!==undefined && categoryData[saved.cat] && categoryData[saved.cat][saved.idx]){product=categoryData[saved.cat][saved.idx];cat=saved.cat;idx=saved.idx;}else{product=saved;}}
 if(!product){cat='powerbank';idx=0;product=categoryData[cat][0];}
 let finalPrice = product? product.price : 0;
-let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
-document.getElementById('cartCount').innerText = cart.length;
+
+// INIT cart count - qty sum se
+try{
+  let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+  let map={};
+  cart.forEach(i=>{
+    let id=i.product_id||i.id;
+    if(map[id]) map[id].qty+=(i.qty||1);
+    else map[id]={...i, qty:i.qty||1};
+  });
+  let clean=Object.values(map);
+  localStorage.setItem('rekavo_cart', JSON.stringify(clean));
+  document.getElementById('cartCount').innerText = clean.reduce((s,i)=>s+(i.qty||1),0);
+}catch(e){}
 
 if(!product){
   document.body.innerHTML = "<h2 style='padding:20px'>Product not found! <br><a href='index.html'>Go Home</a></h2>";
@@ -193,31 +206,42 @@ function applyCoupon(){
     document.getElementById('couponErr').classList.add('show');
   }
 }
-function addToCart(){
+async function addToCart(){
   let pid = `${cat}_${idx}`;
-  // 1. INSTANT - Pehle local me add + count update + popup
+  // ===== FIX: merge not push - 2 se 6,8 wala bug khatam =====
   let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
-  cart.push({product_id: pid, name:product.name, price:finalPrice, qty:1, img:product.img, desc:product.desc, spec:product.spec, original:product.originalPrice, mrp:product.originalPrice, coupon:product.coupon});
+  let found = cart.find(c=>(c.product_id===pid)||(c.id===pid));
+  if(found){
+    found.qty = (found.qty||1)+1;
+    if(found.qty>5) found.qty=5;
+  } else {
+    cart.push({product_id: pid, id:pid, name:product.name, price:finalPrice, qty:1, img:product.img, image:product.img, desc:product.desc, spec:product.spec, original:product.originalPrice, mrp:product.originalPrice, originalPrice:product.originalPrice, coupon:product.coupon, cat:cat, idx:idx});
+  }
   localStorage.setItem('rekavo_cart',JSON.stringify(cart));
   let count = cart.reduce((s,i)=>s+(i.qty||1),0);
   document.getElementById('cartCount').innerText = count;
-  
-  // Popup instant
-  document.getElementById('cartMsg').innerText = product.name+" added to cart ₹"+finalPrice+" ✓";
-  document.getElementById('cartMsg').classList.add('show');
-  setTimeout(()=>document.getElementById('cartMsg').classList.remove('show'),2000);
 
-  // 2. BACKGROUND me server pe bhejo - wait mat karo
-  let user=getUser();
-  if(user && user.user_id){
-    fetch(`${API_BASE}/cart/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id, email:user.email, product_id:pid, name:product.name, price:finalPrice, qty:1, image:product.img})}).catch(()=>{});
-  }
+  document.getElementById('cartMsg').innerText = product.name+" added to cart ₹"+finalPrice+" ✓ Qty: "+(found?found.qty:1);
+  document.getElementById('cartMsg').classList.add('show');
+  setTimeout(()=>document.getElementById('cartMsg').classList.remove('show'),2500);
+
+  // backend save - dusre laptop ke liye
+  try{
+    let uid=getUid();
+    if(uid){
+      await fetch(`${API_BASE}/cart/add`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({user_id:uid, product_id:pid, name:product.name, price:finalPrice, qty:found?found.qty:1, image:product.img})
+      });
+    }
+  }catch(e){}
 }
 function buyNow(){
   let pid = `${cat}_${idx}`;
-  let single={product_id: pid, name:product.name,price:finalPrice,img:product.img,image:product.img,desc:product.desc,spec:product.spec,original:product.originalPrice,mrp:product.originalPrice,coupon:product.coupon,qty:1};
+  let single={product_id: pid, id:pid, name:product.name,price:finalPrice,img:product.img,image:product.img,desc:product.desc,spec:product.spec,original:product.originalPrice,mrp:product.originalPrice,originalPrice:product.originalPrice,coupon:product.coupon,qty:1, cat:cat, idx:idx};
+  // FIX: cart overwrite mat karo, sirf buy_now set karo
   localStorage.setItem('rekavo_buy_now',JSON.stringify(single));
-  localStorage.setItem('rekavo_cart',JSON.stringify([single]));
   location.href='checkout.html';
 }
 
