@@ -115,199 +115,28 @@ body{background:#fff;padding-bottom:90px}
 </div>
 
 <script>
-const API_BASE="https://rekavo-backend.vercel.app";
-const categoryData={
-powerbank:[
-{name:"Power Bank 10000mAh",price:499,originalPrice:1299,coupon:"REKAVOPB10K40PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400",desc:"High capacity 10000mAh power bank with 22.5W fast charging.",spec:"Capacity: 10000mAh\nInput: Type-C 18W\nOutput: 22.5W\nWarranty: 6 Months"},
-{name:"Power Bank 20000mAh",price:799,originalPrice:1999,coupon:"REKAVOPB20K60PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400",desc:"20000mAh large capacity with digital display.",spec:"Capacity: 20000mAh\nDisplay: LED\nWarranty: 6 Months"},
-{name:"Power Bank 30000mAh",price:1099,originalPrice:2999,coupon:"REKAVOPB30K70PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400",desc:"Massive 30000mAh power bank.",spec:"Capacity: 30000mAh\nOutput: 22.5W x 4\nWarranty: 6 Months"}
-],
-neckband:[
-{name:"Neckband Boat 100",price:199,originalPrice:999,coupon:"REKAVONB10050PERCENT",img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400",desc:"Wireless neckband with 20 hours battery.",spec:"Battery: 20 Hours\nDriver: 10mm\nWarranty: 3 Months"},
-{name:"Neckband 500 Premium",price:549,originalPrice:1999,coupon:"REKAVONB50040PERCENT",img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400",desc:"Premium neckband with HD calling.",spec:"Battery: 30 Hours\nWarranty: 6 Months"}
-],
-earbuds:[
-{name:"Earbuds TWS 400",price:449,originalPrice:1499,coupon:"REKAVOEB40060PERCENT",img:"https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=400",desc:"TWS Earbuds with 30 hours playback.",spec:"Playback: 30H\nCharging: Type-C\nWarranty: 6 Months"},
-{name:"Earbuds Pro Sound",price:999,originalPrice:4999,coupon:"REKAVOEBPRO80PERCENT",img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400",desc:"Pro sound earbuds with ANC.",spec:"ANC: Yes\nBattery: 40H\nWarranty: 12 Months"}
-],
-cable:[
-{name:"Cable Type-C 100",price:99,originalPrice:299,coupon:"REKAVOCB10050PERCENT",img:"https://images.unsplash.com/photo-1625842268584-8f3296236761?w=400",desc:"Fast charging Type-C cable.",spec:"Length: 1 Meter\nSpeed: 3A"},
-{name:"Cable Fast 3A",price:199,originalPrice:499,coupon:"REKAVOCB3A40PERCENT",img:"https://images.unsplash.com/photo-1587037542707-1dad5a1cfa9d?w=400",desc:"3A fast cable with nylon braiding.",spec:"Length: 1.5M\nMaterial: Nylon"}
-],
-charger:[
-{name:"Charger 20W Fast",price:299,originalPrice:999,coupon:"REKAVOCH20W60PERCENT",img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400",desc:"20W fast charger.",spec:"Output: 20W PD\nWarranty: 6 Months"},
-{name:"Charger 65W",price:699,originalPrice:2499,coupon:"REKAVOCH65W70PERCENT",img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400",desc:"65W super fast charger.",spec:"Output: 65W GaN\nWarranty: 12 Months"}
-]
-};
-
+// cart wala hissa FIXED
 function getUser(){try{let u=JSON.parse(localStorage.getItem('rekavo_user')); if(!u) return null; u.user_id = u.user_id || u.id || u._id; return u;}catch(e){return null}}
-function getDiscount(code){let m=code.toUpperCase().match(/(\d{1,3})\s*PERCENT/);return m?parseInt(m[1]):0}
-function getAllProducts(){let all=[];for(let c in categoryData){categoryData[c].forEach((p,i)=>{all.push({...p,cat:c,idx:i})})}return all}
-function liveSearch(q){let box=document.getElementById('searchResults');let all=getAllProducts();let query=q.trim().toLowerCase();let filtered=query===""?all:all.filter(p=>p.name.toLowerCase().includes(query)||p.cat.includes(query));box.innerHTML=filtered.map(p=>`<div class="sr-item" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'"><img src="${p.img}" style="width:40px;height:40px;object-fit:contain"><div><div style="font-size:13px;font-weight:600">${p.name}</div><div style="font-size:12px;color:#388e3c">₹${p.price}</div></div></div>`).join('');box.classList.add('show')}
 
-let params=new URLSearchParams(location.search);
-let cat=params.get('cat');
-let idx=params.get('idx');
-let pid=params.get('id');
-let pname=params.get('name');
-let saved=null; try{saved=JSON.parse(localStorage.getItem('rekavo_view_product')||'null')}catch(e){}
-let product=null;
-function getAll(){let a=[];for(let c in categoryData){categoryData[c].forEach((p,i)=>{a.push({...p,cat:c,idx:i})})}return a;}
-if(cat && idx!==null){idx=parseInt(idx);if(categoryData[cat] && categoryData[cat][idx])product=categoryData[cat][idx];}
-if(!product && pid){let all=getAll();product=all.find(p=>(p.product_id||p.id||'')==pid)||null;}
-if(!product && pname){let all=getAll();product=all.find(p=>p.name.toLowerCase()===decodeURIComponent(pname).toLowerCase())||null;}
-if(!product && saved){if(saved.cat && saved.idx!==undefined && categoryData[saved.cat] && categoryData[saved.cat][saved.idx]){product=categoryData[saved.cat][saved.idx];cat=saved.cat;idx=saved.idx;}else{product=saved;}}
-if(!product){cat='powerbank';idx=0;product=categoryData[cat][0];}
-let finalPrice = product? product.price : 0;
-let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
-document.getElementById('cartCount').innerText = cart.length;
-
-if(!product){
-  document.body.innerHTML = "<h2 style='padding:20px'>Product not found! <br><a href='index.html'>Go Home</a></h2>";
-} else {
-  document.getElementById('pName').innerText = product.name;
-  document.getElementById('pOld').innerText = "₹"+product.originalPrice;
-  document.getElementById('pPrice').innerText = "₹"+product.price;
-  document.getElementById('pOff').innerText = getDiscount(product.coupon)+"% off";
-  document.getElementById('pCoupon').innerText = product.coupon;
-  document.getElementById('mainImg').src = product.img;
-  document.getElementById('pSpec').innerText = product.desc + "\n\n" + product.spec;
-  document.getElementById('thumbs').innerHTML = [product.img,product.img,product.img,product.img].map((t,i)=>`<img src="${t}" class="${i==0?'active':''}" onclick="changeImg(this,'${t}')">`).join('');
-}
-
-function changeImg(el,src){document.getElementById('mainImg').src=src;document.querySelectorAll('#thumbs img').forEach(i=>i.classList.remove('active'));el.classList.add('active')}
-function applyCoupon(){
-  let input=document.getElementById('couponInput').value.trim().toUpperCase();
-  document.getElementById('couponMsg').classList.remove('show');
-  document.getElementById('couponErr').classList.remove('show');
-  if(input===product.coupon.toUpperCase()){
-    let disc=getDiscount(product.coupon);
-    finalPrice=Math.round(product.originalPrice - (product.originalPrice*disc/100));
-    document.getElementById('pPrice').innerText="₹"+finalPrice;
-    document.getElementById('cBtn').innerText="APPLIED ✓";
-    document.getElementById('cBtn').style.background="#388e3c";
-    document.getElementById('couponMsg').innerText="✓ Coupon Applied! Extra Discount Added";
-    document.getElementById('couponMsg').classList.add('show');
-  } else {
-    document.getElementById('couponErr').innerText="Invalid coupon! Valid code is: "+product.coupon;
-    document.getElementById('couponErr').classList.add('show');
-  }
-}
-function addToCart(){
+async function addToCart(){
+  let u=getUser();
+  if(!u){ alert('Please login first'); location.href='account.html'; return; }
   let pid = `${cat}_${idx}`;
-  // 1. INSTANT - Pehle local me add + count update + popup
-  let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
-  cart.push({product_id: pid, name:product.name, price:finalPrice, qty:1, img:product.img, desc:product.desc, spec:product.spec, original:product.originalPrice, mrp:product.originalPrice, coupon:product.coupon});
-  localStorage.setItem('rekavo_cart',JSON.stringify(cart));
-  let count = cart.reduce((s,i)=>s+(i.qty||1),0);
-  document.getElementById('cartCount').innerText = count;
-  
-  // Popup instant
+  // backend me add
+  await fetch(`${API_BASE}/cart/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:u.user_id, email:u.email, product_id:pid, name:product.name, price:finalPrice, qty:1, image:product.img})});
   document.getElementById('cartMsg').innerText = product.name+" added to cart ₹"+finalPrice+" ✓";
   document.getElementById('cartMsg').classList.add('show');
-  setTimeout(()=>document.getElementById('cartMsg').classList.remove('show'),2000);
-
-  // 2. BACKGROUND me server pe bhejo - wait mat karo
-  let user=getUser();
-  if(user && user.user_id){
-    fetch(`${API_BASE}/cart/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id, email:user.email, product_id:pid, name:product.name, price:finalPrice, qty:1, image:product.img})}).catch(()=>{});
-  }
+  // count update
+  let res=await fetch(`${API_BASE}/cart/get?user_id=${u.user_id}`);
+  let cart=await res.json();
+  document.getElementById('cartCount').innerText = cart.reduce((s,i)=>s+(i.qty||1),0);
 }
 function buyNow(){
   let pid = `${cat}_${idx}`;
-  let single={product_id: pid, name:product.name,price:finalPrice,img:product.img,image:product.img,desc:product.desc,spec:product.spec,original:product.originalPrice,mrp:product.originalPrice,coupon:product.coupon,qty:1};
+  let single={product_id: pid, name:product.name,price:finalPrice,img:product.img,image:product.img,qty:1};
   localStorage.setItem('rekavo_buy_now',JSON.stringify(single));
-  localStorage.setItem('rekavo_cart',JSON.stringify([single]));
   location.href='checkout.html';
 }
-
-let currentStar=0; let uploadedPhoto="";
-let reviewKey = 'rekavo_reviews_'+cat+'_'+idx;
-let reviews = JSON.parse(localStorage.getItem(reviewKey) || '[]');
-
-function updateRatingUI(){
-  if(reviews.length===0){
-    document.getElementById('pRatingBadge').innerText="0 ★";
-    document.getElementById('pRatingBadge').style.background="#878787";
-    document.getElementById('pRatingCount').innerText="(0 Ratings)";
-    document.getElementById('avgBig').innerHTML=`0 <span style="color:#878787;font-size:18px">★</span>`;
-    document.getElementById('avgCount').innerHTML=`0 Ratings &<br>0 Reviews`;
-    return;
-  }
-  let total = reviews.reduce((s,r)=>s+r.star,0);
-  let avg = (total / reviews.length).toFixed(1);
-  document.getElementById('pRatingBadge').innerText=avg+" ★";
-  document.getElementById('pRatingBadge').style.background="#388e3c";
-  document.getElementById('pRatingCount').innerText="("+reviews.length+" Ratings)";
-  document.getElementById('avgBig').innerHTML=`${avg} <span style="color:#ff9f00;font-size:18px">★</span>`;
-  document.getElementById('avgCount').innerHTML=`${reviews.length} Ratings &<br>${reviews.length} Reviews`;
-}
-
-function loadReviews(){
-  if(reviews.length===0) return;
-  document.getElementById('reviewList').innerHTML="";
-  reviews.slice().reverse().forEach(r=>{
-    let div=document.createElement('div'); div.className='review-card';
-    div.innerHTML=`<b>${r.name||'Customer'} • </b><span style="background:#388e3c;color:#fff;padding:2px 6px;border-radius:3px;font-size:11px">${r.star} ★</span><p style="font-size:12px;margin-top:6px">${r.text}</p>${r.photo?`<img src="${r.photo}">`:''}`;
-    document.getElementById('reviewList').appendChild(div);
-  });
-  updateRatingUI();
-}
-
-function setStar(n){
-  currentStar=n;
-  document.querySelectorAll('#starBox.star').forEach((s,i)=>{
-    if(i < n) s.classList.add('active');
-    else s.classList.remove('active');
-  });
-  document.getElementById('err-review').classList.remove('show');
-}
-function previewPhoto(e){
-  let file=e.target.files[0];
-  if(file){
-    let r=new FileReader();
-    r.onload=function(ev){
-      uploadedPhoto=ev.target.result;
-      let img=document.getElementById('photoPreview');
-      img.src=uploadedPhoto;
-      img.style.display='block';
-    };
-    r.readAsDataURL(file);
-  }
-}
-function submitReview(){
-  let txt=document.getElementById('reviewText').value.trim();
-  if(currentStar==0){
-    document.getElementById('err-review').innerText="Please select a star rating";
-    document.getElementById('err-review').classList.add('show');
-    return;
-  }
-  if(txt==""){
-    document.getElementById('err-review').innerText="Please write your review";
-    document.getElementById('err-review').classList.add('show');
-    return;
-  }
-  let newRev = {star:currentStar, text:txt, photo:uploadedPhoto, name:'You'};
-  reviews.push(newRev);
-  localStorage.setItem(reviewKey, JSON.stringify(reviews));
-  document.getElementById('reviewList').innerHTML="";
-  reviews.slice().reverse().forEach(r=>{
-    let div=document.createElement('div'); div.className='review-card';
-    div.innerHTML=`<b>${r.name} • </b><span style="background:#388e3c;color:#fff;padding:2px 6px;border-radius:3px;font-size:11px">${r.star} ★</span><p style="font-size:12px;margin-top:6px">${r.text}</p>${r.photo?`<img src="${r.photo}">`:''}`;
-    document.getElementById('reviewList').appendChild(div);
-  });
-  document.getElementById('reviewMsg').innerText="Review submitted! Total: "+reviews.length+" ✓";
-  document.getElementById('reviewMsg').classList.add('show');
-  updateRatingUI();
-  document.getElementById('reviewText').value="";
-  currentStar=0;
-  document.querySelectorAll('#starBox.star').forEach(s=>s.classList.remove('active'));
-  document.getElementById('photoPreview').style.display='none';
-  document.getElementById('reviewPhoto').value="";
-  uploadedPhoto="";
-}
-loadReviews();
-updateRatingUI();
 </script>
 </body>
 </html>
