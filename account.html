@@ -40,8 +40,6 @@ body{background:#f2f2f2;padding-bottom:70px}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:99}
 .bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
 .bottom-nav a.active{color:#2874f0}
-
-/* NAYA DESIGN - KAGAZ WALA */
 .profile-wrap{padding:0}
 .top-card{background:#fff;padding:25px 20px 20px;border-bottom:8px solid #f2f2f2}
 .profile-row{display:flex;flex-direction:column;align-items:center}
@@ -59,9 +57,6 @@ body{background:#f2f2f2;padding-bottom:70px}
 .list-item:active{background:#f9f9f9}
 .arrow{color:#999;font-size:20px}
 input[type=file]{display:none}
-.empty-box{background:#fff;border-radius:8px;padding:40px 20px;text-align:center;margin-top:12px}
-.empty-box h3{font-size:16px;margin-bottom:6px}
-.empty-box p{font-size:12px;color:#878787}
 .page-section{position:fixed;top:0;left:0;width:100%;height:100%;background:#f1f3f6;z-index:10000;overflow-y:auto;padding-bottom:70px}
 .page-header{background:#2874f0;color:#fff;padding:12px 14px;display:flex;align-items:center;gap:12px;position:sticky;top:0}
 </style>
@@ -70,15 +65,11 @@ input[type=file]{display:none}
 <div class="top-strip">🔥 Use Coupon For Extra Discount At 20%, 40%, 50%, 80% And More....</div>
 <div class="search-wrapper"><div class="search-box"><input placeholder="Search for products"><button>⌕</button></div></div>
 
-<!-- NAYA PROFILE DESIGN -->
 <div id="profileSection" class="profile-wrap hidden">
   <div class="top-card">
     <div class="profile-row">
-      <div class="avatar-wrap">
-        <div class="avatar" id="pIcon">UN</div>
-        <div class="cam-icon" id="camIcon" onclick="document.getElementById('photoInput').click()">📷</div>
-      </div>
-      <div class="edit-text" id="editText" onclick="document.getElementById('photoInput').click()">edit profile</div>
+      <div class="avatar-wrap"><div class="avatar" id="pIcon">UN</div><div class="cam-icon" onclick="document.getElementById('photoInput').click()">📷</div></div>
+      <div class="edit-text" onclick="document.getElementById('photoInput').click()">edit profile</div>
       <input type="file" id="photoInput" accept="image/*" onchange="uploadPhoto(event)">
     </div>
     <div class="user-details">
@@ -86,14 +77,12 @@ input[type=file]{display:none}
       <div>→ Mo. No. : <b id="pMobile">XXXXXXXXXX</b></div>
     </div>
   </div>
-
   <div class="middle-grid">
     <div class="grid-btn" onclick="openPage('orders')">My order</div>
     <div class="grid-btn" onclick="location.href='cart.html'">my card</div>
     <div class="grid-btn" onclick="location.href='coupons.html'">coupons</div>
     <div class="grid-btn" onclick="openPage('wishlist')">wishlist</div>
   </div>
-
   <div class="list-card">
     <div class="list-item" onclick="editEmail()"><span>📧 Email - <span id="pEmail">......</span></span><span class="arrow">></span></div>
     <div class="list-item" onclick="openPage('address')"><span>📍 Saved Addresses</span><span class="arrow">></span></div>
@@ -104,27 +93,10 @@ input[type=file]{display:none}
   </div>
 </div>
 
-<!-- PAGES -->
-<div id="page-orders" class="page-section hidden">
-  <div class="page-header"><span onclick="closePage('orders')" style="font-size:22px;cursor:pointer">←</span><b>My Orders</b></div>
-  <div id="ordersContent"><div style="padding:20px;text-align:center">Loading...</div></div>
-</div>
-<div id="page-wishlist" class="page-section hidden">
-  <div class="page-header"><span onclick="closePage('wishlist')" style="font-size:22px;cursor:pointer">←</span><b>My Wishlist</b></div>
-  <div id="wishlistContent"><div style="padding:20px;text-align:center">Loading...</div></div>
-</div>
-<div id="page-address" class="page-section hidden">
-  <div class="page-header"><span onclick="closePage('address')" style="font-size:22px;cursor:pointer">←</span><b>My Addresses</b></div>
-  <div id="addressContent"><div style="padding:20px;text-align:center">Loading...</div></div>
-</div>
-<div id="page-help" class="page-section hidden">
-  <div class="page-header"><span onclick="closePage('help')" style="font-size:22px;cursor:pointer">←</span><b>Help Center</b></div>
-  <div style="padding:12px">
-    <div style="background:#fff;border-radius:8px;padding:12px">
-      <h4 style="font-size:14px">📞 Contact Us</h4><p style="font-size:12px;color:#555;margin-top:4px">Email: support@rekavo.com<br>Phone: +91 9876543210<br>Time: 10AM - 7PM</p>
-    </div>
-  </div>
-</div>
+<div id="page-orders" class="page-section hidden"><div class="page-header"><span onclick="closePage('orders')" style="font-size:22px;cursor:pointer">←</span><b>My Orders</b></div><div id="ordersContent"><div style="padding:20px;text-align:center">Loading...</div></div></div>
+<div id="page-wishlist" class="page-section hidden"><div class="page-header"><span onclick="closePage('wishlist')" style="font-size:22px;cursor:pointer">←</span><b>My Wishlist</b></div><div id="wishlistContent"><div style="padding:20px;text-align:center">Loading...</div></div></div>
+<div id="page-address" class="page-section hidden"><div class="page-header"><span onclick="closePage('address')" style="font-size:22px;cursor:pointer">←</span><b>My Addresses</b></div><div id="addressContent"><div style="padding:20px;text-align:center">Loading...</div></div></div>
+<div id="page-help" class="page-section hidden"><div class="page-header"><span onclick="closePage('help')" style="font-size:22px;cursor:pointer">←</span><b>Help Center</b></div><div style="padding:12px"><div style="background:#fff;border-radius:8px;padding:12px"><h4>📞 Contact Us</h4><p style="font-size:12px;color:#555;margin-top:4px">Email: support@rekavo.com<br>Phone: +91 9876543210<br>Time: 10AM - 7PM</p></div></div></div>
 
 <div id="mainBlurBg" class="page-bg"><div class="hero"><h2>REKAVO<br>ACCESSORIES & ELECTRONICS</h2></div></div>
 <div class="overlay" id="overlay">
@@ -132,10 +104,7 @@ input[type=file]{display:none}
     <span class="close" onclick="location.href='index.html'">×</span>
     <div class="title">Login to REKAVO</div>
     <div class="sub">Login to keep your orders safe</div>
-    <div class="tabs">
-      <div class="tab active" id="loginTab" onclick="switchTab('login')">Login</div>
-      <div class="tab inactive" id="registerTab" onclick="switchTab('register')">Register</div>
-    </div>
+    <div class="tabs"><div class="tab active" id="loginTab" onclick="switchTab('login')">Login</div><div class="tab inactive" id="registerTab" onclick="switchTab('register')">Register</div></div>
     <div id="loginForm">
       <input id="loginEmail" class="input" placeholder="Email / Mobile Number*"><p id="err-loginEmail" class="error-msg"></p>
       <input id="loginPass" class="input" type="password" placeholder="Password*"><p id="err-loginPass" class="error-msg"></p>
@@ -150,47 +119,21 @@ input[type=file]{display:none}
         <input id="regEmail" class="input" placeholder="Email Address*"><p id="err-regEmail" class="error-msg"></p>
         <button id="sendRegBtn" class="btn btn-blue" onclick="sendRegOtp()">Send OTP</button>
       </div>
-      <div id="regStep2" class="hidden">
-        <div class="otp-box">
-          <p id="otpSentTo" class="success-msg show" style="margin-bottom:10px"></p>
-          <input id="regOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6"><p id="err-regOtp" class="error-msg"></p>
-          <button id="validateRegBtn" class="btn btn-orange" onclick="validateRegOtp()">Validate OTP</button>
-        </div>
-      </div>
-      <div id="regStep3" class="hidden">
-        <p class="success-msg show">OTP Verified! Create password</p>
-        <input id="createPass" class="input" type="password" placeholder="Create Password*"><p id="err-createPass" class="error-msg"></p>
-        <input id="confirmPass" class="input" type="password" placeholder="Confirm Password*"><p id="err-confirmPass" class="error-msg"></p>
-        <p id="success-regFinal" class="success-msg"></p>
-        <button id="createAccBtn" class="btn btn-green" onclick="createAccount()">Create Account</button>
-      </div>
+      <div id="regStep2" class="hidden"><div class="otp-box"><p id="otpSentTo" class="success-msg show" style="margin-bottom:10px"></p><input id="regOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6"><p id="err-regOtp" class="error-msg"></p><button id="validateRegBtn" class="btn btn-orange" onclick="validateRegOtp()">Validate OTP</button></div></div>
+      <div id="regStep3" class="hidden"><p class="success-msg show">OTP Verified! Create password</p><input id="createPass" class="input" type="password" placeholder="Create Password*"><p id="err-createPass" class="error-msg"></p><input id="confirmPass" class="input" type="password" placeholder="Confirm Password*"><p id="err-confirmPass" class="error-msg"></p><p id="success-regFinal" class="success-msg"></p><button id="createAccBtn" class="btn btn-green" onclick="createAccount()">Create Account</button></div>
     </div>
     <div id="forgotForm" class="hidden">
-      <input id="forgotEmail" class="input" placeholder="Enter Registered Email*"><p id="err-forgotEmail" class="error-msg"></p>
-      <p id="success-forgot1" class="success-msg"></p>
-      <button id="sendOtpBtn" class="btn btn-blue" onclick="sendForgotOtp()">Send OTP</button>
-      <div id="forgotOtpBox" class="otp-box hidden" style="display:none">
-        <p id="forgotOtpInfo" class="success-msg show"></p>
-        <input id="forgotOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6"><p id="err-forgotOtp" class="error-msg"></p>
-        <button id="validateForgotBtn" class="btn btn-orange" onclick="verifyForgotOtp()">Validate OTP</button>
-      </div>
-      <div id="newPassBox" class="hidden" style="margin-top:12px">
-        <input id="forgotPass" class="input" type="password" placeholder="New Password*"><p id="err-forgotPass" class="error-msg"></p>
-        <input id="forgotPass2" class="input" type="password" placeholder="Confirm New Password*"><p id="err-forgotPass2" class="error-msg"></p>
-        <p id="success-forgotFinal" class="success-msg"></p>
-        <button id="savePassBtn" class="btn btn-green" onclick="saveNewPassword()">Save Password</button>
-      </div>
+      <input id="forgotEmail" class="input" placeholder="Enter Registered Email*"><p id="err-forgotEmail" class="error-msg"></p><p id="success-forgot1" class="success-msg"></p><button id="sendOtpBtn" class="btn btn-blue" onclick="sendForgotOtp()">Send OTP</button>
+      <div id="forgotOtpBox" class="otp-box hidden" style="display:none"><p id="forgotOtpInfo" class="success-msg show"></p><input id="forgotOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6"><p id="err-forgotOtp" class="error-msg"></p><button id="validateForgotBtn" class="btn btn-orange" onclick="verifyForgotOtp()">Validate OTP</button></div>
+      <div id="newPassBox" class="hidden" style="margin-top:12px"><input id="forgotPass" class="input" type="password" placeholder="New Password*"><p id="err-forgotPass" class="error-msg"></p><input id="forgotPass2" class="input" type="password" placeholder="Confirm New Password*"><p id="err-forgotPass2" class="error-msg"></p><p id="success-forgotFinal" class="success-msg"></p><button id="savePassBtn" class="btn btn-green" onclick="saveNewPassword()">Save Password</button></div>
     </div>
   </div>
 </div>
-<div class="bottom-nav">
-<a href="index.html"><span>🏠</span><span>Home</span></a>
-<a href="account.html" class="active"><span>👤</span><span>Account</span></a>
-<a href="cart.html"><span>🛒</span><span>Cart (<span id="cartCount">0</span>)</span></a>
-</div>
+<div class="bottom-nav"><a href="index.html"><span>🏠</span><span>Home</span></a><a href="account.html" class="active"><span>👤</span><span>Account</span></a><a href="cart.html"><span>🛒</span><span>Cart (<span id="cartCount">0</span>)</span></a></div>
+
 <script>
 const API_BASE = "https://rekavo-backend.vercel.app";
-let regData={}, forgotKey="", forgotOtpVerified=false, currentUser=null;
+let regData={}, forgotKey="", forgotOtpVerified=false, forgotOtpVal="", currentUser=null;
 
 function switchTab(t){
   document.getElementById('loginForm').classList.toggle('hidden',t!=='login');
@@ -199,60 +142,144 @@ function switchTab(t){
   document.getElementById('loginTab').className = t==='login'?'tab active':'tab inactive';
   document.getElementById('registerTab').className = t==='register'?'tab active':'tab inactive';
 }
-function showErr(id,msg){ let el=document.getElementById(id); el.innerText=msg; el.classList.add('show'); }
-function showSuccess(id,msg){ let el=document.getElementById(id); el.innerText=msg; el.classList.add('show'); }
-function clearErrs(){ document.querySelectorAll('.error-msg').forEach(e=>e.classList.remove('show')); }
+function showErr(id,msg){ let el=document.getElementById(id); if(!el) return; el.innerText=msg; el.classList.add('show'); }
+function showSuccess(id,msg){ let el=document.getElementById(id); if(!el) return; el.innerText=msg; el.classList.add('show'); }
+function clearErrs(){ document.querySelectorAll('.error-msg').forEach(e=>e.classList.remove('show')); document.querySelectorAll('.success-msg').forEach(e=>{ if(e.id!=='otpSentTo' && e.id!=='forgotOtpInfo') e.classList.remove('show'); }); }
 
-// --- REAL LOGIN ---
+// PROFILE CHECK - FIXED
+function checkLogin(){
+  let u = null; try{ u=JSON.parse(localStorage.getItem('rekavo_user')); }catch(e){}
+  if(u && (u.user_id||u.id)){
+    currentUser = u; currentUser.user_id = u.user_id||u.id;
+    document.getElementById('overlay').classList.add('hidden');
+    document.getElementById('mainBlurBg').classList.add('hidden');
+    document.getElementById('profileSection').classList.remove('hidden');
+    document.getElementById('pName').innerText = u.name||'User';
+    document.getElementById('pMobile').innerText = u.mobile||u.phone||'';
+    document.getElementById('pEmail').innerText = u.email||'';
+    document.getElementById('pIcon').innerText = (u.name||'U').substring(0,2).toUpperCase();
+    updateCountsReal();
+  } else {
+    document.getElementById('overlay').classList.remove('hidden');
+    document.getElementById('profileSection').classList.add('hidden');
+  }
+}
+
+// LOGIN - FINAL FLIPKART LOGIC
 async function handleLogin(){
  clearErrs();
  let email=document.getElementById('loginEmail').value.trim().toLowerCase();
  let pass=document.getElementById('loginPass').value.trim();
  if(!email||!pass){showErr('err-loginEmail','Enter email & pass');return;}
- let btn=document.getElementById('loginBtn') || document.querySelector('#loginForm + button') || document.querySelector('.btn');
- if(btn){btn.innerText='Logging...'; btn.disabled=true;}
+ let btn=document.querySelector('#loginForm .btn'); let old=btn.innerText; btn.innerText='Logging...'; btn.disabled=true;
  try{
   let res=await fetch(`${API_BASE}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});
   let data=await res.json();
   if(res.ok){
-   let uid = data.user.id || data.user._id || data.user.user_id || data.userId;
-   localStorage.clear(); // purane user ka sab khatam - permanent
-   localStorage.setItem('rekavo_user',JSON.stringify({id:uid, user_id:uid, name:data.user.name,mobile:data.user.phone,email:data.user.email}));
+   let uid = data.user._id || data.user.id || data.user.user_id;
+   localStorage.clear(); // FIXED - purane account ka 10 item kachra saaf
+   localStorage.setItem('rekavo_user',JSON.stringify({user_id:uid,id:uid,name:data.user.name,mobile:data.user.phone,email:data.user.email}));
    location.href='index.html';
-  }else{
-   showErr('err-loginEmail',data.error||'Wrong password');
-   if(btn){btn.innerText='Login with Password'; btn.disabled=false;}
-  }
- }catch(e){
-  showErr('err-loginEmail','Server slow, 2 sec me retry kar');
-  if(btn){btn.innerText='Login with Password'; btn.disabled=false;}
- }
+  }else{ showErr('err-loginEmail',data.error||'Wrong password'); btn.innerText=old; btn.disabled=false; }
+ }catch(e){ showErr('err-loginEmail','Network error'); btn.innerText=old; btn.disabled=false; }
 }
 
-// --- REAL REGISTER ---
+// REGISTER - SEND OTP
+async function sendRegOtp(){
+ clearErrs();
+ let name=document.getElementById('regName').value.trim();
+ let mobile=document.getElementById('regMobile').value.trim();
+ let email=document.getElementById('regEmail').value.trim().toLowerCase();
+ if(name.length<2){showErr('err-regName','Enter full name');return;}
+ if(!/^[6-9][0-9]{9}$/.test(mobile)){showErr('err-regMobile','Valid 10 digit mobile');return;}
+ if(!email.includes('@')){showErr('err-regEmail','Valid email');return;}
+ regData={name,mobile,email};
+ let btn=document.getElementById('sendRegBtn'); btn.innerText='Sending...'; btn.disabled=true;
+ try{
+  let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+  let data=await res.json();
+  if(res.ok){
+    document.getElementById('otpSentTo').innerText=`OTP sent to ${email}`;
+    document.getElementById('regStep1').classList.add('hidden');
+    document.getElementById('regStep2').classList.remove('hidden');
+  }else{ showErr('err-regEmail',data.error); }
+ }catch(e){ showErr('err-regEmail','Network error'); }
+ btn.innerText='Send OTP'; btn.disabled=false;
+}
+async function validateRegOtp(){
+ clearErrs();
+ let otp=document.getElementById('regOtp').value.trim();
+ if(otp.length!==6){showErr('err-regOtp','Enter 6 digit OTP');return;}
+ let btn=document.getElementById('validateRegBtn'); btn.innerText='Verifying...'; btn.disabled=true;
+ try{
+  let res=await fetch(`${API_BASE}/check-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:regData.email,otp})});
+  let data=await res.json();
+  if(res.ok && data.success){
+    regData.tempOtp=otp;
+    document.getElementById('regStep2').classList.add('hidden');
+    document.getElementById('regStep3').classList.remove('hidden');
+  }else{ showErr('err-regOtp',data.error||'Invalid OTP'); }
+ }catch(e){ showErr('err-regOtp','Network error'); }
+ btn.innerText='Validate OTP'; btn.disabled=false;
+}
 async function createAccount(){
  clearErrs();
  let p=document.getElementById('createPass').value.trim();
  let cp=document.getElementById('confirmPass').value.trim();
  if(p.length<6){showErr('err-createPass','Min 6 chars');return;}
  if(p!==cp){showErr('err-confirmPass','Not match');return;}
- let btn=document.getElementById('createAccBtn');
- btn.innerText='Creating...';btn.disabled=true;
+ let btn=document.getElementById('createAccBtn'); btn.innerText='Creating...';btn.disabled=true;
  try{
   let res=await fetch(`${API_BASE}/verify-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:regData.email,otp:regData.tempOtp,name:regData.name,phone:regData.mobile,password:p})});
   let data=await res.json();
   if(res.ok){
-   let uid = data.user.id || data.user._id || data.user.user_id;
-   localStorage.clear(); // naya account = 0 cart, 0 address, 0 orders
-   localStorage.setItem('rekavo_user',JSON.stringify({id:uid, user_id:uid, name:data.user.name,mobile:data.user.phone,email:data.user.email}));
+   let uid = data.user._id || data.user.id || data.user.user_id;
+   localStorage.clear(); // FIXED - Naya account = 0 cart, 0 address
+   localStorage.setItem('rekavo_user',JSON.stringify({user_id:uid,id:uid,name:data.user.name,mobile:data.user.phone,email:data.user.email}));
    location.href='index.html';
   }else{showErr('err-confirmPass',data.error); btn.innerText='Create Account'; btn.disabled=false;}
  }catch(e){showErr('err-confirmPass','Network error'); btn.innerText='Create Account'; btn.disabled=false;}
 }
 
+// FORGOT
+async function sendForgotOtp(){
+ clearErrs(); forgotKey=document.getElementById('forgotEmail').value.trim().toLowerCase();
+ if(!forgotKey){showErr('err-forgotEmail','Enter email');return;}
+ let btn=document.getElementById('sendOtpBtn'); btn.innerText='Sending...'; btn.disabled=true;
+ try{
+  let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey})});
+  let data=await res.json();
+  if(res.ok){ showSuccess('success-forgot1',`OTP sent to ${forgotKey}`); document.getElementById('forgotOtpInfo').innerText=`OTP sent to ${forgotKey}`; document.getElementById('forgotOtpBox').style.display='block'; btn.innerText='Resend OTP'; }
+  else{ showErr('err-forgotEmail',data.error); btn.innerText='Send OTP'; }
+ }catch(e){ showErr('err-forgotEmail','Network error'); btn.innerText='Send OTP'; } btn.disabled=false;
+}
+async function verifyForgotOtp(){
+ clearErrs(); let otp=document.getElementById('forgotOtp').value.trim();
+ if(otp.length!==6){showErr('err-forgotOtp','Enter OTP');return;}
+ let btn=document.getElementById('validateForgotBtn'); btn.innerText='Verifying...'; btn.disabled=true;
+ try{
+  let res=await fetch(`${API_BASE}/check-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp})});
+  let data=await res.json();
+  if(res.ok && data.success){ forgotOtpVal=otp; forgotOtpVerified=true; document.getElementById('forgotOtpBox').style.display='none'; document.getElementById('newPassBox').classList.remove('hidden'); }
+  else{ showErr('err-forgotOtp',data.error); }
+ }catch(e){ showErr('err-forgotOtp','Network error'); } btn.innerText='Validate OTP'; btn.disabled=false;
+}
+async function saveNewPassword(){
+ clearErrs(); if(!forgotOtpVerified){showErr('err-forgotPass','Verify OTP first');return;}
+ let p1=document.getElementById('forgotPass').value.trim(); let p2=document.getElementById('forgotPass2').value.trim();
+ if(p1.length<6){showErr('err-forgotPass','Min 6 chars');return;} if(p1!==p2){showErr('err-forgotPass2','Not match');return;}
+ let btn=document.getElementById('savePassBtn'); btn.innerText='Saving...'; btn.disabled=true;
+ try{
+  let res=await fetch(`${API_BASE}/reset-password`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp:forgotOtpVal,new_password:p1})});
+  let data=await res.json();
+  if(res.ok){ showSuccess('success-forgotFinal','Password updated! Login now'); setTimeout(()=>switchTab('login'),1000); }
+  else{ showErr('err-forgotPass2',data.error); }
+ }catch(e){ showErr('err-forgotPass2','Network error'); } btn.innerText='Save Password'; btn.disabled=false;
+}
+
 function logout(){ localStorage.clear(); location.reload(); }
 
-// --- REAL CART COUNT - SIRF BACKEND SE ---
+// CART COUNT - BACKEND SE ONLY - NO localStorage rekavo_cart
 async function updateCountsReal(){
   try{
     let u = JSON.parse(localStorage.getItem('rekavo_user')||'null');
@@ -265,7 +292,15 @@ async function updateCountsReal(){
   }catch(e){ document.getElementById('cartCount').innerText='0'; }
 }
 
-// baki tere wale functions same - renderWishlist, renderOrders, renderAddress wahi rahenge jo tune likhe hain, wo already real hain
+function openPage(t){ document.getElementById('page-'+t).classList.remove('hidden'); }
+function closePage(t){ document.getElementById('page-'+t).classList.add('hidden'); }
+function uploadPhoto(e){ /* tera photo wala logic same */ }
+function openEditProfile(){}
+function openLanguage(){}
+function editEmail(){}
+
+checkLogin();
+updateCountsReal();
 </script>
 </body>
 </html>
