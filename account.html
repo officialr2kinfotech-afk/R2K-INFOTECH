@@ -6,7 +6,7 @@
 <title>Account - REKAVO</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,Arial,sans-serif}
-body{background:#f1f3f6;padding-bottom:70px}
+body{background:#f2f2f2;padding-bottom:70px}
 .top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:7px 12px;font-size:12px;font-weight:800}
 .search-wrapper{background:#2874f0;padding:10px 12px;position:sticky;top:0;z-index:10}
 .search-box{width:100%;display:flex;background:#fff;border-radius:4px;overflow:hidden;height:42px;align-items:center}
@@ -35,17 +35,30 @@ body{background:#f1f3f6;padding-bottom:70px}
 .error-msg.show{display:block}
 .success-msg{color:#188038;font-size:11px;font-weight:700;margin-top:6px;display:none;background:#e6f4ea;padding:8px;border-radius:4px;text-align:center}
 .success-msg.show{display:block}
-.hidden{display:none !important}
+.hidden{display:none!important}
 .otp-box{background:#f8f9ff;border:1px dashed #2874f0;border-radius:8px;padding:15px;margin-top:10px;text-align:center}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:99}
 .bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
 .bottom-nav a.active{color:#2874f0}
-.profile-wrap{padding:12px}
-.profile-card{background:#fff;border-radius:8px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.1);text-align:center}
-.p-circle{width:72px;height:72px;background:#2874f0;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;margin:0 auto}
-.p-menu{text-align:left;margin-top:16px}
-.p-menu-item{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #f0f0f0;font-size:14px;font-weight:600;cursor:pointer}
-.p-menu-item:active{background:#f5f5f5}
+
+/* NAYA DESIGN - KAGAZ WALA */
+.profile-wrap{padding:0}
+.top-card{background:#fff;padding:25px 20px 20px;border-bottom:8px solid #f2f2f2}
+.profile-row{display:flex;flex-direction:column;align-items:center}
+.avatar-wrap{position:relative;width:70px;height:70px}
+.avatar{width:70px;height:70px;border-radius:50%;border:2px solid #111;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px;background:#2874f0;color:#fff;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.cam-icon{position:absolute;bottom:-2px;right:-2px;background:#fff;border:1.5px solid #111;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer}
+.edit-text{font-size:11px;margin-top:6px;color:#555;cursor:pointer}
+.user-details{width:100%;margin-top:18px;text-align:left;line-height:1.9}
+.middle-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;background:#fff;border-bottom:8px solid #f2f2f2}
+.grid-btn{border:1.5px solid #000;border-radius:10px;padding:14px 10px;text-align:center;font-weight:500;background:#fff;cursor:pointer}
+.grid-btn:active{background:#f5f5f5}
+.list-card{background:#fff}
+.list-item{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid #eee;cursor:pointer;font-size:15px}
+.list-item:active{background:#f9f9f9}
+.arrow{color:#999;font-size:20px}
+input[type=file]{display:none}
 .empty-box{background:#fff;border-radius:8px;padding:40px 20px;text-align:center;margin-top:12px}
 .empty-box h3{font-size:16px;margin-bottom:6px}
 .empty-box p{font-size:12px;color:#878787}
@@ -57,27 +70,41 @@ body{background:#f1f3f6;padding-bottom:70px}
 <div class="top-strip">🔥 Use Coupon For Extra Discount At 20%, 40%, 50%, 80% And More....</div>
 <div class="search-wrapper"><div class="search-box"><input placeholder="Search for products"><button>⌕</button></div></div>
 
+<!-- NAYA PROFILE DESIGN -->
 <div id="profileSection" class="profile-wrap hidden">
-  <div class="profile-card">
-    <div class="p-circle" id="pIcon">R</div>
-    <h3 id="pName" style="margin-top:10px;font-size:17px;font-weight:800"></h3>
-    <p id="pEmail" style="font-size:13px;color:#878787;margin-top:2px"></p>
-    <p id="pMobile" style="font-size:13px;color:#878787;margin-top:2px"></p>
-    <div class="p-menu">
-      <div class="p-menu-item" onclick="location.href='cart.html'"><span>🛒 My Cart (<span id="pCartCount">0</span>)</span><span>›</span></div>
-      <div class="p-menu-item" onclick="openPage('orders')"><span>📦 My Orders</span><span>›</span></div>
-      <div class="p-menu-item" onclick="openPage('wishlist')"><span>❤️ Wishlist (<span id="pWishCount">0</span>)</span><span>›</span></div>
-      <div class="p-menu-item" onclick="openPage('address')"><span>🏠 My Addresses</span><span>›</span></div>
-      <div class="p-menu-item" onclick="openPage('help')"><span>🎧 Help Center</span><span>›</span></div>
+  <div class="top-card">
+    <div class="profile-row">
+      <div class="avatar-wrap">
+        <div class="avatar" id="pIcon">UN</div>
+        <div class="cam-icon" id="camIcon" onclick="document.getElementById('photoInput').click()">📷</div>
+      </div>
+      <div class="edit-text" id="editText" onclick="document.getElementById('photoInput').click()">edit profile</div>
+      <input type="file" id="photoInput" accept="image/*" onchange="uploadPhoto(event)">
     </div>
-    <button class="btn" style="background:#fff;color:#2874f0;border:1px solid #e0e0e0;margin-top:18px" onclick="logout()">Logout</button>
+    <div class="user-details">
+      <div>→ User Name : <b id="pName">User Name</b></div>
+      <div>→ Mo. No. : <b id="pMobile">XXXXXXXXXX</b></div>
+    </div>
+  </div>
+
+  <div class="middle-grid">
+    <div class="grid-btn" onclick="openPage('orders')">My order</div>
+    <div class="grid-btn" onclick="location.href='cart.html'">my card</div>
+    <div class="grid-btn" onclick="location.href='coupons.html'">coupons</div>
+    <div class="grid-btn" onclick="openPage('wishlist')">wishlist</div>
+  </div>
+
+  <div class="list-card">
+    <div class="list-item" onclick="editEmail()"><span>📧 Email - <span id="pEmail">......</span></span><span class="arrow">></span></div>
+    <div class="list-item" onclick="openPage('address')"><span>📍 Saved Addresses</span><span class="arrow">></span></div>
+    <div class="list-item" onclick="openEditProfile()"><span>👤 Edit profile</span><span class="arrow">></span></div>
+    <div class="list-item" onclick="openLanguage()"><span>अ/A Select Language</span><span class="arrow">></span></div>
+    <div class="list-item" onclick="openPage('help')"><span>Help center</span><span class="arrow">></span></div>
+    <div class="list-item" onclick="logout()" style="justify-content:center;color:#d93025;font-weight:700">Logout</div>
   </div>
 </div>
 
-<div id="page-cart" class="page-section hidden">
-  <div class="page-header"><span onclick="closePage('cart')" style="font-size:22px;cursor:pointer">←</span><b>My Cart - REAL DATABASE</b></div>
-  <div id="cartContent"><div style="padding:20px;text-align:center">Loading...</div></div>
-</div>
+<!-- PAGES -->
 <div id="page-orders" class="page-section hidden">
   <div class="page-header"><span onclick="closePage('orders')" style="font-size:22px;cursor:pointer">←</span><b>My Orders</b></div>
   <div id="ordersContent"><div style="padding:20px;text-align:center">Loading...</div></div>
@@ -95,11 +122,6 @@ body{background:#f1f3f6;padding-bottom:70px}
   <div style="padding:12px">
     <div style="background:#fff;border-radius:8px;padding:12px">
       <h4 style="font-size:14px">📞 Contact Us</h4><p style="font-size:12px;color:#555;margin-top:4px">Email: support@rekavo.com<br>Phone: +91 9876543210<br>Time: 10AM - 7PM</p>
-      <hr style="margin:12px 0;border:none;border-top:1px solid #eee">
-      <h4 style="font-size:14px">❓ FAQs</h4>
-      <p style="font-size:12px;margin-top:8px"><b>Q: Delivery kitne din me?</b><br>A: 3-5 din ke andar.</p>
-      <p style="font-size:12px;margin-top:8px"><b>Q: Return policy?</b><br>A: 7 din ka easy return.</p>
-      <p style="font-size:12px;margin-top:8px"><b>Q: Payment safe hai?</b><br>A: Haan 100% secure hai.</p>
     </div>
   </div>
 </div>
@@ -169,12 +191,10 @@ body{background:#f1f3f6;padding-bottom:70px}
 <script>
 const API_BASE = "https://rekavo-backend.vercel.app";
 let regData={}, forgotKey="", forgotOtpVerified=false, currentUser=null;
-
 function switchTab(t){document.getElementById('loginForm').classList.toggle('hidden',t!=='login');document.getElementById('registerForm').classList.toggle('hidden',t!=='register');document.getElementById('forgotForm').classList.toggle('hidden',t!=='forgot');}
 function showErr(id,msg){let el=document.getElementById(id);el.innerText=msg;el.classList.add('show');}
 function showSuccess(id,msg){let el=document.getElementById(id);el.innerText=msg;el.classList.add('show');}
 function clearErrs(){document.querySelectorAll('.error-msg').forEach(e=>e.classList.remove('show'));document.querySelectorAll('.success-msg').forEach(e=>{if(!['otpSentTo','forgotOtpInfo'].includes(e.id)) e.classList.remove('show')})}
-
 async function sendRegOtp(){
  clearErrs(); let name=document.getElementById('regName').value.trim(); let mobile=document.getElementById('regMobile').value.trim(); let email=document.getElementById('regEmail').value.trim().toLowerCase();
  if(name.length<2){showErr('err-regName','Enter name');return;} if(!/^[6-9][0-9]{9}$/.test(mobile)){showErr('err-regMobile','Valid mobile');return;} if(!email.includes('@')){showErr('err-regEmail','Valid email');return;}
@@ -199,7 +219,7 @@ async function createAccount(){
 }
 async function handleLogin(){
  clearErrs(); let email=document.getElementById('loginEmail').value.trim().toLowerCase(); let pass=document.getElementById('loginPass').value.trim(); if(!email||!pass){showErr('err-loginEmail','Enter email & pass');return;}
- let btn=document.querySelector('#loginForm .btn');btn.innerText='Logging...';btn.disabled=true;
+ let btn=document.querySelector('#loginForm.btn');btn.innerText='Logging...';btn.disabled=true;
  try{let res=await fetch(`${API_BASE}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});let data=await res.json();if(res.ok){
   let uid = data.user.id || data.user._id || data.user.user_id || data.userId;
   localStorage.setItem('rekavo_user',JSON.stringify({id:uid, user_id:uid, name:data.user.name,mobile:data.user.phone,email:data.user.email}));
@@ -224,46 +244,42 @@ async function saveNewPassword(){
  try{let res=await fetch(`${API_BASE}/reset-password`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp:window._forgotOtp,new_password:p1})});let data=await res.json();if(res.ok){showSuccess('success-forgotFinal','Password updated!');setTimeout(()=>switchTab('login'),1000);}else{showErr('err-forgotPass2',data.error);}}catch(e){showErr('err-forgotPass2','Network error');}
  btn.innerText='Save Password';btn.disabled=false;
 }
-
 function openPage(type){
  if(!currentUser){alert('Please login first');return;}
  document.getElementById(`page-${type}`).classList.remove('hidden');
- if(type==='cart') renderCart();
  if(type==='orders') renderOrders();
  if(type==='wishlist') renderWishlist();
  if(type==='address') renderAddress();
 }
 function closePage(type){document.getElementById(`page-${type}`).classList.add('hidden');}
+function getUid(){ return currentUser? (currentUser.user_id || currentUser.id) : null; }
 
-// ===== GATE FIX - user_id se =====
-function getUid(){ return currentUser ? (currentUser.user_id || currentUser.id) : null; }
+// PHOTO LOGIC
+function uploadPhoto(e){
+  let file = e.target.files[0];
+  if(!file) return;
+  let reader = new FileReader();
+  reader.onload = function(ev){
+    localStorage.setItem('userPhoto', ev.target.result);
+    setPhoto(ev.target.result);
+  }
+  reader.readAsDataURL(file);
+}
+function setPhoto(src){
+  document.getElementById('pIcon').innerHTML = `<img src="${src}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+  document.getElementById('camIcon').style.display='none';
+  document.getElementById('editText').style.display='none';
+}
+function openEditProfile(){
+  let n = prompt('Enter new name:', currentUser.name||'');
+  if(n){ currentUser.name=n; let u=JSON.parse(localStorage.getItem('rekavo_user')); u.name=n; localStorage.setItem('rekavo_user',JSON.stringify(u)); showLoggedInProfile(); }
+}
+function editEmail(){
+  let em = prompt('Enter email:', currentUser.email||'');
+  if(em){ currentUser.email=em; let u=JSON.parse(localStorage.getItem('rekavo_user')); u.email=em; localStorage.setItem('rekavo_user',JSON.stringify(u)); showLoggedInProfile(); }
+}
+function openLanguage(){ let lang = prompt('Select Language: English, Hindi'); if(lang) alert('Language: '+lang); }
 
-async function renderCart(){
- let el=document.getElementById('cartContent');
- el.innerHTML='<div style="padding:20px;text-align:center">Loading real cart...</div>';
- try{
-   let uid = getUid();
-   let res=await fetch(`${API_BASE}/cart/get?user_id=${uid}`);
-   let cart=await res.json();
-   if(cart.length===0){el.innerHTML=`<div class="empty-box"><h3>🛒 Your cart is empty</h3><p>This is REAL database cart - same on all devices</p><button class="btn btn-blue" style="margin-top:12px;width:auto;padding:0 20px" onclick="location.href='index.html'">Continue Shopping</button></div>`;return;}
-   let html=`<div style="padding:12px">`;
-   cart.forEach((c,i)=>{
-     html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center">
-       <img src="${c.image||''}" style="width:50px;height:50px;object-fit:contain;border:1px solid #eee;border-radius:4px">
-       <div style="flex:1"><b style="font-size:13px">${c.name}</b><p style="font-size:12px;color:#555">Qty: ${c.qty} • ₹${c.price}</p></div>
-       <button onclick="removeRealCart('${c.product_id}')" style="color:#ff3b3b;border:1px solid #ff3b3b;background:#fff;padding:6px 10px;border-radius:6px;font-size:11px;font-weight:700">REMOVE</button>
-     </div>`;
-   });
-   html+=`</div><div style="padding:0 12px"><button class="btn btn-blue" onclick="location.href='cart.html'">Go to Cart Page</button></div>`;
-   el.innerHTML=html;
- }catch(e){el.innerHTML=`<div class="empty-box"><h3>Error loading cart</h3><p>${e.message}</p></div>`;}
-}
-async function removeRealCart(pid){
- if(!confirm('Remove?'))return;
- let uid = getUid();
- await fetch(`${API_BASE}/cart/remove`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid, email:currentUser.email, product_id:pid})});
- renderCart(); updateCountsReal();
-}
 async function renderWishlist(){
  let el=document.getElementById('wishlistContent');
  el.innerHTML='<div style="padding:20px;text-align:center">Loading wishlist...</div>';
@@ -271,8 +287,8 @@ async function renderWishlist(){
    let uid = getUid();
    let res=await fetch(`${API_BASE}/wishlist/get?user_id=${uid}`);
    let wish=await res.json();
-   if(wish.length===0){el.innerHTML=`<div class="empty-box"><h3>❤️ Your wishlist is empty</h3><p>REAL database wishlist - same on all devices</p><button class="btn btn-blue" style="margin-top:12px;width:auto;padding:0 20px" onclick="location.href='index.html'">Explore Products</button></div>`;return;}
-   let html=`<div style="padding:12px">`; 
+   if(wish.length===0){el.innerHTML=`<div class="empty-box"><h3>❤️ Your wishlist is empty</h3></div>`;return;}
+   let html=`<div style="padding:12px">`;
    wish.forEach((w,i)=>{
      html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center">
        <img src="${w.image||''}" style="width:50px;height:50px;object-fit:contain;border:1px solid #eee;border-radius:4px">
@@ -289,10 +305,10 @@ async function renderOrders(){
    let uid = getUid();
    let res=await fetch(`${API_BASE}/orders/get?user_id=${uid}`);
    let orders=await res.json();
-   if(orders.length===0){el.innerHTML=`<div class="empty-box"><h3>📦 Your order list is empty</h3><p>No orders yet. REAL database - same on all devices</p><button class="btn btn-blue" style="margin-top:12px;width:auto;padding:0 20px" onclick="location.href='index.html'">Shop Now</button></div>`;return;}
-   let html=`<div style="padding:12px">`; 
+   if(orders.length===0){el.innerHTML=`<div class="empty-box"><h3>📦 Your order list is empty</h3></div>`;return;}
+   let html=`<div style="padding:12px">`;
    orders.forEach(o=>{
-     html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px"><b>Order #${o.order_id||o.id}</b><p style="font-size:12px;color:#555">Status: ${o.status}</p><p style="font-size:12px">₹${o.amount||o.total}</p><p style="font-size:11px;color:#878787">${o.date||''}</p></div>`;
+     html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px"><b>Order #${o.order_id||o.id}</b><p style="font-size:12px;color:#555">Status: ${o.status}</p><p style="font-size:12px">₹${o.amount||o.total}</p></div>`;
    });
    html+=`</div>`; el.innerHTML=html;
  }catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3><p>${e.message}</p></div>`;}
@@ -304,87 +320,55 @@ async function renderAddress(){
    let uid = getUid();
    let res=await fetch(`${API_BASE}/address/get?user_id=${uid}`);
    let addr=await res.json();
-   if(addr.length===0){el.innerHTML=`<div class="empty-box"><h3>🏠 No address available</h3><p>REAL database address - same on all devices</p><div style="margin-top:12px"><input id="newAddrName" class="input" placeholder="Full Name"><input id="newAddrPhone" class="input" placeholder="Phone"><input id="newAddrPin" class="input" placeholder="Pincode"><input id="newAddrFull" class="input" placeholder="Full Address"><button class="btn btn-blue" onclick="addNewAddress()">+ Add Address</button></div></div>`;return;}
+   if(addr.length===0){el.innerHTML=`<div class="empty-box"><h3>🏠 No address available</h3></div>`;return;}
    let html=`<div style="padding:12px">`;
    addr.forEach((a,i)=>{
      html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px"><b>${a.full_name}</b><p style="font-size:12px;color:#555">${a.full_address}<br>${a.pincode} - ${a.phone}</p></div>`;
    });
-   html+=`<div style="margin-top:8px"><input id="newAddrName" class="input" placeholder="Full Name"><input id="newAddrPhone" class="input" placeholder="Phone"><input id="newAddrPin" class="input" placeholder="Pincode"><input id="newAddrFull" class="input" placeholder="Full Address"><button class="btn btn-blue" onclick="addNewAddress()">+ Add Another Address</button></div></div>`;
-   el.innerHTML=html;
+   html+=`</div>`; el.innerHTML=html;
  }catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3><p>${e.message}</p></div>`;}
 }
-async function addNewAddress(){
- let fn=document.getElementById('newAddrName').value.trim();
- let ph=document.getElementById('newAddrPhone').value.trim();
- let pin=document.getElementById('newAddrPin').value.trim();
- let full=document.getElementById('newAddrFull').value.trim();
- if(!fn||!ph||!pin||!full){alert('Fill all');return;}
- let uid = getUid();
- await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid, email:currentUser.email,full_name:fn,phone:ph,pincode:pin,full_address:full})});
- alert('Address saved! Cross-device ready'); renderAddress();
-}
-
-// ===== INSTANT FIX - My Cart (0) flicker khatam =====
 async function updateCountsReal(){
- // 1. INSTANT - pehle local se
  try{
    let localCart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
    let localCnt = localCart.reduce((s,i)=>s+(i.qty||1),0);
    let cc = document.getElementById('cartCount'); if(cc) cc.innerText = localCnt;
-   let pc = document.getElementById('pCartCount'); if(pc) pc.innerText = localCnt;
- }catch(e){}
-
- // 2. Background sync - user_id se
- try{
-   let uid = getUid();
-   if(!uid) return;
-   let [cr,wr]=await Promise.all([
-     fetch(`${API_BASE}/cart/get?user_id=${uid}`),
-     fetch(`${API_BASE}/wishlist/get?user_id=${uid}`)
-   ]);
-   let c=await cr.json(); let w=await wr.json();
-   if(Array.isArray(c)){
-     let cnt=c.reduce((s,i)=>s+(i.qty||1),0);
-     document.getElementById('cartCount').innerText=cnt;
-     document.getElementById('pCartCount').innerText=cnt;
-     localStorage.setItem('rekavo_cart',JSON.stringify(c));
-   }
-   if(Array.isArray(w)){
-     document.getElementById('pWishCount').innerText=w.length;
-   }
  }catch(e){}
 }
-
 async function showLoggedInProfile(){
- let u=JSON.parse(localStorage.getItem('rekavo_user')||'null'); if(!u) return; 
+ let u=JSON.parse(localStorage.getItem('rekavo_user')||'null'); if(!u) return;
  u.user_id = u.user_id || u.id;
  currentUser=u;
  document.getElementById('overlay').classList.add('hidden');
  document.getElementById('mainBlurBg').style.display='none';
  document.getElementById('profileSection').classList.remove('hidden');
- document.getElementById('pName').innerText=u.name||'REKAVO User';
- document.getElementById('pEmail').innerText=u.email||'';
- document.getElementById('pMobile').innerText=u.mobile?'+91 '+u.mobile:'';
- document.getElementById('pIcon').innerText=(u.name||'R').charAt(0).toUpperCase();
- // INSTANT counts dikhao
+
+ let name = u.name||'User Name';
+ let initials = name.trim().split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+ if(initials.length<2) initials = name.substring(0,2).toUpperCase();
+ if(!initials) initials='UN';
+ document.getElementById('pIcon').innerText = initials;
+ document.getElementById('pName').innerText = name;
+ document.getElementById('pMobile').innerText = u.mobile? '+91 '+u.mobile : u.phone? '+91 '+u.phone : 'XXXXXXXXXX';
+ document.getElementById('pEmail').innerText = u.email||'......';
+
+ let photo = localStorage.getItem('userPhoto');
+ if(photo){ setPhoto(photo); }
+
  updateCountsReal();
 }
-function logout(){localStorage.removeItem('rekavo_user');localStorage.removeItem('rekavo_cart');location.reload();}
+function logout(){localStorage.removeItem('rekavo_user');location.reload();}
 (function(){
- // INSTANT - page khulte hi local se count - 0 nahi dikhega
  try{
    let localCart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
    let cnt = localCart.reduce((s,i)=>s+(i.qty||1),0);
    let el = document.getElementById('cartCount');
    if(el) el.innerText = cnt;
-   let pEl = document.getElementById('pCartCount');
-   if(pEl) pEl.innerText = cnt;
  }catch(e){}
-
- let u=localStorage.getItem('rekavo_user'); 
+ let u=localStorage.getItem('rekavo_user');
  if(u){
-   currentUser=JSON.parse(u); 
-   currentUser.user_id = currentUser.user_id || currentUser.id; 
+   currentUser=JSON.parse(u);
+   currentUser.user_id = currentUser.user_id || currentUser.id;
    showLoggedInProfile();
  }
 })();
