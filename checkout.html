@@ -13,7 +13,7 @@ body{background:#f1f3f6;padding-bottom:100px}
 .card-body{padding:12px 16px}
 .addr-card{border:2px solid #e0e0e0;border-radius:8px;padding:12px;margin-bottom:10px;cursor:pointer;position:relative}
 .addr-card.selected{border-color:#2874f0;background:#f5f8ff}
-.addr-card.check{position:absolute;top:10px;right:10px;width:20px;height:20px;border:2px solid #2874f0;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.addr-card.check{position:absolute;top:10px;right:10px;width:20px;height:20px;border:2px solid #2874f0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px}
 .addr-card.selected.check{background:#2874f0;color:#fff}
 .input{width:100%;height:42px;border:1px solid #dbdbdb;border-radius:6px;padding:0 12px;outline:none;margin:6px 0;font-size:13px}
 .input:focus{border-color:#2874f0}
@@ -53,14 +53,14 @@ body{background:#f1f3f6;padding-bottom:100px}
 
 <div class="card">
   <div class="card-head"><span>2. Order Summary</span><span style="font-size:12px;color:#2874f0" onclick="location.href='cart.html'">Edit</span></div>
-  <div class="card-body" id="orderItems"></div>
+  <div class="card-body" id="orderItems">Loading...</div>
 </div>
 
 <div class="card">
   <div class="card-head">3. Payment Method</div>
   <div class="card-body">
     <div class="pay-opt selected" onclick="selectPay('COD',this)"><input type="radio" checked><div><b style="font-size:13px">Cash on Delivery</b><p style="font-size:11px;color:#555">Pay when you receive product</p></div></div>
-    <div class="pay-opt" onclick="selectPay('ONLINE',this)"><input type="radio"><div><b style="font-size:13px">Online Payment (UPI/Card)</b><p style="font-size:11px;color:#555">Extra 5% Discount</p></div></div>
+    <div class="pay-opt" onclick="selectPay('ONLINE',this)"><input type="radio"><div><b style="font-size:13px">Online Payment (UPI/Card)</b><p style="font-size:11px;color:#555">Extra 5% Discount on Prepaid</p></div></div>
   </div>
 </div>
 
@@ -77,7 +77,7 @@ body{background:#f1f3f6;padding-bottom:100px}
 <div id="successPopup" class="success-overlay">
   <div class="success-box">
     <div class="confetti">🎉🎊</div>
-    <h2 style="margin-top:10px;color:#26a541">Congratulations!</h2>
+    <h2 style="margin-top:10px;color:#26a541">Order Placed!</h2>
     <p style="font-size:13px;margin-top:6px;font-weight:600">Your Order is Placed Successfully!</p>
     <p id="orderIdText" style="font-size:12px;margin-top:8px;color:#555">Order ID: #REK12345</p>
     <div style="background:#f1f8e9;border-radius:8px;padding:10px;margin-top:12px;text-align:left">
@@ -93,19 +93,20 @@ body{background:#f1f3f6;padding-bottom:100px}
 <script>
 const API_BASE="https://rekavo-backend.vercel.app";
 function getUser(){try{let u=JSON.parse(localStorage.getItem('rekavo_user')); if(!u) return null; u.user_id=u.user_id||u.id||u._id; return u;}catch(e){return null}}
-let selectedAddress=null; let selectedPay='COD'; let cartItems=[]; let totalAmount=0;
+let selectedAddress=null; let selectedPay='COD'; let cartItems=[]; let totalAmount=0; let mrpTotal=0;
 
 function selectPay(mode,el){
   selectedPay=mode;
   document.querySelectorAll('.pay-opt').forEach(o=>{o.classList.remove('selected');o.querySelector('input').checked=false});
   el.classList.add('selected'); el.querySelector('input').checked=true;
+  renderPrice();
 }
 
 async function loadAddresses(){
-  let user=getUser(); if(!user){document.getElementById('addressList').innerHTML='<p style="font-size:12px">Please login first <a href="account.html">Login</a></p>';return;}
+  let user=getUser(); if(!user){document.getElementById('addressList').innerHTML='<p style="font-size:12px">Please login first <a href="account.html" style="color:#2874f0">Login</a></p>';return;}
   try{
     let res=await fetch(`${API_BASE}/address/get?user_id=${user.user_id}`);
-    let addrs=await res.json(); if(!Array.isArray(addrs)) addrs=[];
+    let addrs=await res.json(); if(!Array.isArray(addrs)) addrs = addrs.addresses || [];
     document.getElementById('addrCount').innerText=`${addrs.length} saved`;
     if(addrs.length===0){
       document.getElementById('addressList').innerHTML='<div style="text-align:center;padding:10px"><p style="font-size:12px;color:#878787">No saved address. Add new below.</p></div>';
@@ -113,91 +114,133 @@ async function loadAddresses(){
     }
     let html=''; addrs.forEach((a,i)=>{
       let isFirst=i===0; if(isFirst) selectedAddress=a;
-      html+=`<div class="addr-card ${isFirst?'selected':''}" onclick="chooseAddr(${i},this)"><div class="check">${isFirst?'✓':''}</div><b style="font-size:13px">${a.full_name}</b><p style="font-size:12px;color:#555;margin-top:4px">${a.full_address}, ${a.pincode}<br>Phone: ${a.phone}</p></div>`;
+      html+=`<div class="addr-card ${isFirst?'selected':''}" onclick="chooseAddr(${i},this)"><div class="check">${isFirst?'✓':''}</div><b style="font-size:13px">${a.full_name||a.name}</b><p style="font-size:12px;color:#555;margin-top:4px">${a.full_address||a.address}, ${a.pincode||''}<br>Phone: ${a.phone||a.mobile}</p></div>`;
     });
     document.getElementById('addressList').innerHTML=html;
     window._allAddr=addrs;
-  }catch(e){document.getElementById('addressList').innerHTML='Error loading addresses';}
+  }catch(e){document.getElementById('addressList').innerHTML='<p style="font-size:12px;color:#d00">Error loading addresses</p>';}
 }
 function chooseAddr(idx,el){
   selectedAddress=window._allAddr[idx];
-  document.querySelectorAll('.addr-card').forEach(c=>{c.classList.remove('selected');c.querySelector('.check').innerText=''});
+  document.querySelectorAll('.addr-card').forEach(c=>{c.classList.remove('selected');let ch=c.querySelector('.check'); if(ch) ch.innerText='';});
   el.classList.add('selected'); el.querySelector('.check').innerText='✓';
 }
 async function saveNewAddress(){
   let fn=document.getElementById('aName').value.trim(), ph=document.getElementById('aPhone').value.trim(), pin=document.getElementById('aPin').value.trim(), full=document.getElementById('aFull').value.trim(), city=document.getElementById('aCity').value.trim(), state=document.getElementById('aState').value.trim();
-  if(!fn||!ph||!pin||!full){alert('Fill required fields');return;}
+  if(!fn||!ph||!pin||!full){alert('Fill Full Name, Mobile, Pincode, Full Address');return;}
   let user=getUser(); if(!user){alert('Login first');return;}
   try{
-    await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id,email:user.email,full_name:fn,phone:ph,pincode:pin,full_address:full+ (city? ', '+city:'') + (state? ', '+state:''),city,state})});
-    alert('Address Saved!'); loadAddresses();
-    document.getElementById('aName').value='';document.getElementById('aPhone').value='';document.getElementById('aPin').value='';document.getElementById('aFull').value='';
+    await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id,email:user.email,full_name:fn,phone:ph,pincode:pin,full_address:full + (city? ', '+city:'') + (state? ', '+state:''),city,state})});
+    alert('Address Saved!');
+    document.getElementById('aName').value='';document.getElementById('aPhone').value='';document.getElementById('aPin').value='';document.getElementById('aFull').value='';document.getElementById('aCity').value='';document.getElementById('aState').value='';
+    loadAddresses();
   }catch(e){alert('Error saving address');}
 }
+
 async function loadCart(){
   let user=getUser();
   let localBuy=JSON.parse(localStorage.getItem('rekavo_buy_now')||'null');
-  if(localBuy){ cartItems=[localBuy]; }
-  else if(user){
-    try{let r=await fetch(`${API_BASE}/cart/get?user_id=${user.user_id}`); let data=await r.json(); if(Array.isArray(data)) cartItems=data.map(d=>({product_id:d.product_id,name:d.name,price:d.price,qty:d.qty||1,img:d.image||d.img}));}catch(e){}
-  }else{
+  if(localBuy && localBuy.name){
+    cartItems=[{product_id:localBuy.product_id||localBuy.id, name:localBuy.name, price:localBuy.price, qty:localBuy.qty||1, img:localBuy.img||localBuy.image, image:localBuy.img||localBuy.image}];
+  } else if(user){
+    try{
+      let r=await fetch(`${API_BASE}/cart/get?user_id=${user.user_id}`);
+      let data=await r.json();
+      let arr = Array.isArray(data)? data : (data.cart||data.items||[]);
+      cartItems=arr.map(d=>({product_id:d.product_id||d.id, name:d.name, price:d.price, qty:d.qty||1, img:d.image||d.img, image:d.image||d.img}));
+      // fallback to local if server empty but local has items
+      if(cartItems.length===0){
+        let localCart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+        if(localCart.length>0) cartItems=localCart.map(d=>({product_id:d.product_id||d.id, name:d.name, price:d.price, qty:d.qty||1, img:d.image||d.img, image:d.image||d.img}));
+      }
+    }catch(e){
+      cartItems=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+    }
+  } else {
     cartItems=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
   }
-  let html=''; totalAmount=0;
+  let html=''; totalAmount=0; mrpTotal=0;
   cartItems.forEach(it=>{
-    let t=it.price* (it.qty||1); totalAmount+=t;
-    html+=`<div style="display:flex;gap:10px;margin-bottom:10px"><img src="${it.img||it.image}" style="width:56px;height:56px;object-fit:contain;border:1px solid #eee;border-radius:4px"><div style="flex:1"><p style="font-size:13px;font-weight:600">${it.name}</p><p style="font-size:11px;color:#878787">Qty: ${it.qty||1}</p><p style="font-size:13px;font-weight:700">₹${t.toLocaleString()}</p></div></div>`;
+    let qty=it.qty||1;
+    let t=it.price*qty;
+    totalAmount+=t;
+    mrpTotal += (it.original||it.mrp||Math.round(it.price*1.3))*qty;
+    html+=`<div style="display:flex;gap:10px;margin-bottom:12px"><img src="${it.img||it.image}" style="width:56px;height:56px;object-fit:contain;border:1px solid #eee;border-radius:4px"><div style="flex:1"><p style="font-size:13px;font-weight:600">${it.name} ${qty>1?` (x${qty})`:''}</p><p style="font-size:11px;color:#878787">Qty: ${qty}</p><p style="font-size:13px;font-weight:700">₹${t.toLocaleString()}</p></div></div>`;
   });
-  document.getElementById('orderItems').innerHTML=html||'<p style="font-size:12px">Cart empty</p>';
-  let delivery=0, discount=0; let finalTotal=totalAmount;
-  document.getElementById('priceBox').innerHTML=`<div class="price-row"><span>Price (${cartItems.reduce((s,i)=>s+(i.qty||1),0)} items)</span><span>₹${(totalAmount+Math.round(totalAmount*0.3)).toLocaleString()}</span></div><div class="price-row"><span>Discount</span><span style="color:#388e3c">- ₹${Math.round(totalAmount*0.3).toLocaleString()}</span></div><div class="price-row"><span>Delivery Charges</span><span style="color:#388e3c">FREE</span></div><div class="price-row total"><span>Total Payable</span><span>₹${finalTotal.toLocaleString()}</span></div><p style="font-size:11px;color:#388e3c;margin-top:8px;font-weight:600">You will save ₹${Math.round(totalAmount*0.3).toLocaleString()} on this order</p>`;
-  document.getElementById('totalPay').innerText=`₹${finalTotal.toLocaleString()}`;
+  if(cartItems.length===0){
+    document.getElementById('orderItems').innerHTML='<p style="font-size:12px;text-align:center;padding:10px">Your cart is empty. <a href="index.html" style="color:#2874f0">Shop now</a></p>';
+  } else {
+    document.getElementById('orderItems').innerHTML=html;
+  }
+  renderPrice();
 }
+
+function renderPrice(){
+  let itemCount = cartItems.reduce((s,i)=>s+(i.qty||1),0);
+  let discount = mrpTotal - totalAmount;
+  let extraOff = selectedPay==='ONLINE'? Math.round(totalAmount*0.05) : 0;
+  let finalTotal = totalAmount - extraOff;
+  document.getElementById('priceBox').innerHTML=`
+    <div class="price-row"><span>Price (${itemCount} items)</span><span>₹${mrpTotal.toLocaleString()}</span></div>
+    <div class="price-row"><span>Discount</span><span style="color:#388e3c">- ₹${discount.toLocaleString()}</span></div>
+    ${extraOff? `<div class="price-row"><span>Prepaid Discount (5%)</span><span style="color:#388e3c">- ₹${extraOff.toLocaleString()}</span></div>` : ''}
+    <div class="price-row"><span>Delivery Charges</span><span style="color:#388e3c">FREE</span></div>
+    <div class="price-row total"><span>Total Payable</span><span>₹${finalTotal.toLocaleString()}</span></div>
+    <p style="font-size:11px;color:#388e3c;margin-top:8px;font-weight:600">You will save ₹${(discount+extraOff).toLocaleString()} on this order</p>`;
+  document.getElementById('totalPay').innerText=`₹${finalTotal.toLocaleString()}`;
+  window._finalPayable = finalTotal;
+}
+
 async function placeOrder(){
-  let user=getUser(); if(!user){alert('Please login'); location.href='account.html';return;}
+  let user=getUser(); if(!user){alert('Please login first'); location.href='account.html';return;}
   if(!selectedAddress){alert('Please select or add delivery address');return;}
   if(cartItems.length===0){alert('Cart empty');return;}
   let btn=document.querySelector('[onclick="placeOrder()"]'); btn.innerText='PLACING...'; btn.disabled=true;
   try{
+    let orderId = 'REK'+Date.now();
     let orderPayload={
       user_id: user.user_id,
       email: user.email,
       address: selectedAddress,
-      full_name: selectedAddress.full_name,
-      phone: selectedAddress.phone,
+      full_name: selectedAddress.full_name||selectedAddress.name,
+      phone: selectedAddress.phone||selectedAddress.mobile,
       pincode: selectedAddress.pincode,
-      full_address: selectedAddress.full_address,
+      full_address: selectedAddress.full_address||selectedAddress.address,
       items: cartItems,
-      amount: totalAmount,
-      total: totalAmount,
+      amount: window._finalPayable || totalAmount,
+      total: window._finalPayable || totalAmount,
+      mrp_total: mrpTotal,
       payment_method: selectedPay,
       status: 'Placed',
-      order_id: 'REK'+Date.now()
+      order_id: orderId,
+      created_at: new Date().toISOString()
     };
     let res=await fetch(`${API_BASE}/orders/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(orderPayload)});
-    // fallback to /orders/create if /add fails
     if(!res.ok){
-      await fetch(`${API_BASE}/orders/create`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(orderPayload)});
+      let res2=await fetch(`${API_BASE}/orders/create`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(orderPayload)});
+      if(!res2.ok) throw new Error('Order API failed');
     }
-    // clear cart after order
+    // clear cart - both APIs try
+    try{ await fetch(`${API_BASE}/cart/clear`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id,email:user.email})}); }catch(e){}
     try{
-      await fetch(`${API_BASE}/cart/clear`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id,email:user.email})});
+      for(let it of cartItems){
+        await fetch(`${API_BASE}/cart/remove`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:user.user_id,email:user.email,product_id:it.product_id})});
+      }
     }catch(e){}
-    localStorage.removeItem('rekavo_cart'); localStorage.removeItem('rekavo_buy_now');
-    document.getElementById('orderIdText').innerText='Order ID: #'+orderPayload.order_id;
+    localStorage.removeItem('rekavo_cart');
+    localStorage.removeItem('rekavo_buy_now');
+    document.getElementById('orderIdText').innerText='Order ID: #'+orderId;
     document.getElementById('successPopup').classList.add('show');
-    // confetti effect
-    let audio=new Audio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=success-1-6297.mp3'); audio.play().catch(()=>{});
   }catch(e){
-    alert('Order failed: '+e.message);
+    alert('Order failed: '+e.message+' - Try again');
   }
   btn.innerText='PLACE ORDER'; btn.disabled=false;
 }
-function goToOrders(){location.href='account.html'; setTimeout(()=>{localStorage.setItem('open_orders','1');},100);}
+function goToOrders(){ location.href='orders.html'; }
+
 (function(){
-  let user=getUser(); if(!user){ /* allow guest but ask login on place */ }
-  loadAddresses(); loadCart();
-  if(localStorage.getItem('open_orders')){localStorage.removeItem('open_orders');}
+  loadAddresses();
+  loadCart();
 })();
 </script>
 </body>
