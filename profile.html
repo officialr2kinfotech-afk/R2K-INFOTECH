@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile - REKAVO</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,Arial,sans-serif}
+body{background:#f1f3f6;padding-bottom:70px}
+.profile-wrap{padding:0;background:#f1f3f6}
+.profile-top-card{background:#fff;text-align:center;padding:28px 15px 18px;border-bottom:8px solid #f1f3f6}
+.img-wrap{position:relative;width:110px;height:110px;margin:0 auto}
+.p-circle{width:110px;height:110px;background:#e9e9e9;color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:800;border:2px solid #000;overflow:hidden}
+.p-circle img{width:100%;height:100%;object-fit:cover}
+.edit-pencil{position:absolute;bottom:2px;right:2px;width:30px;height:30px;background:#000;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid #fff;cursor:pointer}
+.p-name{margin-top:14px;font-size:18px;font-weight:800;color:#000}
+.p-mobile{margin-top:3px;font-size:14px;color:#555;font-weight:500}
+.p-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;background:#fff;border-bottom:8px solid #f1f3f6}
+.p-grid-btn{border:1.5px solid #000;border-radius:8px;padding:14px 5px;text-align:center;font-size:13px;font-weight:700;background:#fff;cursor:pointer}
+.p-list{background:#fff;padding:0}
+.p-list-item{display:flex;justify-content:space-between;align-items:center;padding:16px 15px;border-bottom:1px solid #f0f0f0;font-size:14px;font-weight:600;cursor:pointer}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:99}
+.bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
+.bottom-nav a.active{color:#2874f0}
+.page-section{position:fixed;top:0;left:0;width:100%;height:100%;background:#f1f3f6;z-index:10000;overflow-y:auto;padding-bottom:70px}
+.page-header{background:#2874f0;color:#fff;padding:12px 14px;display:flex;align-items:center;gap:12px;position:sticky;top:0}
+.empty-box{background:#fff;border-radius:8px;padding:40px 20px;text-align:center;margin-top:12px}
+.input{width:100%;height:44px;border:1px solid #dbdbdb;border-radius:8px;padding:0 12px;outline:none;font-size:14px;margin:5px 0 2px}
+.btn{width:100%;height:44px;background:#2874f0;color:#fff;border:none;border-radius:8px;font-weight:800;font-size:14px;cursor:pointer;margin-top:6px}
+</style>
+</head>
+<body>
+<div id="profileSection" class="profile-wrap">
+  <div class="profile-top-card">
+    <div class="img-wrap">
+      <div class="p-circle" id="pIcon">UN</div>
+      <div class="edit-pencil" onclick="document.getElementById('profileFile').click()">✏️</div>
+      <input type="file" id="profileFile" accept="image/*" capture="environment" style="display:none">
+    </div>
+    <div class="p-name" id="pName">User Name</div>
+    <div class="p-mobile" id="pMobile">mo. No.</div>
+  </div>
+
+  <div class="p-grid">
+    <div class="p-grid-btn" onclick="openPage('orders')">My orders</div>
+    <div class="p-grid-btn" onclick="openPage('cart')">my card</div>
+    <div class="p-grid-btn" onclick="alert('Coupons coming soon')">coupons</div>
+    <div class="p-grid-btn" onclick="openPage('wishlist')">wishlist</div>
+  </div>
+
+  <div class="p-list">
+    <div class="p-list-item"><span>📧 Email - <span id="pEmailShow" style="color:#878787;font-weight:500">........</span></span></div>
+    <div class="p-list-item" onclick="openPage('address')"><span>📍 Saved Addresses</span><span>›</span></div>
+    <div class="p-list-item" onclick="openPage('address')"><span>👤 Edit profile</span><span>›</span></div>
+    <div class="p-list-item"><span>A/अ Select Language</span><span>›</span></div>
+    <div class="p-list-item" onclick="openPage('help')"><span>💬 help center</span><span>›</span></div>
+    <div class="p-list-item" onclick="logout()"><span>🚪 Logout</span><span>›</span></div>
+  </div>
+</div>
+
+<div id="page-cart" class="page-section hidden"><div class="page-header"><span onclick="closePage('cart')" style="font-size:22px;cursor:pointer">←</span><b>My Cart (<span id="cartCount">0</span>)</b></div><div id="cartContent"></div></div>
+<div id="page-orders" class="page-section hidden"><div class="page-header"><span onclick="closePage('orders')" style="font-size:22px;cursor:pointer">←</span><b>My Orders</b></div><div id="ordersContent"></div></div>
+<div id="page-wishlist" class="page-section hidden"><div class="page-header"><span onclick="closePage('wishlist')" style="font-size:22px;cursor:pointer">←</span><b>My Wishlist (<span id="pWishCount">0</span>)</b></div><div id="wishlistContent"></div></div>
+<div id="page-address" class="page-section hidden"><div class="page-header"><span onclick="closePage('address')" style="font-size:22px;cursor:pointer">←</span><b>My Addresses</b></div><div id="addressContent"></div></div>
+<div id="page-help" class="page-section hidden"><div class="page-header"><span onclick="closePage('help')" style="font-size:22px;cursor:pointer">←</span><b>Help Center</b></div><div style="padding:12px"><div style="background:#fff;border-radius:8px;padding:12px"><h4 style="font-size:14px">📞 Contact Us</h4><p style="font-size:12px;color:#555;margin-top:4px">Email: support@rekavo.com<br>Phone: +91 9876543210</p></div></div></div>
+
+<div class="bottom-nav">
+<a href="index.html"><span>🏠</span><span>Home</span></a>
+<a href="profile.html" class="active"><span>👤</span><span>Account</span></a>
+<a href="cart.html"><span>🛒</span><span>Cart</span></a>
+</div>
+
+<script>
+const API_BASE = "https://rekavo-backend.vercel.app";
+let currentUser=null;
+
+function getInitials(name){
+  if(!name) return "UN";
+  let p=name.trim().split(" ").filter(Boolean);
+  if(p.length>=2) return (p[0][0]+p[1][0]).toUpperCase();
+  return p[0].substring(0,2).toUpperCase();
+}
+function openPage(type){ document.getElementById(`page-${type}`).classList.remove('hidden'); if(type==='cart') renderCart(); if(type==='orders') renderOrders(); if(type==='wishlist') renderWishlist(); if(type==='address') renderAddress();}
+function closePage(type){document.getElementById(`page-${type}`).classList.add('hidden');}
+function getUid(){ return currentUser? (currentUser.user_id || currentUser.id) : null; }
+async function renderCart(){ let el=document.getElementById('cartContent'); el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>'; try{let uid=getUid();let res=await fetch(`${API_BASE}/cart/get?user_id=${uid}`);let cart=await res.json();if(!Array.isArray(cart)||cart.length===0){el.innerHTML=`<div class="empty-box"><h3>🛒 Your cart is empty</h3></div>`;return;}let html=`<div style="padding:12px">`;cart.forEach(c=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center"><img src="${c.image||''}" style="width:50px;height:50px;object-fit:contain"><div style="flex:1"><b style="font-size:13px">${c.name}</b><p style="font-size:12px">Qty: ${c.qty} • ₹${c.price}</p></div></div>`;});el.innerHTML=html+`</div>`;}catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}}
+async function renderWishlist(){ let el=document.getElementById('wishlistContent'); el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>'; try{let uid=getUid();let res=await fetch(`${API_BASE}/wishlist/get?user_id=${uid}`);let wish=await res.json();if(!Array.isArray(wish)||wish.length===0){el.innerHTML=`<div class="empty-box"><h3>❤️ Your wishlist is empty</h3></div>`;return;}let html=`<div style="padding:12px">`;wish.forEach(w=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px"><img src="${w.image||''}" style="width:50px"><div style="flex:1"><b style="font-size:13px">${w.name}</b><p>₹${w.price}</p></div></div>`;});el.innerHTML=html+`</div>`;}catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}}
+async function renderOrders(){ let el=document.getElementById('ordersContent'); el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>'; try{let uid=getUid();let res=await fetch(`${API_BASE}/orders/get?user_id=${uid}`);let orders=await res.json();if(!Array.isArray(orders)||orders.length===0){el.innerHTML=`<div class="empty-box"><h3>📦 No orders</h3></div>`;return;}let html=`<div style="padding:12px">`;orders.forEach(o=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px"><b>Order #${o.order_id||o.id}</b><p style="font-size:12px">₹${o.amount||o.total}</p></div>`;});el.innerHTML=html+`</div>`;}catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}}
+async function renderAddress(){ let el=document.getElementById('addressContent'); el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>'; try{let uid=getUid();let res=await fetch(`${API_BASE}/address/get?user_id=${uid}`);let addr=await res.json();if(!Array.isArray(addr)||addr.length===0){el.innerHTML=`<div class="empty-box"><h3>🏠 No address</h3><div style="margin-top:12px"><input id="newAddrName" class="input" placeholder="Full Name"><input id="newAddrPhone" class="input" placeholder="Phone"><input id="newAddrPin" class="input" placeholder="Pincode"><input id="newAddrFull" class="input" placeholder="Full Address"><button class="btn" onclick="addNewAddress()">+ Add Address</button></div></div>`;return;}let html=`<div style="padding:12px">`;addr.forEach(a=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px"><b>${a.full_name}</b><p style="font-size:12px;color:#555">${a.full_address}</p></div>`;});el.innerHTML=html+`</div>`;}catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}}
+async function addNewAddress(){ let fn=document.getElementById('newAddrName').value.trim(); let ph=document.getElementById('newAddrPhone').value.trim(); let pin=document.getElementById('newAddrPin').value.trim(); let full=document.getElementById('newAddrFull').value.trim(); if(!fn||!ph||!pin||!full){alert('Please fill all address fields');return;} let uid=getUid(); await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:currentUser.email,full_name:fn,phone:ph,pincode:pin,full_address:full})}); alert('Address saved!'); renderAddress();}
+function logout(){ localStorage.removeItem('rekavo_user'); location.href='account.html'; }
+
+(function(){
+  let u=localStorage.getItem('rekavo_user');
+  if(!u){ location.href='account.html'; return; }
+  currentUser=JSON.parse(u); currentUser.user_id=currentUser.user_id||currentUser.id;
+
+  document.getElementById('pName').innerText = currentUser.name || 'User Name';
+  document.getElementById('pMobile').innerText = currentUser.mobile? '+91 '+currentUser.mobile : currentUser.phone? '+91 '+currentUser.phone : 'mo. No.';
+  document.getElementById('pEmailShow').innerText = currentUser.email || '........';
+
+  let circle=document.getElementById('pIcon');
+  let savedPhoto=localStorage.getItem('rekavo_profile_photo');
+  if(savedPhoto){ circle.innerHTML=`<img src="${savedPhoto}">`; }
+  else{ circle.innerText=getInitials(currentUser.name); }
+
+  try{
+    let localCart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+    let cnt=localCart.reduce((s,i)=>s+(i.qty||1),0);
+    document.getElementById('cartCount').innerText=cnt;
+    document.getElementById('pWishCount').innerText=cnt;
+  }catch(e){}
+})();
+
+document.getElementById('profileFile').addEventListener('change',function(e){
+  let file=e.target.files[0]; if(!file) return;
+  let reader=new FileReader();
+  reader.onload=function(ev){
+    let base64=ev.target.result;
+    localStorage.setItem('rekavo_profile_photo',base64);
+    document.getElementById('pIcon').innerHTML=`<img src="${base64}">`;
+  };
+  reader.readAsDataURL(file);
+});
+</script>
+</body>
+</html>
