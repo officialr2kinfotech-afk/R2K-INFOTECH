@@ -199,7 +199,7 @@ async function createAccount(){
 }
 async function handleLogin(){
  clearErrs(); let email=document.getElementById('loginEmail').value.trim().toLowerCase(); let pass=document.getElementById('loginPass').value.trim(); if(!email||!pass){showErr('err-loginEmail','Enter email & pass');return;}
- let btn = document.querySelector('#loginForm.btn');btn.innerText='Logging...';btn.disabled=true;
+ let btn = document.querySelector('#loginForm .btn');btn.innerText='Logging...';btn.disabled=true;
  try{let res=await fetch(`${API_BASE}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});let data=await res.json();if(res.ok){
   let uid = data.user.id || data.user._id || data.user.user_id || data.userId;
   localStorage.setItem('rekavo_user',JSON.stringify({id:uid, user_id:uid, name:data.user.name,mobile:data.user.phone,email:data.user.email}));
