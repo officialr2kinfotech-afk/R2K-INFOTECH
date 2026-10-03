@@ -93,7 +93,7 @@ body{background:#f1f3f6;padding-bottom:70px}
     <div id="loginForm">
       <input id="loginEmail" class="input" placeholder="Email / Mobile Number*"><p id="err-loginEmail" class="error-msg"></p>
       <input id="loginPass" class="input" type="password" placeholder="Password*"><p id="err-loginPass" class="error-msg"></p>
-      <span onclick="let i=document.getElementById('loginPass'); i.type=i.type=='password'?'text':'password'" style="cursor:pointer">👁️</span>
+      <span onclick="let i=document.getElementById('loginPass'); i.type=i.type=='password'?'text':'password'" style="margin-left:-35px; cursor:pointer">👁️</span>
       <p id="success-login" class="success-msg"></p>
       <button class="btn" onclick="handleLogin()">Login with Password</button>
       <div class="links"><span class="link" onclick="switchTab('forgot')">Forgot Password?</span><span class="link" onclick="switchTab('register')">Register Now</span></div>
@@ -115,9 +115,9 @@ body{background:#f1f3f6;padding-bottom:70px}
       <div id="regStep3" class="hidden">
         <p class="success-msg show">OTP Verified! Create password</p>
        <input id="createPass" class="input" type="password" placeholder="Create Password*"><p id="err-createPass" class="error-msg"></p>
-        <span onclick="let i=document.getElementById('createPass'); i.type=i.type=='password'?'text':'password'" style="cursor:pointer">👁️</span>
+        <span onclick="let i=document.getElementById('createPass'); i.type=i.type=='password'?'text':'password'" style="margin-left:-35px; cursor:pointer">👁️</span>
         <input id="confirmPass" class="input" type="password" placeholder="Confirm Password*"><p id="err-confirmPass" class="error-msg"></p>
-        <span onclick="let i=document.getElementById('confirmPass'); i.type=i.type=='password'?'text':'password'" style="cursor:pointer">👁️</span>
+        <span onclick="let i=document.getElementById('confirmPass'); i.type=i.type=='password'?'text':'password'" style="margin-left:-35px; cursor:pointer">👁️</span>
         <p id="success-regFinal" class="success-msg"></p>
         <button id="createAccBtn" class="btn btn-green" onclick="createAccount()">Create Account</button>
       </div>
