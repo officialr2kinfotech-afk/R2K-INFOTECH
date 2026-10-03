@@ -51,27 +51,65 @@ body{background:#f1f3f6;padding-bottom:70px}
     <span class="close" onclick="location.href='index.html'">×</span>
     <div class="title">Login to REKAVO</div>
     <div class="sub">Login to keep your orders safe</div>
-    <div class="tabs"><div class="tab active" id="loginTab" onclick="switchTab('login')">Login</div><div class="tab inactive" id="registerTab" onclick="switchTab('register')">Register</div></div>
+    <div class="tabs">
+      <div class="tab active" id="loginTab" onclick="switchTab('login')">Login</div>
+      <div class="tab inactive" id="registerTab" onclick="switchTab('register')">Register</div>
+    </div>
     <div id="loginForm">
       <input id="loginEmail" class="input" placeholder="Email / Mobile Number*"><p id="err-loginEmail" class="error-msg"></p>
       <input id="loginPass" class="input" type="password" placeholder="Password*"><p id="err-loginPass" class="error-msg"></p>
+      <span onclick="let i=document.getElementById('loginPass'); i.type=i.type=='password'?'text':'password'" style="margin-left:-35px; cursor:pointer">👁️</span>
       <p id="success-login" class="success-msg"></p>
       <button class="btn" onclick="handleLogin()">Login with Password</button>
       <div class="links"><span class="link" onclick="switchTab('forgot')">Forgot Password?</span><span class="link" onclick="switchTab('register')">Register Now</span></div>
     </div>
     <div id="registerForm" class="hidden">
-      <div id="regStep1"><input id="regName" class="input" placeholder="Full Name*"><p id="err-regName" class="error-msg"></p><input id="regMobile" class="input" placeholder="Mobile Number* (10 digits)" maxlength="10"><p id="err-regMobile" class="error-msg"></p><input id="regEmail" class="input" placeholder="Email Address*"><p id="err-regEmail" class="error-msg"></p><button id="sendRegBtn" class="btn btn-blue" onclick="sendRegOtp()">Send OTP</button></div>
-      <div id="regStep2" class="hidden"><div class="otp-box"><p id="otpSentTo" class="success-msg show" style="margin-bottom:10px"></p><input id="regOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6"><p id="err-regOtp" class="error-msg"></p><button id="validateRegBtn" class="btn btn-orange" onclick="validateRegOtp()">Validate OTP</button></div></div>
-      <div id="regStep3" class="hidden"><p class="success-msg show">OTP Verified! Create password</p><input id="createPass" class="input" type="password" placeholder="Create Password*"><p id="err-createPass" class="error-msg"></p><input id="confirmPass" class="input" type="password" placeholder="Confirm Password*"><p id="err-confirmPass" class="error-msg"></p><p id="success-regFinal" class="success-msg"></p><button id="createAccBtn" class="btn btn-green" onclick="createAccount()">Create Account</button></div>
+      <div id="regStep1">
+        <input id="regName" class="input" placeholder="Full Name*"><p id="err-regName" class="error-msg"></p>
+        <input id="regMobile" class="input" placeholder="Mobile Number* (10 digits)" maxlength="10"><p id="err-regMobile" class="error-msg"></p>
+        <input id="regEmail" class="input" placeholder="Email Address*"><p id="err-regEmail" class="error-msg"></p>
+        <button id="sendRegBtn" class="btn btn-blue" onclick="sendRegOtp()">Send OTP</button>
+      </div>
+      <div id="regStep2" class="hidden">
+        <div class="otp-box">
+          <p id="otpSentTo" class="success-msg show" style="margin-bottom:10px"></p>
+          <input id="regOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6"><p id="err-regOtp" class="error-msg"></p>
+          <button id="validateRegBtn" class="btn btn-orange" onclick="validateRegOtp()">Validate OTP</button>
+        </div>
+      </div>
+      <div id="regStep3" class="hidden">
+        <p class="success-msg show">OTP Verified! Create password</p>
+       <input id="createPass" class="input" type="password" placeholder="Create Password*"><p id="err-createPass" class="error-msg"></p>
+        <span onclick="let i=document.getElementById('createPass'); i.type=i.type=='password'?'text':'password'" style="margin-left:-35px; cursor:pointer">👁️</span>
+        <input id="confirmPass" class="input" type="password" placeholder="Confirm Password*"><p id="err-confirmPass" class="error-msg"></p>
+        <span onclick="let i=document.getElementById('confirmPass'); i.type=i.type=='password'?'text':'password'" style="margin-left:-35px; cursor:pointer">👁️</span>
+        <p id="success-regFinal" class="success-msg"></p>
+        <button id="createAccBtn" class="btn btn-green" onclick="createAccount()">Create Account</button>
+      </div>
     </div>
     <div id="forgotForm" class="hidden">
-      <input id="forgotEmail" class="input" placeholder="Enter Registered Email*"><p id="err-forgotEmail" class="error-msg"></p><p id="success-forgot1" class="success-msg"></p><button id="sendOtpBtn" class="btn btn-blue" onclick="sendForgotOtp()">Send OTP</button>
-      <div id="forgotOtpBox" class="otp-box hidden" style="display:none"><p id="forgotOtpInfo" class="success-msg show"></p><input id="forgotOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6"><p id="err-forgotOtp" class="error-msg"></p><button id="validateForgotBtn" class="btn btn-orange" onclick="verifyForgotOtp()">Validate OTP</button></div>
-      <div id="newPassBox" class="hidden" style="margin-top:12px"><input id="forgotPass" class="input" type="password" placeholder="New Password*"><p id="err-forgotPass" class="error-msg"></p><input id="forgotPass2" class="input" type="password" placeholder="Confirm New Password*"><p id="err-forgotPass2" class="error-msg"></p><p id="success-forgotFinal" class="success-msg"></p><button id="savePassBtn" class="btn btn-green" onclick="saveNewPassword()">Save Password</button></div>
+      <input id="forgotEmail" class="input" placeholder="Enter Registered Email*"><p id="err-forgotEmail" class="error-msg"></p>
+      <p id="success-forgot1" class="success-msg"></p>
+      <button id="sendOtpBtn" class="btn btn-blue" onclick="sendForgotOtp()">Send OTP</button>
+      <div id="forgotOtpBox" class="otp-box hidden" style="display:none">
+        <p id="forgotOtpInfo" class="success-msg show"></p>
+        <input id="forgotOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6"><p id="err-forgotOtp" class="error-msg"></p>
+        <button id="validateForgotBtn" class="btn btn-orange" onclick="verifyForgotOtp()">Validate OTP</button>
+      </div>
+      <div id="newPassBox" class="hidden" style="margin-top:12px">
+        <input id="forgotPass" class="input" type="password" placeholder="New Password*"><p id="err-forgotPass" class="error-msg"></p>
+        <input id="forgotPass2" class="input" type="password" placeholder="Confirm New Password*"><p id="err-forgotPass2" class="error-msg"></p>
+        <p id="success-forgotFinal" class="success-msg"></p>
+        <button id="savePassBtn" class="btn btn-green" onclick="saveNewPassword()">Save Password</button>
+      </div>
     </div>
   </div>
 </div>
-<div class="bottom-nav"><a href="index.html"><span>🏠</span><span>Home</span></a><a href="account.html" class="active"><span>👤</span><span>Account</span></a><a href="cart.html"><span>🛒</span><span>Cart (<span id="cartCount">0</span>)</span></a></div>
+<div class="bottom-nav">
+<a href="index.html"><span>🏠</span><span>Home</span></a>
+<a href="account.html" class="active"><span>👤</span><span>Account</span></a>
+<a href="cart.html"><span>🛒</span><span>Cart (<span id="cartCount">0</span>)</span></a>
+</div>
 <script>
 const API_BASE = "https://rekavo-backend.vercel.app";
 let regData={}, forgotKey="", forgotOtpVerified=false;
@@ -85,16 +123,37 @@ function switchTab(t){
   else {loginTab.classList.add('inactive');loginTab.classList.remove('active');registerTab.classList.add('inactive');registerTab.classList.remove('active');}
   clearErrs();
 }
-function showErr(id,msg){let el=document.getElementById(id);let input=document.getElementById(id.replace('err-',''));if(el){el.innerText=msg;el.classList.add('show');}if(input){input.classList.add('error');}}
-function hideErr(id){let el=document.getElementById(id);let input=document.getElementById(id.replace('err-',''));if(el){el.classList.remove('show');}if(input){input.classList.remove('error');}}
+function showErr(id,msg){
+  let el=document.getElementById(id);
+  let input = document.getElementById(id.replace('err-',''));
+  if(el){el.innerText=msg;el.classList.add('show');}
+  if(input){input.classList.add('error');}
+}
+function hideErr(id){
+  let el=document.getElementById(id);
+  let input = document.getElementById(id.replace('err-',''));
+  if(el){el.classList.remove('show');}
+  if(input){input.classList.remove('error');}
+}
 function showSuccess(id,msg){let el=document.getElementById(id);el.innerText=msg;el.classList.add('show');}
 function clearErrs(){document.querySelectorAll('.error-msg').forEach(e=>e.classList.remove('show'));document.querySelectorAll('.input').forEach(e=>e.classList.remove('error'));document.querySelectorAll('.success-msg').forEach(e=>{if(!['otpSentTo','forgotOtpInfo'].includes(e.id)) e.classList.remove('show')})}
-document.querySelectorAll('.input').forEach(inp=>{inp.addEventListener('input',()=>{let errId='err-'+inp.id;hideErr(errId);});});
+document.querySelectorAll('.input').forEach(inp=>{
+  inp.addEventListener('input',()=>{
+    let errId = 'err-'+inp.id;
+    hideErr(errId);
+  });
+});
 async function sendRegOtp(){
- clearErrs();let name=document.getElementById('regName').value.trim();let mobile=document.getElementById('regMobile').value.trim();let email=document.getElementById('regEmail').value.trim().toLowerCase();let ok=true;
+ clearErrs();
+ let name=document.getElementById('regName').value.trim();
+ let mobile=document.getElementById('regMobile').value.trim();
+ let email=document.getElementById('regEmail').value.trim().toLowerCase();
+ let ok=true;
  if(name.length<2){showErr('err-regName','Please enter your Full Name'); ok=false;}
- if(!mobile){showErr('err-regMobile','Please enter your Mobile Number'); ok=false;}else if(!/^[6-9][0-9]{9}$/.test(mobile)){showErr('err-regMobile','Please enter a valid 10-digit Mobile Number'); ok=false;}
- if(!email){showErr('err-regEmail','Please enter your Email Address'); ok=false;}else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showErr('err-regEmail','Please enter a valid Email Address'); ok=false;}
+ if(!mobile){showErr('err-regMobile','Please enter your Mobile Number'); ok=false;}
+ else if(!/^[6-9][0-9]{9}$/.test(mobile)){showErr('err-regMobile','Please enter a valid 10-digit Mobile Number'); ok=false;}
+ if(!email){showErr('err-regEmail','Please enter your Email Address'); ok=false;}
+ else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showErr('err-regEmail','Please enter a valid Email Address'); ok=false;}
  if(!ok) return;
  regData={name,mobile,email}; let btn=document.getElementById('sendRegBtn');btn.innerText='Sending...';btn.disabled=true;
  try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});let data=await res.json();if(res.ok){document.getElementById('otpSentTo').innerText=`OTP sent to ${email}`;document.getElementById('regStep1').classList.add('hidden');document.getElementById('regStep2').classList.remove('hidden');}else{showErr('err-regEmail',data.error||'Email already registered');}}catch(e){showErr('err-regEmail','Network error, please try again');}
@@ -109,21 +168,45 @@ async function validateRegOtp(){
  btn.innerText='Validate OTP';btn.disabled=false;
 }
 async function createAccount(){
- clearErrs(); let p=document.getElementById('createPass').value.trim(); let cp=document.getElementById('confirmPass').value.trim();let ok=true;
- if(!p){showErr('err-createPass','Please create a Password'); ok=false;}else if(p.length<6){showErr('err-createPass','Password must be at least 6 characters'); ok=false;}
- if(!cp){showErr('err-confirmPass','Please confirm your Password'); ok=false;}else if(p!==cp){showErr('err-confirmPass','Password does not match'); ok=false;}
+ clearErrs(); let p=document.getElementById('createPass').value.trim(); let cp=document.getElementById('confirmPass').value.trim();
+ let ok=true;
+ if(!p){showErr('err-createPass','Please create a Password'); ok=false;}
+ else if(p.length<6){showErr('err-createPass','Password must be at least 6 characters'); ok=false;}
+ if(!cp){showErr('err-confirmPass','Please confirm your Password'); ok=false;}
+ else if(p!==cp){showErr('err-confirmPass','Password does not match'); ok=false;}
  if(!ok) return;
  let btn=document.getElementById('createAccBtn');btn.innerText='Creating...';btn.disabled=true;
- try{let res=await fetch(`${API_BASE}/verify-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:regData.email,otp:regData.tempOtp,name:regData.name,phone:regData.mobile,password:p})});let data=await res.json();if(res.ok){let uid=data.user.id||data.user._id||data.user.user_id;localStorage.setItem('rekavo_user',JSON.stringify({id:uid,user_id:uid,name:data.user.name,mobile:data.user.phone,email:data.user.email}));showSuccess('success-regFinal','Account Created Successfully!');setTimeout(()=>{location.href='index.html';},600);}else{showErr('err-confirmPass',data.error||'Failed to create account');}}catch(e){showErr('err-confirmPass','Network error');}
+ try{let res=await fetch(`${API_BASE}/verify-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:regData.email,otp:regData.tempOtp,name:regData.name,phone:regData.mobile,password:p})});let data=await res.json();if(res.ok){
+  let uid = data.user.id || data.user._id || data.user.user_id;
+  localStorage.setItem('rekavo_user',JSON.stringify({id:uid, user_id:uid, name:data.user.name,mobile:data.user.phone,email:data.user.email}));
+  showSuccess('success-regFinal','Account Created Successfully!');setTimeout(()=>{location.href='index.html';},600);}else{showErr('err-confirmPass',data.error||'Failed to create account');}}catch(e){showErr('err-confirmPass','Network error');}
  btn.innerText='Create Account';btn.disabled=false;
 }
 async function handleLogin(){
- clearErrs();let emailEl=document.getElementById('loginEmail');let passEl=document.getElementById('loginPass');let email=emailEl.value.trim().toLowerCase();let pass=passEl.value.trim();let valid=true;
- if(!email){showErr('err-loginEmail','Please enter your Email / Mobile Number');valid=false;}else if(email.length<4){showErr('err-loginEmail','Please enter a valid Email / Mobile Number');valid=false;}
- if(!pass){showErr('err-loginPass','Please enter your Password');valid=false;}
+ clearErrs();
+ let emailEl=document.getElementById('loginEmail');
+ let passEl=document.getElementById('loginPass');
+ let email=emailEl.value.trim().toLowerCase();
+ let pass=passEl.value.trim();
+ let valid=true;
+ if(!email){
+   showErr('err-loginEmail','Please enter your Email / Mobile Number');
+   valid=false;
+ } else if(email.length<4){
+   showErr('err-loginEmail','Please enter a valid Email / Mobile Number');
+   valid=false;
+ }
+ if(!pass){
+   showErr('err-loginPass','Please enter your Password');
+   valid=false;
+ }
  if(!valid) return;
- let btn=document.querySelector('#loginForm.btn');btn.innerText='Logging in...';btn.disabled=true;
- try{let res=await fetch(`${API_BASE}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});let data=await res.json();if(res.ok){let uid=data.user.id||data.user._id||data.user.user_id||data.userId;localStorage.setItem('rekavo_user',JSON.stringify({id:uid,user_id:uid,name:data.user.name,mobile:data.user.phone,email:data.user.email}));showSuccess('success-login',`Welcome ${data.user.name}!`);setTimeout(()=>{location.href='index.html';},600);}else{showErr('err-loginPass',data.error||'Wrong password, please try again');}}catch(e){showErr('err-loginPass','Network error, please try again');}
+
+ let btn = document.querySelector('#loginForm.btn');btn.innerText='Logging in...';btn.disabled=true;
+ try{let res=await fetch(`${API_BASE}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});let data=await res.json();if(res.ok){
+  let uid = data.user.id || data.user._id || data.user.user_id || data.userId;
+  localStorage.setItem('rekavo_user',JSON.stringify({id:uid, user_id:uid, name:data.user.name,mobile:data.user.phone,email:data.user.email}));
+  showSuccess('success-login',`Welcome ${data.user.name}!`);setTimeout(()=>{location.href='index.html';},600);}else{showErr('err-loginPass',data.error||'Wrong password, please try again');}}catch(e){showErr('err-loginPass','Network error, please try again');}
  btn.innerText='Login with Password';btn.disabled=false;
 }
 async function sendForgotOtp(){
@@ -144,22 +227,27 @@ async function verifyForgotOtp(){
 }
 async function saveNewPassword(){
  clearErrs(); if(!forgotOtpVerified){showErr('err-forgotPass','Please verify OTP first');return;}
- let p1=document.getElementById('forgotPass').value.trim();let p2=document.getElementById('forgotPass2').value.trim();let ok=true;
- if(!p1){showErr('err-forgotPass','Please enter new Password'); ok=false;}else if(p1.length<6){showErr('err-forgotPass','Password must be at least 6 characters'); ok=false;}
- if(!p2){showErr('err-forgotPass2','Please confirm new Password'); ok=false;}else if(p1!==p2){showErr('err-forgotPass2','Password does not match'); ok=false;}
+ let p1=document.getElementById('forgotPass').value.trim();
+ let p2=document.getElementById('forgotPass2').value.trim();
+ let ok=true;
+ if(!p1){showErr('err-forgotPass','Please enter new Password'); ok=false;}
+ else if(p1.length<6){showErr('err-forgotPass','Password must be at least 6 characters'); ok=false;}
+ if(!p2){showErr('err-forgotPass2','Please confirm new Password'); ok=false;}
+ else if(p1!==p2){showErr('err-forgotPass2','Password does not match'); ok=false;}
  if(!ok) return;
  let btn=document.getElementById('savePassBtn');btn.innerText='Saving...';btn.disabled=true;
  try{let res=await fetch(`${API_BASE}/reset-password`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp:window._forgotOtp,new_password:p1})});let data=await res.json();if(res.ok){showSuccess('success-forgotFinal','Password updated successfully!');setTimeout(()=>switchTab('login'),1000);}else{showErr('err-forgotPass2',data.error||'Failed to update password');}}catch(e){showErr('err-forgotPass2','Network error');}
  btn.innerText='Save Password';btn.disabled=false;
 }
-// AGAR LOGIN HAI TO PROFILE PE BHEJ DO
 (function(){
   let u=localStorage.getItem('rekavo_user');
   if(u){ location.href='profile.html'; }
   try{
     let localCart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
-    let cnt=localCart.reduce((s,i)=>s+(i.qty||1),0);
-    let el=document.getElementById('cartCount'); if(el) el.innerText=cnt;
+    let map={};localCart.forEach(i=>{let id=i.product_id||i.id;if(map[id])map[id].qty+=(i.qty||1);else map[id]={...i,qty:i.qty||1};});
+    let finalLocal=Object.values(map);
+    let cnt=finalLocal.reduce((s,i)=>s+(i.qty||1),0);
+    let el=document.getElementById('cartCount');if(el)el.innerText=cnt;
   }catch(e){}
 })();
 </script>
