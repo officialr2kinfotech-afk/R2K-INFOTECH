@@ -426,6 +426,23 @@ function logout(){
    showLoggedInProfile();
  }
 })();
+// --- FINAL FIX: Copy/Select popup ko jaan se maarna ---
+document.addEventListener('contextmenu', function(e){
+  if(e.target.closest('.tab, .btn, .link, .close, .title, .top-strip, .page-header, .bottom-nav')){
+    e.preventDefault();
+  }
+});
+document.addEventListener('selectstart', function(e){
+  if(e.target.closest('.tab, .btn, .link, .close, .title, .top-strip, .page-header, .bottom-nav, .p-menu-item')){
+    e.preventDefault();
+  }
+});
+// Double-click se select rokne ke liye
+document.addEventListener('mousedown', function(e){
+  if(e.detail > 1 && e.target.closest('.tab, .btn, .link')){
+    e.preventDefault();
+  }
+});
 </script>
 </body>
 </html>
