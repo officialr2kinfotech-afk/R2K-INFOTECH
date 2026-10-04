@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>REKAVO - Product Detail</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,sans-serif}
-body{background:#fff;padding-bottom:90px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#fff;padding-bottom:90px;user-select:none}
 .top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:8px 12px;font-size:12px;font-weight:800}
 .search-wrapper{background:#2874f0;padding:10px 12px;position:sticky;top:0;z-index:99}
 .search-box{width:100%;display:flex;background:#fff;border-radius:2px;height:42px;position:relative}
@@ -110,7 +110,7 @@ body{background:#fff;padding-bottom:90px}
 
 <div class="bottom-nav">
   <a href="index.html"><span>🏠</span><span>Home</span></a>
-  <a href="account.html"><span>👤</span><span>Account</span></a>
+  <a href="profile.html"><span>👤</span><span>Account</span></a>
   <a href="cart.html"><span>🛒 Cart (<span id="cartCount">0</span>)</span></a>
 </div>
 
@@ -161,7 +161,6 @@ if(!product && saved){if(saved.cat && saved.idx!==undefined && categoryData[save
 if(!product){cat='powerbank';idx=0;product=categoryData[cat][0];}
 let finalPrice = product? product.price : 0;
 
-// INIT cart count - qty sum se
 try{
   let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
   let map={};
@@ -208,7 +207,6 @@ function applyCoupon(){
 }
 async function addToCart(){
   let pid = `${cat}_${idx}`;
-  // ===== FIX: merge not push - 2 se 6,8 wala bug khatam =====
   let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
   let found = cart.find(c=>(c.product_id===pid)||(c.id===pid));
   if(found){
@@ -225,7 +223,6 @@ async function addToCart(){
   document.getElementById('cartMsg').classList.add('show');
   setTimeout(()=>document.getElementById('cartMsg').classList.remove('show'),2500);
 
-  // backend save - dusre laptop ke liye
   try{
     let uid=getUid();
     if(uid){
@@ -240,7 +237,6 @@ async function addToCart(){
 function buyNow(){
   let pid = `${cat}_${idx}`;
   let single={product_id: pid, id:pid, name:product.name,price:finalPrice,img:product.img,image:product.img,desc:product.desc,spec:product.spec,original:product.originalPrice,mrp:product.originalPrice,originalPrice:product.originalPrice,coupon:product.coupon,qty:1, cat:cat, idx:idx};
-  // FIX: cart overwrite mat karo, sirf buy_now set karo
   localStorage.setItem('rekavo_buy_now',JSON.stringify(single));
   location.href='checkout.html';
 }
