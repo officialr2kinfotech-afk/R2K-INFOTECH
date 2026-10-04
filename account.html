@@ -46,7 +46,7 @@ body{background:#f1f3f6;padding-bottom:70px}
 <div class="top-strip" id="topStrip">🔥 Use Coupon For Extra Discount At 20%, 40%, 50%, 80% And More....</div>
 <div class="search-wrapper" id="searchWrapper"><div class="search-box"><input placeholder="Search for products"><button>⌕</button></div></div>
 <div id="mainBlurBg" class="page-bg"><div class="hero"><h2>REKAVO<br>ACCESSORIES & ELECTRONICS</h2></div></div>
-<div class="overlay" id="overlay">
+<div class="overlay hidden" id="overlay">
   <div class="modal">
     <span class="close" onclick="location.href='index.html'">×</span>
     <div class="title">Login to REKAVO</div>
@@ -161,21 +161,29 @@ async function saveNewPassword(){
     let el=document.getElementById('cartCount');if(el)el.innerText=cnt;
   }catch(e){}
 })();
-  (function(){
-  let u=localStorage.getItem('rekavo_user');
-  if(u){ 
-    location.href='profile.html'; 
-    return; 
-  }
-  // logout hai to cart ko 0 dikhao, khali mat karo to bhi chalega
-  // par tu chahta hai 0 dikhe to ye line rakh:
-  // localStorage.removeItem('rekavo_cart'); // isko uncomment kar dega to Cart (0) ho jayega
-  
+
+(function(){
   try{
-    let localCart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
-    let cnt=localCart.reduce((s,i)=>s+(i.qty||1),0);
-    let el=document.getElementById('cartCount');if(el)el.innerText=cnt;
-  }catch(e){}
+    let u = localStorage.getItem('rekavo_user');
+    if(u){
+      location.replace('profile.html');
+      return;
+    }
+    // logout hai to cart 0 dikhao
+    localStorage.removeItem('rekavo_cart');
+    
+    let overlay = document.getElementById('overlay');
+    if(overlay) overlay.classList.remove('hidden');
+
+    let localCart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+    let cnt = localCart.reduce((s,i)=>s+(i.qty||1),0);
+    let el = document.getElementById('cartCount');
+    if(el) el.innerText = cnt;
+
+  }catch(e){
+    let overlay = document.getElementById('overlay');
+    if(overlay) overlay.classList.remove('hidden');
+  }
 })();
 </script>
 </body>
