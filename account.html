@@ -122,7 +122,7 @@ async function handleLogin(){
  if(!email){showErr('err-loginEmail','Please enter your Email / Mobile Number');valid=false;}else if(email.length<4){showErr('err-loginEmail','Please enter a valid Email / Mobile Number');valid=false;}
  if(!pass){showErr('err-loginPass','Please enter your Password');valid=false;}
  if(!valid) return;
- let btn=document.querySelector('#loginForm.btn');btn.innerText='Logging in...';btn.disabled=true;
+ let btn=document.querySelector('#loginForm .btn');btn.innerText='Logging in...';btn.disabled=true;
  try{let res=await fetch(`${API_BASE}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});let data=await res.json();if(res.ok){let uid=data.user.id||data.user._id||data.user.user_id||data.userId;localStorage.setItem('rekavo_user',JSON.stringify({id:uid,user_id:uid,name:data.user.name,mobile:data.user.phone,email:data.user.email}));showSuccess('success-login',`Welcome ${data.user.name}!`);setTimeout(()=>{location.href='index.html';},600);}else{showErr('err-loginPass',data.error||'Wrong password, please try again');}}catch(e){showErr('err-loginPass','Network error, please try again');}
  btn.innerText='Login with Password';btn.disabled=false;
 }
