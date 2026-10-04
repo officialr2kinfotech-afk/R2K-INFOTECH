@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Account - REKAVO</title>
 <style>
+  #mainBlurBg{ display:none !important; }
+#overlay{ background:#f5f5f5 !important; }
+.overlay.hidden{ display:none !important; }
 *{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,Arial,sans-serif}
-body{background:#f1f3f6;padding-bottom:70px}
+body{background:#f1f3f6;padding-bottom:70px} 
 .top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:7px 12px;font-size:12px;font-weight:800}
 .search-wrapper{background:#2874f0;padding:10px 12px;position:sticky;top:0;z-index:10}
 .search-box{width:100%;display:flex;background:#fff;border-radius:4px;overflow:hidden;height:42px;align-items:center}
@@ -45,7 +48,7 @@ body{background:#f1f3f6;padding-bottom:70px}
 <body>
 <div class="top-strip" id="topStrip">🔥 Use Coupon For Extra Discount At 20%, 40%, 50%, 80% And More....</div>
 <div class="search-wrapper" id="searchWrapper"><div class="search-box"><input placeholder="Search for products"><button>⌕</button></div></div>
-<div id="mainBlurBg" class="page-bg"><div class="hero"><h2>REKAVO<br>ACCESSORIES & ELECTRONICS</h2></div></div>
+<div id="mainBlurBg" class="page-bg" style="display:none !important">
 <div class="overlay hidden" id="overlay">
   <div class="modal">
     <span class="close" onclick="location.href='index.html'">×</span>
