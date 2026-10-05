@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Profile - REKAVO</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,Arial,sans-serif}
-body{background:#f1f3f6;padding-bottom:85px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#f1f3f6;padding-bottom:90px}
 .profile-wrap{padding:0;background:#f1f3f6}
 .profile-top-card{background:#fff;text-align:center;padding:28px 15px 18px;border-bottom:8px solid #f1f3f6}
 .img-wrap{position:relative;width:110px;height:110px;margin:0 auto}
@@ -16,11 +16,13 @@ body{background:#f1f3f6;padding-bottom:85px}
 .p-name{margin-top:14px;font-size:18px;font-weight:800;color:#000}
 .p-mobile{margin-top:3px;font-size:14px;color:#555;font-weight:500}
 .p-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;background:#fff;border-bottom:8px solid #f1f3f6}
-.p-grid-btn{border:1.5px solid #000;border-radius:8px;padding:14px 5px;text-align:center;font-size:13px;font-weight:700;background:#fff;cursor:pointer}
+.p-grid-btn{border:1.5px solid #000;border-radius:8px;padding:14px 5px;text-align:center;font-size:13px;font-weight:700;background:#fff;cursor:pointer;user-select:none;-webkit-user-select:none}
+.p-grid-btn:active{background:#f5f5f5!important;color:#000!important}
 .p-list{background:#fff;padding:0}
-.p-list-item{display:flex;justify-content:space-between;align-items:center;padding:16px 15px;border-bottom:1px solid #f0f0f0;font-size:14px;font-weight:600;cursor:pointer}
+.p-list-item{display:flex;justify-content:space-between;align-items:center;padding:16px 15px;border-bottom:1px solid #f0f0f0;font-size:14px;font-weight:600;cursor:pointer;user-select:none;-webkit-user-select:none}
+.p-list-item:active{background:#f9f9f9}
 .empty-box{background:#fff;border-radius:8px;padding:40px 20px;text-align:center;margin-top:12px}
-.page-section{position:fixed;top:0;left:0;width:100%;height:100%;background:#f1f3f6;z-index:10000;overflow-y:auto;padding-bottom:85px}
+.page-section{position:fixed;top:0;left:0;width:100%;height:100%;background:#f1f3f6;z-index:10000;overflow-y:auto;padding-bottom:90px}
 .page-header{background:#2874f0;color:#fff;padding:12px 14px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:2}
 .input,.select{width:100%;height:44px;border:1px solid #dbdbdb;border-radius:8px;padding:0 12px;outline:none;font-size:14px;margin:5px 0 2px;background:#fff}
 .textarea{width:100%;min-height:70px;border:1px solid #dbdbdb;border-radius:8px;padding:10px 12px;outline:none;font-size:14px;margin:5px 0 2px;resize:none}
@@ -28,19 +30,25 @@ body{background:#f1f3f6;padding-bottom:85px}
 .btn-blue{background:#2874f0}
 .btn-outline{background:#fff;color:#2874f0;border:1.5px solid #2874f0}
 .btn-danger{background:#fff;color:#ff3e6c;border:1.5px solid #ff3e6c;margin-top:8px}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;align-items:center;padding:10px 2px 12px;border-top:1px solid #ddd;z-index:99}
-.bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;min-width:0;white-space:nowrap;overflow:visible}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;align-items:center;padding:10px 0 10px;border-top:1px solid #ddd;z-index:99;user-select:none;-webkit-user-select:none}
+.bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;min-width:0;white-space:nowrap}
+.bottom-nav a span{white-space:nowrap;display:block;line-height:14px}
 .bottom-nav a.active{color:#2874f0}
 .hidden{display:none!important}
 .addr-card{background:#fff;border-radius:8px;padding:12px;margin-bottom:10px;border:1.5px solid #e0e0e0;display:flex;gap:10px}
 .addr-card.selected{border-color:#2874f0;background:#f0f7ff}
-.radio{width:20px;height:20px;border:2px solid #878787;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;cursor:pointer}
-.radio.sel{border-color:#2874f0}.radio.sel div{width:10px;height:10px;background:#2874f0;border-radius:50%}
-.lang-item{background:#fff;padding:16px 15px;display:flex;justify-content:space-between;border-bottom:1px solid #f0f0f0;cursor:pointer;font-weight:600}
+.loc-icon{width:24px;height:24px;background:#f1f3f6;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:1px}
+.loc-icon.sel{background:#2874f0;color:#fff}
+.lang-item{background:#fff;padding:16px 15px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f0f0f0;cursor:pointer;font-weight:600;user-select:none;-webkit-user-select:none}
 .lang-item.sel{color:#2874f0;background:#f0f7ff}
+.lang-item:active{background:#f5f5f5}
 .form-row{display:flex;gap:8px}.form-row>div{flex:1}
 .type-chip{border:1px solid #dbdbdb;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;background:#fff}
 .type-chip.active{background:#2874f0;color:#fff;border-color:#2874f0}
+/* CENTER MODAL FOR EDIT ADDRESS */
+.addr-modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:10001;display:flex;align-items:center;justify-content:center;padding:14px}
+.addr-modal{background:#fff;border-radius:12px;width:100%;max-width:380px;max-height:90vh;overflow-y:auto;padding:14px;animation:pop.2s ease}
+@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
 </style>
 </head>
 <body>
@@ -99,11 +107,14 @@ body{background:#f1f3f6;padding-bottom:85px}
 </div>
 
 <div id="page-help" class="page-section hidden"><div class="page-header"><span onclick="closePage('help')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="helpTitle">Help Center</b></div><div style="padding:12px"><div style="background:#fff;border-radius:8px;padding:12px"><h4 data-i18n="contactUs">📞 Contact Us</h4><p style="font-size:12px;color:#555;margin-top:4px">Email: support@rekavo.com<br>Phone: +91 9876543210</p></div></div></div>
+
 <div class="bottom-nav">
 <a href="index.html"><span>🏠</span><span data-i18n="home">Home</span></a>
 <a href="profile.html" class="active"><span>👤</span><span data-i18n="account">Account</span></a>
-<a href="cart.html"><span>🛒</span><span data-i18n="cart">Cart</span> (<span id="cartCount">0</span>)</a>
+<a href="cart.html"><span>🛒</span><span><span data-i18n="cart">Cart</span> (<span id="cartCount">0</span>)</span></a>
 </div>
+
+<div id="editAddrModal" class="addr-modal-overlay hidden" onclick="if(event.target==this)closeEditModal()"><div class="addr-modal" id="editAddrModalBox"></div></div>
 
 <script>
 const API_BASE="https://rekavo-backend.vercel.app";
@@ -111,32 +122,8 @@ let currentUser=null;
 let selectedAddrId = localStorage.getItem('rekavo_selected_addr')||null;
 let selectedLang = localStorage.getItem('rekavo_lang')||'English';
 
-// FULL LANGUAGE LIST
 const LANGUAGES=[
-{code:'English',name:'English'},
-{code:'Hindi',name:'Hindi - हिंदी'},
-{code:'Bengali',name:'Bengali - বাংলা'},
-{code:'Telugu',name:'Telugu - తెలుగు'},
-{code:'Marathi',name:'Marathi - मराठी'},
-{code:'Tamil',name:'Tamil - தமிழ்'},
-{code:'Gujarati',name:'Gujarati - ગુજરાતી'},
-{code:'Urdu',name:'Urdu - اردو'},
-{code:'Kannada',name:'Kannada - ಕನ್ನಡ'},
-{code:'Odia',name:'Odia - ଓଡ଼ିଆ'},
-{code:'Punjabi',name:'Punjabi - ਪੰਜਾਬੀ'},
-{code:'Malayalam',name:'Malayalam - മലയാളം'},
-{code:'Assamese',name:'Assamese - অসমীয়া'},
-{code:'Maithili',name:'Maithili - मैथिली'},
-{code:'Santali',name:'Santali - ᱥᱟᱱᱛᱟᱲᱤ'},
-{code:'Kashmiri',name:'Kashmiri - कॉशुर'},
-{code:'Nepali',name:'Nepali - नेपाली'},
-{code:'Konkani',name:'Konkani - कोंकणी'},
-{code:'Sindhi',name:'Sindhi - सिन्धी'},
-{code:'Dogri',name:'Dogri - डोगरी'},
-{code:'Manipuri',name:'Manipuri - মণিপুরী'},
-{code:'Bodo',name:'Bodo - बड़ो'},
-{code:'Sanskrit',name:'Sanskrit - संस्कृतम्'},
-{code:'Bhojpuri',name:'Bhojpuri - भोजपुरी'}
+{code:'English',name:'English'},{code:'Hindi',name:'Hindi - हिंदी'},{code:'Bengali',name:'Bengali - বাংলা'},{code:'Telugu',name:'Telugu - తెలుగు'},{code:'Marathi',name:'Marathi - मराठी'},{code:'Tamil',name:'Tamil - தமிழ்'},{code:'Gujarati',name:'Gujarati - ગુજરાતી'},{code:'Urdu',name:'Urdu - اردو'},{code:'Kannada',name:'Kannada - ಕನ್ನಡ'},{code:'Odia',name:'Odia - ଓଡ଼ିଆ'},{code:'Punjabi',name:'Punjabi - ਪੰਜਾਬੀ'},{code:'Malayalam',name:'Malayalam - മലയാളം'},{code:'Assamese',name:'Assamese - অসমীয়া'},{code:'Maithili',name:'Maithili - मैथिली'},{code:'Santali',name:'Santali - ᱥᱟᱱᱛᱟᱲᱤ'},{code:'Kashmiri',name:'Kashmiri - कॉशुर'},{code:'Nepali',name:'Nepali - नेपाली'},{code:'Konkani',name:'Konkani - कोंकणी'},{code:'Sindhi',name:'Sindhi - सिन्धी'},{code:'Dogri',name:'Dogri - डोगरी'},{code:'Manipuri',name:'Manipuri - মণিপুরী'},{code:'Bodo',name:'Bodo - बड़ो'},{code:'Sanskrit',name:'Sanskrit - संस्कृतम्'},{code:'Bhojpuri',name:'Bhojpuri - भोजपुरी'}
 ];
 const INDIAN_STATES=["Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh","Uttarakhand","West Bengal","Delhi","Jammu and Kashmir","Ladakh"];
 
@@ -147,38 +134,27 @@ Tamil:{myOrders:'என் ஆர்டர்கள்',myCart:'என் கா
 Telugu:{myOrders:'నా ఆర్డర్లు',myCart:'నా కార్ట్',coupons:'కూపన్లు',wishlist:'విష్‌లిస్ట్',emailLabel:'📧 ఈమెయిల్',savedAddresses:'📍 చిరునామాలు',editProfile:'👤 ప్రొఫైల్',selectLanguage:'భాష ఎంచుకోండి',helpCenter:'💬 సహాయం',logout:'🚪 లాగ్ అవుట్',myOrdersTitle:'నా ఆర్డర్లు',myWishlistTitle:'విష్‌లిస్ట్',myAddressesTitle:'చిరునామాలు',selectLanguageTitle:'భాష',editProfileTitle:'ప్రొఫైల్',changePhoto:'ఫోటో మార్చండి',deletePhoto:'తొలగించు',fullName:'పూర్తి పేరు',mobile:'మొబైల్',email:'ఈమెయిల్',saveProfile:'సేవ్ చేయండి',helpTitle:'సహాయం',contactUs:'📞 సంప్రదించండి',home:'హోమ్',account:'ఖాతా',cart:'కార్ట్',addNewAddr:'కొత్త చిరునామా',saveAddr:'సేవ్',updateAddr:'అప్‌డేట్'},
 Bengali:{myOrders:'আমার অর্ডার',myCart:'আমার কার্ট',coupons:'কুপন',wishlist:'উইশলিস্ট',emailLabel:'📧 ইমেইল',savedAddresses:'📍 ঠিকানা',editProfile:'👤 প্রোফাইল',selectLanguage:'ভাষা নির্বাচন',helpCenter:'💬 হেল্প',logout:'🚪 লগআউট',myOrdersTitle:'অর্ডার',myWishlistTitle:'উইশলিস্ট',myAddressesTitle:'ঠিকানা',selectLanguageTitle:'ভাষা',editProfileTitle:'প্রোফাইল',changePhoto:'ছবি বদলান',deletePhoto:'মুছুন',fullName:'পুরো নাম',mobile:'মোবাইল',email:'ইমেইল',saveProfile:'সেভ করুন',helpTitle:'হেল্প',contactUs:'📞 যোগাযোগ',home:'হোম',account:'অ্যাকাউন্ট',cart:'কার্ট',addNewAddr:'নতুন ঠিকানা',saveAddr:'সেভ',updateAddr:'আপডেট'}
 };
-function getTrans(key){
- let lang = TRANSLATIONS[selectedLang]? selectedLang : 'English';
- let t = TRANSLATIONS[lang] || TRANSLATIONS['English'];
- return t[key] || TRANSLATIONS['English'][key] || key;
-}
+function getTrans(key){ let lang = TRANSLATIONS[selectedLang]? selectedLang : 'English'; let t = TRANSLATIONS[lang] || TRANSLATIONS['English']; return t[key] || TRANSLATIONS['English'][key] || key; }
 function applyTranslations(){
  let lang = TRANSLATIONS[selectedLang]? selectedLang : 'English';
  let t = TRANSLATIONS[lang] || TRANSLATIONS['English'];
  document.querySelectorAll('[data-i18n]').forEach(el=>{
   let k=el.getAttribute('data-i18n');
-  let val = t[k] || TRANSLATIONS['English'][k];
-  if(val){
-   // span ke andar span hai to count mat ched
-   if(k==='myCart'){
-     el.childNodes[0].textContent = val + ' ';
-   } else {
-     // agar Cart (0) wala part hai to alag handle
-     if(el.id==='pGridCart' || el.id==='cartCount') return;
-     el.innerText = val;
-   }
+  if(el.id==='pGridCart' || el.id==='cartCount') return;
+  if(t[k]){
+   if(k==='myCart' || k==='cart' || k==='home' || k==='account'){
+     // keep count spans
+     if(el.closest('.bottom-nav')) return;
+     if(k==='myCart'){
+       let cnt=document.getElementById('pGridCart')?document.getElementById('pGridCart').innerText:'0';
+       el.innerHTML=`${t[k]} (<span id="pGridCart">${cnt}</span>)`;
+     } else el.innerText=t[k];
+   } else el.innerText=t[k];
   }
  });
- // myCart wala special
- let myCartEl = document.querySelector('[data-i18n="myCart"]');
- if(myCartEl){
-  myCartEl.innerHTML = `${getTrans('myCart')} (<span id="pGridCart">${document.getElementById('pGridCart')?document.getElementById('pGridCart').innerText:'0'}</span>)`;
- }
- let cartEl = document.querySelector('.bottom-nav a:last-child [data-i18n="cart"]');
- if(cartEl){
-  let count = document.getElementById('cartCount')?document.getElementById('cartCount').innerText:'0';
-  cartEl.parentElement.innerHTML = `🛒 <span data-i18n="cart">${getTrans('cart')}</span> (<span id="cartCount">${count}</span>)`;
- }
+ let homeEl=document.querySelector('.bottom-nav a:nth-child(1) [data-i18n="home"]'); if(homeEl) homeEl.innerText=getTrans('home');
+ let accEl=document.querySelector('.bottom-nav a:nth-child(2) [data-i18n="account"]'); if(accEl) accEl.innerText=getTrans('account');
+ let cartEl=document.querySelector('.bottom-nav a:nth-child(3) [data-i18n="cart"]'); if(cartEl) cartEl.innerText=getTrans('cart');
 }
 
 function renderLanguage(){
@@ -186,10 +162,10 @@ function renderLanguage(){
  let h=`<div style="background:#fff;border-radius:8px;overflow:hidden">`;
  LANGUAGES.forEach(l=>{
   let sel=(selectedLang===l.code)?'sel':'';
-  let tick=(selectedLang===l.code)?'✓':'';
-  h+=`<div class="lang-item ${sel}" onclick="setLang('${l.code}')"><span>${l.name}</span><span>${tick}</span></div>`;
+  let icon=(selectedLang===l.code)?'📍':'';
+  h+=`<div class="lang-item ${sel}" onclick="setLang('${l.code}')"><span>${l.name}</span><span style="font-size:16px">${icon}</span></div>`;
  });
- h+=`</div><div style="padding:12px;text-align:center;color:#878787;font-size:12px">${selectedLang} selected • ${LANGUAGES.length} languages</div>`;
+ h+=`</div><div style="padding:12px;text-align:center;color:#878787;font-size:12px">${selectedLang} • ${LANGUAGES.length} languages</div>`;
  el.innerHTML=h;
 }
 function setLang(code){
@@ -197,11 +173,8 @@ function setLang(code){
  localStorage.setItem('rekavo_lang',code);
  applyTranslations();
  renderLanguage();
- // direct profile pe switch + language change
- setTimeout(()=>{
-   closePage('language');
-   alert('Language changed to '+code+' ✅');
- },150);
+ // NO POPUP - direct profile redirect
+ setTimeout(()=>{ closePage('language'); },100);
 }
 
 function openPage(type, push=true){
@@ -216,14 +189,13 @@ function getUid(){return currentUser?(currentUser.user_id||currentUser.id):null;
 async function renderOrders(){let el=document.getElementById('ordersContent');el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';try{let uid=getUid();let res=await fetch(`${API_BASE}/orders/get?user_id=${uid}`);let orders=await res.json();if(!Array.isArray(orders)||orders.length===0){el.innerHTML=`<div class="empty-box"><h3>📦 No orders</h3></div>`;return;}let html=`<div style="padding:12px">`;orders.forEach(o=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px"><b>Order #${o.order_id||o.id}</b><p style="font-size:12px">₹${o.amount||o.total}</p></div>`;});el.innerHTML=html+`</div>`;}catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}}
 async function renderWishlist(){let el=document.getElementById('wishlistContent');el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';try{let uid=getUid();let res=await fetch(`${API_BASE}/wishlist/get?user_id=${uid}`);let wish=await res.json();if(!Array.isArray(wish)||wish.length===0){el.innerHTML=`<div class="empty-box"><h3>❤️ Your wishlist is empty</h3></div>`;return;}let html=`<div style="padding:12px">`;wish.forEach(w=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px"><img src="${w.image||''}" style="width:50px;height:50px"><div style="flex:1"><b style="font-size:13px">${w.name}</b><p>₹${w.price}</p></div></div>`;});el.innerHTML=html+`</div>`;}catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}}
 
-// PLACEHOLDER FIX WALA FULL ADDRESS FORM
 function addressFormHTML(prefix, data={}){
  let stateOpts=`<option value="">Select State</option>`+INDIAN_STATES.map(s=>`<option value="${s}" ${data.state===s?'selected':''}>${s}</option>`).join('');
  return `
  <div class="form-row"><div><label style="font-size:11px;font-weight:700">Full Name *</label><input id="${prefix}Name" class="input" placeholder="Enter full name" value="${data.full_name||''}"></div><div><label style="font-size:11px;font-weight:700">Mobile *</label><input id="${prefix}Phone" class="input" placeholder="Enter 10-digit mobile" value="${data.phone||''}"></div></div>
  <label style="font-size:11px;font-weight:700">Alternate Phone</label><input id="${prefix}AltPhone" class="input" placeholder="Enter alternate phone (optional)" value="${data.alt_phone||''}">
  <div class="form-row"><div><label style="font-size:11px;font-weight:700">Pincode *</label><input id="${prefix}Pin" class="input" placeholder="Enter 6-digit pincode" value="${data.pincode||''}"></div><div><label style="font-size:11px;font-weight:700">City *</label><input id="${prefix}City" class="input" placeholder="Enter city name" value="${data.city||''}"></div></div>
- <label style="font-size:11px;font-weight:700">State *</label><select id="${prefix}State" class="select"><option value="">Select State</option>${stateOpts}</select>
+ <label style="font-size:11px;font-weight:700">State *</label><select id="${prefix}State" class="select">${stateOpts}</select>
  <label style="font-size:11px;font-weight:700">House No, Building Name *</label><input id="${prefix}Line1" class="input" placeholder="Enter house no, building name" value="${data.line1||data.full_address||''}">
  <label style="font-size:11px;font-weight:700">Area, Street, Sector</label><textarea id="${prefix}Line2" class="textarea" placeholder="Enter area, colony, street">${data.line2||''}</textarea>
  <label style="font-size:11px;font-weight:700">Landmark</label><input id="${prefix}Landmark" class="input" placeholder="Enter nearby landmark" value="${data.landmark||''}">
@@ -241,19 +213,27 @@ async function renderAddress(){
   let html=`<div style="padding:12px">`;
   addr.forEach((a,i)=>{
    let aid=a.id||a._id||a.address_id||i;
-   let isSel=(selectedAddrId==aid)?'selected':'';let radioSel=(selectedAddrId==aid)?'sel':'';
+   let isSel=(selectedAddrId==aid)?'selected':'';let iconSel=(selectedAddrId==aid)?'sel':'';
    let fullAddr=`${a.line1||a.full_address||''} ${a.line2||''} ${a.landmark?'('+a.landmark+')':''}, ${a.city||''}, ${a.state||''} - ${a.pincode||''}`;
-   html+=`<div class="addr-card ${isSel}" id="addr-${aid}"><div class="radio ${radioSel}" onclick="selectAddress('${aid}')"><div></div></div><div style="flex:1"><div onclick="selectAddress('${aid}')"><b style="font-size:13px">${a.full_name} - ${a.type||'Home'}</b><p style="font-size:12px;color:#555;margin-top:2px">${a.phone}${a.alt_phone?' • '+a.alt_phone:''}</p><p style="font-size:12px;color:#222;margin-top:4px;line-height:16px">${fullAddr}</p></div><div id="editBox-${aid}" class="hidden" style="margin-top:12px;background:#f9f9f9;padding:10px;border-radius:8px">${addressFormHTML('e'+aid,a)}<button class="btn btn-blue" onclick="saveEditAddress('${aid}')">${getTrans('updateAddr')}</button><button class="btn btn-danger" onclick="deleteAddress('${aid}')">Delete Address</button></div></div><div style="font-size:12px;color:#2874f0;font-weight:700;cursor:pointer;white-space:nowrap" onclick="toggleEdit('${aid}')">Edit</div></div>`;
+   html+=`<div class="addr-card ${isSel}"><div class="loc-icon ${iconSel}" onclick="selectAddress('${aid}')">${selectedAddrId==aid?'📍':'📍'}</div><div style="flex:1" onclick="selectAddress('${aid}')"><b style="font-size:13px">${a.full_name} - ${a.type||'Home'}</b><p style="font-size:12px;color:#555;margin-top:2px">${a.phone}${a.alt_phone?' • '+a.alt_phone:''}</p><p style="font-size:12px;color:#222;margin-top:4px;line-height:16px">${fullAddr}</p></div><div style="font-size:12px;color:#2874f0;font-weight:700;cursor:pointer;white-space:nowrap;display:flex;align-items:center;justify-content:center;min-width:45px;min-height:35px;border-radius:6px" onclick="openEditModal('${aid}')">Edit</div></div>`;
   });
   html+=`<div style="background:#fff;border-radius:8px;padding:14px;margin-top:10px"><h3 style="font-size:14px;margin-bottom:8px">+ ${getTrans('addNewAddr')}</h3>${addressFormHTML('new')}<button class="btn btn-blue" onclick="addNewAddress()">+ ${getTrans('addNewAddr')}</button></div></div>`;
   el.innerHTML=html;
+  window._addrCache=addr;
  }catch(e){el.innerHTML=`<div class="empty-box"><h3>Error loading address</h3></div>`;}
 }
 function selectAddress(id){selectedAddrId=id;localStorage.setItem('rekavo_selected_addr',id);renderAddress();}
-function toggleEdit(id){let b=document.getElementById('editBox-'+id);b.classList.toggle('hidden');}
-async function deleteAddress(id){if(!confirm('Delete this address?'))return;let uid=getUid();try{await fetch(`${API_BASE}/address/delete`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,address_id:id,id:id})});}catch(e){}alert('Deleted');renderAddress();}
+function openEditModal(id){
+ let addr = (window._addrCache||[]).find((a,i)=>{let aid=a.id||a._id||a.address_id||i; return aid==id;});
+ if(!addr) return;
+ let box=document.getElementById('editAddrModalBox');
+ box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><b style="font-size:15px">Edit Address</b><span onclick="closeEditModal()" style="font-size:20px;cursor:pointer">✕</span></div>${addressFormHTML('edit',addr)}<button class="btn btn-blue" onclick="saveEditAddress('${id}')">${getTrans('updateAddr')}</button><button class="btn btn-danger" onclick="deleteAddress('${id}')">Delete Address</button>`;
+ document.getElementById('editAddrModal').classList.remove('hidden');
+}
+function closeEditModal(){document.getElementById('editAddrModal').classList.add('hidden');}
+async function deleteAddress(id){if(!confirm('Delete this address?'))return;let uid=getUid();try{await fetch(`${API_BASE}/address/delete`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,address_id:id,id:id})});}catch(e){}closeEditModal();renderAddress();}
 async function saveEditAddress(id){
- let p='e'+id;
+ let p='edit';
  let fn=document.getElementById(p+'Name').value.trim();let ph=document.getElementById(p+'Phone').value.trim();let alt=document.getElementById(p+'AltPhone').value.trim();let pin=document.getElementById(p+'Pin').value.trim();let city=document.getElementById(p+'City').value.trim();let state=document.getElementById(p+'State').value.trim();let l1=document.getElementById(p+'Line1').value.trim();let l2=document.getElementById(p+'Line2').value.trim();let lm=document.getElementById(p+'Landmark').value.trim();let typ=document.getElementById(p+'Type').value;
  if(!fn||!ph||!pin||!city||!state||!l1){alert('Fill all * fields');return;}
  let uid=getUid();
@@ -264,17 +244,17 @@ async function saveEditAddress(id){
   try{await fetch(`${API_BASE}/address/delete`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,address_id:id,id:id})});}catch(e){}
   await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:currentUser.email,full_name:fn,phone:ph,alt_phone:alt,pincode:pin,city:city,state:state,line1:l1,line2:l2,landmark:lm,type:typ,full_address:l1})});
  }
- alert('Address Updated ✅');renderAddress();
+ closeEditModal();renderAddress();
 }
 async function addNewAddress(){
  let p='new';let fn=document.getElementById(p+'Name').value.trim();let ph=document.getElementById(p+'Phone').value.trim();let alt=document.getElementById(p+'AltPhone').value.trim();let pin=document.getElementById(p+'Pin').value.trim();let city=document.getElementById(p+'City').value.trim();let state=document.getElementById(p+'State').value.trim();let l1=document.getElementById(p+'Line1').value.trim();let l2=document.getElementById(p+'Line2').value.trim();let lm=document.getElementById(p+'Landmark').value.trim();let typ=document.getElementById(p+'Type').value;
  if(!fn||!ph||!pin||!city||!state||!l1){alert('Please fill all * fields');return;}
- let uid=getUid();await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:currentUser.email,full_name:fn,phone:ph,alt_phone:alt,pincode:pin,city:city,state:state,line1:l1,line2:l2,landmark:lm,type:typ,full_address:l1})});alert('Address saved!');renderAddress();
+ let uid=getUid();await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:currentUser.email,full_name:fn,phone:ph,alt_phone:alt,pincode:pin,city:city,state:state,line1:l1,line2:l2,landmark:lm,type:typ,full_address:l1})});renderAddress();
 }
 
 function fillEditProfile(){document.getElementById('editName').value=currentUser.name||'';document.getElementById('editMobile').value=currentUser.mobile||currentUser.phone||'';document.getElementById('editEmail').value=currentUser.email||'';let circle=document.getElementById('editPicon');let savedPhoto=localStorage.getItem('rekavo_profile_photo');if(savedPhoto){circle.innerHTML=`<img src="${savedPhoto}">`;}else{circle.innerText=getInitials(currentUser.name);}}
-async function saveProfile(){let n=document.getElementById('editName').value.trim();let m=document.getElementById('editMobile').value.trim();let e=document.getElementById('editEmail').value.trim();if(!n){alert('Name required');return;}currentUser.name=n;currentUser.mobile=m;currentUser.email=e;currentUser.phone=m;localStorage.setItem('rekavo_user',JSON.stringify(currentUser));document.getElementById('pName').innerText=n;document.getElementById('pMobile').innerText=m?'+91 '+m:'';document.getElementById('pEmailShow').innerText=e||'........';document.getElementById('pIcon').innerText=getInitials(n);let savedPhoto=localStorage.getItem('rekavo_profile_photo');if(savedPhoto){document.getElementById('pIcon').innerHTML=`<img src="${savedPhoto}">`;}try{let uid=getUid();await fetch(`${API_BASE}/user/update`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,name:n,mobile:m,phone:m,email:e})});}catch(err){}alert('Profile Saved');closePage('editprofile');}
-function deletePhoto(){localStorage.removeItem('rekavo_profile_photo');document.getElementById('pIcon').innerText=getInitials(currentUser.name);let ep=document.getElementById('editPicon');if(ep)ep.innerText=getInitials(currentUser.name);alert('Photo deleted');}
+async function saveProfile(){let n=document.getElementById('editName').value.trim();let m=document.getElementById('editMobile').value.trim();let e=document.getElementById('editEmail').value.trim();if(!n){alert('Name required');return;}currentUser.name=n;currentUser.mobile=m;currentUser.email=e;currentUser.phone=m;localStorage.setItem('rekavo_user',JSON.stringify(currentUser));document.getElementById('pName').innerText=n;document.getElementById('pMobile').innerText=m?'+91 '+m:'';document.getElementById('pEmailShow').innerText=e||'........';document.getElementById('pIcon').innerText=getInitials(n);let savedPhoto=localStorage.getItem('rekavo_profile_photo');if(savedPhoto){document.getElementById('pIcon').innerHTML=`<img src="${savedPhoto}">`;}try{let uid=getUid();await fetch(`${API_BASE}/user/update`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,name:n,mobile:m,phone:m,email:e})});}catch(err){}closePage('editprofile');}
+function deletePhoto(){localStorage.removeItem('rekavo_profile_photo');document.getElementById('pIcon').innerText=getInitials(currentUser.name);let ep=document.getElementById('editPicon');if(ep)ep.innerText=getInitials(currentUser.name);}
 function getInitials(name){if(!name)return"UN";let parts=name.trim().split(" ").filter(Boolean);if(parts.length>=2)return(parts[0][0]+parts[1][0]).toUpperCase();return parts[0].substring(0,2).toUpperCase();}
 function logout(){localStorage.removeItem('rekavo_user');localStorage.removeItem('rekavo_profile_photo');localStorage.removeItem('rekavo_cart');localStorage.removeItem('rekavo_wishlist');location.href='account.html';}
 function handlePhotoFile(e){let file=e.target.files[0];if(!file)return;let reader=new FileReader();reader.onload=function(ev){let base64=ev.target.result;localStorage.setItem('rekavo_profile_photo',base64);document.getElementById('pIcon').innerHTML=`<img src="${base64}">`;let ep=document.getElementById('editPicon');if(ep)ep.innerHTML=`<img src="${base64}">`;};reader.readAsDataURL(file);}
@@ -292,12 +272,10 @@ async function updateCountsReal(){
    document.getElementById('cartCount').innerText=cnt;
    document.getElementById('pGridCart').innerText=cnt;
    document.getElementById('pCartCount').innerText=cnt;
-   applyTranslations();
   }
   if(Array.isArray(w)){ document.getElementById('pWishCount').innerText=w.length; }
  }catch(e){}
 }
-
 (function(){
  let u=localStorage.getItem('rekavo_user');if(!u){location.href='account.html';return;}
  currentUser=JSON.parse(u);currentUser.user_id=currentUser.user_id||currentUser.id;
