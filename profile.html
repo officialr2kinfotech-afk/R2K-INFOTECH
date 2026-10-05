@@ -83,7 +83,6 @@ let selectedAddrId = localStorage.getItem('rekavo_selected_addr')||null;
 let selectedLang = localStorage.getItem('rekavo_lang')||'English';
 const INDIAN_STATES=["Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh","Uttarakhand","West Bengal","Delhi","Jammu and Kashmir","Ladakh"];
 function renderLanguage(){let el=document.getElementById('langContent');el.innerHTML=`<div style="background:#fff;border-radius:8px;padding:14px">Language selection</div>`;}
-function setLang(code){selectedLang=code;localStorage.setItem('rekavo_lang',code);}
 function openPage(type, push=true){
  if(!currentUser){return;}
  document.querySelectorAll('.page-section').forEach(s=>s.classList.add('hidden'));
@@ -94,7 +93,6 @@ function openPage(type, push=true){
 function closePage(type){ if(location.hash){ history.back(); } else { document.getElementById(`page-${type}`).classList.add('hidden'); } }
 function getUid(){return currentUser?(currentUser.user_id||currentUser.id):null;}
 
-// ===== ONLY PINCODE VERIFY - NO CITY/STATE AUTO FILL =====
 async function verifyPincodeOnly(pincode, prefix){
  if(!/^\d{6}$/.test(pincode)) return;
  let loader = document.getElementById(prefix+'PinLoader');
@@ -102,14 +100,9 @@ async function verifyPincodeOnly(pincode, prefix){
  try{
   let res = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
   let data = await res.json();
-  if(data[0].Status==="Success"){
-   if(loader){ loader.className='pincode-ok'; loader.innerText='✓ Pincode Verified'; }
-  } else {
-   if(loader){ loader.className='pincode-bad'; loader.innerText='Invalid pincode'; }
-  }
- }catch(e){
-  if(loader){ loader.className='pincode-ok'; loader.innerText='✓ Pincode Verified'; }
- }
+  if(data[0].Status==="Success"){ if(loader){ loader.className='pincode-ok'; loader.innerText='✓ Pincode Verified'; } }
+  else { if(loader){ loader.className='pincode-bad'; loader.innerText='Invalid pincode'; } }
+ }catch(e){ if(loader){ loader.className='pincode-ok'; loader.innerText='✓ Pincode Verified'; } }
 }
 function attachPincodeListener(prefix){
  setTimeout(()=>{
@@ -162,8 +155,8 @@ async function renderAddress(){
    let parts = [];
    if(a.full_address) parts.push(a.full_address);
    else { if(a.line1) parts.push(a.line1); if(a.line2) parts.push(a.line2); }
-   if(a.locality && a.locality!==a.line2) parts.push(a.locality);
    if(a.landmark) parts.push(a.landmark);
+   else if(a.locality && a.locality!==a.line2) parts.push(a.locality);
    if(a.city) parts.push(a.city);
    if(a.state) parts.push(a.state);
    if(a.pincode) parts.push('- '+a.pincode);
@@ -177,7 +170,6 @@ async function renderAddress(){
  }catch(e){el.innerHTML=`<div class="empty-box"><h3>Error loading address</h3></div>`;}
 }
 function selectAddress(id){selectedAddrId=id;localStorage.setItem('rekavo_selected_addr',id);renderAddress();}
-
 function openEditModal(id){
  let raw = (window._addrCache||[]).find((a,i)=>{let aid=a.id||a._id||a.address_id||i;return aid==id;});
  if(!raw) return;
@@ -188,11 +180,15 @@ function openEditModal(id){
   pincode: raw.pincode || '',
   city: raw.city || '',
   state: raw.state || '',
-  line1: raw.line1 || raw.full_address || '',
-  line2: raw.line2 || raw.locality || '',
+  line1: raw.line1 || raw.full_address || raw.address || '',
+  line2: raw.line2 || '',
   landmark: raw.landmark || '',
   type: raw.type || 'Home'
  };
+ // Agar backend me line1/line2 alag nahi hai to full_address se nikaal
+ if(raw.locality &&!normalized.landmark){ normalized.landmark = raw.locality; }
+ if(raw.locality &&!normalized.line2 &&!raw.full_address.includes(raw.locality)){ normalized.line2 = raw.locality; }
+ // Agar line1 me pura address hai to waisa hi dikhao
  let box=document.getElementById('editAddrModalBox');
  box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><b style="font-size:15px">Edit Address</b><span onclick="closeEditModal()" style="font-size:20px;cursor:pointer">✕</span></div>${addressFormHTML('edit',normalized)}<button class="btn" onclick="saveEditAddress('${id}')">Update Address</button><button class="btn" style="background:#fff;color:#ff3e6c;border:1.5px solid #ff3e6c;margin-top:8px" onclick="deleteAddress('${id}')">Delete Address</button>`;
  document.getElementById('editAddrModal').classList.remove('hidden');
@@ -200,7 +196,6 @@ function openEditModal(id){
 }
 function closeEditModal(){document.getElementById('editAddrModal').classList.add('hidden');}
 async function deleteAddress(id){if(!confirm('Delete?'))return;let uid=getUid();let email=currentUser.email||'';try{await fetch(`${API_BASE}/address/delete`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:email,address_id:id,id:id})});}catch(e){}closeEditModal();renderAddress();}
-
 function clearErr(prefix){ ['Name','Phone','Pin','City','State','Line1'].forEach(k=>{ let el=document.getElementById(prefix+k); if(el) el.classList.remove('err'); }); }
 function validateAddress(prefix){
  clearErr(prefix);
@@ -220,7 +215,6 @@ function validateAddress(prefix){
  if(!ok) return null;
  return {fn,ph,pin,city,state,l1};
 }
-
 async function saveEditAddress(id){
  let v = validateAddress('edit');
  if(!v) return;
@@ -230,14 +224,13 @@ async function saveEditAddress(id){
  let lm=document.getElementById(p+'Landmark').value.trim();
  let typ=document.getElementById(p+'Type').value;
  let uid=getUid(); let email=currentUser.email||'';
- let fullAddr = `${v.l1}${l2?', '+l2:''}`.trim();
+ let fullAddr = `${v.l1}${l2?', '+l2:''}${lm?', '+lm:''}`.trim();
+ let localityCombined = `${l2}${lm?', '+lm:''}`.trim();
  try{
-  let res=await fetch(`${API_BASE}/address/update`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:email,address_id:id,id:id,full_name:v.fn,phone:v.ph,alt_phone:alt,pincode:v.pin,city:v.city,state:v.state,line1:v.l1,line2:l2,landmark:lm,type:typ,full_address:fullAddr,address:fullAddr,locality:l2})});
-  if(!res.ok) throw new Error();
- } catch(err){
-  try{await fetch(`${API_BASE}/address/delete`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:email,address_id:id,id:id})});}catch(e){}
-  await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:email,full_name:v.fn,phone:v.ph,alt_phone:alt,pincode:v.pin,city:v.city,state:v.state,line1:v.l1,line2:l2,landmark:lm,type:typ,full_address:fullAddr,address:fullAddr,locality:l2})});
- }
+  await fetch(`${API_BASE}/address/delete`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:email,address_id:id,id:id})});
+  await new Promise(r=>setTimeout(r,300));
+  await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:email,full_name:v.fn,phone:v.ph,alt_phone:alt,pincode:v.pin,city:v.city,state:v.state,line1:v.l1,line2:l2,landmark:lm,type:typ,full_address:fullAddr,address:fullAddr,locality:localityCombined})});
+ }catch(e){ console.log(e); }
  closeEditModal();renderAddress();
 }
 async function addNewAddress(){
@@ -249,9 +242,10 @@ async function addNewAddress(){
  let lm=document.getElementById(p+'Landmark').value.trim();
  let typ=document.getElementById(p+'Type').value;
  let uid=getUid(); let email=currentUser.email||'';
- let fullAddr = `${v.l1}${l2?', '+l2:''}`.trim();
+ let fullAddr = `${v.l1}${l2?', '+l2:''}${lm?', '+lm:''}`.trim();
+ let localityCombined = `${l2}${lm?', '+lm:''}`.trim();
  try{
-  let res = await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:email,full_name:v.fn,phone:v.ph,alt_phone:alt,pincode:v.pin,city:v.city,state:v.state,line1:v.l1,line2:l2,landmark:lm,type:typ,full_address:fullAddr,address:fullAddr,locality:l2})});
+  let res = await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:email,full_name:v.fn,phone:v.ph,alt_phone:alt,pincode:v.pin,city:v.city,state:v.state,line1:v.l1,line2:l2,landmark:lm,type:typ,full_address:fullAddr,address:fullAddr,locality:localityCombined})});
   let j = await res.json();
   if(!j.success) throw new Error(j.error||'failed');
   renderAddress();
