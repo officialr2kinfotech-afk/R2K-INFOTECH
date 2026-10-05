@@ -165,11 +165,11 @@ function renderLanguage(){
  el.innerHTML=h;
 }
 function setLang(code){
- selectedLang=code;
- localStorage.setItem('rekavo_lang',code);
- applyTranslations();
- renderLanguage();
- setTimeout(()=>{ closePage('language'); },150);
+  localStorage.setItem('rekavo_lang', code);
+  fetch('/set-lang/' + code).then(() => {
+    location.reload();
+  });
+  document.getElementById('currentLang').innerText = code;
 }
 function openPage(type, push=true){
  if(!currentUser){alert('Please login first');return;}
