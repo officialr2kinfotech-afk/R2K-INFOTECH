@@ -239,18 +239,10 @@ async function saveEditAddress(id){
  let fullAddr = `${v.l1}${l2?', '+l2:''}${lm?', '+lm:''}`.trim();
  let localityCombined = `${l2}${lm? ', '+lm : ''}`.trim();
  try{
-  let res = await fetch(`${API_BASE}/address/update`,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      id:id, address_id:id, user_id:uid, email:email,
-      full_name:v.fn, phone:v.ph, alt_phone:alt, pincode:v.pin,
-      city:v.city, state:v.state, line1:v.l1, line2:l2, landmark:lm, type:typ,
-      full_address:fullAddr, locality:localityCombined
-    })
-  });
-  let out = await res.json();
-  console.log("UPDATE RES", out);
+  // BACKEND UPDATE - pehle backend se delete, phir backend me add
+  await fetch(`${API_BASE}/address/delete`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:email,address_id:id,id:id})});
+  await new Promise(r=>setTimeout(r,400));
+  await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:email,full_name:v.fn,phone:v.ph,alt_phone:alt,pincode:v.pin,city:v.city,state:v.state,line1:v.l1,line2:l2,landmark:lm,type:typ,full_address:fullAddr,address:fullAddr,locality:localityCombined})});
  }catch(e){ console.log(e); }
  if(btn){ btn.innerText='Update Address'; btn.disabled=false; }
  closeEditModal(); renderAddress();
