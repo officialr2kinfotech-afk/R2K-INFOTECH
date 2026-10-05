@@ -3,335 +3,106 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>REKAVO - Product Detail</title>
+<title>Profile - REKAVO</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,sans-serif}
-body{background:#fff;padding-bottom:90px}
-.top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:8px 12px;font-size:12px;font-weight:800}
-.search-wrapper{background:#2874f0;padding:10px 12px;position:sticky;top:0;z-index:99}
-.search-box{width:100%;display:flex;background:#fff;border-radius:2px;height:42px;position:relative}
-.search-box input{flex:1;border:none;padding:0 14px;outline:none}
-.search-box button{border:none;background:#fff;color:#2874f0;padding:0 18px;font-size:20px;font-weight:900}
-.search-results{position:absolute;top:44px;left:0;right:0;background:#fff;max-height:400px;overflow:auto;box-shadow:0 8px 16px rgba(0,0,0,.2);display:none;z-index:30}
-.search-results.show{display:block}
-.sr-item{display:flex;gap:10px;padding:10px;border-bottom:1px solid #f0f0f0;cursor:pointer;align-items:center}
-.detail-wrap{display:flex;flex-wrap:wrap}
-.detail-left{flex:1;min-width:280px;padding:12px;border-right:1px solid #f0f0f0}
-.detail-main-img{width:100%;height:340px;object-fit:contain;border:1px solid #f0f0f0;border-radius:6px;background:#fff}
-.detail-thumbs{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
-.detail-thumbs img{width:56px;height:56px;border:1px solid #e0e0e0;border-radius:4px;cursor:pointer;object-fit:contain}
-.detail-thumbs img.active{border:2px solid #2874f0}
-.detail-right{flex:1;min-width:300px;padding:14px}
-.price{color:#388e3c;font-weight:800;font-size:24px}
-.old-price{text-decoration:line-through;color:#878787;font-size:14px}
-.coupon-row{display:flex;gap:6px;margin:12px 0}
-.coupon-row input{flex:1;padding:11px;border:1px solid #e0e0e0;border-radius:4px;outline:none}
-.coupon-row button{background:#2874f0;color:#fff;border:none;padding:11px 16px;border-radius:4px;font-weight:700;cursor:pointer}
-.spec-box{background:#fafafa;border:1px solid #f0f0f0;border-radius:6px;padding:12px;margin:12px 0;font-size:13px;line-height:1.6;white-space:pre-line}
-.btn-cart{width:100%;background:#ff9f00;color:#fff;border:none;padding:14px;border-radius:4px;font-weight:800;cursor:pointer}
-.btn-buy{width:100%;background:#fb641b;color:#fff;border:none;padding:14px;border-radius:4px;font-weight:800;cursor:pointer}
-.rating-top{display:flex;align-items:center;gap:8px;margin:8px 0}
-.rating-badge{background:#878787;color:#fff;font-size:12px;padding:3px 6px;border-radius:3px;font-weight:700}
-.rating-count{font-size:12px;color:#878787;font-weight:600}
-.review-section{margin:20px 14px;border-top:8px solid #f1f3f6;padding-top:16px}
-.review-head{font-size:16px;font-weight:800;margin-bottom:10px}
-.star{font-size:28px;color:#e0e0e0;cursor:pointer;transition:0.2s}.star.active{color:#ff9f00}
-.review-card{border:1px solid #f0f0f0;border-radius:6px;padding:10px;margin:10px 0;background:#fff}
-.review-card img{width:70px;height:70px;object-fit:cover;border-radius:6px;margin-top:8px;border:1px solid #eee}
-.upload-box{border:2px dashed #2874f0;background:#f5f8ff;padding:12px;border-radius:6px;margin-top:10px}
-.error-msg{color:#d93025;font-size:11px;font-weight:600;margin-top:4px;display:none;background:#fff5f5;padding:5px 7px;border-radius:4px}
-.error-msg.show{display:block}
-.success-msg{color:#188038;font-size:11px;font-weight:700;margin-top:6px;display:none;background:#e6f4ea;padding:8px;border-radius:4px;text-align:center}
-.success-msg.show{display:block}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:999;box-shadow:0 -2px 8px rgba(0,0,0,.06)}
-.bottom-nav a{text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;white-space:nowrap;text-align:center}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,Arial,sans-serif}
+body{background:#f1f3f6;padding-bottom:70px}
+.profile-wrap{padding:0;background:#f1f3f6}
+.profile-top-card{background:#fff;text-align:center;padding:28px 15px 18px;border-bottom:8px solid #f1f3f6}
+.img-wrap{position:relative;width:110px;height:110px;margin:0 auto}
+.p-circle{width:110px;height:110px;background:#e9e9e9;color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:800;border:2px solid #000;overflow:hidden}
+.p-circle img{width:100%;height:100%;object-fit:cover}
+.edit-pencil{position:absolute;bottom:2px;right:2px;width:30px;height:30px;background:#000;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid #fff;cursor:pointer}
+.p-name{margin-top:14px;font-size:18px;font-weight:800;color:#000}
+.p-mobile{margin-top:3px;font-size:14px;color:#555;font-weight:500}
+.p-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;background:#fff;border-bottom:8px solid #f1f3f6}
+.p-grid-btn{border:1.5px solid #000;border-radius:8px;padding:14px 5px;text-align:center;font-size:13px;font-weight:700;background:#fff;cursor:pointer}
+.p-list{background:#fff;padding:0}
+.p-list-item{display:flex;justify-content:space-between;align-items:center;padding:16px 15px;border-bottom:1px solid #f0f0f0;font-size:14px;font-weight:600;cursor:pointer}
+.empty-box{background:#fff;border-radius:8px;padding:40px 20px;text-align:center;margin-top:12px}
+.page-section{position:fixed;top:0;left:0;width:100%;height:100%;background:#f1f3f6;z-index:10000;overflow-y:auto;padding-bottom:70px}
+.page-header{background:#2874f0;color:#fff;padding:12px 14px;display:flex;align-items:center;gap:12px;position:sticky;top:0}
+.input{width:100%;height:44px;border:1px solid #dbdbdb;border-radius:8px;padding:0 12px;outline:none;font-size:14px;margin:5px 0 2px}
+.btn{width:100%;height:44px;background:#2874f0;color:#fff;border:none;border-radius:8px;font-weight:800;font-size:14px;cursor:pointer;margin-top:6px}
+.btn-blue{background:#2874f0}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:99}
+.bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
+.bottom-nav a.active{color:#2874f0}
+.hidden{display:none!important}
 </style>
 </head>
 <body>
-<div class="top-strip">🔥 Use Coupon For Extra Discount At 20%, 40%, 50%, 80% And More....</div>
-<div class="search-wrapper"><div class="search-box"><input id="mainSearch" placeholder="Search for products, brands and more" oninput="liveSearch(this.value)" autocomplete="off"><button>⌕</button><div id="searchResults" class="search-results"></div></div></div>
-
-<div class="detail-wrap">
-  <div class="detail-left">
-    <button onclick="location.href='category.html?cat='+cat" style="background:#f0f0f0;border:none;padding:6px 12px;border-radius:4px;font-weight:700;margin-bottom:10px;cursor:pointer">← Back</button>
-    <img id="mainImg" class="detail-main-img" src="">
-    <div id="thumbs" class="detail-thumbs"></div>
+<div class="profile-wrap">
+  <div class="profile-top-card">
+    <div class="img-wrap">
+      <div class="p-circle" id="pIcon">UN</div>
+      <div class="edit-pencil" onclick="document.getElementById('profileFile').click()">✏️</div>
+      <input type="file" id="profileFile" accept="image/*" style="display:none">
+    </div>
+    <div class="p-name" id="pName"></div>
+    <div class="p-mobile" id="pMobile"></div>
+    <div style="display:none" id="pEmail"></div>
+    <div style="display:none"><span id="pCartCount">0</span><span id="pWishCount">0</span></div>
   </div>
-  <div class="detail-right">
-    <h2 id="pName"></h2>
-    <div class="rating-top"><span id="pRatingBadge" class="rating-badge">0 ★</span><span id="pRatingCount" class="rating-count">(0 Ratings)</span><span style="color:#2874f0;font-size:12px;font-weight:700"> • Assured</span></div>
-    <div style="margin:10px 0"><span id="pOld" class="old-price"></span> <span id="pPrice" class="price"></span> <span id="pOff" style="color:#388e3c;font-weight:800"></span></div>
-    <p style="font-size:12px">Coupon Code: <b id="pCoupon" style="color:#2874f0;background:#e6efff;padding:3px 8px;border-radius:3px;border:1px dashed #2874f0"></b> <span style="color:#26a541;font-weight:700">- Copy & Apply</span></p>
-    <div class="coupon-row"><input id="couponInput" placeholder="Enter Coupon Code"><button id="cBtn" onclick="applyCoupon()">APPLY</button></div>
-    <p id="couponMsg" class="success-msg"></p><p id="couponErr" class="error-msg"></p>
-    <div id="pSpec" class="spec-box"></div>
-    <div style="display:flex;gap:10px;margin-bottom:10px"><button class="btn-cart" onclick="addToCart()">ADD TO CART</button><button class="btn-buy" onclick="buyNow()">BUY NOW</button></div>
-    <p id="cartMsg" class="success-msg"></p>
+  <div class="p-grid">
+    <div class="p-grid-btn" onclick="openPage('orders')">My orders</div>
+    <div class="p-grid-btn" onclick="location.href='cart.html'">My Cart</div>
+    <div class="p-grid-btn">coupons</div>
+    <div class="p-grid-btn" onclick="openPage('wishlist')">wishlist</div>
+  </div>
+  <div class="p-list">
+    <div class="p-list-item"><div>📧 Email - <span id="pEmailShow" style="color:#878787">........</span></div></div>
+    <div class="p-list-item" onclick="openPage('address')"><div>📍 Saved Addresses</div><div>›</div></div>
+    <div class="p-list-item"><div>👤 Edit profile</div><div>›</div></div>
+    <div class="p-list-item"><div>A/अ Select Language</div><div>›</div></div>
+    <div class="p-list-item" onclick="openPage('help')"><div>💬 help center</div><div>›</div></div>
+    <div class="p-list-item" onclick="logout()"><div>🚪 Logout</div><div>›</div></div>
   </div>
 </div>
-
-<div class="review-section">
-  <div class="review-head">Ratings & Reviews</div>
-  <div style="display:flex;align-items:center;gap:10px" id="ratingSummary">
-    <div id="avgBig" style="font-size:28px;font-weight:800">0 <span style="color:#878787;font-size:18px">★</span></div>
-    <div id="avgCount" style="font-size:12px;color:#878787">0 Ratings &<br>0 Reviews</div>
-  </div>
-
-  <div style="margin-top:14px;background:#fff;border:1px solid #f0f0f0;border-radius:6px;padding:12px">
-    <p style="font-weight:700;font-size:13px;margin-bottom:6px">Rate this product</p>
-    <div id="starBox">
-      <span class="star" onclick="setStar(1)">★</span>
-      <span class="star" onclick="setStar(2)">★</span>
-      <span class="star" onclick="setStar(3)">★</span>
-      <span class="star" onclick="setStar(4)">★</span>
-      <span class="star" onclick="setStar(5)">★</span>
-    </div>
-    <p id="err-review" class="error-msg"></p>
-    <textarea id="reviewText" placeholder="Write your review..." style="width:100%;margin-top:10px;padding:10px;border:1px solid #e0e0e0;border-radius:4px;height:70px;outline:none"></textarea>
-
-    <div class="upload-box">
-      <p style="font-size:12px;font-weight:700;color:#2874f0">📷 Upload Product Photo (optional)</p>
-      <input type="file" id="reviewPhoto" accept="image/*" onchange="previewPhoto(event)" style="margin-top:8px">
-      <img id="photoPreview" style="display:none;width:80px;height:80px;object-fit:cover;border-radius:6px;margin-top:8px;border:1px solid #ddd">
-    </div>
-
-    <button onclick="submitReview()" style="margin-top:12px;background:#2874f0;color:#fff;border:none;padding:10px 20px;border-radius:4px;font-weight:700;cursor:pointer;width:100%">SUBMIT REVIEW</button>
-    <p id="reviewMsg" class="success-msg"></p>
-  </div>
-
-  <div id="reviewList" style="margin-top:16px">
-    <div id="noReviewBox" style="text-align:center;padding:30px 10px;background:#fafafa;border:1px dashed #e0e0e0;border-radius:8px">
-      <div style="font-size:36px">⭐</div>
-      <p style="font-size:13px;font-weight:700;margin-top:8px">No reviews yet</p>
-      <p style="font-size:11px;color:#878787;margin-top:4px">Be the first to review this product and help others</p>
-    </div>
-  </div>
-</div>
-
-<div class="bottom-nav">
-  <a href="index.html"><span>🏠</span><span>Home</span></a>
-  <a href="account.html"><span>👤</span><span>Account</span></a>
-  <a href="cart.html"><span>🛒 Cart (<span id="cartCount">0</span>)</span></a>
-</div>
-
+<div id="page-cart" class="page-section hidden"><div class="page-header"><span onclick="closePage('cart')" style="font-size:22px;cursor:pointer">←</span><b>My Cart</b></div><div id="cartContent"></div></div>
+<div id="page-orders" class="page-section hidden"><div class="page-header"><span onclick="closePage('orders')" style="font-size:22px;cursor:pointer">←</span><b>My Orders</b></div><div id="ordersContent"></div></div>
+<div id="page-wishlist" class="page-section hidden"><div class="page-header"><span onclick="closePage('wishlist')" style="font-size:22px;cursor:pointer">←</span><b>My Wishlist</b></div><div id="wishlistContent"></div></div>
+<div id="page-address" class="page-section hidden"><div class="page-header"><span onclick="closePage('address')" style="font-size:22px;cursor:pointer">←</span><b>My Addresses</b></div><div id="addressContent"></div></div>
+<div id="page-help" class="page-section hidden"><div class="page-header"><span onclick="closePage('help')" style="font-size:22px;cursor:pointer">←</span><b>Help Center</b></div><div style="padding:12px"><div style="background:#fff;border-radius:8px;padding:12px"><h4>📞 Contact Us</h4><p style="font-size:12px;color:#555;margin-top:4px">Email: support@rekavo.com<br>Phone: +91 9876543210</p></div></div></div>
+<div class="bottom-nav"><a href="index.html"><span>🏠</span><span>Home</span></a><a href="profile.html" class="active"><span>👤</span><span>Account</span></a><a href="cart.html"><span>🛒</span><span>Cart (<span id="cartCount">0</span>)</span></a></div>
 <script>
 const API_BASE="https://rekavo-backend.vercel.app";
-const categoryData={
-powerbank:[
-{name:"Power Bank 10000mAh",price:499,originalPrice:1299,coupon:"REKAVOPB10K40PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400",desc:"High capacity 10000mAh power bank with 22.5W fast charging.",spec:"Capacity: 10000mAh\nInput: Type-C 18W\nOutput: 22.5W\nWarranty: 6 Months"},
-{name:"Power Bank 20000mAh",price:799,originalPrice:1999,coupon:"REKAVOPB20K60PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400",desc:"20000mAh large capacity with digital display.",spec:"Capacity: 20000mAh\nDisplay: LED\nWarranty: 6 Months"},
-{name:"Power Bank 30000mAh",price:1099,originalPrice:2999,coupon:"REKAVOPB30K70PERCENT",img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400",desc:"Massive 30000mAh power bank.",spec:"Capacity: 30000mAh\nOutput: 22.5W x 4\nWarranty: 6 Months"}
-],
-neckband:[
-{name:"Neckband Boat 100",price:199,originalPrice:999,coupon:"REKAVONB10050PERCENT",img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400",desc:"Wireless neckband with 20 hours battery.",spec:"Battery: 20 Hours\nDriver: 10mm\nWarranty: 3 Months"},
-{name:"Neckband 500 Premium",price:549,originalPrice:1999,coupon:"REKAVONB50040PERCENT",img:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400",desc:"Premium neckband with HD calling.",spec:"Battery: 30 Hours\nWarranty: 6 Months"}
-],
-earbuds:[
-{name:"Earbuds TWS 400",price:449,originalPrice:1499,coupon:"REKAVOEB40060PERCENT",img:"https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=400",desc:"TWS Earbuds with 30 hours playback.",spec:"Playback: 30H\nCharging: Type-C\nWarranty: 6 Months"},
-{name:"Earbuds Pro Sound",price:999,originalPrice:4999,coupon:"REKAVOEBPRO80PERCENT",img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400",desc:"Pro sound earbuds with ANC.",spec:"ANC: Yes\nBattery: 40H\nWarranty: 12 Months"}
-],
-cable:[
-{name:"Cable Type-C 100",price:99,originalPrice:299,coupon:"REKAVOCB10050PERCENT",img:"https://images.unsplash.com/photo-1625842268584-8f3296236761?w=400",desc:"Fast charging Type-C cable.",spec:"Length: 1 Meter\nSpeed: 3A"},
-{name:"Cable Fast 3A",price:199,originalPrice:499,coupon:"REKAVOCB3A40PERCENT",img:"https://images.unsplash.com/photo-1587037542707-1dad5a1cfa9d?w=400",desc:"3A fast cable with nylon braiding.",spec:"Length: 1.5M\nMaterial: Nylon"}
-],
-charger:[
-{name:"Charger 20W Fast",price:299,originalPrice:999,coupon:"REKAVOCH20W60PERCENT",img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400",desc:"20W fast charger.",spec:"Output: 20W PD\nWarranty: 6 Months"},
-{name:"Charger 65W",price:699,originalPrice:2499,coupon:"REKAVOCH65W70PERCENT",img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400",desc:"65W super fast charger.",spec:"Output: 65W GaN\nWarranty: 12 Months"}
-]
-};
-
-function getUser(){try{let u=JSON.parse(localStorage.getItem('rekavo_user')); if(!u) return null; u.user_id = u.user_id || u.id || u._id; return u;}catch(e){return null}}
-function getUid(){ let u=getUser(); return u? u.user_id : null; }
-function getDiscount(code){let m=code.toUpperCase().match(/(\d{1,3})\s*PERCENT/);return m?parseInt(m[1]):0}
-function getAllProducts(){let all=[];for(let c in categoryData){categoryData[c].forEach((p,i)=>{all.push({...p,cat:c,idx:i})})}return all}
-function liveSearch(q){let box=document.getElementById('searchResults');let all=getAllProducts();let query=q.trim().toLowerCase();let filtered=query===""?all:all.filter(p=>p.name.toLowerCase().includes(query)||p.cat.includes(query));box.innerHTML=filtered.map(p=>`<div class="sr-item" onclick="location.href='product.html?cat=${p.cat}&idx=${p.idx}'"><img src="${p.img}" style="width:40px;height:40px;object-fit:contain"><div><div style="font-size:13px;font-weight:600">${p.name}</div><div style="font-size:12px;color:#388e3c">₹${p.price}</div></div></div>`).join('');box.classList.add('show')}
-
-let params=new URLSearchParams(location.search);
-let cat=params.get('cat');
-let idx=params.get('idx');
-let pid=params.get('id');
-let pname=params.get('name');
-let saved=null; try{saved=JSON.parse(localStorage.getItem('rekavo_view_product')||'null')}catch(e){}
-let product=null;
-function getAll(){let a=[];for(let c in categoryData){categoryData[c].forEach((p,i)=>{a.push({...p,cat:c,idx:i})})}return a;}
-if(cat && idx!==null){idx=parseInt(idx);if(categoryData[cat] && categoryData[cat][idx])product=categoryData[cat][idx];}
-if(!product && pid){let all=getAll();product=all.find(p=>(p.product_id||p.id||'')==pid)||null;}
-if(!product && pname){let all=getAll();product=all.find(p=>p.name.toLowerCase()===decodeURIComponent(pname).toLowerCase())||null;}
-if(!product && saved){if(saved.cat && saved.idx!==undefined && categoryData[saved.cat] && categoryData[saved.cat][saved.idx]){product=categoryData[saved.cat][saved.idx];cat=saved.cat;idx=saved.idx;}else{product=saved;}}
-if(!product){cat='powerbank';idx=0;product=categoryData[cat][0];}
-let finalPrice = product? product.price : 0;
-
-// INIT cart count - qty sum se
-try{
-  let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
-  let map={};
-  cart.forEach(i=>{
-    let id=i.product_id||i.id;
-    if(map[id]) map[id].qty+=(i.qty||1);
-    else map[id]={...i, qty:i.qty||1};
-  });
-  let clean=Object.values(map);
-  localStorage.setItem('rekavo_cart', JSON.stringify(clean));
-  document.getElementById('cartCount').innerText = clean.reduce((s,i)=>s+(i.qty||1),0);
-}catch(e){}
-
-if(!product){
-  document.body.innerHTML = "<h2 style='padding:20px'>Product not found! <br><a href='index.html'>Go Home</a></h2>";
-} else {
-  document.getElementById('pName').innerText = product.name;
-  document.getElementById('pOld').innerText = "₹"+product.originalPrice;
-  document.getElementById('pPrice').innerText = "₹"+product.price;
-  document.getElementById('pOff').innerText = getDiscount(product.coupon)+"% off";
-  document.getElementById('pCoupon').innerText = product.coupon;
-  document.getElementById('mainImg').src = product.img;
-  document.getElementById('pSpec').innerText = product.desc + "\n\n" + product.spec;
-  document.getElementById('thumbs').innerHTML = [product.img,product.img,product.img,product.img].map((t,i)=>`<img src="${t}" class="${i==0?'active':''}" onclick="changeImg(this,'${t}')">`).join('');
+let currentUser=null;
+function openPage(type){if(!currentUser){alert('Please login first');return;}document.getElementById(`page-${type}`).classList.remove('hidden');if(type==='cart')renderCart();if(type==='orders')renderOrders();if(type==='wishlist')renderWishlist();if(type==='address')renderAddress();}
+function closePage(type){document.getElementById(`page-${type}`).classList.add('hidden');}
+function getUid(){return currentUser?(currentUser.user_id||currentUser.id):null;}
+async function renderCart(){let el=document.getElementById('cartContent');el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';try{let uid=getUid();let res=await fetch(`${API_BASE}/cart/get?user_id=${uid}`);let cart=await res.json();if(!Array.isArray(cart)||cart.length===0){el.innerHTML=`<div class="empty-box"><h3>🛒 Your cart is empty</h3></div>`;return;}let html=`<div style="padding:12px">`;cart.forEach(c=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center"><img src="${c.image||''}" style="width:50px;height:50px;object-fit:contain"><div style="flex:1"><b style="font-size:13px">${c.name}</b><p style="font-size:12px">Qty: ${c.qty} • ₹${c.price}</p></div></div>`;});el.innerHTML=html+`</div>`;}catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}}
+async function renderWishlist(){let el=document.getElementById('wishlistContent');el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';try{let uid=getUid();let res=await fetch(`${API_BASE}/wishlist/get?user_id=${uid}`);let wish=await res.json();if(!Array.isArray(wish)||wish.length===0){el.innerHTML=`<div class="empty-box"><h3>❤️ Your wishlist is empty</h3></div>`;return;}let html=`<div style="padding:12px">`;wish.forEach(w=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px"><img src="${w.image||''}" style="width:50px;height:50px"><div style="flex:1"><b style="font-size:13px">${w.name}</b><p>₹${w.price}</p></div></div>`;});el.innerHTML=html+`</div>`;}catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}}
+async function renderOrders(){let el=document.getElementById('ordersContent');el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';try{let uid=getUid();let res=await fetch(`${API_BASE}/orders/get?user_id=${uid}`);let orders=await res.json();if(!Array.isArray(orders)||orders.length===0){el.innerHTML=`<div class="empty-box"><h3>📦 No orders</h3></div>`;return;}let html=`<div style="padding:12px">`;orders.forEach(o=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px"><b>Order #${o.order_id||o.id}</b><p style="font-size:12px">₹${o.amount||o.total}</p></div>`;});el.innerHTML=html+`</div>`;}catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}}
+async function renderAddress(){let el=document.getElementById('addressContent');el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';try{let uid=getUid();let res=await fetch(`${API_BASE}/address/get?user_id=${uid}`);let addr=await res.json();if(!Array.isArray(addr)||addr.length===0){el.innerHTML=`<div class="empty-box"><h3>🏠 No address</h3><div style="margin-top:12px"><input id="newAddrName" class="input" placeholder="Full Name"><input id="newAddrPhone" class="input" placeholder="Phone"><input id="newAddrPin" class="input" placeholder="Pincode"><input id="newAddrFull" class="input" placeholder="Full Address"><button class="btn btn-blue" onclick="addNewAddress()">+ Add Address</button></div></div>`;return;}let html=`<div style="padding:12px">`;addr.forEach(a=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px"><b>${a.full_name}</b><p style="font-size:12px;color:#555">${a.full_address}</p></div>`;});el.innerHTML=html+`</div>`;}catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}}
+async function addNewAddress(){let fn=document.getElementById('newAddrName').value.trim();let ph=document.getElementById('newAddrPhone').value.trim();let pin=document.getElementById('newAddrPin').value.trim();let full=document.getElementById('newAddrFull').value.trim();if(!fn||!ph||!pin||!full){alert('Please fill all address fields');return;}let uid=getUid();await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:currentUser.email,full_name:fn,phone:ph,pincode:pin,full_address:full})});alert('Address saved!');renderAddress();}
+async function updateCountsReal(){try{let localCart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');let map={};localCart.forEach(i=>{let id=i.product_id||i.id;if(!id)return;if(map[id])map[id].qty=(map[id].qty||1)+(i.qty||1);else map[id]={...i,qty:i.qty||1};});let finalLocal=Object.values(map);localStorage.setItem('rekavo_cart',JSON.stringify(finalLocal));let cnt=finalLocal.reduce((s,i)=>s+(i.qty||1),0);let cc=document.getElementById('cartCount');if(cc)cc.innerText=cnt;let pc=document.getElementById('pCartCount');if(pc)pc.innerText=cnt;}catch(e){}try{let uid=getUid();if(!uid)return;let [cr,wr]=await Promise.all([fetch(`${API_BASE}/cart/get?user_id=${uid}`),fetch(`${API_BASE}/wishlist/get?user_id=${uid}`)]);let c=await cr.json();let w=await wr.json();if(Array.isArray(c)){let map2={};c.forEach(i=>{let id=i.product_id||i.id||i.productId;if(!id)return;if(map2[id])map2[id].qty+=(i.qty||1);else map2[id]={...i,product_id:id,id:id,qty:i.qty||1,image:i.image||i.img};});let finalServer=Object.values(map2);let cnt2=finalServer.reduce((s,i)=>s+(i.qty||1),0);let cc2=document.getElementById('cartCount');if(cc2)cc2.innerText=cnt2;let pc2=document.getElementById('pCartCount');if(pc2)pc2.innerText=cnt2;localStorage.setItem('rekavo_cart',JSON.stringify(finalServer));}if(Array.isArray(w)){let wc=document.getElementById('pWishCount');if(wc)wc.innerText=w.length;}}catch(e){}}
+function getInitials(name){if(!name)return"UN";let parts=name.trim().split(" ").filter(Boolean);if(parts.length>=2)return(parts[0][0]+parts[1][0]).toUpperCase();return parts[0].substring(0,2).toUpperCase();}
+function logout(){
+  localStorage.removeItem('rekavo_user');
+  localStorage.removeItem('rekavo_profile_photo');
+  localStorage.removeItem('rekavo_cart');
+  localStorage.removeItem('rekavo_wishlist');
+  location.href='account.html';
 }
-
-function changeImg(el,src){document.getElementById('mainImg').src=src;document.querySelectorAll('#thumbs img').forEach(i=>i.classList.remove('active'));el.classList.add('active')}
-function applyCoupon(){
-  let input=document.getElementById('couponInput').value.trim().toUpperCase();
-  document.getElementById('couponMsg').classList.remove('show');
-  document.getElementById('couponErr').classList.remove('show');
-  if(input===product.coupon.toUpperCase()){
-    let disc=getDiscount(product.coupon);
-    finalPrice=Math.round(product.originalPrice - (product.originalPrice*disc/100));
-    document.getElementById('pPrice').innerText="₹"+finalPrice;
-    document.getElementById('cBtn').innerText="APPLIED ✓";
-    document.getElementById('cBtn').style.background="#388e3c";
-    document.getElementById('couponMsg').innerText="✓ Coupon Applied! Extra Discount Added";
-    document.getElementById('couponMsg').classList.add('show');
-  } else {
-    document.getElementById('couponErr').innerText="Invalid coupon! Valid code is: "+product.coupon;
-    document.getElementById('couponErr').classList.add('show');
-  }
-}
-async function addToCart(){
-  let pid = `${cat}_${idx}`;
-  // ===== FIX: merge not push - 2 se 6,8 wala bug khatam =====
-  let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
-  let found = cart.find(c=>(c.product_id===pid)||(c.id===pid));
-  if(found){
-    found.qty = (found.qty||1)+1;
-    if(found.qty>5) found.qty=5;
-  } else {
-    cart.push({product_id: pid, id:pid, name:product.name, price:finalPrice, qty:1, img:product.img, image:product.img, desc:product.desc, spec:product.spec, original:product.originalPrice, mrp:product.originalPrice, originalPrice:product.originalPrice, coupon:product.coupon, cat:cat, idx:idx});
-  }
-  localStorage.setItem('rekavo_cart',JSON.stringify(cart));
-  let count = cart.reduce((s,i)=>s+(i.qty||1),0);
-  document.getElementById('cartCount').innerText = count;
-
-  document.getElementById('cartMsg').innerText = product.name+" added to cart ₹"+finalPrice+" ✓ Qty: "+(found?found.qty:1);
-  document.getElementById('cartMsg').classList.add('show');
-  setTimeout(()=>document.getElementById('cartMsg').classList.remove('show'),2500);
-
-  // backend save - dusre laptop ke liye
+document.getElementById('profileFile').addEventListener('change',function(e){let file=e.target.files[0];if(!file)return;let reader=new FileReader();reader.onload=function(ev){let base64=ev.target.result;localStorage.setItem('rekavo_profile_photo',base64);document.getElementById('pIcon').innerHTML=`<img src="${base64}">`;};reader.readAsDataURL(file);});
+(function(){
+  let u=localStorage.getItem('rekavo_user');
+  if(!u){ location.href='account.html'; return; }
+  currentUser=JSON.parse(u);currentUser.user_id=currentUser.user_id||currentUser.id;
+  document.getElementById('pName').innerText=currentUser.name||'User Name';
+  document.getElementById('pMobile').innerText=currentUser.mobile?'+91 '+currentUser.mobile:currentUser.phone?'+91 '+currentUser.phone:'';
+  document.getElementById('pEmail').innerText=currentUser.email||'';
+  document.getElementById('pEmailShow').innerText=currentUser.email||'........';
+  let circle=document.getElementById('pIcon');let savedPhoto=localStorage.getItem('rekavo_profile_photo');if(savedPhoto){circle.innerHTML=`<img src="${savedPhoto}">`;}else{circle.innerText=getInitials(currentUser.name);}
   try{
-    let uid=getUid();
-    if(uid){
-      await fetch(`${API_BASE}/cart/add`,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({user_id:uid, product_id:pid, name:product.name, price:finalPrice, qty:found?found.qty:1, image:product.img})
-      });
-    }
+    let localCart=JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+    let cnt=localCart.reduce((s,i)=>s+(i.qty||1),0);
+    let el=document.getElementById('cartCount');if(el)el.innerText=cnt;
+    let pEl=document.getElementById('pCartCount');if(pEl)pEl.innerText=cnt;
   }catch(e){}
-}
-function buyNow(){
-  let pid = `${cat}_${idx}`;
-  let single={product_id: pid, id:pid, name:product.name,price:finalPrice,img:product.img,image:product.img,desc:product.desc,spec:product.spec,original:product.originalPrice,mrp:product.originalPrice,originalPrice:product.originalPrice,coupon:product.coupon,qty:1, cat:cat, idx:idx};
-  // FIX: cart overwrite mat karo, sirf buy_now set karo
-  localStorage.setItem('rekavo_buy_now',JSON.stringify(single));
-  location.href='checkout.html';
-}
-
-let currentStar=0; let uploadedPhoto="";
-let reviewKey = 'rekavo_reviews_'+cat+'_'+idx;
-let reviews = JSON.parse(localStorage.getItem(reviewKey) || '[]');
-
-function updateRatingUI(){
-  if(reviews.length===0){
-    document.getElementById('pRatingBadge').innerText="0 ★";
-    document.getElementById('pRatingBadge').style.background="#878787";
-    document.getElementById('pRatingCount').innerText="(0 Ratings)";
-    document.getElementById('avgBig').innerHTML=`0 <span style="color:#878787;font-size:18px">★</span>`;
-    document.getElementById('avgCount').innerHTML=`0 Ratings &<br>0 Reviews`;
-    return;
-  }
-  let total = reviews.reduce((s,r)=>s+r.star,0);
-  let avg = (total / reviews.length).toFixed(1);
-  document.getElementById('pRatingBadge').innerText=avg+" ★";
-  document.getElementById('pRatingBadge').style.background="#388e3c";
-  document.getElementById('pRatingCount').innerText="("+reviews.length+" Ratings)";
-  document.getElementById('avgBig').innerHTML=`${avg} <span style="color:#ff9f00;font-size:18px">★</span>`;
-  document.getElementById('avgCount').innerHTML=`${reviews.length} Ratings &<br>${reviews.length} Reviews`;
-}
-
-function loadReviews(){
-  if(reviews.length===0) return;
-  document.getElementById('reviewList').innerHTML="";
-  reviews.slice().reverse().forEach(r=>{
-    let div=document.createElement('div'); div.className='review-card';
-    div.innerHTML=`<b>${r.name||'Customer'} • </b><span style="background:#388e3c;color:#fff;padding:2px 6px;border-radius:3px;font-size:11px">${r.star} ★</span><p style="font-size:12px;margin-top:6px">${r.text}</p>${r.photo?`<img src="${r.photo}">`:''}`;
-    document.getElementById('reviewList').appendChild(div);
-  });
-  updateRatingUI();
-}
-
-function setStar(n){
-  currentStar=n;
-  document.querySelectorAll('#starBox.star').forEach((s,i)=>{
-    if(i < n) s.classList.add('active');
-    else s.classList.remove('active');
-  });
-  document.getElementById('err-review').classList.remove('show');
-}
-function previewPhoto(e){
-  let file=e.target.files[0];
-  if(file){
-    let r=new FileReader();
-    r.onload=function(ev){
-      uploadedPhoto=ev.target.result;
-      let img=document.getElementById('photoPreview');
-      img.src=uploadedPhoto;
-      img.style.display='block';
-    };
-    r.readAsDataURL(file);
-  }
-}
-function submitReview(){
-  let txt=document.getElementById('reviewText').value.trim();
-  if(currentStar==0){
-    document.getElementById('err-review').innerText="Please select a star rating";
-    document.getElementById('err-review').classList.add('show');
-    return;
-  }
-  if(txt==""){
-    document.getElementById('err-review').innerText="Please write your review";
-    document.getElementById('err-review').classList.add('show');
-    return;
-  }
-  let newRev = {star:currentStar, text:txt, photo:uploadedPhoto, name:'You'};
-  reviews.push(newRev);
-  localStorage.setItem(reviewKey, JSON.stringify(reviews));
-  document.getElementById('reviewList').innerHTML="";
-  reviews.slice().reverse().forEach(r=>{
-    let div=document.createElement('div'); div.className='review-card';
-    div.innerHTML=`<b>${r.name} • </b><span style="background:#388e3c;color:#fff;padding:2px 6px;border-radius:3px;font-size:11px">${r.star} ★</span><p style="font-size:12px;margin-top:6px">${r.text}</p>${r.photo?`<img src="${r.photo}">`:''}`;
-    document.getElementById('reviewList').appendChild(div);
-  });
-  document.getElementById('reviewMsg').innerText="Review submitted! Total: "+reviews.length+" ✓";
-  document.getElementById('reviewMsg').classList.add('show');
-  updateRatingUI();
-  document.getElementById('reviewText').value="";
-  currentStar=0;
-  document.querySelectorAll('#starBox.star').forEach(s=>s.classList.remove('active'));
-  document.getElementById('photoPreview').style.display='none';
-  document.getElementById('reviewPhoto').value="";
-  uploadedPhoto="";
-}
-loadReviews();
-updateRatingUI();
+  updateCountsReal();
+})();
 </script>
 </body>
 </html>
