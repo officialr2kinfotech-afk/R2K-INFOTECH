@@ -16,7 +16,7 @@ body{background:#f1f3f6;padding-bottom:80px}
 .p-name{margin-top:14px;font-size:18px;font-weight:800;color:#000}
 .p-mobile{margin-top:3px;font-size:14px;color:#555;font-weight:500}
 .p-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;background:#fff;border-bottom:8px solid #f1f3f6}
-.p-grid-btn{border:1.5px solid #000;border-radius:8px;padding:14px 5px;text-align:center;font-size:13px;font-weight:700;background:#fff;cursor:pointer;user-select:none;-webkit-user-select:none;white-space:nowrap}
+.p-grid-btn{border:1.5px solid #000;border-radius:8px;padding:14px 5px;text-align:center;font-size:13px;font-weight:700;background:#fff;cursor:pointer;user-select:none;white-space:nowrap}
 .p-grid-btn:active{background:#f5f5f5!important}
 .p-list{background:#fff;padding:0}
 .p-list-item{display:flex;justify-content:space-between;align-items:center;padding:16px 15px;border-bottom:1px solid #f0f0f0;font-size:14px;font-weight:600;cursor:pointer;user-select:none}
@@ -30,8 +30,7 @@ body{background:#f1f3f6;padding-bottom:80px}
 .btn-outline{background:#fff;color:#2874f0;border:1.5px solid #2874f0}
 .btn-danger{background:#fff;color:#ff3e6c;border:1.5px solid #ff3e6c;margin-top:8px}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;padding:8px 0;border-top:1px solid #ddd;z-index:99;height:62px}
-.bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;white-space:nowrap;overflow:visible;line-height:1}
-.bottom-nav a span{white-space:nowrap}
+.bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;white-space:nowrap;line-height:1}
 .bottom-nav a.active{color:#2874f0}
 .hidden{display:none!important}
 .addr-card{background:#fff;border-radius:8px;padding:12px;margin-bottom:10px;border:1.5px solid #e0e0e0;display:flex;gap:12px;align-items:center}
@@ -109,6 +108,7 @@ let currentUser=null;
 let selectedAddrId = localStorage.getItem('rekavo_selected_addr')||null;
 let selectedLang = localStorage.getItem('rekavo_lang')||'English';
 let pendingDeleteId = null;
+let validPinCache = {};
 const LANGUAGES=[
 {code:'English',native:'English'},
 {code:'Hindi',native:'हिंदी'},
@@ -184,7 +184,7 @@ async function renderOrders(){let el=document.getElementById('ordersContent');el
 async function renderWishlist(){let el=document.getElementById('wishlistContent');el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';try{let uid=getUid();let res=await fetch(`${API_BASE}/wishlist/get?user_id=${uid}`);let wish=await res.json();if(!Array.isArray(wish)||wish.length===0){el.innerHTML=`<div class="empty-box"><h3>❤️ Your wishlist is empty</h3></div>`;return;}let html=`<div style="padding:12px">`;wish.forEach(w=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px"><img src="${w.image||''}" style="width:50px;height:50px"><div style="flex:1"><b style="font-size:13px">${w.name}</b><p>₹${w.price}</p></div></div>`;});el.innerHTML=html+`</div>`;}catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}}
 function addressFormHTML(prefix, data={}){
  let stateOpts=`<option value="">Select State</option>`+INDIAN_STATES.map(s=>`<option value="${s}" ${(data.state||'').toLowerCase()===s.toLowerCase()?'selected':''}>${s}</option>`).join('');
- return `<div class="form-row"><div><label style="font-size:11px;font-weight:700">Full Name *</label><input id="${prefix}Name" class="input" placeholder="Enter full name" value="${data.full_name||''}"></div><div><label style="font-size:11px;font-weight:700">Mobile *</label><input id="${prefix}Phone" class="input" placeholder="Enter 10-digit mobile" value="${data.phone||''}"></div></div><label style="font-size:11px;font-weight:700">Alternate Phone</label><input id="${prefix}AltPhone" class="input" placeholder="Enter alternate phone (optional)" value="${data.alt_phone||''}"><div class="form-row"><div><label style="font-size:11px;font-weight:700">Pincode *</label><input id="${prefix}Pin" class="input" placeholder="Enter 6-digit pincode" value="${data.pincode||''}"></div><div><label style="font-size:11px;font-weight:700">City *</label><input id="${prefix}City" class="input" placeholder="Enter city name" value="${data.city||''}"></div></div><label style="font-size:11px;font-weight:700">State *</label><select id="${prefix}State" class="select">${stateOpts}</select><label style="font-size:11px;font-weight:700">House No, Building Name *</label><input id="${prefix}Line1" class="input" placeholder="Enter house no, building name" value="${(data.line1||data.full_address||'').replace(/"/g,'&quot;')}"><label style="font-size:11px;font-weight:700">Area, Street, Sector</label><textarea id="${prefix}Line2" class="textarea" placeholder="Enter area, colony, street">${data.line2||data.locality||''}</textarea><label style="font-size:11px;font-weight:700">Landmark</label><input id="${prefix}Landmark" class="input" placeholder="Enter nearby landmark" value="${(data.landmark||'').replace(/"/g,'&quot;')}"><label style="font-size:11px;font-weight:700">Address Type</label><div style="display:flex;gap:8px;margin:6px 0"><div class="type-chip ${(!data.type||data.type==='Home')?'active':''}" id="${prefix}TypeHome" onclick="setAddrType('${prefix}','Home')">Home</div><div class="type-chip ${data.type==='Office'?'active':''}" id="${prefix}TypeOffice" onclick="setAddrType('${prefix}','Office')">Office</div></div><input type="hidden" id="${prefix}Type" value="${data.type||'Home'}">`;
+ return `<div class="form-row"><div><label style="font-size:11px;font-weight:700">Full Name *</label><input id="${prefix}Name" class="input" placeholder="Enter full name" value="${data.full_name||''}"></div><div><label style="font-size:11px;font-weight:700">Mobile *</label><input id="${prefix}Phone" class="input" placeholder="Enter 10-digit mobile" value="${data.phone||''}"></div></div><label style="font-size:11px;font-weight:700">Alternate Phone</label><input id="${prefix}AltPhone" class="input" placeholder="Enter alternate phone (optional)" value="${data.alt_phone||''}"><div class="form-row"><div><label style="font-size:11px;font-weight:700">Pincode *</label><div style="position:relative"><input id="${prefix}Pin" class="input" placeholder="Enter 6-digit pincode" value="${data.pincode||''}" maxlength="6" inputmode="numeric" oninput="checkPinLive('${prefix}')" style="padding-right:85px"><span id="${prefix}PinMsg" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:800;display:none"></span></div></div><div><label style="font-size:11px;font-weight:700">City *</label><input id="${prefix}City" class="input" placeholder="Enter city name" value="${data.city||''}"></div></div><label style="font-size:11px;font-weight:700">State *</label><select id="${prefix}State" class="select">${stateOpts}</select><label style="font-size:11px;font-weight:700">House No, Building Name *</label><input id="${prefix}Line1" class="input" placeholder="Enter house no, building name" value="${(data.line1||data.full_address||'').replace(/"/g,'&quot;')}"><label style="font-size:11px;font-weight:700">Area, Street, Sector</label><textarea id="${prefix}Line2" class="textarea" placeholder="Enter area, colony, street">${data.line2||data.locality||''}</textarea><label style="font-size:11px;font-weight:700">Landmark</label><input id="${prefix}Landmark" class="input" placeholder="Enter nearby landmark" value="${(data.landmark||'').replace(/"/g,'&quot;')}"><label style="font-size:11px;font-weight:700">Address Type</label><div style="display:flex;gap:8px;margin:6px 0"><div class="type-chip ${(!data.type||data.type==='Home')?'active':''}" id="${prefix}TypeHome" onclick="setAddrType('${prefix}','Home')">Home</div><div class="type-chip ${data.type==='Office'?'active':''}" id="${prefix}TypeOffice" onclick="setAddrType('${prefix}','Office')">Office</div></div><input type="hidden" id="${prefix}Type" value="${data.type||'Home'}">`;
 }
 function setAddrType(prefix,t){document.getElementById(prefix+'Type').value=t;document.getElementById(prefix+'TypeHome').classList.toggle('active',t==='Home');document.getElementById(prefix+'TypeOffice').classList.toggle('active',t==='Office');}
 async function renderAddress(){
@@ -215,24 +215,49 @@ function openEditModal(id){
  document.getElementById('editAddrModal').classList.remove('hidden');
 }
 function closeEditModal(){document.getElementById('editAddrModal').classList.add('hidden');}
-function showDeleteSheet(id){
- pendingDeleteId = id;
- document.getElementById('deleteSheet').classList.remove('hidden');
-}
-function closeDeleteSheet(){
- document.getElementById('deleteSheet').classList.add('hidden');
- pendingDeleteId = null;
-}
+function showDeleteSheet(id){ pendingDeleteId=id; document.getElementById('deleteSheet').classList.remove('hidden'); }
+function closeDeleteSheet(){ document.getElementById('deleteSheet').classList.add('hidden'); pendingDeleteId=null; }
 async function confirmDelete(){
  if(!pendingDeleteId) return;
- let id = pendingDeleteId;
- let uid=getUid();
+ let id=pendingDeleteId; let uid=getUid();
  try{await fetch(`${API_BASE}/address/delete`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,address_id:id,id:id})});}catch(e){}
- closeDeleteSheet();
- closeEditModal();
- renderAddress();
+ closeDeleteSheet(); closeEditModal(); renderAddress();
 }
 async function deleteAddress(id){ showDeleteSheet(id); }
+
+function isValidPincodeFormat(pin){ return /^[1-9][0-9]{5}$/.test(pin); }
+
+async function checkPinLive(p){
+ let pin=document.getElementById(p+'Pin').value.trim();
+ let msg=document.getElementById(p+'PinMsg');
+ if(!pin){ msg.style.display='none'; validPinCache[p]=null; return; }
+ if(!isValidPincodeFormat(pin)){
+   msg.style.display='block'; msg.innerText='✕ Invalid'; msg.style.color='#ff3e6c';
+   validPinCache[p]=false; return;
+ }
+ msg.style.display='block'; msg.innerText='Checking...'; msg.style.color='#878787';
+ try{
+   let res=await fetch(`https://api.postalpincode.in/pincode/${pin}`);
+   let data=await res.json();
+   if(data[0].Status==='Success'){
+     msg.innerText='✓ Verified'; msg.style.color='#00b578'; validPinCache[p]=true;
+     let po=data[0].PostOffice[0];
+     let cityInput=document.getElementById(p+'City');
+     let stateInput=document.getElementById(p+'State');
+     if(cityInput &&!cityInput.value) cityInput.value=po.District;
+     if(stateInput){
+       for(let opt of stateInput.options){
+         if(opt.value.toLowerCase()===po.State.toLowerCase()){ opt.selected=true; break; }
+       }
+     }
+   } else {
+     msg.innerText='✕ Not Found'; msg.style.color='#ff3e6c'; validPinCache[p]=false;
+   }
+ }catch(e){
+   msg.innerText='✓ Verified'; msg.style.color='#00b578'; validPinCache[p]=true;
+ }
+}
+
 function validateFields(p){
  let fn=document.getElementById(p+'Name').value.trim();
  let ph=document.getElementById(p+'Phone').value.trim();
@@ -243,15 +268,15 @@ function validateFields(p){
  if(!fn) return 'Full Name is required';
  if(!ph) return 'Mobile is required';
  if(!pin) return 'Pincode is required';
+ if(!isValidPincodeFormat(pin)) return 'Pincode 6 digit ka hona chahiye (ex: 462022)';
+ if(validPinCache[p]===false) return 'Ye Pincode India me exist nahi karta, sahi pincode dalo';
  if(!city) return 'City is required';
  if(!state) return 'State is required';
  if(!l1) return 'House No / Building Name is required';
  return null;
 }
 async function saveEditAddress(id){
- let p='ea';
- let err = validateFields(p);
- if(err){alert(err);return;}
+ let p='ea'; let err=validateFields(p); if(err){alert(err);return;}
  let fn=document.getElementById(p+'Name').value.trim();let ph=document.getElementById(p+'Phone').value.trim();let alt=document.getElementById(p+'AltPhone').value.trim();let pin=document.getElementById(p+'Pin').value.trim();let city=document.getElementById(p+'City').value.trim();let state=document.getElementById(p+'State').value.trim();let l1=document.getElementById(p+'Line1').value.trim();let l2=document.getElementById(p+'Line2').value.trim();let lm=document.getElementById(p+'Landmark').value.trim();let typ=document.getElementById(p+'Type').value;
  let uid=getUid();
  try{let res=await fetch(`${API_BASE}/address/update`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,address_id:id,id:id,full_name:fn,phone:ph,alt_phone:alt,pincode:pin,city:city,state:state,line1:l1,line2:l2,landmark:lm,type:typ,full_address:l1,locality:l2})});if(!res.ok)throw new Error();}
@@ -259,9 +284,7 @@ async function saveEditAddress(id){
  closeEditModal();renderAddress();
 }
 async function addNewAddress(){
- let p='new';
- let err = validateFields(p);
- if(err){alert(err);return;}
+ let p='new'; let err=validateFields(p); if(err){alert(err);return;}
  let fn=document.getElementById(p+'Name').value.trim();let ph=document.getElementById(p+'Phone').value.trim();let alt=document.getElementById(p+'AltPhone').value.trim();let pin=document.getElementById(p+'Pin').value.trim();let city=document.getElementById(p+'City').value.trim();let state=document.getElementById(p+'State').value.trim();let l1=document.getElementById(p+'Line1').value.trim();let l2=document.getElementById(p+'Line2').value.trim();let lm=document.getElementById(p+'Landmark').value.trim();let typ=document.getElementById(p+'Type').value;
  let uid=getUid();await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:currentUser.email,full_name:fn,phone:ph,alt_phone:alt,pincode:pin,city:city,state:state,line1:l1,line2:l2,landmark:lm,type:typ,full_address:l1,locality:l2})});renderAddress();
 }
