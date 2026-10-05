@@ -94,16 +94,15 @@ const INDIAN_STATES=["Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhat
 function getUid(){return currentUser?(currentUser.user_id||currentUser.id):null;}
 function openPage(type, push=true){
  document.querySelectorAll('.page-section').forEach(s=>s.classList.add('hidden'));
- document.getElementById(`page-${type}`).classList.remove('hidden');
+ document.getElementById('page-'+type).classList.remove('hidden');
  if(push){ history.pushState({page:type}, '', '#'+type); }
  if(type==='address')renderAddress();
  if(type==='orders')renderOrders();
  if(type==='wishlist')renderWishlist();
  if(type==='editprofile')fillEditProfile();
 }
-function closePage(type){ if(location.hash){ history.back(); } else { document.getElementById(`page-${type}`).classList.add('hidden'); } }
+function closePage(type){ if(location.hash){ history.back(); } else { document.getElementById('page-'+type).classList.add('hidden'); } }
 
-// PINCODE ONLY VERIFY - NO AUTO FILL
 async function verifyPincodeOnly(pincode, prefix){
  if(!/^\d{6}$/.test(pincode)) return;
  let loader = document.getElementById(prefix+'PinLoader');
@@ -186,7 +185,6 @@ function openEditModal(id){
   landmark: raw.landmark || raw.locality || '',
   type: raw.type || 'Home'
  };
- // Agar backend ne full_address me sab joda hai to line1 me wahi dikhega, landmark alag se nikal lo
  if(!normalized.line1 && raw.full_address) normalized.line1 = raw.full_address;
  if(!normalized.line2 && raw.locality) normalized.line2 = raw.locality;
 
@@ -236,16 +234,26 @@ async function saveEditAddress(id){
  let lm=document.getElementById(p+'Landmark').value.trim();
  let typ=document.getElementById(p+'Type').value;
  let uid=getUid(); let email=currentUser.email||'';
- let fullAddr = `${v.l1}${l2?', '+l2:''}${lm?', '+lm:''}`.trim();
- let localityCombined = `${l2}${lm? ', '+lm : ''}`.trim();
+ let fullAddr = (v.l1 + (l2 ? ", " + l2 : "") + (lm ? ", " + lm : "")).trim();
+ let localityCombined = (l2 + (lm ? ", " + lm : "")).trim();
  try{
-  // BACKEND UPDATE - pehle backend se delete, phir backend me add
-  await fetch(`${API_BASE}/address/delete`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:email,address_id:id,id:id})});
-  await new Promise(r=>setTimeout(r,400));
-  await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:email,full_name:v.fn,phone:v.ph,alt_phone:alt,pincode:v.pin,city:v.city,state:v.state,line1:v.l1,line2:l2,landmark:lm,type:typ,full_address:fullAddr,address:fullAddr,locality:localityCombined})});
- }catch(e){ console.log(e); }
+  let res = await fetch(API_BASE + "/address/update",{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      id:id, address_id:id, user_id:uid, email:email,
+      full_name:v.fn, phone:v.ph, alt_phone:alt, pincode:v.pin,
+      city:v.city, state:v.state, line1:v.l1, line2:l2, landmark:lm, type:typ,
+      full_address:fullAddr, locality:localityCombined
+    })
+  });
+  let out = await res.json();
+  console.log("UPDATE RES", out);
+  if(!out.success){ alert(out.error || "Update failed"); if(btn){ btn.innerText='Update Address'; btn.disabled=false; } return; }
+ }catch(e){ console.log(e); alert("Network error"); if(btn){ btn.innerText='Update Address'; btn.disabled=false; } return; }
  if(btn){ btn.innerText='Update Address'; btn.disabled=false; }
- closeEditModal(); renderAddress();
+ closeEditModal();
+ await renderAddress();
 }
 
 async function addNewAddress(){
@@ -257,10 +265,10 @@ async function addNewAddress(){
  let lm=document.getElementById(p+'Landmark').value.trim();
  let typ=document.getElementById(p+'Type').value;
  let uid=getUid(); let email=currentUser.email||'';
- let fullAddr = `${v.l1}${l2?', '+l2:''}${lm?', '+lm:''}`.trim();
- let localityCombined = `${l2}${lm? ', '+lm : ''}`.trim();
+ let fullAddr = (v.l1 + (l2 ? ", " + l2 : "") + (lm ? ", " + lm : "")).trim();
+ let localityCombined = (l2 + (lm ? ", " + lm : "")).trim();
  try{
-  await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:email,full_name:v.fn,phone:v.ph,alt_phone:alt,pincode:v.pin,city:v.city,state:v.state,line1:v.l1,line2:l2,landmark:lm,type:typ,full_address:fullAddr,address:fullAddr,locality:localityCombined})});
+  await fetch(API_BASE + "/address/add",{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:email,full_name:v.fn,phone:v.ph,alt_phone:alt,pincode:v.pin,city:v.city,state:v.state,line1:v.l1,line2:l2,landmark:lm,type:typ,full_address:fullAddr,address:fullAddr,locality:localityCombined})});
   renderAddress();
  }catch(e){ console.log(e); }
 }
