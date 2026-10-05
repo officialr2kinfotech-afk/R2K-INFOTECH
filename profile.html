@@ -68,8 +68,25 @@ body{background:#f1f3f6;padding-bottom:70px}
 <script>
 const API_BASE="https://rekavo-backend.vercel.app";
 let currentUser=null;
-function openPage(type){if(!currentUser){alert('Please login first');return;}document.getElementById(`page-${type}`).classList.remove('hidden');if(type==='cart')renderCart();if(type==='orders')renderOrders();if(type==='wishlist')renderWishlist();if(type==='address')renderAddress();}
-function closePage(type){document.getElementById(`page-${type}`).classList.add('hidden');}
+function openPage(type, push=true){
+  if(!currentUser){alert('Please login first');return;}
+  document.querySelectorAll('.page-section').forEach(s=>s.classList.add('hidden'));
+  document.getElementById(`page-${type}`).classList.remove('hidden');
+  if(push){
+    history.pushState({page:type}, '', '#'+type);
+  }
+  if(type==='cart')renderCart();
+  if(type==='orders')renderOrders();
+  if(type==='wishlist')renderWishlist();
+  if(type==='address')renderAddress();
+}
+function closePage(type){
+  if(location.hash){
+    history.back();
+  } else {
+    document.getElementById(`page-${type}`).classList.add('hidden');
+  }
+}
 function getUid(){return currentUser?(currentUser.user_id||currentUser.id):null;}
 async function renderCart(){let el=document.getElementById('cartContent');el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';try{let uid=getUid();let res=await fetch(`${API_BASE}/cart/get?user_id=${uid}`);let cart=await res.json();if(!Array.isArray(cart)||cart.length===0){el.innerHTML=`<div class="empty-box"><h3>🛒 Your cart is empty</h3></div>`;return;}let html=`<div style="padding:12px">`;cart.forEach(c=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center"><img src="${c.image||''}" style="width:50px;height:50px;object-fit:contain"><div style="flex:1"><b style="font-size:13px">${c.name}</b><p style="font-size:12px">Qty: ${c.qty} • ₹${c.price}</p></div></div>`;});el.innerHTML=html+`</div>`;}catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}}
 async function renderWishlist(){let el=document.getElementById('wishlistContent');el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';try{let uid=getUid();let res=await fetch(`${API_BASE}/wishlist/get?user_id=${uid}`);let wish=await res.json();if(!Array.isArray(wish)||wish.length===0){el.innerHTML=`<div class="empty-box"><h3>❤️ Your wishlist is empty</h3></div>`;return;}let html=`<div style="padding:12px">`;wish.forEach(w=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px"><img src="${w.image||''}" style="width:50px;height:50px"><div style="flex:1"><b style="font-size:13px">${w.name}</b><p>₹${w.price}</p></div></div>`;});el.innerHTML=html+`</div>`;}catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}}
@@ -86,6 +103,18 @@ function logout(){
   location.href='account.html';
 }
 document.getElementById('profileFile').addEventListener('change',function(e){let file=e.target.files[0];if(!file)return;let reader=new FileReader();reader.onload=function(ev){let base64=ev.target.result;localStorage.setItem('rekavo_profile_photo',base64);document.getElementById('pIcon').innerHTML=`<img src="${base64}">`;};reader.readAsDataURL(file);});
+window.addEventListener('popstate', function(e){
+  if(e.state && e.state.page){
+    openPage(e.state.page, false);
+  } else if(location.hash){
+    let type = location.hash.replace('#','');
+    if(document.getElementById('page-'+type)){
+      openPage(type, false);
+    }
+  } else {
+    document.querySelectorAll('.page-section').forEach(s=>s.classList.add('hidden'));
+  }
+});
 (function(){
   let u=localStorage.getItem('rekavo_user');
   if(!u){ location.href='account.html'; return; }
@@ -102,6 +131,12 @@ document.getElementById('profileFile').addEventListener('change',function(e){let
     let pEl=document.getElementById('pCartCount');if(pEl)pEl.innerText=cnt;
   }catch(e){}
   updateCountsReal();
+  if(location.hash){
+    let type = location.hash.replace('#','');
+    if(document.getElementById('page-'+type)){
+      openPage(type, false);
+    }
+  }
 })();
 </script>
 </body>
