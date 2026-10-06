@@ -12,7 +12,6 @@ const LANGUAGES=[
 {code:'Punjabi',native:'ਪੰਜਾਬੀ'},
 {code:'Malayalam',native:'മലയാളം'}
 ];
-
 const TRANSLATIONS={
 English:{myOrders:'My orders',myCart:'My Cart',coupons:'coupons',wishlist:'wishlist',emailLabel:'📧 Email',savedAddresses:'📍 Saved Addresses',editProfile:'👤 Edit profile',selectLanguage:'A/अ Select Language',helpCenter:'💬 help center',logout:'🚪 Logout',myOrdersTitle:'My Orders',myWishlistTitle:'My Wishlist',myAddressesTitle:'My Addresses',selectLanguageTitle:'A/अ Select Language',editProfileTitle:'Edit Profile',changePhoto:'Change Photo',deletePhoto:'Delete Photo',fullName:'Full Name',mobile:'Mobile',email:'Email',saveProfile:'Save Profile',helpTitle:'Help Center',contactUs:'📞 Contact Us',home:'Home',account:'Account',cart:'Cart',addNewAddr:'Add New Address',saveAddr:'Save Address',updateAddr:'Update Address'},
 Hindi:{myOrders:'मेरे ऑर्डर',myCart:'मेरी कार्ट',coupons:'कूपन',wishlist:'विशलिस्ट',emailLabel:'📧 ईमेल',savedAddresses:'📍 सेव्ड एड्रेस',editProfile:'👤 प्रोफाइल एडिट',selectLanguage:'A/अ भाषा चुनें',helpCenter:'💬 हेल्प सेंटर',logout:'🚪 लॉगआउट',myOrdersTitle:'मेरे ऑर्डर',myWishlistTitle:'मेरी विशलिस्ट',myAddressesTitle:'मेरे एड्रेस',selectLanguageTitle:'A/अ भाषा चुनें',editProfileTitle:'प्रोफाइल एडिट',changePhoto:'फोटो बदलें',deletePhoto:'फोटो हटाएं',fullName:'पूरा नाम',mobile:'मोबाइल',email:'ईमेल',saveProfile:'प्रोफाइल सेव करें',helpTitle:'हेल्प सेंटर',contactUs:'📞 हमसे संपर्क करें',home:'होम',account:'अकाउंट',cart:'कार्ट',addNewAddr:'नया एड्रेस जोड़ें',saveAddr:'एड्रेस सेव करें',updateAddr:'एड्रेस अपडेट करें'},
@@ -24,35 +23,35 @@ Gujarati:{myOrders:'મારા ઓર્ડર',myCart:'મારી કાર
 Kannada:{myOrders:'ನನ್ನ ಆರ್ಡರ್',myCart:'ನನ್ನ ಕಾರ್ಟ್',coupons:'ಕೂಪನ್',wishlist:'ವಿಷ್‌ಲಿಸ್ಟ್',emailLabel:'📧 ಇಮೇಲ್',savedAddresses:'📍 ಉಳಿಸಿದ ವಿಳಾಸ',editProfile:'👤 ಪ್ರೊಫೈಲ್',selectLanguage:'A/ಅ ಭಾಷೆ',helpCenter:'💬 ಸಹಾಯ',logout:'🚪 ಲಾಗ್ಔಟ್',myOrdersTitle:'ಆರ್ಡರ್',myWishlistTitle:'ವಿಷ್‌ಲಿಸ್ಟ್',myAddressesTitle:'ವಿಳಾಸ',selectLanguageTitle:'A/ಅ ಭಾಷೆ',editProfileTitle:'ಪ್ರೊಫೈಲ್',changePhoto:'ಫೋಟೋ',deletePhoto:'ಅಳಿಸಿ',fullName:'ಹೆಸರು',mobile:'ಮೊಬೈಲ್',email:'ಇಮೇಲ್',saveProfile:'ಸೇವ್',helpTitle:'ಸಹಾಯ',contactUs:'📞 ಸಂಪರ್ಕ',home:'ಹೋಮ್',account:'ಖಾತೆ',cart:'ಕಾರ್ಟ್',addNewAddr:'ಹೊಸ ವಿಳಾಸ',saveAddr:'ಸೇವ್',updateAddr:'ಅಪ್ಡೇಟ್'},
 Odia:{myOrders:'ମୋ ଅର୍ଡର',myCart:'ମୋ କାର୍ଟ',coupons:'କୁପନ',wishlist:'ୱିଶ',emailLabel:'📧 ଇମେଲ',savedAddresses:'📍 ଠିକଣା',editProfile:'👤 ପ୍ରୋଫାଇଲ',selectLanguage:'A/ଅ ଭାଷା',helpCenter:'💬 ସାହାଯ୍ୟ',logout:'🚪 ଲଗଆଉଟ',myOrdersTitle:'ଅର୍ଡର',myWishlistTitle:'ୱିଶ',myAddressesTitle:'ଠିକଣା',selectLanguageTitle:'A/ଅ ଭାଷା',editProfileTitle:'ପ୍ରୋଫାଇଲ',changePhoto:'ଫଟୋ',deletePhoto:'ଡିଲିଟ',fullName:'ନାମ',mobile:'ମୋବାଇଲ',email:'ଇମେଲ',saveProfile:'ସେଭ',helpTitle:'ସାହାଯ୍ୟ',contactUs:'📞 ଯୋଗାଯୋଗ',home:'ହୋମ',account:'ଖାତା',cart:'କାର୍ଟ',addNewAddr:'ନୂଆ',saveAddr:'ସେଭ',updateAddr:'ଅପଡେଟ'},
 Punjabi:{myOrders:'ਮੇਰੇ ਆਰਡਰ',myCart:'ਮੇਰੀ ਕਾਰਟ',coupons:'ਕੂਪਨ',wishlist:'ਵਿਸ਼',emailLabel:'📧 ਈਮੇਲ',savedAddresses:'📍 ਪਤੇ',editProfile:'👤 ਪ੍ਰੋਫਾਈਲ',selectLanguage:'A/ਅ ਭਾਸ਼ਾ',helpCenter:'💬 ਮਦਦ',logout:'🚪 ਲਾਗਆਉਟ',myOrdersTitle:'ਆਰਡਰ',myWishlistTitle:'ਵਿਸ਼',myAddressesTitle:'ਪਤੇ',selectLanguageTitle:'A/ਅ ਭਾਸ਼ਾ',editProfileTitle:'ਪ੍ਰੋਫਾਈਲ',changePhoto:'ਫੋਟੋ',deletePhoto:'ਹਟਾਓ',fullName:'ਨਾਮ',mobile:'ਮੋਬਾਈਲ',email:'ਈਮੇਲ',saveProfile:'ਸੇਵ',helpTitle:'ਮਦਦ',contactUs:'📞 ਸੰਪਰਕ',home:'ਹੋਮ',account:'ਅਕਾਉਂਟ',cart:'ਕਾਰਟ',addNewAddr:'ਨਵਾਂ',saveAddr:'ਸੇਵ',updateAddr:'ਅਪਡੇਟ'},
-Malayalam:{myOrders:'എന്റെ ഓർഡർ',myCart:'എന്റെ കാർട്ട്',coupons:'കൂപ്പൺ',wishlist:'വിഷ്',emailLabel:'📧 ഇമെയിൽ',savedAddresses:'📍 വിലാസം',editProfile:'👤 പ്രൊഫൈൽ',selectLanguage:'A/അ ഭാഷ',helpCenter:'💬 സഹായം',logout:'🚪 ലോഗൗട്ട്',myOrdersTitle:'ഓർഡർ',myWishlistTitle:'വിഷ്',myAddressesTitle:'വിലാസം',selectLanguageTitle:'A/അ ഭാഷ',editProfileTitle:'പ്രൊഫൈൽ',changePhoto:'ഫോട്ടോ',deletePhoto:'നീക്കം',fullName:'പേര്',mobile:'മൊബൈൽ',email:'ഇമെയിൽ',saveProfile:'സേവ്',helpTitle:'സഹായം',contactUs:'📞 ബന്ധപ്പെടുക',home:'ഹോം',account:'അക്കൗണ്ട്',cart:'കാർട്ട്',addNewAddr:'പുതിയ',saveAddr:'സേവ്',updateAddr:'അപ്ഡേറ്റ്'},
+Malayalam:{myOrders:'എന്റെ ഓർഡർ',myCart:'എന്റെ കാർട്ട്',coupons:'കൂപ്പൺ',wishlist:'വിഷ്',emailLabel:'📧 ഇമെയിൽ',savedAddresses:'📍 വിലാസം',editProfile:'👤 പ്രൊഫൈൽ',selectLanguage:'A/അ ഭാഷ',helpCenter:'💬 സഹായം',logout:'🚪 ലോഗൗട്ട്',myOrdersTitle:'ഓർഡർ',myWishlistTitle:'വിഷ്',myAddressesTitle:'വിലാസം',selectLanguageTitle:'A/അ ഭാഷ',editProfileTitle:'പ്രൊഫൈൽ',changePhoto:'ഫോട്ടോ',deletePhoto:'നീക്കം',fullName:'പേര്',mobile:'മൊബൈൽ',email:'ഇമെയിൽ',saveProfile:'സേവ്',helpTitle:'സഹായം',contactUs:'📞 ബന്ധപ്പെടുക',home:'ഹോം',account:'അക്കൗണ്ട്',cart:'കാർട്ട്',addNewAddr:'പുതിയ',saveAddr:'സേവ്',updateAddr:'അപ്‌ഡേറ്റ്'},
 Urdu:{myOrders:'میرے آرڈر',myCart:'میری کارٹ',coupons:'کوپن',wishlist:'وش',emailLabel:'📧 ایمیل',savedAddresses:'📍 پتے',editProfile:'👤 پروفائل',selectLanguage:'A/ا زبان',helpCenter:'💬 مدد',logout:'🚪 لاگ آؤٹ',myOrdersTitle:'آرڈر',myWishlistTitle:'وش',myAddressesTitle:'پتے',selectLanguageTitle:'A/ا زبان',editProfileTitle:'پروفائل',changePhoto:'فوٹو',deletePhoto:'ہٹاؤ',fullName:'نام',mobile:'موبائل',email:'ایمیل',saveProfile:'سیو',helpTitle:'مدد',contactUs:'📞 رابطہ',home:'ہوم',account:'اکاؤنٹ',cart:'کارٹ',addNewAddr:'نیا',saveAddr:'سیو',updateAddr:'اپڈیٹ'}
 };
-
-let selectedLang = localStorage.getItem('rekavo_lang') || 'English';
-
-function getTrans(k){
-  let t = TRANSLATIONS[selectedLang] || TRANSLATIONS['English'];
-  return t[k] || TRANSLATIONS['English'][k] || k;
-}
-
+let selectedLang = localStorage.getItem('rekavo_lang')||'English';
+let _lastCartCnt = localStorage.getItem('rekavo_last_cart') || '0';
+function getTrans(k){let t=TRANSLATIONS[selectedLang]||TRANSLATIONS['English'];return t[k]||TRANSLATIONS['English'][k]||k;}
 function applyTranslations(){
-  let t = TRANSLATIONS[selectedLang] || TRANSLATIONS['English'];
-  let savedCart = localStorage.getItem('rekavo_last_cart') || '0';
-
-  document.querySelectorAll('[data-i18n]').forEach(el=>{
-    let k = el.getAttribute('data-i18n');
-    if(el.id==='pGridCart' || el.id==='cartCount') return;
-    if(t[k]){
-      if(k==='myCart'){
-        el.innerHTML = `${t[k]} (<span id="pGridCart">${savedCart}</span>)`;
-      } else if(!el.closest('.bottom-nav')){
-        el.innerText = t[k];
-      }
-    }
-  });
-  document.querySelectorAll('.bottom-nav [data-i18n="home"]').forEach(e=>e.innerText=getTrans('home'));
-  document.querySelectorAll('.bottom-nav [data-i18n="account"]').forEach(e=>e.innerText=getTrans('account'));
-  document.querySelectorAll('.bottom-nav [data-i18n="cart"]').forEach(e=>e.innerText=getTrans('cart'));
+ let t=TRANSLATIONS[selectedLang]||TRANSLATIONS['English'];
+ let gEl = document.getElementById('pGridCart');
+ let cEl = document.getElementById('cartCount');
+ if(gEl && gEl.innerText && gEl.innerText!== '0') _lastCartCnt = gEl.innerText;
+ if(cEl && cEl.innerText && cEl.innerText!== '0') _lastCartCnt = cEl.innerText;
+ let savedGridCart = _lastCartCnt;
+ let savedCartCount = cEl? cEl.innerText : _lastCartCnt;
+ if(savedCartCount === '0' && _lastCartCnt!== '0') savedCartCount = _lastCartCnt;
+ document.querySelectorAll('[data-i18n]').forEach(el=>{
+  let k=el.getAttribute('data-i18n');
+  if(el.id==='pGridCart'||el.id==='cartCount')return;
+  if(t[k]){
+   if(k==='myCart'){
+     el.innerHTML=`${t[k]} (<span id="pGridCart">${savedGridCart}</span>)`;
+   } else if(el.closest('.bottom-nav')){
+   } else el.innerText=t[k];
+  }
+ });
+ document.querySelectorAll('.bottom-nav [data-i18n="home"]').forEach(e=>e.innerText=getTrans('home'));
+ document.querySelectorAll('.bottom-nav [data-i18n="account"]').forEach(e=>e.innerText=getTrans('account'));
+ document.querySelectorAll('.bottom-nav [data-i18n="cart"]').forEach(e=>e.innerText=getTrans('cart'));
+ if(document.getElementById('pGridCart')) document.getElementById('pGridCart').innerText = savedGridCart;
+ if(document.getElementById('cartCount')) document.getElementById('cartCount').innerText = savedCartCount;
 }
-
-document.addEventListener('DOMContentLoaded', applyTranslations);
+document.addEventListener('DOMContentLoaded', ()=>{ applyTranslations(); });
