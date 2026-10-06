@@ -18,6 +18,7 @@ body{background:#f1f3f6;padding-bottom:80px}
 .p-mobile{margin-top:3px;font-size:14px;color:#555;font-weight:500}
 .p-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;background:#fff;border-bottom:8px solid #f1f3f6}
 .p-grid-btn{border:1.5px solid #000;border-radius:8px;padding:14px 5px;text-align:center;font-size:13px;font-weight:700;background:#fff;cursor:pointer;user-select:none;white-space:nowrap}
+.p-grid-btn:active{background:#f5f5f5!important}
 .p-list{background:#fff;padding:0}
 .p-list-item{display:flex;justify-content:space-between;align-items:center;padding:16px 15px;border-bottom:1px solid #f0f0f0;font-size:14px;font-weight:600;cursor:pointer;user-select:none}
 .empty-box{background:#fff;border-radius:8px;padding:40px 20px;text-align:center;margin-top:12px}
@@ -110,10 +111,14 @@ let pendingDeleteId = null;
 let validPinCache = {};
 const INDIAN_STATES=["Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh","Uttarakhand","West Bengal","Delhi","Jammu and Kashmir","Ladakh"];
 
+function getTransLocal(k){
+  if(window.getTrans) return window.getTrans(k);
+  return k;
+}
 function renderLanguage(){
  let el=document.getElementById('langContent');
- let langs = window.LANGUAGES || [];
- let sel = window.selectedLang || localStorage.getItem('rekavo_lang')||'English';
+ let langs = (window.LANGUAGES || []);
+ let sel = (window.selectedLang || localStorage.getItem('rekavo_lang')||'English');
  let h=`<div style="background:#fff;border-radius:8px;overflow:hidden">`;
  langs.forEach(l=>{
   let isSel=(sel===l.code);
@@ -128,7 +133,8 @@ function setLang(code){
   if(window.applyTranslations) window.applyTranslations();
   renderLanguage();
   setTimeout(()=>{
-    document.getElementById('page-language').classList.add('hidden');
+    let pg=document.getElementById('page-language');
+    if(pg) pg.classList.add('hidden');
     if(location.hash === '#language'){ history.replaceState(null, '', location.pathname + location.search); }
   }, 300);
 }
@@ -141,23 +147,43 @@ function openPage(type, push=true){
 }
 function closePage(type){ if(location.hash){ history.back(); } else { document.getElementById(`page-${type}`).classList.add('hidden'); } }
 function getUid(){return currentUser?(currentUser.user_id||currentUser.id):null;}
-async function renderOrders(){let el=document.getElementById('ordersContent');el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';try{let uid=getUid();let res=await fetch(`${API_BASE}/orders/get?user_id=${uid}`);let data=await res.json();let orders=Array.isArray(data)?data:data.data||data.orders||[];if(orders.length===0){el.innerHTML=`<div class="empty-box"><h3>📦 No orders</h3></div>`;return;}let html=`<div style="padding:12px">`;orders.forEach(o=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px"><b>Order #${o.order_id||o.id}</b><p style="font-size:12px">₹${o.amount||o.total}</p></div>`;});el.innerHTML=html+`</div>`;}catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}}
-async function renderWishlist(){let el=document.getElementById('wishlistContent');el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';try{let uid=getUid();let res=await fetch(`${API_BASE}/wishlist/get?user_id=${uid}`);let data=await res.json();let wish=Array.isArray(data)?data:data.data||data.wishlist||[];if(wish.length===0){el.innerHTML=`<div class="empty-box"><h3>❤️ Your wishlist is empty</h3></div>`;return;}let html=`<div style="padding:12px">`;wish.forEach(w=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px"><img src="${w.image||''}" style="width:50px;height:50px"><div style="flex:1"><b style="font-size:13px">${w.name}</b><p>₹${w.price}</p></div></div>`;});el.innerHTML=html+`</div>`;}catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}}
+
+async function renderOrders(){
+  let el=document.getElementById('ordersContent');el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';
+  try{
+    let uid=getUid();let res=await fetch(`${API_BASE}/orders/get?user_id=${uid}`);let raw=await res.json();
+    let orders=Array.isArray(raw)?raw:raw.data||raw.orders||[];
+    if(!Array.isArray(orders)||orders.length===0){el.innerHTML=`<div class="empty-box"><h3>📦 No orders</h3></div>`;return;}
+    let html=`<div style="padding:12px">`;orders.forEach(o=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px"><b>Order #${o.order_id||o.id}</b><p style="font-size:12px">₹${o.amount||o.total}</p></div>`;});el.innerHTML=html+`</div>`;
+  }catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}
+}
+async function renderWishlist(){
+  let el=document.getElementById('wishlistContent');el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';
+  try{
+    let uid=getUid();let res=await fetch(`${API_BASE}/wishlist/get?user_id=${uid}`);let raw=await res.json();
+    let wish=Array.isArray(raw)?raw:raw.data||raw.wishlist||[];
+    if(!Array.isArray(wish)||wish.length===0){el.innerHTML=`<div class="empty-box"><h3>❤️ Your wishlist is empty</h3></div>`;return;}
+    let html=`<div style="padding:12px">`;wish.forEach(w=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px"><img src="${w.image||''}" style="width:50px;height:50px"><div style="flex:1"><b style="font-size:13px">${w.name}</b><p>₹${w.price}</p></div></div>`;});el.innerHTML=html+`</div>`;
+  }catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}
+}
 function addressFormHTML(prefix, data={}){
  let stateOpts=`<option value="">Select State</option>`+INDIAN_STATES.map(s=>`<option value="${s}" ${(data.state||'').toLowerCase()===s.toLowerCase()?'selected':''}>${s}</option>`).join('');
  return `<div class="form-row"><div><label style="font-size:11px;font-weight:700">Full Name *</label><input id="${prefix}Name" class="input" placeholder="Enter full name" value="${data.full_name||''}"></div><div><label style="font-size:11px;font-weight:700">Mobile *</label><input id="${prefix}Phone" class="input" placeholder="Enter 10-digit mobile" value="${data.phone||''}"></div></div><label style="font-size:11px;font-weight:700">Alternate Phone</label><input id="${prefix}AltPhone" class="input" placeholder="Enter alternate phone (optional)" value="${data.alt_phone||''}"><div class="form-row"><div><label style="font-size:11px;font-weight:700">Pincode *</label><div style="position:relative"><input id="${prefix}Pin" class="input" placeholder="Enter 6-digit pincode" value="${data.pincode||''}" maxlength="6" inputmode="numeric" oninput="checkPinLive('${prefix}')" style="padding-right:85px"><span id="${prefix}PinMsg" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:800;display:none"></span></div></div><div><label style="font-size:11px;font-weight:700">City *</label><input id="${prefix}City" class="input" placeholder="Enter city name" value="${data.city||''}"></div></div><label style="font-size:11px;font-weight:700">State *</label><select id="${prefix}State" class="select">${stateOpts}</select><label style="font-size:11px;font-weight:700">House No, Building Name *</label><input id="${prefix}Line1" class="input" placeholder="Enter house no, building name" value="${(data.line1||data.full_address||'').replace(/"/g,'&quot;')}"><label style="font-size:11px;font-weight:700">Area, Street, Sector</label><textarea id="${prefix}Line2" class="textarea" placeholder="Enter area, colony, street">${data.line2||data.locality||''}</textarea><label style="font-size:11px;font-weight:700">Landmark</label><input id="${prefix}Landmark" class="input" placeholder="Enter nearby landmark" value="${(data.landmark||'').replace(/"/g,'&quot;')}"><label style="font-size:11px;font-weight:700">Address Type</label><div style="display:flex;gap:8px;margin:6px 0"><div class="type-chip ${(!data.type||data.type==='Home')?'active':''}" id="${prefix}TypeHome" onclick="setAddrType('${prefix}','Home')">Home</div><div class="type-chip ${data.type==='Office'?'active':''}" id="${prefix}TypeOffice" onclick="setAddrType('${prefix}','Office')">Office</div></div><input type="hidden" id="${prefix}Type" value="${data.type||'Home'}">`;
 }
 function setAddrType(prefix,t){document.getElementById(prefix+'Type').value=t;document.getElementById(prefix+'TypeHome').classList.toggle('active',t==='Home');document.getElementById(prefix+'TypeOffice').classList.toggle('active',t==='Office');}
+
 async function renderAddress(){
- let el=document.getElementById('addressContent');el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';
+ let el=document.getElementById('addressContent');
+ el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';
  try{
   let uid=getUid();
   let res=await fetch(`${API_BASE}/address/get?user_id=${uid}`);
   let raw=await res.json();
   let addr = Array.isArray(raw)? raw : (raw.data || raw.addresses || raw.result || []);
-  if(!Array.isArray(addr)||addr.length===0){
-   el.innerHTML=`<div style="padding:12px"><div style="background:#fff;border-radius:8px;padding:14px"><h3 style="font-size:14px;margin-bottom:10px">${window.getTrans?window.getTrans('addNewAddr'):'Add New Address'}</h3>${addressFormHTML('new')}<button class="btn btn-blue" onclick="addNewAddress()">${window.getTrans?window.getTrans('saveAddr'):'Save Address'}</button></div></div>`;
-   window._addrCache=[]; return;
+  if(!Array.isArray(addr) || addr.length===0){
+   el.innerHTML=`<div style="padding:12px"><div style="background:#fff;border-radius:8px;padding:14px"><h3 style="font-size:14px;margin-bottom:10px">${getTransLocal('addNewAddr')}</h3>${addressFormHTML('new')}<button class="btn btn-blue" onclick="addNewAddress()">${getTransLocal('saveAddr')}</button></div></div>`;
+   window._addrCache=[];
+   return;
   }
   let html=`<div style="padding:12px">`;
   addr.forEach((a,i)=>{
@@ -166,17 +192,20 @@ async function renderAddress(){
    let fullAddr=`${a.line1||a.full_address||''} ${a.line2||''} ${a.landmark?'('+a.landmark+')':''}, ${a.city||''}, ${a.state||''} - ${a.pincode||''}`;
    html+=`<div class="addr-card ${isSel}"><div class="radio ${radioSel}" onclick="selectAddress('${aid}')"><div></div></div><div style="flex:1" onclick="selectAddress('${aid}')"><b style="font-size:13px">${a.full_name} - ${a.type||'Home'}</b><p style="font-size:12px;color:#555;margin-top:2px">${a.phone}${a.alt_phone?' • '+a.alt_phone:''}</p><p style="font-size:12px;color:#222;margin-top:4px;line-height:16px">${fullAddr}</p></div><div style="font-size:12px;color:#2874f0;font-weight:700;cursor:pointer;min-width:45px;min-height:35px;display:flex;align-items:center;justify-content:center;border-radius:6px" onclick="openEditModal('${aid}')">Edit</div></div>`;
   });
-  html+=`<div style="background:#fff;border-radius:8px;padding:14px;margin-top:10px"><h3 style="font-size:14px;margin-bottom:8px">+ ${window.getTrans?window.getTrans('addNewAddr'):'Add New Address'}</h3>${addressFormHTML('new')}<button class="btn btn-blue" onclick="addNewAddress()">+ ${window.getTrans?window.getTrans('addNewAddr'):'Add New Address'}</button></div></div>`;
+  html+=`<div style="background:#fff;border-radius:8px;padding:14px;margin-top:10px"><h3 style="font-size:14px;margin-bottom:8px">+ ${getTransLocal('addNewAddr')}</h3>${addressFormHTML('new')}<button class="btn btn-blue" onclick="addNewAddress()">+ ${getTransLocal('addNewAddr')}</button></div></div>`;
   el.innerHTML=html;
   window._addrCache=addr;
- }catch(e){ console.log(e); el.innerHTML=`<div class="empty-box"><h3>Error loading address</h3><p style="font-size:11px;color:#888">${e.message}</p><button class="btn btn-blue" onclick="renderAddress()">Retry</button></div>`;}
+ }catch(e){
+  el.innerHTML=`<div class="empty-box"><h3>Error loading address</h3><p style="font-size:11px">${e.message}</p><button class="btn btn-blue" onclick="renderAddress()">Retry</button></div>`;
+ }
 }
+
 function selectAddress(id){selectedAddrId=id;localStorage.setItem('rekavo_selected_addr',id);renderAddress();}
 function openEditModal(id){
  let addr=(window._addrCache||[]).find((a,i)=>{let aid=a.id||a._id||a.address_id||i;return aid==id;});
  if(!addr)return;
  let box=document.getElementById('editAddrModalBox');
- box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><b style="font-size:15px">Edit Address</b><span onclick="closeEditModal()" style="font-size:20px;cursor:pointer">✕</span></div>${addressFormHTML('ea',addr)}<button class="btn btn-blue" onclick="saveEditAddress('${id}')">${window.getTrans?window.getTrans('updateAddr'):'Update'}</button><button class="btn btn-danger" onclick="showDeleteSheet('${id}')">Delete Address</button>`;
+ box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><b style="font-size:15px">Edit Address</b><span onclick="closeEditModal()" style="font-size:20px;cursor:pointer">✕</span></div>${addressFormHTML('ea',addr)}<button class="btn btn-blue" onclick="saveEditAddress('${id}')">${getTransLocal('updateAddr')}</button><button class="btn btn-danger" onclick="showDeleteSheet('${id}')">Delete Address</button>`;
  document.getElementById('editAddrModal').classList.remove('hidden');
 }
 function closeEditModal(){document.getElementById('editAddrModal').classList.add('hidden');}
@@ -229,11 +258,11 @@ function validateFields(p){
  if(!fn) return 'Full Name is required';
  if(!ph) return 'Mobile is required';
  if(!pin) return 'Pincode is required';
- if(!isValidPincodeFormat(pin)) return 'Pincode 6 digit ka hona chahiye';
- if(validPinCache[p]===false) return 'Ye Pincode exist nahi karta';
+ if(!isValidPincodeFormat(pin)) return 'Pincode 6 digit ka hona chahiye (ex: 462022)';
+ if(validPinCache[p]===false) return 'Ye Pincode India me exist nahi karta, sahi pincode dalo';
  if(!city) return 'City is required';
  if(!state) return 'State is required';
- if(!l1) return 'House No required';
+ if(!l1) return 'House No / Building Name is required';
  return null;
 }
 async function saveEditAddress(id){
@@ -248,7 +277,10 @@ async function addNewAddress(){
  let p='new'; let err=validateFields(p); if(err){alert(err);return;}
  let fn=document.getElementById(p+'Name').value.trim();let ph=document.getElementById(p+'Phone').value.trim();let alt=document.getElementById(p+'AltPhone').value.trim();let pin=document.getElementById(p+'Pin').value.trim();let city=document.getElementById(p+'City').value.trim();let state=document.getElementById(p+'State').value.trim();let l1=document.getElementById(p+'Line1').value.trim();let l2=document.getElementById(p+'Line2').value.trim();let lm=document.getElementById(p+'Landmark').value.trim();let typ=document.getElementById(p+'Type').value;
  let uid=getUid();
- await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:currentUser.email,full_name:fn,phone:ph,alt_phone:alt,pincode:pin,city:city,state:state,line1:l1,line2:l2,landmark:lm,type:typ,full_address:l1,locality:l2})});
+ let res=await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:currentUser.email,full_name:fn,phone:ph,alt_phone:alt,pincode:pin,city:city,state:state,line1:l1,line2:l2,landmark:lm,type:typ,full_address:l1,locality:l2})});
+ let out=await res.json().catch(()=>({}));
+ if(!res.ok){ alert('Save failed: '+(out.message||out.error||JSON.stringify(out))); return; }
+ await new Promise(r=>setTimeout(r,300));
  renderAddress();
 }
 function fillEditProfile(){document.getElementById('editName').value=currentUser.name||'';document.getElementById('editMobile').value=currentUser.mobile||currentUser.phone||'';document.getElementById('editEmail').value=currentUser.email||'';let circle=document.getElementById('editPicon');let savedPhoto=localStorage.getItem('rekavo_profile_photo');if(savedPhoto){circle.innerHTML=`<img src="${savedPhoto}">`;}else{circle.innerText=getInitials(currentUser.name);}}
@@ -264,19 +296,21 @@ async function updateCountsReal(){
  try{
   let uid=getUid(); if(!uid) return;
   let [cr,wr]=await Promise.all([fetch(`${API_BASE}/cart/get?user_id=${uid}`),fetch(`${API_BASE}/wishlist/get?user_id=${uid}`)]);
-  let c=await cr.json(); let w=await wr.json();
-  let cArr=Array.isArray(c)?c:c.data||c.cart||[];
-  let wArr=Array.isArray(w)?w:w.data||w.wishlist||[];
-  if(Array.isArray(cArr)){
-   let cnt=cArr.reduce((s,i)=>s+(i.qty||1),0);
+  let cRaw=await cr.json(); let wRaw=await wr.json();
+  let c=Array.isArray(cRaw)?cRaw:cRaw.data||cRaw.cart||[];
+  let w=Array.isArray(wRaw)?wRaw:wRaw.data||wRaw.wishlist||[];
+  if(Array.isArray(c)){
+   let cnt=c.reduce((s,i)=>s+(i.qty||1),0);
    if(window._lastCartCnt!==undefined) window._lastCartCnt = cnt.toString();
    localStorage.setItem('rekavo_last_cart', cnt.toString());
    let cc = document.getElementById('cartCount');
    let pg = document.getElementById('pGridCart');
+   let pc = document.getElementById('pCartCount');
    if(cc) cc.innerText=cnt;
    if(pg) pg.innerText=cnt;
+   if(pc) pc.innerText=cnt;
   }
-  if(Array.isArray(wArr)){ document.getElementById('pWishCount').innerText=wArr.length; }
+  if(Array.isArray(w)){ document.getElementById('pWishCount').innerText=w.length; }
  }catch(e){}
 }
 (function(){
