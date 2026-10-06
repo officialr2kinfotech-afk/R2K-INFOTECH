@@ -107,6 +107,7 @@ const API_BASE="https://rekavo-backend.vercel.app";
 let currentUser=null;
 let selectedAddrId = localStorage.getItem('rekavo_selected_addr')||null;
 let selectedLang = localStorage.getItem('rekavo_lang')||'English';
+let _lastCartCnt = localStorage.getItem('rekavo_last_cart') || '0';
 let pendingDeleteId = null;
 let validPinCache = {};
 const LANGUAGES=[
@@ -141,19 +142,23 @@ Urdu:{myOrders:'میرے آرڈر',myCart:'میری کارٹ',coupons:'کوپن'
 function getTrans(k){let t=TRANSLATIONS[selectedLang]||TRANSLATIONS['English'];return t[k]||TRANSLATIONS['English'][k]||k;}
 function applyTranslations(){
  let t=TRANSLATIONS[selectedLang]||TRANSLATIONS['English'];
- let savedGridCart = document.getElementById('pGridCart')? document.getElementById('pGridCart').innerText : null;
- let savedCartCount = document.getElementById('cartCount')? document.getElementById('cartCount').innerText : null;
+ let gEl = document.getElementById('pGridCart');
+ let cEl = document.getElementById('cartCount');
+ if(gEl && gEl.innerText && gEl.innerText!== '0') _lastCartCnt = gEl.innerText;
+ if(cEl && cEl.innerText && cEl.innerText!== '0') _lastCartCnt = cEl.innerText;
+
+ let savedGridCart = _lastCartCnt;
+ let savedCartCount = cEl? cEl.innerText : _lastCartCnt;
+ if(savedCartCount === '0' && _lastCartCnt!== '0') savedCartCount = _lastCartCnt;
 
  document.querySelectorAll('[data-i18n]').forEach(el=>{
   let k=el.getAttribute('data-i18n');
   if(el.id==='pGridCart'||el.id==='cartCount')return;
   if(t[k]){
    if(k==='myCart'){
-     let cnt = savedGridCart || '0';
-     el.innerHTML=`${t[k]} (<span id="pGridCart">${cnt}</span>)`;
+     el.innerHTML=`${t[k]} (<span id="pGridCart">${savedGridCart}</span>)`;
    }
    else if(el.closest('.bottom-nav')){
-     // bottom nav ka text alag se handle hoga, yahan skip
    }
    else el.innerText=t[k];
   }
@@ -162,9 +167,8 @@ function applyTranslations(){
  document.querySelectorAll('.bottom-nav [data-i18n="account"]').forEach(e=>e.innerText=getTrans('account'));
  document.querySelectorAll('.bottom-nav [data-i18n="cart"]').forEach(e=>e.innerText=getTrans('cart'));
 
- // cart count wapas restore karo taaki 0 na ho
- if(savedGridCart && document.getElementById('pGridCart')) document.getElementById('pGridCart').innerText = savedGridCart;
- if(savedCartCount && document.getElementById('cartCount')) document.getElementById('cartCount').innerText = savedCartCount;
+ if(document.getElementById('pGridCart')) document.getElementById('pGridCart').innerText = savedGridCart;
+ if(document.getElementById('cartCount')) document.getElementById('cartCount').innerText = savedCartCount;
 }
 function renderLanguage(){
  let el=document.getElementById('langContent');
@@ -181,12 +185,12 @@ function setLang(code){
   selectedLang = code;
   applyTranslations();
   renderLanguage();
-  
-  // 300ms baad language page band karke profile pe wapas
   setTimeout(()=>{
-  document.getElementById('page-language').classList.add('hidden');
-  history.replaceState(null,'','');
-}, 300);
+    document.getElementById('page-language').classList.add('hidden');
+    if(location.hash === '#language'){
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+  }, 300);
 }
 function openPage(type, push=true){
  if(!currentUser){alert('Please login first');return;}
@@ -318,9 +322,14 @@ async function updateCountsReal(){
   let c=await cr.json(); let w=await wr.json();
   if(Array.isArray(c)){
    let cnt=c.reduce((s,i)=>s+(i.qty||1),0);
-   document.getElementById('cartCount').innerText=cnt;
-   document.getElementById('pGridCart').innerText=cnt;
-   document.getElementById('pCartCount').innerText=cnt;
+   _lastCartCnt = cnt.toString();
+   localStorage.setItem('rekavo_last_cart', _lastCartCnt);
+   let cc = document.getElementById('cartCount');
+   let pg = document.getElementById('pGridCart');
+   let pc = document.getElementById('pCartCount');
+   if(cc) cc.innerText=cnt;
+   if(pg) pg.innerText=cnt;
+   if(pc) pc.innerText=cnt;
   }
   if(Array.isArray(w)){ document.getElementById('pWishCount').innerText=w.length; }
  }catch(e){}
