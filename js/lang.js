@@ -39,8 +39,8 @@ function applyLanguage(){
       el.innerText = TRANSLATIONS[currentLang][key];
     }
   });
-  let langEl = document.getElementById('currentLang');
-  if(langEl) langEl.innerText = currentLang;
+  let sel = document.getElementById('langSelector');
+  if(sel) sel.value = currentLang;
 }
 
 document.addEventListener('DOMContentLoaded', applyLanguage);
