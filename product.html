@@ -223,23 +223,9 @@ const API_BASE="https://rekavo-backend.vercel.app";
 let currentUser=null;
 let selectedAddrId = localStorage.getItem('rekavo_selected_addr')||null;
 let selectedLang = localStorage.getItem('rekavo_lang')||'English';
-let _lastCartCnt = localStorage.getItem('rekavo_last_cart') || '0';
 let pendingDeleteId = null;
 let validPinCache = {};
-const LANGUAGES=[
-{code:'English',native:'English'},
-{code:'Hindi',native:'हिंदी'},
-{code:'Bengali',native:'বাংলা'},
-{code:'Telugu',native:'తెలుగు'},
-{code:'Marathi',native:'मराठी'},
-{code:'Tamil',native:'தமிழ்'},
-{code:'Gujarati',native:'ગુજરાતી'},
-{code:'Urdu',native:'اردو'},
-{code:'Kannada',native:'ಕನ್ನಡ'},
-{code:'Odia',native:'ଓଡ଼ିଆ'},
-{code:'Punjabi',native:'ਪੰਜਾਬੀ'},
-{code:'Malayalam',native:'മലയാളം'}
-];
+const LANGUAGES=[ {code:'English',native:'English'}, {code:'Hindi',native:'हिंदी'}, {code:'Bengali',native:'বাংলা'}, {code:'Telugu',native:'తెలుగు'}, {code:'Marathi',native:'मराठी'}, {code:'Tamil',native:'தமிழ்'}, {code:'Gujarati',native:'ગુજરાતી'}, {code:'Urdu',native:'اردو'}, {code:'Kannada',native:'ಕನ್ನಡ'}, {code:'Odia',native:'ଓଡ଼ିଆ'}, {code:'Punjabi',native:'ਪੰਜਾਬੀ'}, {code:'Malayalam',native:'മലയാളം'} ];
 const INDIAN_STATES=["Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh","Uttarakhand","West Bengal","Delhi","Jammu and Kashmir","Ladakh"];
 const TRANSLATIONS={
 English:{myOrders:'My orders',myCart:'My Cart',coupons:'coupons',wishlist:'wishlist',emailLabel:'📧 Email',savedAddresses:'📍 Saved Addresses',editProfile:'👤 Edit profile',selectLanguage:'A/अ Select Language',helpCenter:'💬 help center',logout:'🚪 Logout',myOrdersTitle:'My Orders',myWishlistTitle:'My Wishlist',myAddressesTitle:'My Addresses',selectLanguageTitle:'A/अ Select Language',editProfileTitle:'Edit Profile',changePhoto:'Change Photo',deletePhoto:'Delete Photo',fullName:'Full Name',mobile:'Mobile',email:'Email',saveProfile:'Save Profile',helpTitle:'Help Center',contactUs:'📞 Contact Us',home:'Home',account:'Account',cart:'Cart',addNewAddr:'Add New Address',saveAddr:'Save Address',updateAddr:'Update Address'},
@@ -258,14 +244,11 @@ Urdu:{myOrders:'میرے آرڈر',myCart:'میری کارٹ',coupons:'کوپن'
 function getTrans(k){let t=TRANSLATIONS[selectedLang]||TRANSLATIONS['English'];return t[k]||TRANSLATIONS['English'][k]||k;}
 function applyTranslations(){
  let t=TRANSLATIONS[selectedLang]||TRANSLATIONS['English'];
- let gEl = document.getElementById('pGridCart');
- let cEl = document.getElementById('cartCount');
- if(gEl && gEl.innerText && gEl.innerText!== '0') _lastCartCnt = gEl.innerText;
- if(cEl && cEl.innerText && cEl.innerText!== '0') _lastCartCnt = cEl.innerText;
-
- let savedGridCart = _lastCartCnt;
- let savedCartCount = cEl? cEl.innerText : _lastCartCnt;
- if(savedCartCount === '0' && _lastCartCnt!== '0') savedCartCount = _lastCartCnt;
+ let pGridEl=document.getElementById('pGridCart');
+ let cartEl=document.getElementById('cartCount');
+ let last = localStorage.getItem('rekavo_last_cart') || '0';
+ let savedGridCart = (pGridEl && pGridEl.innerText && pGridEl.innerText!=='0')? pGridEl.innerText : last;
+ let savedCartCount = (cartEl && cartEl.innerText && cartEl.innerText!=='0')? cartEl.innerText : last;
 
  document.querySelectorAll('[data-i18n]').forEach(el=>{
   let k=el.getAttribute('data-i18n');
@@ -273,16 +256,13 @@ function applyTranslations(){
   if(t[k]){
    if(k==='myCart'){
      el.innerHTML=`${t[k]} (<span id="pGridCart">${savedGridCart}</span>)`;
-   }
-   else if(el.closest('.bottom-nav')){
-   }
-   else el.innerText=t[k];
+   } else if(el.closest('.bottom-nav')){
+   } else el.innerText=t[k];
   }
  });
  document.querySelectorAll('.bottom-nav [data-i18n="home"]').forEach(e=>e.innerText=getTrans('home'));
  document.querySelectorAll('.bottom-nav [data-i18n="account"]').forEach(e=>e.innerText=getTrans('account'));
  document.querySelectorAll('.bottom-nav [data-i18n="cart"]').forEach(e=>e.innerText=getTrans('cart'));
-
  if(document.getElementById('pGridCart')) document.getElementById('pGridCart').innerText = savedGridCart;
  if(document.getElementById('cartCount')) document.getElementById('cartCount').innerText = savedCartCount;
 }
@@ -304,7 +284,7 @@ function setLang(code){
   setTimeout(()=>{
     document.getElementById('page-language').classList.add('hidden');
     if(location.hash === '#language'){
-      history.replaceState(null, '', location.pathname + location.search);
+      history.replaceState(null,'', location.pathname + location.search);
     }
   }, 300);
 }
@@ -360,16 +340,12 @@ async function confirmDelete(){
  try{await fetch(`${API_BASE}/address/delete`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,address_id:id,id:id})});}catch(e){}
  closeDeleteSheet(); closeEditModal(); renderAddress();
 }
-async function deleteAddress(id){ showDeleteSheet(id); }
 function isValidPincodeFormat(pin){ return /^[1-9][0-9]{5}$/.test(pin); }
 async function checkPinLive(p){
  let pin=document.getElementById(p+'Pin').value.trim();
  let msg=document.getElementById(p+'PinMsg');
  if(!pin){ msg.style.display='none'; validPinCache[p]=null; return; }
- if(!isValidPincodeFormat(pin)){
-   msg.style.display='block'; msg.innerText='✕ Invalid'; msg.style.color='#ff3e6c';
-   validPinCache[p]=false; return;
- }
+ if(!isValidPincodeFormat(pin)){ msg.style.display='block'; msg.innerText='✕ Invalid'; msg.style.color='#ff3e6c'; validPinCache[p]=false; return; }
  msg.style.display='block'; msg.innerText='Checking...'; msg.style.color='#878787';
  try{
    let res=await fetch(`https://api.postalpincode.in/pincode/${pin}`);
@@ -380,17 +356,9 @@ async function checkPinLive(p){
      let cityInput=document.getElementById(p+'City');
      let stateInput=document.getElementById(p+'State');
      if(cityInput &&!cityInput.value) cityInput.value=po.District;
-     if(stateInput){
-       for(let opt of stateInput.options){
-         if(opt.value.toLowerCase()===po.State.toLowerCase()){ opt.selected=true; break; }
-       }
-     }
-   } else {
-     msg.innerText='✕ Not Found'; msg.style.color='#ff3e6c'; validPinCache[p]=false;
-   }
- }catch(e){
-   msg.innerText='✓ Verified'; msg.style.color='#00b578'; validPinCache[p]=true;
- }
+     if(stateInput){ for(let opt of stateInput.options){ if(opt.value.toLowerCase()===po.State.toLowerCase()){ opt.selected=true; break; } } }
+   } else { msg.innerText='✕ Not Found'; msg.style.color='#ff3e6c'; validPinCache[p]=false; }
+ }catch(e){ msg.innerText='✓ Verified'; msg.style.color='#00b578'; validPinCache[p]=true; }
 }
 function validateFields(p){
  let fn=document.getElementById(p+'Name').value.trim();
@@ -403,7 +371,7 @@ function validateFields(p){
  if(!ph) return 'Mobile is required';
  if(!pin) return 'Pincode is required';
  if(!isValidPincodeFormat(pin)) return 'Pincode 6 digit ka hona chahiye (ex: 462022)';
- if(validPinCache[p]===false) return 'Ye Pincode India me exist nahi karta, sahi pincode dalo';
+ if(validPinCache[p]===false) return 'Ye Pincode India me exist nahi karta';
  if(!city) return 'City is required';
  if(!state) return 'State is required';
  if(!l1) return 'House No / Building Name is required';
@@ -438,14 +406,10 @@ async function updateCountsReal(){
   let c=await cr.json(); let w=await wr.json();
   if(Array.isArray(c)){
    let cnt=c.reduce((s,i)=>s+(i.qty||1),0);
-   _lastCartCnt = cnt.toString();
-   localStorage.setItem('rekavo_last_cart', _lastCartCnt);
-   let cc = document.getElementById('cartCount');
-   let pg = document.getElementById('pGridCart');
-   let pc = document.getElementById('pCartCount');
-   if(cc) cc.innerText=cnt;
-   if(pg) pg.innerText=cnt;
-   if(pc) pc.innerText=cnt;
+   localStorage.setItem('rekavo_last_cart', cnt);
+   document.getElementById('cartCount').innerText=cnt;
+   if(document.getElementById('pGridCart')) document.getElementById('pGridCart').innerText=cnt;
+   document.getElementById('pCartCount').innerText=cnt;
   }
   if(Array.isArray(w)){ document.getElementById('pWishCount').innerText=w.length; }
  }catch(e){}
