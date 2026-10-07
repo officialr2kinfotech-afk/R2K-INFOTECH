@@ -208,7 +208,7 @@ async function renderAddress(){
    let fullAddr=`${a.line1||a.full_address||''} ${a.line2||''} ${a.landmark?'('+a.landmark+')':''}, ${a.city||''}, ${a.state||''} - ${a.pincode||''}`;
    html+=`<div class="addr-card ${isSel}"><div class="radio ${radioSel}" onclick="selectAddress('${aid}')"><div></div></div><div style="flex:1" onclick="selectAddress('${aid}')"><b style="font-size:13px">${a.full_name} - ${a.type||'Home'}</b><p style="font-size:12px;color:#555;margin-top:2px">${a.phone}${a.alt_phone?' • '+a.alt_phone:''}</p><p style="font-size:12px;color:#222;margin-top:4px;line-height:16px">${fullAddr}</p></div><div style="font-size:12px;color:#2874f0;font-weight:700;cursor:pointer;min-width:45px;min-height:35px;display:flex;align-items:center;justify-content:center;border-radius:6px" onclick="openEditModal('${aid}')">Edit</div></div>`;
   });
-  html+=`<div style="background:#fff;border-radius:8px;padding:14px;margin-top:10px"><h3 style="font-size:14px;margin-bottom:8px">+ ${getTransLocal('addNewAddr')}</h3>${addressFormHTML('new')}<button class="btn btn-blue" onclick="addNewAddress()">+ ${getTransLocal('addNewAddr')}</button></div></div>`;
+  html+=`<div style="background:#fff;border-radius:8px;padding:14px;margin-top:10px"><h3 style="font-size:14px;margin-bottom:8px">+ ${getTransLocal('addNewAddr')}</h3>${addressFormHTML('new')}<button class="btn btn-blue" onclick="Add New Address()">+ ${getTransLocal('Saved New Addrass')}</button></div></div>`;
   el.innerHTML=html;
   window._addrCache=addr;
  }catch(e){
