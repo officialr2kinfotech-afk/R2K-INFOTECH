@@ -208,7 +208,7 @@ async function renderAddress(){
    let fullAddr=`${a.line1||a.full_address||''} ${a.line2||''} ${a.landmark?'('+a.landmark+')':''}, ${a.city||''}, ${a.state||''} - ${a.pincode||''}`;
    html+=`<div class="addr-card ${isSel}"><div class="radio ${radioSel}" onclick="selectAddress('${aid}')"><div></div></div><div style="flex:1" onclick="selectAddress('${aid}')"><b style="font-size:13px">${a.full_name} - ${a.type||'Home'}</b><p style="font-size:12px;color:#555;margin-top:2px">${a.phone}${a.alt_phone?' • '+a.alt_phone:''}</p><p style="font-size:12px;color:#222;margin-top:4px;line-height:16px">${fullAddr}</p></div><div style="font-size:12px;color:#2874f0;font-weight:700;cursor:pointer;min-width:45px;min-height:35px;display:flex;align-items:center;justify-content:center;border-radius:6px" onclick="openEditModal('${aid}')">Edit</div></div>`;
   });
-  html+=`<div style="background:#fff;border-radius:8px;padding:14px;margin-top:10px"><h3 style="font-size:14px;margin-bottom:8px">+ ${getTransLocal('addNewAddr')}</h3>${addressFormHTML('new')}<button class="btn btn-blue" onclick="Add New Address()">+ ${getTransLocal('Saved New Addrass')}</button></div></div>`;
+  html+=`<div style="background:#fff;border-radius:8px;padding:14px;margin-top:10px"><h3 style="font-size:14px;margin-bottom:8px"> ${getTransLocal('Add New Addrass')}</h3>${addressFormHTML('new')}<button class="btn btn-blue" onclick="Saved New Address()"> ${getTransLocal('addNewAddr')}</button></div></div>`;
   el.innerHTML=html;
   window._addrCache=addr;
  }catch(e){
@@ -221,7 +221,7 @@ function openEditModal(id){
  let addr=(window._addrCache||[]).find((a,i)=>{let aid=a.id||a._id||a.address_id||i;return aid==id;});
  if(!addr)return;
  let box=document.getElementById('editAddrModalBox');
- box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><b style="font-size:15px">Edit Address</b><span onclick="closeEditModal()" style="font-size:20px;cursor:pointer">✕</span></div>${addressFormHTML('ea',addr)}<button class="btn btn-blue" onclick="saveEditAddress('${id}')">${getTransLocal('updateAddr')}</button><button class="btn btn-danger" onclick="showDeleteSheet('${id}')">Delete Address</button>`;
+ box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><b style="font-size:15px">Edit Address</b><span onclick="closeEditModal()" style="font-size:20px;cursor:pointer">✕</span></div>${addressFormHTML('ea',addr)}<button class="btn btn-blue" onclick="saveEditAddress('${id}')">${getTransLocal('Update Addrass')}</button><button class="btn btn-danger" onclick="showDeleteSheet('${id}')">Delete Address</button>`;
  document.getElementById('editAddrModal').classList.remove('hidden');
 }
 function closeEditModal(){document.getElementById('editAddrModal').classList.add('hidden');}
