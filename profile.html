@@ -90,96 +90,47 @@ body{background:#f1f3f6;padding-bottom:80px}
 <div id="otpBox" class="hidden" style="margin-top:14px;background:#f0f7ff;border:1.5px dashed #2874f0;border-radius:10px;padding:14px"><b style="font-size:13px">Verify OTP</b><p style="font-size:11px;color:#666;margin:4px 0 8px">OTP sent to <span id="otpSentTo" style="font-weight:800;color:#000"></span></p><input id="editOtp" class="input" placeholder="Enter 6 digit OTP" maxlength="6" inputmode="numeric" style="text-align:center;letter-spacing:5px;font-weight:800;font-size:18px;border:1.5px solid #2874f0"><button id="btnVerify" class="btn" style="background:#000;color:#fff;margin-top:8px" onclick="verifyAndSave()">Verify & Save</button></div>
 </div></div></div>
 
-<!-- ========= HELP CENTER PAGE - PROFESSIONAL ========= -->
-<div id="helpCenterPage" style="display:none" class="min-h-screen bg-[#f5f7fb]">
-  <!-- Header -->
-  <div class="bg-[#2563eb] text-white p-4 flex items-center gap-3 sticky top-0 z-10">
-    <span onclick="showPage('profilePage')" class="text-2xl cursor-pointer">←</span>
-    <div>
-      <h1 class="font-bold text-[18px] leading-none">Help Center</h1>
-      <p class="text-[12px] opacity-90">How can we help you?</p>
-    </div>
+<div id="helpCenterPage" style="display:none; background:#f5f5f5; min-height:100vh;">
+  <div style="background:#2874f0; color:white; padding:15px; display:flex; align-items:center; gap:10px;">
+    <span onclick="showPage('profilePage')" style="font-size:22px; cursor:pointer;">←</span>
+    <b>Help Center</b>
   </div>
 
-  <div class="max-w-3xl mx-auto p-4 space-y-4">
-    <!-- Search Bar -->
-    <div class="bg-white rounded-xl shadow-sm p-3 flex items-center gap-2">
-      <span class="text-gray-400 text-xl">🔍</span>
-      <input type="text" placeholder="Search your issue, e.g. return, refund, delivery" class="w-full outline-none text-[14px] placeholder:text-gray-400" />
+  <div style="padding:15px;">
+    <!-- Search -->
+    <div style="background:white; border:1px solid #ddd; border-radius:8px; padding:10px; display:flex; gap:8px;">
+      <span>🔍</span>
+      <input type="text" placeholder="Search - return, refund, delivery" style="border:none; outline:none; width:100%; font-size:14px;">
     </div>
 
-    <!-- Quick Help Cards -->
-    <h2 class="font-bold text-[15px] mt-2">What can we help you with?</h2>
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+    <p style="font-weight:bold; margin:15px 0 10px 0; font-size:15px;">What can we help you with?</p>
 
-      <div class="bg-white rounded-xl shadow-sm p-4 cursor-pointer hover:shadow-md transition">
-        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-xl">📦</div>
-        <h3 class="font-bold text-[14px] mt-3">Your Orders</h3>
-        <p class="text-[12px] text-gray-500 mt-1">Track, cancel, invoice</p>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+      <div style="background:white; border:1px solid #ddd; border-radius:10px; padding:15px; text-align:center;">
+        <div style="font-size:24px;">📦</div><b style="font-size:13px;">Your Orders</b><br><span style="font-size:11px; color:gray;">Track, Cancel</span>
       </div>
-
-      <div class="bg-white rounded-xl shadow-sm p-4 cursor-pointer hover:shadow-md transition">
-        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-xl">↩️</div>
-        <h3 class="font-bold text-[14px] mt-3">Returns & Refunds</h3>
-        <p class="text-[12px] text-gray-500 mt-1">Return policy, refund status</p>
+      <div style="background:white; border:1px solid #ddd; border-radius:10px; padding:15px; text-align:center;">
+        <div style="font-size:24px;">↩️</div><b style="font-size:13px;">Returns</b><br><span style="font-size:11px; color:gray;">Return & Refund</span>
       </div>
-
-      <div class="bg-white rounded-xl shadow-sm p-4 cursor-pointer hover:shadow-md transition">
-        <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center text-xl">💳</div>
-        <h3 class="font-bold text-[14px] mt-3">Payments</h3>
-        <p class="text-[12px] text-gray-500 mt-1">COD, UPI, failed payment</p>
+      <div style="background:white; border:1px solid #ddd; border-radius:10px; padding:15px; text-align:center;">
+        <div style="font-size:24px;">💳</div><b style="font-size:13px;">Payments</b><br><span style="font-size:11px; color:gray;">COD, UPI</span>
       </div>
-
-      <div class="bg-white rounded-xl shadow-sm p-4 cursor-pointer hover:shadow-md transition">
-        <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-xl">🚚</div>
-        <h3 class="font-bold text-[14px] mt-3">Shipping</h3>
-        <p class="text-[12px] text-gray-500 mt-1">Delivery time & charges</p>
-      </div>
-
-      <div class="bg-white rounded-xl shadow-sm p-4 cursor-pointer hover:shadow-md transition">
-        <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-xl">👤</div>
-        <h3 class="font-bold text-[14px] mt-3">Account & Address</h3>
-        <p class="text-[12px] text-gray-500 mt-1">Password, address, email</p>
-      </div>
-
-      <div class="bg-white rounded-xl shadow-sm p-4 cursor-pointer hover:shadow-md transition">
-        <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center text-xl">🛡️</div>
-        <h3 class="font-bold text-[14px] mt-3">Warranty</h3>
-        <p class="text-[12px] text-gray-500 mt-1">Product guarantee & claim</p>
-      </div>
-
-    </div>
-
-    <!-- FAQ Accordion Style -->
-    <div class="bg-white rounded-xl shadow-sm mt-4">
-      <div class="p-4 border-b font-bold text-[14px]">Top Questions</div>
-
-      <details class="p-4 border-b">
-        <summary class="text-[13px] font-semibold cursor-pointer list-none flex justify-between">My order is not delivered yet? <span>›</span></summary>
-        <p class="text-[12px] text-gray-600 mt-2">Bhopal me same day, MP me 1-2 din, bahar 3-5 din lagte hain. Order > My Orders > Track pe dekho.</p>
-      </details>
-
-      <details class="p-4 border-b">
-        <summary class="text-[13px] font-semibold cursor-pointer list-none flex justify-between">How to return product? <span>›</span></summary>
-        <p class="text-[12px] text-gray-600 mt-2">My Orders > Select Product > Return Request. 7 din ke andar return valid hai. Refund 3-5 din me aayega.</p>
-      </details>
-
-      <details class="p-4">
-        <summary class="text-[13px] font-semibold cursor-pointer list-none flex justify-between">Is COD available? <span>›</span></summary>
-        <p class="text-[12px] text-gray-600 mt-2">Haan, Bhopal aur major cities me COD available hai. Checkout pe check kar sakte ho.</p>
-      </details>
-    </div>
-
-    <!-- Need More Help -->
-    <div class="bg-[#2563eb] rounded-xl p-4 text-white text-center">
-      <h3 class="font-bold">Still need help?</h3>
-      <p class="text-[12px] opacity-90 mt-1">Our team is available 10am to 7pm</p>
-      <div class="grid grid-cols-2 gap-3 mt-4">
-        <a href="https://wa.me/919999999999" class="bg-white text-[#2563eb] py-2.5 rounded-lg font-bold text-[13px]">WhatsApp Us</a>
-        <a href="tel:+919999999999" class="bg-blue-700 border border-blue-400 py-2.5 rounded-lg font-bold text-[13px]">Call Us</a>
+      <div style="background:white; border:1px solid #ddd; border-radius:10px; padding:15px; text-align:center;">
+        <div style="font-size:24px;">🚚</div><b style="font-size:13px;">Shipping</b><br><span style="font-size:11px; color:gray;">Delivery Time</span>
       </div>
     </div>
 
+    <div style="background:white; border:1px solid #ddd; border-radius:10px; margin-top:15px; padding:15px;">
+      <b style="font-size:14px;">Top Questions</b>
+      <hr style="margin:10px 0;">
+      <p style="font-size:13px; margin:8px 0;"><b>Q.</b> Order deliver nahi hua? <br><span style="color:gray;">Bhopal me same day, baaki MP me 1-2 din.</span></p>
+      <p style="font-size:13px; margin:8px 0;"><b>Q.</b> Return kaise kare? <br><span style="color:gray;">My Orders > Return Request > 7 din ke andar.</span></p>
+    </div>
+
+    <div style="background:#2874f0; border-radius:10px; margin-top:15px; padding:15px; color:white; text-align:center;">
+      <b>Still need help?</b><br>
+      <a href="https://wa.me/916264329345" style="display:inline-block; background:white; color:#2874f0; padding:10px 20px; border-radius:20px; text-decoration:none; font-weight:bold; margin-top:10px; font-size:13px;">WhatsApp Us</a>
+    </div>
   </div>
 </div>
 <a href="index.html"><span>🏠</span><span data-i18n="home">Home</span></a>
