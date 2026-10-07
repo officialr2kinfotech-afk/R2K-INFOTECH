@@ -89,51 +89,8 @@ body{background:#f1f3f6;padding-bottom:80px}
 <div id="page-editprofile" class="page-section hidden"><div class="page-header"><span onclick="closePage('editprofile')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="editProfileTitle">Edit Profile</b></div><div style="padding:14px"><div style="background:#fff;border-radius:8px;padding:20px;text-align:center"><div class="img-wrap" style="margin-bottom:12px"><div class="p-circle" id="editPicon">UN</div></div><div style="display:flex;gap:8px;justify-content:center"><button class="btn-outline btn" style="width:auto;padding:0 14px;height:36px;font-size:12px" data-i18n="changePhoto" onclick="document.getElementById('profileFile').click()">Change Photo</button><button class="btn-outline btn" style="width:auto;padding:0 14px;height:36px;font-size:12px" onclick="document.getElementById('profileFileCamera').click()">📷 Camera</button></div><button class="btn-danger btn" style="width:auto;padding:0 14px;height:36px;font-size:12px;margin-top:8px" data-i18n="deletePhoto" onclick="deletePhoto()">Delete Photo</button></div><div style="background:#fff;border-radius:8px;padding:14px;margin-top:12px"><label style="font-size:12px;font-weight:700" data-i18n="fullName">Full Name</label><input id="editName" class="input" placeholder="Enter full name"><label style="font-size:12px;font-weight:700;margin-top:8px;display:block" data-i18n="mobile">Mobile</label><input id="editMobile" class="input" placeholder="Enter mobile number" maxlength="10" inputmode="numeric"><label style="font-size:12px;font-weight:700;margin-top:8px;display:block" data-i18n="email">Email</label><input id="editEmail" class="input" placeholder="Enter email"><button id="btnSaveProfile" class="btn btn-blue" style="margin-top:14px" data-i18n="saveProfile" onclick="handleSaveProfile()">Save Profile</button>
 <div id="otpBox" class="hidden" style="margin-top:14px;background:#f0f7ff;border:1.5px dashed #2874f0;border-radius:10px;padding:14px"><b style="font-size:13px">Verify OTP</b><p style="font-size:11px;color:#666;margin:4px 0 8px">OTP sent to <span id="otpSentTo" style="font-weight:800;color:#000"></span></p><input id="editOtp" class="input" placeholder="Enter 6 digit OTP" maxlength="6" inputmode="numeric" style="text-align:center;letter-spacing:5px;font-weight:800;font-size:18px;border:1.5px solid #2874f0"><button id="btnVerify" class="btn" style="background:#000;color:#fff;margin-top:8px" onclick="verifyAndSave()">Verify & Save</button></div>
 </div></div></div>
-
-<div id="helpCenterPage" style="display:none; background:#f5f5f5; min-height:100vh;">
-  <div style="background:#2874f0; color:white; padding:15px; display:flex; align-items:center; gap:10px;">
-    <span onclick="showPage('profilePage')" style="font-size:22px; cursor:pointer;">←</span>
-    <b>Help Center</b>
-  </div>
-
-  <div style="padding:15px;">
-    <!-- Search -->
-    <div style="background:white; border:1px solid #ddd; border-radius:8px; padding:10px; display:flex; gap:8px;">
-      <span>🔍</span>
-      <input type="text" placeholder="Search - return, refund, delivery" style="border:none; outline:none; width:100%; font-size:14px;">
-    </div>
-
-    <p style="font-weight:bold; margin:15px 0 10px 0; font-size:15px;">What can we help you with?</p>
-
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-      <div style="background:white; border:1px solid #ddd; border-radius:10px; padding:15px; text-align:center;">
-        <div style="font-size:24px;">📦</div><b style="font-size:13px;">Your Orders</b><br><span style="font-size:11px; color:gray;">Track, Cancel</span>
-      </div>
-      <div style="background:white; border:1px solid #ddd; border-radius:10px; padding:15px; text-align:center;">
-        <div style="font-size:24px;">↩️</div><b style="font-size:13px;">Returns</b><br><span style="font-size:11px; color:gray;">Return & Refund</span>
-      </div>
-      <div style="background:white; border:1px solid #ddd; border-radius:10px; padding:15px; text-align:center;">
-        <div style="font-size:24px;">💳</div><b style="font-size:13px;">Payments</b><br><span style="font-size:11px; color:gray;">COD, UPI</span>
-      </div>
-      <div style="background:white; border:1px solid #ddd; border-radius:10px; padding:15px; text-align:center;">
-        <div style="font-size:24px;">🚚</div><b style="font-size:13px;">Shipping</b><br><span style="font-size:11px; color:gray;">Delivery Time</span>
-      </div>
-    </div>
-
-    <div style="background:white; border:1px solid #ddd; border-radius:10px; margin-top:15px; padding:15px;">
-      <b style="font-size:14px;">Top Questions</b>
-      <hr style="margin:10px 0;">
-      <p style="font-size:13px; margin:8px 0;"><b>Q.</b> Order deliver nahi hua? <br><span style="color:gray;">Bhopal me same day, baaki MP me 1-2 din.</span></p>
-      <p style="font-size:13px; margin:8px 0;"><b>Q.</b> Return kaise kare? <br><span style="color:gray;">My Orders > Return Request > 7 din ke andar.</span></p>
-    </div>
-
-    <div style="background:#2874f0; border-radius:10px; margin-top:15px; padding:15px; color:white; text-align:center;">
-      <b>Still need help?</b><br>
-      <a href="https://wa.me/916264329345" style="display:inline-block; background:white; color:#2874f0; padding:10px 20px; border-radius:20px; text-decoration:none; font-weight:bold; margin-top:10px; font-size:13px;">WhatsApp Us</a>
-    </div>
-  </div>
-</div>
-  <div class="bottom-nav">
+<div id="page-help" class="page-section hidden"><div class="page-header"><span onclick="closePage('help')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="helpTitle">Help Center</b></div><div style="padding:12px"><div style="background:#fff;border-radius:8px;padding:12px"><h4 data-i18n="contactUs">📞 Contact Us</h4><p style="font-size:12px;color:#555;margin-top:4px">Email: support@rekavo.com<br>Phone: +91 9876543210</p></div></div></div>
+<div class="bottom-nav">
 <a href="index.html"><span>🏠</span><span data-i18n="home">Home</span></a>
 <a href="profile.html" class="active"><span>👤</span><span data-i18n="account">Account</span></a>
 <a href="cart.html"><span>🛒</span><span><span data-i18n="cart">Cart</span> (<span id="cartCount">0</span>)</span></a>
