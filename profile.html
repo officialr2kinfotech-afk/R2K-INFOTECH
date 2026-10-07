@@ -86,36 +86,9 @@ body{background:#f1f3f6;padding-bottom:80px}
 <div id="page-address" class="page-section hidden"><div class="page-header"><span onclick="closePage('address')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="myAddressesTitle">My Addresses</b></div><div id="addressContent"></div></div>
 <div id="page-language" class="page-section hidden"><div class="page-header"><span onclick="closePage('language')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="selectLanguageTitle">A/अ Select Language</b></div><div id="langContent"></div></div>
 
-<!-- EDITED ONLY THIS SECTION - PROFESSIONAL SINGLE SAVE LOGIC -->
-<div id="page-editprofile" class="page-section hidden"><div class="page-header"><span onclick="closePage('editprofile')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="editProfileTitle">Edit Profile</b></div>
-<div style="padding:12px;max-width:500px;margin:0 auto">
-  <div style="background:#fff;border-radius:12px;padding:20px;text-align:center;border:1px solid #e5e7eb">
-    <div class="img-wrap" style="margin-bottom:12px"><div class="p-circle" id="editPicon" style="border-color:#e5e7eb">UN</div></div>
-    <div style="display:flex;gap:8px;justify-content:center">
-      <button class="btn-outline btn" style="width:auto;padding:0 18px;height:38px;font-size:13px;border-radius:20px" data-i18n="changePhoto" onclick="document.getElementById('profileFile').click()">Change Photo</button>
-      <button class="btn-outline btn" style="width:auto;padding:0 14px;height:38px;font-size:13px;border-radius:20px;background:#fff" onclick="document.getElementById('profileFileCamera').click()">📷</button>
-    </div>
-    <div onclick="deletePhoto()" style="margin-top:12px;color:#ff3e6c;font-size:12px;font-weight:700;cursor:pointer" data-i18n="deletePhoto">Delete Photo</div>
-  </div>
-  <div style="background:#fff;border-radius:12px;padding:16px;margin-top:12px;border:1px solid #e5e7eb">
-    <label style="font-size:11px;font-weight:700;color:#6b7280;letter-spacing:.5px" data-i18n="fullName">FULL NAME</label>
-    <input id="editName" class="input" placeholder="Enter full name" style="height:48px;border-radius:10px;margin-top:6px">
-    <label style="font-size:11px;font-weight:700;color:#6b7280;letter-spacing:.5px;margin-top:14px;display:block" data-i18n="mobile">MOBILE NUMBER</label>
-    <input id="editMobile" class="input" placeholder="Enter mobile number" maxlength="10" inputmode="numeric" style="height:48px;border-radius:10px;margin-top:6px">
-    <label style="font-size:11px;font-weight:700;color:#6b7280;letter-spacing:.5px;margin-top:14px;display:block" data-i18n="email">EMAIL ADDRESS</label>
-    <input id="editEmail" class="input" placeholder="Enter email" style="height:48px;border-radius:10px;margin-top:6px">
-    <button id="btnSaveProfile" class="btn btn-blue" style="margin-top:18px;height:48px;border-radius:10px;font-size:14px" data-i18n="saveProfile" onclick="handleSaveProfile()">Save Profile</button>
-
-    <div id="otpBox" class="hidden" style="margin-top:16px;background:#f8faff;border:1.5px dashed #2874f0;border-radius:12px;padding:16px">
-      <b style="font-size:13px">Verify OTP</b>
-      <p style="font-size:11px;color:#6b7280;margin:4px 0 10px">Code sent to <span id="otpSentTo" style="font-weight:700;color:#111"></span></p>
-      <input id="editOtp" class="input" style="height:48px;border-radius:10px;text-align:center;letter-spacing:6px;font-size:20px;font-weight:800;border:1.5px solid #2874f0" placeholder="••••••" maxlength="6" inputmode="numeric">
-      <button id="btnVerify" onclick="verifyAndSave()" style="width:100%;height:48px;background:#111827;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:14px;margin-top:10px;cursor:pointer">Verify & Save</button>
-      <p id="emailMsg" style="font-size:12px;margin-top:8px;text-align:center;color:#2874f0;font-weight:600"></p>
-    </div>
-  </div>
-</div>
-</div>
+<div id="page-editprofile" class="page-section hidden"><div class="page-header"><span onclick="closePage('editprofile')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="editProfileTitle">Edit Profile</b></div><div style="padding:14px"><div style="background:#fff;border-radius:8px;padding:20px;text-align:center"><div class="img-wrap" style="margin-bottom:12px"><div class="p-circle" id="editPicon">UN</div></div><div style="display:flex;gap:8px;justify-content:center"><button class="btn-outline btn" style="width:auto;padding:0 14px;height:36px;font-size:12px" data-i18n="changePhoto" onclick="document.getElementById('profileFile').click()">Change Photo</button><button class="btn-outline btn" style="width:auto;padding:0 14px;height:36px;font-size:12px" onclick="document.getElementById('profileFileCamera').click()">📷 Camera</button></div><button class="btn-danger btn" style="width:auto;padding:0 14px;height:36px;font-size:12px;margin-top:8px" data-i18n="deletePhoto" onclick="deletePhoto()">Delete Photo</button></div><div style="background:#fff;border-radius:8px;padding:14px;margin-top:12px"><label style="font-size:12px;font-weight:700" data-i18n="fullName">Full Name</label><input id="editName" class="input" placeholder="Enter full name"><label style="font-size:12px;font-weight:700;margin-top:8px;display:block" data-i18n="mobile">Mobile</label><input id="editMobile" class="input" placeholder="Enter mobile number" maxlength="10" inputmode="numeric"><label style="font-size:12px;font-weight:700;margin-top:8px;display:block" data-i18n="email">Email</label><input id="editEmail" class="input" placeholder="Enter email"><button id="btnSaveProfile" class="btn btn-blue" style="margin-top:14px" data-i18n="saveProfile" onclick="handleSaveProfile()">Save Profile</button>
+<div id="otpBox" class="hidden" style="margin-top:14px;background:#f0f7ff;border:1.5px dashed #2874f0;border-radius:10px;padding:14px"><b style="font-size:13px">Verify OTP</b><p style="font-size:11px;color:#666;margin:4px 0 8px">OTP sent to <span id="otpSentTo" style="font-weight:800;color:#000"></span></p><input id="editOtp" class="input" placeholder="Enter 6 digit OTP" maxlength="6" inputmode="numeric" style="text-align:center;letter-spacing:5px;font-weight:800;font-size:18px;border:1.5px solid #2874f0"><button id="btnVerify" class="btn" style="background:#000;color:#fff;margin-top:8px" onclick="verifyAndSave()">Verify & Save</button></div>
+</div></div></div>
 
 <div id="page-help" class="page-section hidden"><div class="page-header"><span onclick="closePage('help')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="helpTitle">Help Center</b></div><div style="padding:12px"><div style="background:#fff;border-radius:8px;padding:12px"><h4 data-i18n="contactUs">📞 Contact Us</h4><p style="font-size:12px;color:#555;margin-top:4px">Email: support@rekavo.com<br>Phone: +91 9876543210</p></div></div></div>
 <div class="bottom-nav">
@@ -134,6 +107,9 @@ body{background:#f1f3f6;padding-bottom:80px}
     </div>
   </div>
 </div>
+
+<div id="rekavoToast" style="position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:20000;display:none;font-size:13px;font-weight:800;pointer-events:none;text-align:center;white-space:nowrap"></div>
+
 <script>
 const API_BASE="https://rekavo-backend.vercel.app";
 let currentUser=null;
@@ -142,6 +118,15 @@ let pendingDeleteId = null;
 let validPinCache = {};
 let pendingChanges = {};
 const INDIAN_STATES=["Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh","Uttarakhand","West Bengal","Delhi","Jammu and Kashmir","Ladakh"];
+
+function showToast(msg, isError=false){
+  let t=document.getElementById('rekavoToast');
+  t.innerText=msg;
+  t.style.color=isError? '#ff3e6c' : '#00b578';
+  t.style.display='block';
+  clearTimeout(t._timer);
+  t._timer=setTimeout(()=>{ t.style.display='none'; }, 3000);
+}
 
 function getTransLocal(k){
   if(window.getTrans) return window.getTrans(k);
@@ -171,7 +156,7 @@ function setLang(code){
   }, 300);
 }
 function openPage(type, push=true){
- if(!currentUser){alert('Please login first');return;}
+ if(!currentUser){showToast('Please login first',true);return;}
  document.querySelectorAll('.page-section').forEach(s=>s.classList.add('hidden'));
  document.getElementById(`page-${type}`).classList.remove('hidden');
  if(push){ history.pushState({page:type}, '', '#'+type); }
@@ -298,25 +283,24 @@ function validateFields(p){
  return null;
 }
 async function saveEditAddress(id){
- let p='ea'; let err=validateFields(p); if(err){alert(err);return;}
+ let p='ea'; let err=validateFields(p); if(err){showToast(err,true);return;}
  let fn=document.getElementById(p+'Name').value.trim();let ph=document.getElementById(p+'Phone').value.trim();let alt=document.getElementById(p+'AltPhone').value.trim();let pin=document.getElementById(p+'Pin').value.trim();let city=document.getElementById(p+'City').value.trim();let state=document.getElementById(p+'State').value.trim();let l1=document.getElementById(p+'Line1').value.trim();let l2=document.getElementById(p+'Line2').value.trim();let lm=document.getElementById(p+'Landmark').value.trim();let typ=document.getElementById(p+'Type').value;
  let uid=getUid();
  try{let res=await fetch(`${API_BASE}/address/update`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,address_id:id,id:id,full_name:fn,phone:ph,alt_phone:alt,pincode:pin,city:city,state:state,line1:l1,line2:l2,landmark:lm,type:typ,full_address:l1,locality:l2})});if(!res.ok)throw new Error();}
  catch(err){try{await fetch(`${API_BASE}/address/delete`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,address_id:id,id:id})});}catch(e){}await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:currentUser.email,full_name:fn,phone:ph,alt_phone:alt,pincode:pin,city:city,state:state,line1:l1,line2:l2,landmark:lm,type:typ,full_address:l1,locality:l2})});}
- closeEditModal();renderAddress();
+ closeEditModal();renderAddress(); showToast('Address updated');
 }
 async function addNewAddress(){
- let p='new'; let err=validateFields(p); if(err){alert(err);return;}
+ let p='new'; let err=validateFields(p); if(err){showToast(err,true);return;}
  let fn=document.getElementById(p+'Name').value.trim();let ph=document.getElementById(p+'Phone').value.trim();let alt=document.getElementById(p+'AltPhone').value.trim();let pin=document.getElementById(p+'Pin').value.trim();let city=document.getElementById(p+'City').value.trim();let state=document.getElementById(p+'State').value.trim();let l1=document.getElementById(p+'Line1').value.trim();let l2=document.getElementById(p+'Line2').value.trim();let lm=document.getElementById(p+'Landmark').value.trim();let typ=document.getElementById(p+'Type').value;
  let uid=getUid();
  let res=await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:currentUser.email,full_name:fn,phone:ph,alt_phone:alt,pincode:pin,city:city,state:state,line1:l1,line2:l2,landmark:lm,type:typ,full_address:l1,locality:l2})});
  let out=await res.json().catch(()=>({}));
- if(!res.ok){ alert('Save failed: '+(out.message||out.error||JSON.stringify(out))); return; }
+ if(!res.ok){ showToast('Save failed: '+(out.message||out.error||''),true); return; }
  await new Promise(r=>setTimeout(r,300));
- renderAddress();
+ renderAddress(); showToast('Address saved');
 }
 
-// ===== ONLY THIS PART IS NEW - SINGLE SAVE LOGIC =====
 function fillEditProfile(){
   document.getElementById('editName').value=currentUser.name||'';
   document.getElementById('editMobile').value=currentUser.mobile||currentUser.phone||'';
@@ -324,13 +308,8 @@ function fillEditProfile(){
   let circle=document.getElementById('editPicon');
   let savedPhoto=localStorage.getItem('rekavo_profile_photo');
   if(savedPhoto){circle.innerHTML=`<img src="${savedPhoto}">`;}else{circle.innerText=getInitials(currentUser.name);}
-  // reset otp ui
-  let otpBox=document.getElementById('otpBox');
-  if(otpBox) otpBox.classList.add('hidden');
-  let otpInput=document.getElementById('editOtp');
-  if(otpInput) otpInput.value='';
-  let msg=document.getElementById('emailMsg');
-  if(msg) msg.innerText='';
+  document.getElementById('otpBox').classList.add('hidden');
+  document.getElementById('editOtp').value='';
   let btn=document.getElementById('btnSaveProfile');
   if(btn){ btn.innerText='Save Profile'; btn.disabled=false; }
 }
@@ -342,56 +321,52 @@ async function handleSaveProfile(){
   let oldEmail=(currentUser.email||'').toLowerCase();
   let oldMobile=(currentUser.mobile||currentUser.phone||'').trim();
   let oldName=(currentUser.name||'').trim();
-  if(!newName){alert('Name required');return;}
-  if(newMobile &&!/^[6-9]\d{9}$/.test(newMobile)){ alert('Enter valid 10 digit mobile'); return; }
+  if(!newName){showToast('Name required',true);return;}
+  if(newMobile &&!/^[6-9]\d{9}$/.test(newMobile)){ showToast('Enter valid 10 digit mobile',true); return; }
+  if(newEmail &&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)){ showToast('Enter valid email',true); return; }
   pendingChanges={name:newName, mobile:newMobile, email:newEmail};
-
   let isEmailChanged=newEmail!==oldEmail;
   let isMobileChanged=newMobile!==oldMobile;
   let isNameChanged=newName!==oldName;
+  if(!isNameChanged &&!isEmailChanged &&!isMobileChanged){ showToast('No changes',true); return; }
 
-  if(!isNameChanged &&!isEmailChanged &&!isMobileChanged){ alert('No changes'); return; }
-
-  // CASE A: Only Name changed -> direct save
   if(isNameChanged &&!isEmailChanged &&!isMobileChanged){
     let btn=document.getElementById('btnSaveProfile'); btn.innerText='Saving...'; btn.disabled=true;
     try{
       let res=await fetch(`${API_BASE}/user/update-name`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:getUid(), name:newName})});
-      if(!res.ok) throw new Error('failed');
+      if(!res.ok) throw new Error();
       currentUser.name=newName; localStorage.setItem('rekavo_user',JSON.stringify(currentUser));
       document.getElementById('pName').innerText=newName;
       document.getElementById('pIcon').innerText=getInitials(newName);
-      alert('Name updated'); closePage('editprofile');
-    }catch(e){alert('Failed to update name');}
+      showToast('Name updated');
+      setTimeout(()=>closePage('editprofile'),800);
+    }catch(e){showToast('Failed to update name',true);}
     btn.innerText='Save Profile'; btn.disabled=false; return;
   }
 
-  // CASE B: Email or Mobile changed -> OTP to OLD email
   let btn=document.getElementById('btnSaveProfile'); btn.innerText='Sending OTP...'; btn.disabled=true;
   try{
     let res=await fetch(`${API_BASE}/profile/request-change`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:getUid(), old_email:oldEmail, new_email:newEmail, new_phone:newMobile})});
     let out=await res.json(); if(!res.ok) throw new Error(out.error||out.message||'Failed to send OTP');
     document.getElementById('otpSentTo').innerText=oldEmail;
     document.getElementById('otpBox').classList.remove('hidden');
-    document.getElementById('emailMsg').innerText='OTP sent to '+oldEmail;
+    showToast('OTP has been sent to your email');
     btn.innerText='Save Profile'; btn.disabled=false;
-  }catch(e){ alert(e.message); btn.innerText='Save Profile'; btn.disabled=false; }
+  }catch(e){ showToast(e.message,true); btn.innerText='Save Profile'; btn.disabled=false; }
 }
 
 async function verifyAndSave(){
   let otp=document.getElementById('editOtp').value.trim();
-  if(otp.length!=6){alert('Enter 6 digit OTP');return;}
+  if(otp.length!=6){showToast('Enter 6 digit OTP',true);return;}
   let btn=document.getElementById('btnVerify'); btn.innerText='Verifying...'; btn.disabled=true;
   try{
     let res=await fetch(`${API_BASE}/profile/verify-and-update`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:getUid(), old_email:currentUser.email.toLowerCase(), new_email:pendingChanges.email, new_phone:pendingChanges.mobile, name:pendingChanges.name, otp:otp})});
     let out=await res.json(); if(!res.ok) throw new Error(out.error||'Wrong OTP');
-    alert('Profile updated! Please login again');
-    logout();
-  }catch(e){ alert(e.message); }
+    showToast('Your profile updated successfully, please login again');
+    setTimeout(()=>logout(),1200);
+  }catch(e){ showToast(e.message,true); }
   btn.innerText='Verify & Save'; btn.disabled=false;
 }
-
-// keep old name for compatibility
 function saveProfile(){ handleSaveProfile(); }
 
 function deletePhoto(){localStorage.removeItem('rekavo_profile_photo');document.getElementById('pIcon').innerText=getInitials(currentUser.name);let ep=document.getElementById('editPicon');if(ep)ep.innerText=getInitials(currentUser.name);}
