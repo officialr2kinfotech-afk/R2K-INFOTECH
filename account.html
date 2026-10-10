@@ -70,7 +70,9 @@ body{background:#f1f3f6;padding-bottom:70px}
       <div id="regStep3" class="hidden"><p class="success-msg show">OTP Verified! Create password</p><input id="createPass" class="input" type="password" placeholder="Create Password*"><p id="err-createPass" class="error-msg"></p><input id="confirmPass" class="input" type="password" placeholder="Confirm Password*"><p id="err-confirmPass" class="error-msg"></p><p id="success-regFinal" class="success-msg"></p><button id="createAccBtn" class="btn btn-green" onclick="createAccount()">Create Account</button></div>
     </div>
     <div id="forgotForm" class="hidden">
-      <input id="forgotEmail" class="input" placeholder="Enter Registered Email*"><p id="err-forgotEmail" class="error-msg"></p><p id="success-forgot1" class="success-msg"></p><button id="sendOtpBtn" class="btn btn-blue" onclick="sendForgotOtp()">Send OTP</button>
+      <div id="forgotInitial">
+        <input id="forgotEmail" class="input" placeholder="Enter Registered Email*"><p id="err-forgotEmail" class="error-msg"></p><p id="success-forgot1" class="success-msg"></p><button id="sendOtpBtn" class="btn btn-blue" onclick="sendForgotOtp()">Send OTP</button>
+      </div>
       <div id="forgotOtpBox" class="otp-box hidden" style="display:none"><p id="forgotOtpInfo" class="success-msg show"></p><input id="forgotOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6"><p id="err-forgotOtp" class="error-msg"></p><div style="display:flex;justify-content:space-between;align-items:center;margin:10px 2px 8px 2px"><span id="forgotTimerText" style="font-size:12px;color:#666;font-weight:700">Resend in 60s</span><span id="resendForgotLink" class="resend-link disabled" onclick="resendForgotOtp()">Resend OTP</span></div><button id="validateForgotBtn" class="btn btn-orange" onclick="verifyForgotOtp()">Validate OTP</button></div>
       <div id="newPassBox" class="hidden" style="margin-top:12px"><input id="forgotPass" class="input" type="password" placeholder="New Password*"><p id="err-forgotPass" class="error-msg"></p><input id="forgotPass2" class="input" type="password" placeholder="Confirm New Password*"><p id="err-forgotPass2" class="error-msg"></p><p id="success-forgotFinal" class="success-msg"></p><button id="savePassBtn" class="btn btn-green" onclick="saveNewPassword()">Save Password</button></div>
     </div>
@@ -85,6 +87,14 @@ function switchTab(t){
   document.getElementById('loginForm').classList.toggle('hidden',t!=='login');
   document.getElementById('registerForm').classList.toggle('hidden',t!=='register');
   document.getElementById('forgotForm').classList.toggle('hidden',t!=='forgot');
+  if(t==='forgot'){
+    document.getElementById('forgotInitial').classList.remove('hidden');
+    document.getElementById('forgotEmail').classList.remove('hidden');
+    document.getElementById('sendOtpBtn').classList.remove('hidden');
+    document.getElementById('forgotOtpBox').classList.add('hidden');
+    document.getElementById('forgotOtpBox').style.display='none';
+    document.getElementById('newPassBox').classList.add('hidden');
+  }
   let loginTab=document.getElementById('loginTab'), registerTab=document.getElementById('registerTab');
   if(t==='login'){loginTab.classList.add('active');loginTab.classList.remove('inactive');registerTab.classList.add('inactive');registerTab.classList.remove('active');}
   else if(t==='register'){registerTab.classList.add('active');registerTab.classList.remove('inactive');loginTab.classList.add('inactive');loginTab.classList.remove('active');}
@@ -183,7 +193,13 @@ async function sendForgotOtp(){
  if(!forgotKey){showErr('err-forgotEmail','Please enter your registered Email');return;}
  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(forgotKey)){showErr('err-forgotEmail','Please enter a valid Email Address');return;}
  let btn=document.getElementById('sendOtpBtn');btn.innerText='Sending...';btn.disabled=true;
- try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey})});let data=await res.json();if(res.ok){showSuccess('success-forgot1',`OTP sent to ${forgotKey}`);document.getElementById('forgotOtpInfo').innerText=`OTP sent to ${forgotKey}`;document.getElementById('forgotOtpBox').style.display='block';document.getElementById('forgotOtpBox').classList.remove('hidden');document.getElementById('sendOtpBtn').classList.add('hidden');startForgotTimer();}else{showErr('err-forgotEmail',data.error||'Email not found');}}catch(e){showErr('err-forgotEmail','Network error');}
+ try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey})});let data=await res.json();if(res.ok){
+   document.getElementById('forgotInitial').classList.add('hidden');
+   document.getElementById('forgotOtpInfo').innerText=`OTP sent to ${forgotKey}`;
+   document.getElementById('forgotOtpBox').style.display='block';
+   document.getElementById('forgotOtpBox').classList.remove('hidden');
+   startForgotTimer();
+ }else{showErr('err-forgotEmail',data.error||'Email not found');}}catch(e){showErr('err-forgotEmail','Network error');}
  btn.innerText='Send OTP';btn.disabled=false;
 }
 async function resendForgotOtp(){
@@ -191,7 +207,7 @@ async function resendForgotOtp(){
  if(link.classList.contains('disabled')) return;
  clearErrs(); if(!forgotKey) return;
  link.innerText='Sending...';
- try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey})});let data=await res.json();if(res.ok){showSuccess('success-forgot1',`OTP resent to ${forgotKey}`);document.getElementById('forgotOtpInfo').innerText=`OTP resent to ${forgotKey}`;startForgotTimer();}else{showErr('err-forgotOtp',data.error||'Failed to resend');}}catch(e){showErr('err-forgotOtp','Network error');}
+ try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey})});let data=await res.json();if(res.ok){document.getElementById('forgotOtpInfo').innerText=`OTP resent to ${forgotKey}`;startForgotTimer();}else{showErr('err-forgotOtp',data.error||'Failed to resend');}}catch(e){showErr('err-forgotOtp','Network error');}
  link.innerText='Resend OTP';
 }
 async function verifyForgotOtp(){
