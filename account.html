@@ -88,13 +88,27 @@ function switchTab(t){
   document.getElementById('registerForm').classList.toggle('hidden',t!=='register');
   document.getElementById('forgotForm').classList.toggle('hidden',t!=='forgot');
   if(t==='forgot'){
-    document.getElementById('forgotInitial').classList.remove('hidden');
-    document.getElementById('forgotEmail').classList.remove('hidden');
-    document.getElementById('sendOtpBtn').classList.remove('hidden');
-    document.getElementById('forgotOtpBox').classList.add('hidden');
-    document.getElementById('forgotOtpBox').style.display='none';
-    document.getElementById('newPassBox').classList.add('hidden');
+    let stage = sessionStorage.getItem('rekavo_forgot_stage');
+    if(stage === 'otp'){
+      document.getElementById('forgotInitial').classList.add('hidden');
+      document.getElementById('forgotOtpBox').style.display='block';
+      document.getElementById('forgotOtpBox').classList.remove('hidden');
+      document.getElementById('newPassBox').classList.add('hidden');
+    } else if(stage === 'newpass'){
+      document.getElementById('forgotInitial').classList.add('hidden');
+      document.getElementById('forgotOtpBox').style.display='none';
+      document.getElementById('forgotOtpBox').classList.add('hidden');
+      document.getElementById('newPassBox').classList.remove('hidden');
+    } else {
+      document.getElementById('forgotInitial').classList.remove('hidden');
+      document.getElementById('forgotEmail').classList.remove('hidden');
+      document.getElementById('sendOtpBtn').classList.remove('hidden');
+      document.getElementById('forgotOtpBox').classList.add('hidden');
+      document.getElementById('forgotOtpBox').style.display='none';
+      document.getElementById('newPassBox').classList.add('hidden');
+    }
   }
+  try{ sessionStorage.setItem('rekavo_tab', t); }catch(e){}
   let loginTab=document.getElementById('loginTab'), registerTab=document.getElementById('registerTab');
   if(t==='login'){loginTab.classList.add('active');loginTab.classList.remove('inactive');registerTab.classList.add('inactive');registerTab.classList.remove('active');}
   else if(t==='register'){registerTab.classList.add('active');registerTab.classList.remove('inactive');loginTab.classList.add('inactive');loginTab.classList.remove('active');}
@@ -199,6 +213,11 @@ async function sendForgotOtp(){
    document.getElementById('forgotOtpBox').style.display='block';
    document.getElementById('forgotOtpBox').classList.remove('hidden');
    startForgotTimer();
+   try{
+     sessionStorage.setItem('rekavo_tab', 'forgot');
+     sessionStorage.setItem('rekavo_forgot_stage', 'otp');
+     sessionStorage.setItem('rekavo_forgot_email', forgotKey);
+   }catch(e){}
  }else{showErr('err-forgotEmail',data.error||'Email not found');}}catch(e){showErr('err-forgotEmail','Network error');}
  btn.innerText='Send OTP';btn.disabled=false;
 }
@@ -215,7 +234,7 @@ async function verifyForgotOtp(){
  if(!otp){showErr('err-forgotOtp','Please enter OTP');return;}
  if(otp.length!==6){showErr('err-forgotOtp','Please enter valid 6-digit OTP');return;}
  let btn=document.getElementById('validateForgotBtn');btn.innerText='Verifying...';btn.disabled=true;
- try{let res=await fetch(`${API_BASE}/check-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp})});let data=await res.json();if(res.ok&&data.success){window._forgotOtp=otp;forgotOtpVerified=true;document.getElementById('forgotOtpBox').style.display='none';document.getElementById('newPassBox').classList.remove('hidden');clearInterval(forgotTimer);}else{showErr('err-forgotOtp',data.error||'Invalid OTP');}}catch(e){showErr('err-forgotOtp','Network error');}
+ try{let res=await fetch(`${API_BASE}/check-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp})});let data=await res.json();if(res.ok&&data.success){window._forgotOtp=otp;forgotOtpVerified=true;document.getElementById('forgotOtpBox').style.display='none';document.getElementById('newPassBox').classList.remove('hidden');clearInterval(forgotTimer); try{ sessionStorage.setItem('rekavo_forgot_stage', 'newpass'); }catch(e){}}else{showErr('err-forgotOtp',data.error||'Invalid OTP');}}catch(e){showErr('err-forgotOtp','Network error');}
  btn.innerText='Validate OTP';btn.disabled=false;
 }
 async function saveNewPassword(){
@@ -225,7 +244,7 @@ async function saveNewPassword(){
  if(!p2){showErr('err-forgotPass2','Please confirm new Password'); ok=false;}else if(p1!==p2){showErr('err-forgotPass2','Password does not match'); ok=false;}
  if(!ok) return;
  let btn=document.getElementById('savePassBtn');btn.innerText='Saving...';btn.disabled=true;
- try{let res=await fetch(`${API_BASE}/reset-password`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp:window._forgotOtp,new_password:p1})});let data=await res.json();if(res.ok){showSuccess('success-forgotFinal','Password updated successfully!');setTimeout(()=>switchTab('login'),1000);}else{showErr('err-forgotPass2',data.error||'Failed to update password');}}catch(e){showErr('err-forgotPass2','Network error');}
+ try{let res=await fetch(`${API_BASE}/reset-password`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp:window._forgotOtp,new_password:p1})});let data=await res.json();if(res.ok){showSuccess('success-forgotFinal','Password updated successfully!'); try{ sessionStorage.removeItem('rekavo_tab'); sessionStorage.removeItem('rekavo_forgot_stage'); sessionStorage.removeItem('rekavo_forgot_email'); }catch(e){} setTimeout(()=>switchTab('login'),1000);}else{showErr('err-forgotPass2',data.error||'Failed to update password');}}catch(e){showErr('err-forgotPass2','Network error');}
  btn.innerText='Save Password';btn.disabled=false;
 }
 (function(){
@@ -246,6 +265,17 @@ async function saveNewPassword(){
     }
     let overlay = document.getElementById('overlay');
     if(overlay) overlay.classList.remove('hidden');
+    let savedTab = sessionStorage.getItem('rekavo_tab');
+    if(savedTab){
+      switchTab(savedTab);
+      if(savedTab === 'forgot'){
+        let savedEmail = sessionStorage.getItem('rekavo_forgot_email');
+        if(savedEmail){
+          forgotKey = savedEmail;
+          document.getElementById('forgotOtpInfo').innerText=`OTP sent to ${savedEmail}`;
+        }
+      }
+    }
     let localCart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
     let cnt = localCart.reduce((s,i)=>s+(i.qty||1),0);
     let el = document.getElementById('cartCount');
