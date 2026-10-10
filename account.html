@@ -41,6 +41,10 @@ body{background:#f1f3f6;padding-bottom:70px}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:99}
 .bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
 .bottom-nav a.active{color:#2874f0}
+.resend-link{font-size:13px;color:#2874f0;font-weight:800;cursor:pointer;user-select:none}
+.resend-link.disabled{color:#9e9e9e;pointer-events:none;opacity:0.6}
+.resend-link.glow{animation:glowPulse 1.2s infinite alternate}
+@keyframes glowPulse{from{text-shadow:0 0 2px #2874f0}to{text-shadow:0 0 10px #2874f0, 0 0 18px #2874f0}}
 </style>
 </head>
 <body>
@@ -62,12 +66,12 @@ body{background:#f1f3f6;padding-bottom:70px}
     </div>
     <div id="registerForm" class="hidden">
       <div id="regStep1"><input id="regName" class="input" placeholder="Full Name*"><p id="err-regName" class="error-msg"></p><input id="regMobile" class="input" placeholder="Mobile Number* (10 digits)" maxlength="10"><p id="err-regMobile" class="error-msg"></p><input id="regEmail" class="input" placeholder="Email Address*"><p id="err-regEmail" class="error-msg"></p><button id="sendRegBtn" class="btn btn-blue" onclick="sendRegOtp()">Send OTP</button></div>
-      <div id="regStep2" class="hidden"><div class="otp-box"><p id="otpSentTo" class="success-msg show" style="margin-bottom:10px"></p><input id="regOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6"><p id="err-regOtp" class="error-msg"></p><button id="validateRegBtn" class="btn btn-orange" onclick="validateRegOtp()">Validate OTP</button></div></div>
+      <div id="regStep2" class="hidden"><div class="otp-box"><p id="otpSentTo" class="success-msg show" style="margin-bottom:10px"></p><input id="regOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6"><p id="err-regOtp" class="error-msg"></p><div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0"><span id="regTimerText" style="font-size:12px;color:#666;font-weight:700">Resend in 60s</span><span id="resendRegLink" class="resend-link disabled" onclick="resendRegOtp()">Resend OTP</span></div><button id="validateRegBtn" class="btn btn-orange" onclick="validateRegOtp()">Validate OTP</button></div></div>
       <div id="regStep3" class="hidden"><p class="success-msg show">OTP Verified! Create password</p><input id="createPass" class="input" type="password" placeholder="Create Password*"><p id="err-createPass" class="error-msg"></p><input id="confirmPass" class="input" type="password" placeholder="Confirm Password*"><p id="err-confirmPass" class="error-msg"></p><p id="success-regFinal" class="success-msg"></p><button id="createAccBtn" class="btn btn-green" onclick="createAccount()">Create Account</button></div>
     </div>
     <div id="forgotForm" class="hidden">
       <input id="forgotEmail" class="input" placeholder="Enter Registered Email*"><p id="err-forgotEmail" class="error-msg"></p><p id="success-forgot1" class="success-msg"></p><button id="sendOtpBtn" class="btn btn-blue" onclick="sendForgotOtp()">Send OTP</button>
-      <div id="forgotOtpBox" class="otp-box hidden" style="display:none"><p id="forgotOtpInfo" class="success-msg show"></p><input id="forgotOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6"><p id="err-forgotOtp" class="error-msg"></p><button id="validateForgotBtn" class="btn btn-orange" onclick="verifyForgotOtp()">Validate OTP</button></div>
+      <div id="forgotOtpBox" class="otp-box hidden" style="display:none"><p id="forgotOtpInfo" class="success-msg show"></p><input id="forgotOtp" class="input" placeholder="Enter 6-digit OTP*" maxlength="6"><p id="err-forgotOtp" class="error-msg"></p><div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0"><span id="forgotTimerText" style="font-size:12px;color:#666;font-weight:700">Resend in 60s</span><span id="resendForgotLink" class="resend-link disabled" onclick="resendForgotOtp()">Resend OTP</span></div><button id="validateForgotBtn" class="btn btn-orange" onclick="verifyForgotOtp()">Validate OTP</button></div>
       <div id="newPassBox" class="hidden" style="margin-top:12px"><input id="forgotPass" class="input" type="password" placeholder="New Password*"><p id="err-forgotPass" class="error-msg"></p><input id="forgotPass2" class="input" type="password" placeholder="Confirm New Password*"><p id="err-forgotPass2" class="error-msg"></p><p id="success-forgotFinal" class="success-msg"></p><button id="savePassBtn" class="btn btn-green" onclick="saveNewPassword()">Save Password</button></div>
     </div>
   </div>
@@ -76,6 +80,7 @@ body{background:#f1f3f6;padding-bottom:70px}
 <script>
 const API_BASE = "https://rekavo-backend.vercel.app";
 let regData={}, forgotKey="", forgotOtpVerified=false;
+let regTimer=null, forgotTimer=null;
 function switchTab(t){
   document.getElementById('loginForm').classList.toggle('hidden',t!=='login');
   document.getElementById('registerForm').classList.toggle('hidden',t!=='register');
@@ -91,6 +96,44 @@ function hideErr(id){let el=document.getElementById(id);let input=document.getEl
 function showSuccess(id,msg){let el=document.getElementById(id);el.innerText=msg;el.classList.add('show');}
 function clearErrs(){document.querySelectorAll('.error-msg').forEach(e=>e.classList.remove('show'));document.querySelectorAll('.input').forEach(e=>e.classList.remove('error'));document.querySelectorAll('.success-msg').forEach(e=>{if(!['otpSentTo','forgotOtpInfo'].includes(e.id)) e.classList.remove('show')})}
 document.querySelectorAll('.input').forEach(inp=>{inp.addEventListener('input',()=>{let errId='err-'+inp.id;hideErr(errId);});});
+function startRegTimer(){
+ let sec=60;
+ let timerText=document.getElementById('regTimerText');
+ let link=document.getElementById('resendRegLink');
+ if(!timerText||!link) return;
+ clearInterval(regTimer);
+ link.classList.add('disabled'); link.classList.remove('glow');
+ timerText.innerText=`Resend in ${sec}s`;
+ regTimer=setInterval(()=>{
+   sec--;
+   timerText.innerText=`Resend in ${sec}s`;
+   if(sec<=0){
+     clearInterval(regTimer);
+     timerText.innerText=`Didn't get OTP?`;
+     link.classList.remove('disabled');
+     link.classList.add('glow');
+   }
+ },1000);
+}
+function startForgotTimer(){
+ let sec=60;
+ let timerText=document.getElementById('forgotTimerText');
+ let link=document.getElementById('resendForgotLink');
+ if(!timerText||!link) return;
+ clearInterval(forgotTimer);
+ link.classList.add('disabled'); link.classList.remove('glow');
+ timerText.innerText=`Resend in ${sec}s`;
+ forgotTimer=setInterval(()=>{
+   sec--;
+   timerText.innerText=`Resend in ${sec}s`;
+   if(sec<=0){
+     clearInterval(forgotTimer);
+     timerText.innerText=`Didn't get OTP?`;
+     link.classList.remove('disabled');
+     link.classList.add('glow');
+   }
+ },1000);
+}
 async function sendRegOtp(){
  clearErrs();let name=document.getElementById('regName').value.trim();let mobile=document.getElementById('regMobile').value.trim();let email=document.getElementById('regEmail').value.trim().toLowerCase();let ok=true;
  if(name.length<2){showErr('err-regName','Please enter your Full Name'); ok=false;}
@@ -98,15 +141,23 @@ async function sendRegOtp(){
  if(!email){showErr('err-regEmail','Please enter your Email Address'); ok=false;}else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showErr('err-regEmail','Please enter a valid Email Address'); ok=false;}
  if(!ok) return;
  regData={name,mobile,email}; let btn=document.getElementById('sendRegBtn');btn.innerText='Sending...';btn.disabled=true;
- try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});let data=await res.json();if(res.ok){document.getElementById('otpSentTo').innerText=`OTP sent to ${email}`;document.getElementById('regStep1').classList.add('hidden');document.getElementById('regStep2').classList.remove('hidden');}else{showErr('err-regEmail',data.error||'Email already registered');}}catch(e){showErr('err-regEmail','Network error, please try again');}
+ try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});let data=await res.json();if(res.ok){document.getElementById('otpSentTo').innerText=`OTP sent to ${email}`;document.getElementById('regStep1').classList.add('hidden');document.getElementById('regStep2').classList.remove('hidden');startRegTimer();}else{showErr('err-regEmail',data.error||'Email already registered');}}catch(e){showErr('err-regEmail','Network error, please try again');}
  btn.innerText='Send OTP';btn.disabled=false;
+}
+async function resendRegOtp(){
+ let link=document.getElementById('resendRegLink');
+ if(link.classList.contains('disabled')) return;
+ clearErrs(); let email=regData.email; if(!email) return;
+ link.innerText='Sending...';
+ try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});let data=await res.json();if(res.ok){document.getElementById('otpSentTo').innerText=`OTP resent to ${email}`;startRegTimer();}else{showErr('err-regOtp',data.error||'Failed to resend');}}catch(e){showErr('err-regOtp','Network error');}
+ link.innerText='Resend OTP';
 }
 async function validateRegOtp(){
  clearErrs(); let otp=document.getElementById('regOtp').value.trim();
  if(!otp){showErr('err-regOtp','Please enter OTP');return;}
  if(otp.length!==6){showErr('err-regOtp','Please enter valid 6-digit OTP');return;}
  let btn=document.getElementById('validateRegBtn');btn.innerText='Verifying...';btn.disabled=true;
- try{let res=await fetch(`${API_BASE}/check-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:regData.email,otp})});let data=await res.json();if(res.ok&&data.success){regData.otpVerified=true;regData.tempOtp=otp;document.getElementById('regStep2').classList.add('hidden');document.getElementById('regStep3').classList.remove('hidden');}else{showErr('err-regOtp',data.error||'Invalid OTP, please try again');}}catch(e){showErr('err-regOtp','Network error');}
+ try{let res=await fetch(`${API_BASE}/check-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:regData.email,otp})});let data=await res.json();if(res.ok&&data.success){regData.otpVerified=true;regData.tempOtp=otp;document.getElementById('regStep2').classList.add('hidden');document.getElementById('regStep3').classList.remove('hidden');clearInterval(regTimer);}else{showErr('err-regOtp',data.error||'Invalid OTP, please try again');}}catch(e){showErr('err-regOtp','Network error');}
  btn.innerText='Validate OTP';btn.disabled=false;
 }
 async function createAccount(){
@@ -132,15 +183,23 @@ async function sendForgotOtp(){
  if(!forgotKey){showErr('err-forgotEmail','Please enter your registered Email');return;}
  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(forgotKey)){showErr('err-forgotEmail','Please enter a valid Email Address');return;}
  let btn=document.getElementById('sendOtpBtn');btn.innerText='Sending...';btn.disabled=true;
- try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey})});let data=await res.json();if(res.ok){showSuccess('success-forgot1',`OTP sent to ${forgotKey}`);document.getElementById('forgotOtpInfo').innerText=`OTP sent to ${forgotKey}`;document.getElementById('forgotOtpBox').style.display='block';document.getElementById('forgotOtpBox').classList.remove('hidden');}else{showErr('err-forgotEmail',data.error||'Email not found');}}catch(e){showErr('err-forgotEmail','Network error');}
+ try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey})});let data=await res.json();if(res.ok){showSuccess('success-forgot1',`OTP sent to ${forgotKey}`);document.getElementById('forgotOtpInfo').innerText=`OTP sent to ${forgotKey}`;document.getElementById('forgotOtpBox').style.display='block';document.getElementById('forgotOtpBox').classList.remove('hidden');startForgotTimer();}else{showErr('err-forgotEmail',data.error||'Email not found');}}catch(e){showErr('err-forgotEmail','Network error');}
  btn.innerText='Resend OTP';btn.disabled=false;
+}
+async function resendForgotOtp(){
+ let link=document.getElementById('resendForgotLink');
+ if(link.classList.contains('disabled')) return;
+ clearErrs(); if(!forgotKey) return;
+ link.innerText='Sending...';
+ try{let res=await fetch(`${API_BASE}/send-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey})});let data=await res.json();if(res.ok){showSuccess('success-forgot1',`OTP resent to ${forgotKey}`);document.getElementById('forgotOtpInfo').innerText=`OTP resent to ${forgotKey}`;startForgotTimer();}else{showErr('err-forgotOtp',data.error||'Failed to resend');}}catch(e){showErr('err-forgotOtp','Network error');}
+ link.innerText='Resend OTP';
 }
 async function verifyForgotOtp(){
  clearErrs(); let otp=document.getElementById('forgotOtp').value.trim();
  if(!otp){showErr('err-forgotOtp','Please enter OTP');return;}
  if(otp.length!==6){showErr('err-forgotOtp','Please enter valid 6-digit OTP');return;}
  let btn=document.getElementById('validateForgotBtn');btn.innerText='Verifying...';btn.disabled=true;
- try{let res=await fetch(`${API_BASE}/check-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp})});let data=await res.json();if(res.ok&&data.success){window._forgotOtp=otp;forgotOtpVerified=true;document.getElementById('forgotOtpBox').style.display='none';document.getElementById('newPassBox').classList.remove('hidden');}else{showErr('err-forgotOtp',data.error||'Invalid OTP');}}catch(e){showErr('err-forgotOtp','Network error');}
+ try{let res=await fetch(`${API_BASE}/check-otp`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:forgotKey,otp})});let data=await res.json();if(res.ok&&data.success){window._forgotOtp=otp;forgotOtpVerified=true;document.getElementById('forgotOtpBox').style.display='none';document.getElementById('newPassBox').classList.remove('hidden');clearInterval(forgotTimer);}else{showErr('err-forgotOtp',data.error||'Invalid OTP');}}catch(e){showErr('err-forgotOtp','Network error');}
  btn.innerText='Validate OTP';btn.disabled=false;
 }
 async function saveNewPassword(){
