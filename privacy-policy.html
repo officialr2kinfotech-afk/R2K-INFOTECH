@@ -3,149 +3,163 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Privacy Policy | REKAVO - Secure Shopping & Seller Platform</title>
-<meta name="description" content="REKAVO Privacy Policy - How we collect, use and protect your data as per DPDP Act 2023">
+<title>Privacy Policy | REKAVO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter', -apple-system, sans-serif; background:#f8f9ff; color:#1a1a2e; line-height:1.8}
-.header{background:linear-gradient(135deg,#0f0c29,#302b63,#24243e); color:#fff; padding:60px 20px; text-align:center}
-.header h1{font-size:36px; font-weight:700; letter-spacing:-0.5px}
+body{font-family:'Inter', sans-serif; background:#f8f9ff; color:#1a1a2e; line-height:1.8}
+.header{background:linear-gradient(135deg,#0f0c29,#302b63,#24243e); color:#fff; padding:70px 20px 50px; text-align:center; position:relative}
+.header h1{font-size:36px; font-weight:700}
 .header p{opacity:0.8; margin-top:10px; font-size:15px}
+
+/* Language Button CSS - Top Right */
+.lang-wrap{position:absolute; top:18px; right:18px; z-index:100}
+.lang-btn{background:#fff; color:#0f0c29; border:none; padding:8px 14px; border-radius:100px; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow:0 4px 15px rgba(0,0,0,0.2)}
+.lang-list{position:absolute; top:42px; right:0; background:#fff; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.15); overflow:hidden; width:160px; display:none; border:1px solid #e2e8f0}
+.lang-list.show{display:block}
+.lang-list div{padding:10px 14px; font-size:13px; color:#1a1a2e; cursor:pointer; font-weight:500}
+.lang-list div:hover{background:#f1f5f9}
+.lang-list div.active{background:#eef2ff; color:#4338ca}
+
 .container{max-width:960px; margin:-30px auto 0; background:#fff; border-radius:20px; box-shadow:0 20px 60px rgba(0,0,0,0.1); overflow:hidden}
 .content{padding:40px}
 .badge{display:inline-block; background:#eef2ff; color:#4338ca; padding:6px 14px; border-radius:100px; font-size:12px; font-weight:600; margin-bottom:20px}
 h2{font-size:21px; margin:40px 0 15px; color:#0f0c29; display:flex; align-items:center; gap:10px}
-h2 span.num{background:#0f0c29; color:#fff; width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; border-radius:8px; font-size:14px}
+h2 span.num{background:#0f0c29; color:#fff; width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; border-radius:8px; font-size:14px; flex-shrink:0}
 p{margin-bottom:14px; font-size:15px; color:#334155}
 ul{margin:10px 0 20px 20px}
 li{margin-bottom:10px; font-size:15px; color:#334155}
 .highlight{background:#fef08a; border:1px dashed #ca8a04; padding:2px 8px; border-radius:6px; font-weight:700; color:#713f12}
-.box{background:linear-gradient(135deg,#f8fafc,#f1f5f9); border:1px solid #e2e8f0; border-left:4px solid #4338ca; padding:20px; border-radius:12px; margin:20px 0}
+.box{background:linear-gradient(135deg,#f8fafc,#f1f5f9); border:1px solid #e2e8f0; border-left:4px solid #4338ca; padding:20px; border-radius:12px; margin:20px 0; word-break:break-word}
 .secure-box{background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:18px; margin:20px 0; display:flex; gap:12px}
-.secure-box .icon{font-size:22px}
-.table{width:100%; border-collapse:collapse; margin:20px 0; border-radius:10px; overflow:hidden; box-shadow:0 0 0 1px #e2e8f0}
-.table th{background:#0f0c29; color:#fff; padding:12px; text-align:left; font-size:13px; font-weight:600}
-.table td{padding:12px; font-size:14px; border-bottom:1px solid #f1f5f9}
+
+/* TABLE FIX - Ab nahi katega */
+.table-wrap{width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; margin:20px 0; border-radius:10px; border:1px solid #e2e8f0}
+.table{width:100%; min-width:600px; border-collapse:collapse;}
+.table th{background:#0f0c29; color:#fff; padding:12px; text-align:left; font-size:13px; font-weight:600; white-space:nowrap}
+.table td{padding:12px; font-size:14px; border-bottom:1px solid #f1f5f9; vertical-align:top}
 .footer{text-align:center; padding:30px; background:#f8fafc; border-top:1px solid #eef2ff; font-size:12px; color:#94a3b8}
-@media(max-width:600px){.content{padding:24px}.header h1{font-size:28px}}
+@media(max-width:600px){.content{padding:20px}.header h1{font-size:26px}.lang-wrap{top:12px; right:12px}}
 </style>
 </head>
 <body>
 
 <div class="header">
-<h1>Privacy Policy</h1>
-<p>Your Trust is Our Biggest Asset | REKAVO is 100% Secure & Encrypted</p>
-<p style="margin-top:15px; font-size:13px;">Effective Date: 10 October 2026 | Last Updated: 10 October 2026 | Version 2.0</p>
+  <div class="lang-wrap">
+    <button class="lang-btn" id="langBtn">🌐 <span id="currLang">English</span> ▼</button>
+    <div class="lang-list" id="langList">
+      <div data-lang="en" class="active">English</div>
+      <div data-lang="hi">हिन्दी - Hindi</div>
+      <div data-lang="mr">मराठी - Marathi</div>
+      <div data-lang="pa">ਪੰਜਾਬੀ - Punjabi</div>
+      <div data-lang="ml">മലയാളം - Malayalam</div>
+      <div data-lang="te">తెలుగు - Telugu</div>
+      <div data-lang="ta">தமிழ் - Tamil</div>
+    </div>
+  </div>
+<h1 id="t-title">Privacy Policy</h1>
+<p id="t-subtitle">Your Trust is Our Biggest Asset | REKAVO is 100% Secure & Encrypted</p>
+<p style="margin-top:15px; font-size:13px;" id="t-date">Effective Date: 10 October 2026 | Last Updated: 10 October 2026</p>
 </div>
 
 <div class="container">
 <div class="content">
 
-<div class="badge">🔒 COMPLIANT WITH DPDP ACT 2023 + IT RULES 2021 + GDPR STANDARDS</div>
+<div class="badge" id="t-badge">🔒 COMPLIANT WITH DPDP ACT 2023 + IT RULES 2021 + GDPR STANDARDS</div>
 
-<p>Welcome to <b>REKAVO</b>. This Privacy Policy is published by <span class="highlight">[Legal Entity Name - PUCHNA HAI: Company/Firm ka naam?]</span> ("Company", "We", "Us", "REKAVO") and governs your use of our website <b>https://rekavo.com</b>, mobile application, Seller Panel, POS Billing System and all related services (collectively "Platform").</p>
+<p id="t-intro">Welcome to <b>REKAVO</b>. This Privacy Policy is published by <span class="highlight">[Legal Entity Name - PUCHNA HAI]</span> ("Company", "We", "Us", "REKAVO") and governs your use of our website <b>https://rekavo.com</b>, mobile application, Seller Panel, POS Billing System and all related services.</p>
 
 <div class="secure-box">
-<div class="icon">🛡️</div>
-<div><b>Our Promise:</b> We NEVER sell your data. We use bank-level 256-bit SSL encryption. Your payment data is never stored on REKAVO servers.</div>
+<div>🛡️</div>
+<div id="t-promise"><b>Our Promise:</b> We NEVER sell your data. We use bank-level 256-bit SSL encryption. Your payment data is never stored on REKAVO servers.</div>
 </div>
 
-<h2><span class="num">1</span> Information We Collect</h2>
-<p>We collect only what is necessary to run your store and deliver orders. This is better than Flipkart's over-collection model.</p>
+<h2><span class="num">1</span> <span id="t-h1">Information We Collect</span></h2>
 
+<!-- TABLE FIXED WRAP -->
+<div class="table-wrap">
 <table class="table">
-<tr><th>Type</th><th>What We Collect</th><th>Why?</th></tr>
-<tr><td><b>Personal</b></td><td>Name, Mobile, Email, Shipping Address, Pincode</td><td>To deliver order</td></tr>
-<tr><td><b>Seller KYC</b></td><td>GSTIN, PAN, Aadhaar (masked), Shop Photos</td><td>To verify genuine seller</td></tr>
-<tr><td><b>Order & Stock</b></td><td>Product Name, QTY, Amount, Coupon Code, Purchase Price, Sale Price</td><td>For auto stock-cut & CA report</td></tr>
-<tr><td><b>Payment</b></td><td>We store ONLY Transaction ID, Status, Last 4 digits. Full Card/UPI is processed by <span class="highlight">[PUCHNA HAI: Payment Gateway? Razorpay/PhonePe?]</span></td><td>For refund & invoice</td></tr>
-<tr><td><b>Technical</b></td><td>IP, Device ID, Browser, Cookies, Location (with permission)</td><td>For security & fraud prevention</td></tr>
+<tr><th id="th-type">Type</th><th id="th-what">What We Collect</th><th id="th-why">Why?</th></tr>
+<tr><td><b>Personal</b></td><td>Name, Mobile, Email, Address, Pincode</td><td id="td-why1">To deliver order</td></tr>
+<tr><td><b>Seller KYC</b></td><td>GSTIN, PAN, Shop Photos</td><td id="td-why2">To verify genuine seller</td></tr>
+<tr><td><b>Order & Stock</b></td><td>Product Name, QTY, Amount, Purchase Price</td><td id="td-why3">For auto stock-cut & CA report</td></tr>
+<tr><td><b>Payment</b></td><td>ONLY Transaction ID, Status, Last 4 digits. Full Card is processed by <span class="highlight">[PUCHNA HAI: Payment Gateway?]</span></td><td id="td-why4">For refund & invoice</td></tr>
+<tr><td><b>Technical</b></td><td>IP, Device ID, Browser, Cookies, Location</td><td id="td-why5">For security & fraud prevention</td></tr>
 </table>
+</div>
 
-<h2><span class="num">2</span> How We Use Your Data</h2>
-<ul>
+<h2><span class="num">2</span> <span id="t-h2">How We Use Your Data</span></h2>
+<ul id="t-use-list">
 <li>To process orders and automatically cut stock when you sell offline via REKAVO POS</li>
 <li>To generate GST Bills, Purchase/Sale Reports and Profit & Loss PDF for your CA</li>
 <li>To provide customer support, handle returns and resolve disputes</li>
-<li>To send order updates via WhatsApp/SMS/Email. Marketing messages only with your consent (you can opt-out anytime)</li>
-<li>To detect fraud, secure platform and comply with Indian laws</li>
-<li>To improve search results and show relevant products</li>
+<li>To send order updates via WhatsApp/SMS/Email. Marketing messages only with your consent</li>
 </ul>
 
-<h2><span class="num">3</span> How We Share Your Data - We Don't Sell</h2>
-<div class="box">
-<b>We NEVER sell, rent or trade your personal data.</b> We share only with trusted partners to run REKAVO:
-<br><br>
-<b>1. Logistics:</b> Delhivery, Ekart, Shiprocket, DTDC - Only Name, Phone, Address for delivery<br>
-<b>2. Payment Gateway:</b> <span class="highlight">[PUCHNA HAI: Gateway naam]</span> - To process payment<br>
-<b>3. Cloud & Communication:</b> AWS/Google Cloud for hosting, Fast2SMS/MSG91 for OTP<br>
-<b>4. Buyer-Seller:</b> Buyer's delivery address is shared with seller to dispatch<br>
-<b>5. Legal:</b> If required by Court, Police, GST Dept or Government of India
+<h2><span class="num">3</span> <span id="t-h3">How We Share Your Data - We Don't Sell</span></h2>
+<div class="box" id="t-share-box">
+<b>We NEVER sell, rent or trade your personal data.</b> We share only with trusted partners:<br><br>
+<b>1. Logistics:</b> Delhivery, Ekart, Shiprocket - Only Name, Phone, Address for delivery<br>
+<b>2. Payment Gateway:</b> <span class="highlight">[PUCHNA HAI: Gateway naam]</span><br>
+<b>3. Cloud & Communication:</b> AWS/Google Cloud for hosting<br>
+<b>4. Legal:</b> If required by Court, Police, GST Dept
 </div>
 
-<h2><span class="num">4</span> Cookies & Tracking Technologies</h2>
-<p>We use Cookies, Pixels and Local Storage to keep you logged in, remember your cart, and save your inventory. You can disable cookies in browser settings, but cart and login may not work. We also use essential cookies for security.</p>
+<h2><span class="num">4</span> <span id="t-h4">Your Rights - As per DPDP Act 2023</span></h2>
+<p id="t-rights">You have Right to Access, Correct, Delete, Withdraw consent. To exercise rights, email: <span class="highlight">[PUCHNA HAI: Support Email?]</span></p>
 
-<h2><span class="num">5</span> Data Retention Policy</h2>
-<p>Your account data is kept till your account is active. GST Invoices, Bills and transaction logs are retained for <b>8 years</b> as mandatory under Indian Tax Laws (CGST Act). After that, data is anonymized or securely deleted from servers.</p>
+<h2><span class="num">5</span> <span id="t-h5">Data Security</span></h2>
+<p id="t-security">We use 256-bit SSL (HTTPS), AES-256 Encryption, 2FA for Seller Panel, Firewall, DDoS Protection. Servers hosted on secure AWS Mumbai region.</p>
 
-<h2><span class="num">6</span> Your Rights - As per DPDP Act 2023</h2>
-<p>This is where REKAVO is better than Amazon/Flipkart. You have full control:</p>
-<ul>
-<li><b>Right to Access:</b> Ask what data we have on you</li>
-<li><b>Right to Correction:</b> Correct wrong name, address, GSTIN</li>
-<li><b>Right to Erasure:</b> Delete account and request data deletion - email us</li>
-<li><b>Right to Withdraw:</b> Stop marketing emails/SMS anytime with 1 click</li>
-<li><b>Right to Nominate:</b> Nominate someone to manage data after you</li>
-<li><b>Right to Grievance Redressal:</b> Complain to our Grievance Officer</li>
-</ul>
-<p>To exercise rights, email: <span class="highlight">[PUCHNA HAI: Support Email? support@rekavo.com?]</span> - We will respond within 48 hours.</p>
-
-<h2><span class="num">7</span> Data Security - Bank Level</h2>
-<div class="secure-box">
-<div class="icon">🔐</div>
-<div>We use <b>256-bit SSL (HTTPS), AES-256 Database Encryption, 2FA for Seller Panel, Firewall, DDoS Protection and Restricted Employee Access</b>. Our servers are hosted on secure AWS Mumbai region. While we use best industry standards, no internet transmission is 100% secure, but we do our best efforts.</div>
-</div>
-
-<h2><span class="num">8</span> Data Breach Notification</h2>
-<p>In case of any data breach that may harm you, we will notify you and the Data Protection Board of India within 72 hours as required by DPDP Act 2023.</p>
-
-<h2><span class="num">9</span> Children's Privacy</h2>
-<p>REKAVO is not for children under 18. We do not knowingly collect data of minors. If you find such data, contact us to delete it.</p>
-
-<h2><span class="num">10</span> International Data Transfer</h2>
-<p>Your data is primarily stored in India (AWS Mumbai). Some technical data may be processed outside India by our service providers with same level of protection.</p>
-
-<h2><span class="num">11</span> Third-Party Links</h2>
-<p>Our Platform may contain links to Instagram, Facebook, Google Login. Their privacy policies apply when you click them. We are not responsible for them.</p>
-
-<h2><span class="num">12</span> Grievance Officer - Mandatory as per IT Rules 2021</h2>
+<h2><span class="num">6</span> <span id="t-h6">Grievance Officer - Mandatory as per IT Rules 2021</span></h2>
 <div class="box">
-<b>As per Information Technology Act 2000 and IT (Intermediary Guidelines) Rules 2021, Grievance Officer details:</b><br><br>
+<span id="t-grievance-label">As per IT Act 2000, Grievance Officer details:</span><br><br>
 Name: <span class="highlight">[PUCHNA HAI: Grievance Officer ka naam?]</span><br>
-Designation: Grievance & Nodal Officer<br>
-Email: <span class="highlight">[PUCHNA HAI: grievance@rekavo.com daalu?]</span><br>
-Address: <span class="highlight">[PUCHNA HAI: Full Office Address Mauganj wala?]</span><br>
-Phone: <span class="highlight">[PUCHNA HAI: Number de de]</span><br><br>
-We will acknowledge complaint within 24 hours and resolve within 15 days as per law. You can also appeal to Data Protection Board of India.
-</div>
-
-<h2><span class="num">13</span> Changes to Policy & Contact</h2>
-<p>We may update this policy to comply with new laws. We will notify you via email and update Effective Date on website. Continued use after update means you accept new policy.</p>
-<p><b>Contact:</b> For any privacy questions: Email - support@rekavo.com | Website - https://rekavo.com | Support Hours: 10AM-7PM IST</p>
-
-<div style="margin-top:40px; padding:20px; background:#0f0c29; color:#fff; border-radius:12px; text-align:center">
-<h3 style="color:#fff; margin-bottom:10px">REKAVO - Ek Dukan, Ek Hisaab, Ek App</h3>
-<p style="color:#a5b4fc; font-size:13px;">This document is legally vetted as per DPDP Act 2023. Tampering without legal advice not recommended.</p>
+Email: <span class="highlight">[PUCHNA HAI: grievance@rekavo.com?]</span><br>
+Address: <span class="highlight">[PUCHNA HAI: Full Office Address?]</span><br>
+Phone: <span class="highlight">[PUCHNA HAI: Number?]</span><br><br>
+<span id="t-grievance-time">We will acknowledge within 24 hours and resolve within 15 days.</span>
 </div>
 
 </div>
-<div class="footer">
-© 2026 REKAVO | <span class="highlight" style="background:transparent; border:none">[Company Legal Name]</span> | All Rights Reserved | Made in Mauganj, MP for Bharat
+<div class="footer">© 2026 REKAVO | Made in Mauganj, MP for Bharat</div>
 </div>
-</div>
+
+<script>
+// Language Dropdown Logic
+const btn = document.getElementById('langBtn');
+const list = document.getElementById('langList');
+const curr = document.getElementById('currLang');
+btn.onclick = () => list.classList.toggle('show');
+document.addEventListener('click', (e)=>{ if(!e.target.closest('.lang-wrap')) list.classList.remove('show') });
+
+const dict = {
+  hi: { "t-title":"गोपनीयता नीति", "t-subtitle":"आपका भरोसा हमारी सबसे बड़ी संपत्ति है | REKAVO 100% सुरक्षित है", "t-date":"प्रभावी तिथि: 10 अक्टूबर 2026", "t-badge":"🔒 DPDP अधिनियम 2023 + IT नियम 2021 के अनुपालन में", "t-intro":"REKAVO में आपका स्वागत है। यह गोपनीयता नीति <span class='highlight'>[कानूनी इकाई का नाम - PUCHNA HAI]</span> द्वारा प्रकाशित की गई है।", "t-promise":"<b>हमारा वादा:</b> हम आपका डेटा कभी नहीं बेचते। हम बैंक-स्तरीय 256-बिट SSL एन्क्रिप्शन का उपयोग करते हैं।", "t-h1":"हम कौन सी जानकारी एकत्र करते हैं", "th-type":"प्रकार", "th-what":"हम क्या एकत्र करते हैं", "th-why":"क्यों?", "t-h2":"हम आपके डेटा का उपयोग कैसे करते हैं", "t-h3":"हम आपका डेटा कैसे साझा करते हैं - हम बेचते नहीं", "t-h4":"आपके अधिकार - DPDP अधिनियम 2023 के अनुसार", "t-h5":"डेटा सुरक्षा", "t-h6":"शिकायत अधिकारी - IT नियम 2021 के अनुसार" },
+  mr: { "t-title":"गोपनीयता धोरण", "t-subtitle":"तुमचा विश्वास ही आमची सर्वात मोठी संपत्ती आहे | REKAVO 100% सुरक्षित आहे", "t-badge":"🔒 DPDP कायदा 2023 नुसार", "t-h1":"आम्ही कोणती माहिती गोळा करतो", "t-h2":"आम्ही तुमचा डेटा कसा वापरतो", "t-h3":"आम्ही डेटा कसा शेअर करतो - आम्ही विकत नाही", "t-h4":"तुमचे हक्क", "t-h5":"डेटा सुरक्षा", "t-h6":"तक्रार अधिकारी" },
+  pa: { "t-title":"ਗੋਪਨੀਯਤਾ ਨੀਤੀ", "t-subtitle":"ਤੁਹਾਡਾ ਭਰੋਸਾ ਸਾਡੀ ਸਭ ਤੋਂ ਵੱਡੀ ਸੰਪਤੀ ਹੈ | REKAVO 100% ਸੁਰੱਖਿਅਤ ਹੈ", "t-h1":"ਅਸੀਂ ਕਿਹੜੀ ਜਾਣਕਾਰੀ ਇਕੱਠੀ ਕਰਦੇ ਹਾਂ", "t-h2":"ਅਸੀਂ ਤੁਹਾਡੇ ਡੇਟਾ ਦੀ ਵਰਤੋਂ ਕਿਵੇਂ ਕਰਦੇ ਹਾਂ", "t-h3":"ਅਸੀਂ ਡੇਟਾ ਕਿਵੇਂ ਸਾਂਝਾ ਕਰਦੇ ਹਾਂ - ਅਸੀਂ ਵੇਚਦੇ ਨਹੀਂ", "t-h4":"ਤੁਹਾਡੇ ਅਧਿਕਾਰ", "t-h5":"ਡੇਟਾ ਸੁਰੱਖਿਆ", "t-h6":"ਸ਼ਿਕਾਇਤ ਅਫਸਰ" },
+  ml: { "t-title":"സ്വകാര്യതാ നയം", "t-subtitle":"നിങ്ങളുടെ വിശ്വാസമാണ് ഞങ്ങളുടെ ഏറ്റവും വലിയ ആസ്തി | REKAVO 100% സുരക്ഷിതമാണ്", "t-h1":"ഞങ്ങൾ ശേഖരിക്കുന്ന വിവരങ്ങൾ", "t-h2":"ഞങ്ങൾ നിങ്ങളുടെ ഡാറ്റ എങ്ങനെ ഉപയോഗിക്കുന്നു", "t-h3":"ഞങ്ങൾ ഡാറ്റ എങ്ങനെ പങ്കിടുന്നു - ഞങ്ങൾ വിൽക്കുന്നില്ല", "t-h4":"നിങ്ങളുടെ അവകാശങ്ങൾ", "t-h5":"ഡാറ്റ സുരക്ഷ", "t-h6":"പരാതി ഓഫീസർ" },
+  te: { "t-title":"గోప్యతా విధానం", "t-subtitle":"మీ నమ్మకమే మా అతిపెద్ద ఆస్తి | REKAVO 100% సురక్షితం", "t-h1":"మేము సేకరించే సమాచారం", "t-h2":"మేము మీ డేటాను ఎలా ఉపయోగిస్తాము", "t-h3":"మేము డేటాను ఎలా షేర్ చేస్తాము - మేము అమ్మము", "t-h4":"మీ హక్కులు", "t-h5":"డేటా భద్రత", "t-h6":"ఫిర్యాదు అధికారి" },
+  ta: { "t-title":"தனியுரிமைக் கொள்கை", "t-subtitle":"உங்கள் நம்பிக்கைதான் எங்கள் மிகப்பெரிய சொத்து | REKAVO 100% பாதுகாப்பானது", "t-h1":"நாங்கள் சேகரிக்கும் தகவல்", "t-h2":"உங்கள் தரவை நாங்கள் எவ்வாறு பயன்படுத்துகிறோம்", "t-h3":"நாங்கள் தரவை எவ்வாறு பகிர்கிறோம் - நாங்கள் விற்க மாட்டோம்", "t-h4":"உங்கள் உரிமைகள்", "t-h5":"தரவு பாதுகாப்பு", "t-h6":"புகார் அதிகாரி" }
+};
+
+document.querySelectorAll('.lang-list div').forEach(el=>{
+  el.onclick = ()=>{
+    const lang = el.dataset.lang;
+    document.querySelectorAll('.lang-list div').forEach(d=>d.classList.remove('active'));
+    el.classList.add('active');
+    curr.textContent = el.textContent.split('-')[0].trim();
+    list.classList.remove('show');
+    if(lang==='en'){ location.reload(); return; }
+    const t = dict[lang];
+    if(!t) return;
+    Object.keys(t).forEach(id=>{
+      const node = document.getElementById(id);
+      if(node) node.innerHTML = t[id];
+    });
+  }
+});
+</script>
 
 </body>
 </html>
