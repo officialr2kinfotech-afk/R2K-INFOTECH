@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Product - REKAVO Seller</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,Arial,sans-serif}
+body{background:#f1f3f6;padding:0}
+.top-bar{background:#000;color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.top-bar b{font-size:16px}
+.btn{height:44px;border:none;border-radius:8px;font-weight:800;cursor:pointer;padding:0 16px}
+.btn-black{background:#000;color:#fff}
+.btn-outline{background:#fff;color:#000;border:1.5px solid #000}
+.btn-blue{background:#2874f0;color:#fff;width:100%;height:50px;font-size:15px;margin-top:12px}
+.card{background:#fff;border-radius:10px;padding:16px;margin:12px;border:1px solid #e0e0e0}
+.card h3{font-size:14px;font-weight:800;margin-bottom:12px;border-left:4px solid #000;padding-left:8px}
+label{font-size:11px;font-weight:700;margin-top:10px;display:block;color:#333;text-transform:uppercase}
+.input,.select,.textarea{width:100%;height:42px;border:1.5px solid #dbdbdb;border-radius:8px;padding:0 12px;margin-top:4px;font-size:13px;outline:none;background:#fff}
+.textarea{min-height:80px;padding:10px 12px;resize:vertical}
+.input:focus,.select:focus,.textarea:focus{border-color:#000}
+.row{display:flex;gap:10px}.row>div{flex:1}
+.chip{border:1.5px solid #dbdbdb;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;background:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip.active{background:#000;color:#fff;border-color:#000}
+.small{font-size:11px;color:#878787;margin-top:4px}
+.img-box{width:100%;height:140px;border:2px dashed #dbdbdb;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;margin-top:6px;background:#fafafa;overflow:hidden;position:relative}
+.img-box img{width:100%;height:100%;object-fit:cover}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.g-item{height:80px;border:1.5px solid #dbdbdb;border-radius:8px;overflow:hidden;position:relative;background:#fafafa;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.g-item img{width:100%;height:100%;object-fit:cover}
+.g-item.del{position:absolute;top:2px;right:2px;background:#ff3e6c;color:#fff;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer}
+.variant-table{width:100%;border-collapse:collapse;margin-top:10px}
+.variant-table th{font-size:11px;background:#f1f3f6;padding:8px;text-align:left}
+.variant-table td{padding:6px;border-bottom:1px solid #eee}
+.variant-table input{width:100%;height:36px;border:1px solid #dbdbdb;border-radius:6px;padding:0 8px;font-size:12px}
+.spec-row{display:flex;gap:8px;margin-top:8px}
+.spec-row input{flex:1}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#000;color:#fff;padding:12px 20px;border-radius:30px;font-size:13px;font-weight:700;z-index:9999;display:none}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <b>＋ Add New Product</b>
+  <div style="display:flex;gap:8px">
+    <button class="btn btn-outline" style="height:36px;background:#fff" onclick="saveProduct('draft')">Save as Draft</button>
+    <button class="btn btn-black" style="height:36px" onclick="saveProduct('active')">Publish</button>
+  </div>
+</div>
+
+<div style="max-width:800px;margin:0 auto;padding-bottom:100px">
+
+<!-- 1. BASIC INFO -->
+<div class="card">
+  <h3>1. BASIC INFORMATION</h3>
+  <label>Product Title * (Ex: Men Slim Fit Cotton T-Shirt)</label>
+  <input id="title" class="input" placeholder="Enter product title">
+
+  <div class="row">
+    <div><label>Brand *</label><input id="brand" class="input" placeholder="Ex: Nike, Apple, Local"></div>
+    <div><label>SKU Code * (Seller Code)</label><input id="sku" class="input" placeholder="Ex: TSHIRT-BLK-M-001"></div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label>Category *</label>
+      <select id="category" class="select" onchange="loadSubCategory()">
+        <option value="">Select Category</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Mobiles">Mobiles</option>
+        <option value="Fashion Men">Fashion Men</option>
+        <option value="Fashion Women">Fashion Women</option>
+        <option value="Footwear">Footwear</option>
+        <option value="Beauty">Beauty & Personal Care</option>
+        <option value="Home & Kitchen">Home & Kitchen</option>
+        <option value="Grocery">Grocery & Food</option>
+        <option value="Books">Books</option>
+        <option value="Toys">Toys & Baby</option>
+        <option value="Sports">Sports & Fitness</option>
+        <option value="Automobile">Automobile</option>
+        <option value="Furniture">Furniture</option>
+        <option value="Jewellery">Jewellery</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div>
+      <label>Sub Category *</label>
+      <select id="sub_category" class="select"><option value="">Select Sub Category</option></select>
+    </div>
+  </div>
+
+  <label>Product Type *</label>
+  <div style="display:flex;gap:10px;margin-top:6px">
+    <div class="chip active" id="typeSimple" onclick="setProductType('simple')">📦 Simple Product (AirPods, Bottle, Book - No Size/Color)</div>
+    <div class="chip" id="typeVariable" onclick="setProductType('variable')">👕 Variable Product (T-Shirt, Shoe, Mobile - With Size/Color/Storage)</div>
+  </div>
+  <input type="hidden" id="product_type" value="simple">
+  <div class="small" id="typeHelp">Simple me sirf ek price aur ek stock hoga. Variable me Color/Size/Storage ka alag-alag price-stock hoga.</div>
+
+  <label>Description *</label>
+  <textarea id="description" class="textarea" placeholder="Full detail description likho - Material, Features, Warranty, etc."></textarea>
+
+  <label>Key Features / Bullet Points (5 Points - Flipkart jaisa)</label>
+  <input id="b1" class="input" placeholder="Bullet 1 Ex: 100% Cotton, Breathable Fabric">
+  <input id="b2" class="input" placeholder="Bullet 2 Ex: Slim Fit, Machine Washable" style="margin-top:6px">
+  <input id="b3" class="input" placeholder="Bullet 3" style="margin-top:6px">
+  <input id="b4" class="input" placeholder="Bullet 4" style="margin-top:6px">
+  <input id="b5" class="input" placeholder="Bullet 5" style="margin-top:6px">
+</div>
+
+<!-- 2. IMAGES -->
+<div class="card">
+  <h3>2. IMAGES & VIDEO</h3>
+  <label>Main Image * (White Background - 1:1)</label>
+  <div class="img-box" onclick="document.getElementById('mainFile').click()" id="mainBox">
+    <span style="font-size:28px">📷</span><span style="font-size:12px;margin-top:4px">Click to Upload Main Image</span>
+  </div>
+  <input type="file" id="mainFile" accept="image/*" hidden onchange="handleMain(this)">
+
+  <label>Gallery Images (5-8 Images - Front, Back, Side, Closeup)</label>
+  <div class="gallery-grid" id="galleryGrid">
+    <div class="g-item" onclick="document.getElementById('galleryFile').click()">＋</div>
+  </div>
+  <input type="file" id="galleryFile" accept="image/*" multiple hidden onchange="handleGallery(this)">
+  <div class="small">Pehli image main image hogi. Gallery me 8 tak daal sakta hai.</div>
+</div>
+
+<!-- 3. PRICING -->
+<div class="card">
+  <h3>3. PRICING & INVENTORY</h3>
+  <div class="row">
+    <div><label>MRP * (Ex: 1999)</label><input id="mrp" type="number" class="input" placeholder="1999"></div>
+    <div><label>Selling Price * (Customer Price)</label><input id="selling_price" type="number" class="input" placeholder="999"></div>
+    <div><label>GST % *</label><select id="gst" class="select"><option value="0">0% (Exempt)</option><option value="5">5%</option><option value="12">12%</option><option value="18" selected>18%</option><option value="28">28%</option></select></div>
+  </div>
+
+  <div id="simpleStockBox">
+    <div class="row">
+      <div><label>Total Stock * (Kitne piece hai)</label><input id="total_stock" type="number" class="input" placeholder="Ex: 100"></div>
+      <div><label>Low Stock Alert</label><input id="low_stock" type="number" class="input" placeholder="Ex: 10 (10 bache to alert)"></div>
+    </div>
+  </div>
+
+  <div id="variableBox" class="hidden">
+    <label>Variant Attributes - Yaha Size/Color/Storage likh (Ex: T-Shirt ke liye Color + Size, Mobile ke liye Color + Storage)</label>
+    <div style="background:#f9f9f9;border-radius:8px;padding:12px;margin-top:6px">
+      <div id="attrList"></div>
+      <div class="row" style="margin-top:10px">
+        <div><input id="attrName" class="input" placeholder="Attribute Name Ex: Color, Size, Storage, RAM"></div>
+        <div><input id="attrValues" class="input" placeholder="Values comma se Ex: Black,White,Blue ya S,M,L,XL"></div>
+        <div style="flex:0 0 80px"><button class="btn btn-black" style="width:100%" onclick="addAttribute()">+ Add</button></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn btn-outline" style="flex:1" onclick="generateVariants()">⚡ Generate Variants Table</button>
+        <button class="btn btn-outline" style="flex:0 0 100px" onclick="clearAttributes()">Clear All</button>
+      </div>
+    </div>
+
+    <div id="variantTableWrap" style="overflow-x:auto;margin-top:12px"></div>
+    <div class="small">Har combination ka alag price, stock, sku set kar sakta hai. Ex: Black-M = 999 / Stock 10, Black-L = 999 / Stock 5</div>
+  </div>
+</div>
+
+<!-- 4. SPECS -->
+<div class="card">
+  <h3>4. SPECIFICATIONS (Category wise - Flipkart jaisa)</h3>
+  <div class="small" style="margin-bottom:8px">Jo category select karega uske hisab se specs bhar. Ex: Kapda = Fabric, Fit, Sleeve. Mobile = Processor, Battery, Camera. Joota = Sole, Material.</div>
+  <div id="specList"></div>
+  <div class="spec-row">
+    <input id="specKey" class="input" placeholder="Spec Name Ex: Fabric, Processor, Battery, Sole Material">
+    <input id="specValue" class="input" placeholder="Spec Value Ex: Cotton, Snapdragon 8 Gen, 5000mAh, Rubber">
+    <button class="btn btn-black" onclick="addSpec()">+ Add</button>
+  </div>
+</div>
+
+<!-- 5. SHIPPING -->
+<div class="card">
+  <h3>5. SHIPPING & RETURN</h3>
+  <div class="row">
+    <div><label>Weight (gram) *</label><input id="weight" type="number" class="input" placeholder="Ex: 500"></div>
+    <div><label>Length (cm)</label><input id="length" type="number" class="input" placeholder="Ex: 20"></div>
+    <div><label>Width (cm)</label><input id="width" type="number" class="input" placeholder="Ex: 15"></div>
+    <div><label>Height (cm)</label><input id="height" type="number" class="input" placeholder="Ex: 5"></div>
+  </div>
+  <div class="row">
+    <div><label>Delivery Days</label><select id="delivery_days" class="select"><option>1-2 Days</option><option selected>2-3 Days</option><option>3-5 Days</option><option>5-7 Days</option></select></div>
+    <div><label>COD Available?</label><select id="cod" class="select"><option value="yes" selected>Yes - COD Available</option><option value="no">No - Prepaid Only</option></select></div>
+    <div><label>Return Policy</label><select id="return_policy" class="select"><option>No Return</option><option selected>7 Days Return</option><option>10 Days Return</option><option>15 Days Return</option><option>30 Days Return</option></select></div>
+  </div>
+  <label>Country of Origin *</label>
+  <select id="origin" class="select"><option selected>India</option><option>China</option><option>USA</option><option>Other</option></select>
+</div>
+
+<!-- 6. SEO -->
+<div class="card">
+  <h3>6. SEO & STATUS</h3>
+  <label>Search Keywords (comma se - SEO ke liye)</label>
+  <input id="keywords" class="input" placeholder="Ex: tshirt, men tshirt, cotton tshirt, black tshirt">
+  <label>Status</label>
+  <select id="status" class="select"><option value="active" selected>Active - Home Page pe dikhega</option><option value="draft">Draft - Approval ke liye, Home pe nahi dikhega</option><option value="out_of_stock">Out of Stock</option></select>
+  <button class="btn-blue" onclick="saveProduct('active')">🚀 Publish Product (Home Page pe Live Hoga)</button>
+  <button class="btn btn-outline" style="width:100%;margin-top:8px;height:44px" onclick="saveProduct('draft')">Save as Draft</button>
+</div>
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const API_BASE="https://rekavo-backend.vercel.app";
+let mainImageBase64=null;
+let galleryImages=[];
+let attributes=[]; // [{name:"Color", values:["Black","White"]}]
+let variants=[]; // [{combo:{Color:"Black",Size:"M"}, price:999, stock:10, sku:""}]
+let specs=[];
+
+const SUB_CATS={
+  "Electronics":["Laptop","Headphones","Speakers","Camera","Watch","Charger","Other"],
+  "Mobiles":["Smartphone","Feature Phone","Mobile Cover","Charger","Power Bank"],
+  "Fashion Men":["T-Shirt","Shirt","Jeans","Trousers","Kurta","Jacket","Innerwear"],
+  "Fashion Women":["Saree","Kurti","Dress","T-Shirt","Jeans","Top","Leggings"],
+  "Footwear":["Sports Shoe","Casual Shoe","Formal Shoe","Sandal","Slipper","Boots"],
+  "Beauty":["Makeup","Skincare","Haircare","Fragrance"],
+  "Home & Kitchen":["Cookware","Storage","Decor","Bedding"],
+  "Grocery":["Food","Oil","Spices","Snacks"],
+  "Books":["Novel","Education","Comics"],
+  "Toys":["Toys","Baby Care","Diapers"],
+  "Sports":["Gym","Cricket","Football"],
+  "Automobile":["Helmet","Cover","Tools"],
+  "Furniture":["Chair","Table","Sofa","Bed"],
+  "Jewellery":["Ring","Necklace","Earring"],
+  "Other":["Other"]
+};
+
+function showToast(msg,isErr=false){
+  let t=document.getElementById('toast'); t.innerText=msg; t.style.background=isErr?'#ff3e6c':'#000'; t.style.display='block'; setTimeout(()=>t.style.display='none',3000);
+}
+function loadSubCategory(){
+  let cat=document.getElementById('category').value;
+  let sub=document.getElementById('sub_category');
+  sub.innerHTML='<option value="">Select Sub Category</option>';
+  (SUB_CATS[cat]||[]).forEach(s=>{ let o=document.createElement('option'); o.value=s; o.innerText=s; sub.appendChild(o); });
+}
+function setProductType(type){
+  document.getElementById('product_type').value=type;
+  document.getElementById('typeSimple').classList.toggle('active',type==='simple');
+  document.getElementById('typeVariable').classList.toggle('active',type==='variable');
+  document.getElementById('simpleStockBox').classList.toggle('hidden',type==='variable');
+  document.getElementById('variableBox').classList.toggle('hidden',type==='simple');
+}
+function handleMain(input){
+  let file=input.files[0]; if(!file) return;
+  let reader=new FileReader(); reader.onload=e=>{
+    mainImageBase64=e.target.result;
+    document.getElementById('mainBox').innerHTML=`<img src="${mainImageBase64}"><div class="del" style="position:absolute;top:6px;right:6px" onclick="event.stopPropagation();clearMain()">✕</div>`;
+  }; reader.readAsDataURL(file);
+}
+function clearMain(){ mainImageBase64=null; document.getElementById('mainBox').innerHTML='<span style="font-size:28px">📷</span><span style="font-size:12px;margin-top:4px">Click to Upload Main Image</span>'; }
+function handleGallery(input){
+  let files=Array.from(input.files); files.forEach(file=>{
+    let reader=new FileReader(); reader.onload=e=>{
+      galleryImages.push(e.target.result); renderGallery();
+    }; reader.readAsDataURL(file);
+  });
+}
+function renderGallery(){
+  let grid=document.getElementById('galleryGrid');
+  let html=''; galleryImages.forEach((img,i)=>{
+    html+=`<div class="g-item"><img src="${img}"><div class="del" onclick="removeGallery(${i})">✕</div></div>`;
+  });
+  if(galleryImages.length<8) html+=`<div class="g-item" onclick="document.getElementById('galleryFile').click()">＋</div>`;
+  grid.innerHTML=html;
+}
+function removeGallery(i){ galleryImages.splice(i,1); renderGallery(); }
+
+function addAttribute(){
+  let name=document.getElementById('attrName').value.trim();
+  let vals=document.getElementById('attrValues').value.trim();
+  if(!name||!vals){showToast('Attribute name and values required',true);return;}
+  let values=vals.split(',').map(v=>v.trim()).filter(Boolean);
+  if(values.length===0){showToast('Comma se values likho Ex: Black,White',true);return;}
+  attributes.push({name, values});
+  document.getElementById('attrName').value=''; document.getElementById('attrValues').value='';
+  renderAttributes();
+}
+function renderAttributes(){
+  let list=document.getElementById('attrList'); let h='';
+  attributes.forEach((a,i)=>{
+    h+=`<div style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid #eee;border-radius:6px;padding:8px 10px;margin-bottom:6px"><div><b style="font-size:12px">${a.name}:</b> <span style="font-size:12px">${a.values.join(', ')}</span></div><span style="color:#ff3e6c;cursor:pointer;font-weight:800" onclick="removeAttr(${i})">✕</span></div>`;
+  });
+  list.innerHTML=h||'<div class="small">Koi attribute nahi - Upar Color, Size, Storage add karo</div>';
+}
+function removeAttr(i){ attributes.splice(i,1); renderAttributes(); document.getElementById('variantTableWrap').innerHTML=''; }
+function clearAttributes(){ attributes=[]; variants=[]; renderAttributes(); document.getElementById('variantTableWrap').innerHTML=''; }
+function generateVariants(){
+  if(attributes.length===0){showToast('Pehle Color/Size/Storage attribute add karo',true);return;}
+  let combos=[{}];
+  attributes.forEach(attr=>{
+    let newCombos=[];
+    combos.forEach(c=>{
+      attr.values.forEach(v=>{
+        newCombos.push({...c, [attr.name]:v});
+      });
+    });
+    combos=newCombos;
+  });
+  variants=combos.map(c=>({combo:c, price:document.getElementById('selling_price').value||'', stock:'', sku:''}));
+  renderVariantTable();
+}
+function renderVariantTable(){
+  if(variants.length===0) return;
+  let attrNames=attributes.map(a=>a.name);
+  let html='<table class="variant-table"><tr>';
+  attrNames.forEach(n=>html+=`<th>${n}</th>`);
+  html+='<th>Price *</th><th>Stock *</th><th>SKU</th></tr>';
+  variants.forEach((v,i)=>{
+    html+='<tr>';
+    attrNames.forEach(n=>html+=`<td style="font-size:12px;font-weight:700">${v.combo[n]}</td>`);
+    html+=`<td><input type="number" id="vPrice${i}" value="${v.price}" placeholder="999" oninput="variants[${i}].price=this.value"></td>`;
+    html+=`<td><input type="number" id="vStock${i}" value="${v.stock}" placeholder="10" oninput="variants[${i}].stock=this.value"></td>`;
+    html+=`<td><input type="text" id="vSku${i}" value="${v.sku}" placeholder="SKU" oninput="variants[${i}].sku=this.value"></td>`;
+    html+='</tr>';
+  });
+  html+='</table>';
+  document.getElementById('variantTableWrap').innerHTML=html;
+}
+function addSpec(){
+  let k=document.getElementById('specKey').value.trim();
+  let v=document.getElementById('specValue').value.trim();
+  if(!k||!v){showToast('Spec name and value required',true);return;}
+  specs.push({key:k,value:v});
+  document.getElementById('specKey').value=''; document.getElementById('specValue').value='';
+  renderSpecs();
+}
+function renderSpecs(){
+  let list=document.getElementById('specList'); let h='';
+  specs.forEach((s,i)=>{
+    h+=`<div style="display:flex;justify-content:space-between;align-items:center;background:#f9f9f9;border-radius:6px;padding:8px 10px;margin-bottom:6px"><div style="font-size:12px"><b>${s.key}:</b> ${s.value}</div><span style="color:#ff3e6c;cursor:pointer;font-weight:800" onclick="removeSpec(${i})">✕</span></div>`;
+  });
+  list.innerHTML=h;
+}
+function removeSpec(i){ specs.splice(i,1); renderSpecs(); }
+
+async function saveProduct(statusFromBtn){
+  let title=document.getElementById('title').value.trim();
+  let brand=document.getElementById('brand').value.trim();
+  let sku=document.getElementById('sku').value.trim();
+  let category=document.getElementById('category').value;
+  let sub_category=document.getElementById('sub_category').value;
+  let product_type=document.getElementById('product_type').value;
+  let description=document.getElementById('description').value.trim();
+  let mrp=document.getElementById('mrp').value;
+  let selling_price=document.getElementById('selling_price').value;
+  let gst=document.getElementById('gst').value;
+  let total_stock=document.getElementById('total_stock').value;
+  let weight=document.getElementById('weight').value;
+  let status=document.getElementById('status').value;
+  if(statusFromBtn) status=statusFromBtn;
+
+  if(!title){showToast('Product Title required',true);return;}
+  if(!brand){showToast('Brand required',true);return;}
+  if(!category){showToast('Category required',true);return;}
+  if(!mainImageBase64){showToast('Main Image required',true);return;}
+  if(!mrp||!selling_price){showToast('MRP and Selling Price required',true);return;}
+  if(product_type==='simple' &&!total_stock){showToast('Total Stock required',true);return;}
+  if(product_type==='variable' && variants.length===0){showToast('Generate Variants Table pe click karo - Size/Color ka stock bharo',true);return;}
+  if(product_type==='variable'){
+    for(let i=0;i<variants.length;i++){
+      if(!variants[i].price||!variants[i].stock){showToast(`Variant ${i+1} me Price aur Stock bharo`,true);return;}
+    }
+  }
+
+  let bullets=[document.getElementById('b1').value.trim(),document.getElementById('b2').value.trim(),document.getElementById('b3').value.trim(),document.getElementById('b4').value.trim(),document.getElementById('b5').value.trim()].filter(Boolean);
+
+  let payload={
+    title, brand, sku, category, sub_category, product_type, description, bullets,
+    main_image: mainImageBase64,
+    gallery: galleryImages,
+    mrp: parseFloat(mrp),
+    selling_price: parseFloat(selling_price),
+    gst: parseFloat(gst),
+    total_stock: total_stock?parseInt(total_stock):0,
+    low_stock: document.getElementById('low_stock').value?parseInt(document.getElementById('low_stock').value):10,
+    variant_attributes: attributes,
+    variants: variants,
+    specs: specs,
+    weight: weight?parseFloat(weight):0,
+    length: document.getElementById('length').value?parseFloat(document.getElementById('length').value):0,
+    width: document.getElementById('width').value?parseFloat(document.getElementById('width').value):0,
+    height: document.getElementById('height').value?parseFloat(document.getElementById('height').value):0,
+    delivery_days: document.getElementById('delivery_days').value,
+    cod: document.getElementById('cod').value,
+    return_policy: document.getElementById('return_policy').value,
+    origin: document.getElementById('origin').value,
+    keywords: document.getElementById('keywords').value,
+    status: status,
+    created_at: new Date().toISOString()
+  };
+
+  showToast('Saving product...');
+  try{
+    let res=await fetch(`${API_BASE}/products/add`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+    let out=await res.json();
+    if(!res.ok) throw new Error(out.error||out.message||'Failed');
+    showToast(status==='active'?'✅ Product Published - Home pe Live!':'✅ Saved as Draft');
+    setTimeout(()=>{
+      if(confirm('Product saved! Home page pe dekhega? OK dabao toh index.html pe jayega')){
+        location.href='index.html';
+      }
+    },800);
+  }catch(e){
+    // Agar backend abhi nahi bana hai toh localStorage me save kar dega taaki tera kaam ruke nahi
+    let localProducts=JSON.parse(localStorage.getItem('rekavo_seller_products')||'[]');
+    payload.id='local_'+Date.now();
+    localProducts.push(payload);
+    localStorage.setItem('rekavo_seller_products',JSON.stringify(localProducts));
+    showToast('Backend nahi mila, local me save kiya - index.html pe dikhega (demo)');
+    setTimeout(()=>{ location.href='index.html'; },1000);
+  }
+}
+</script>
+</body>
+</html>
