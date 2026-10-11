@@ -130,6 +130,7 @@ body{background:#f1f3f6;padding-bottom:90px;user-select:none}
   <a href="profile.html"><span>👤</span><span>Account</span></a>
   <a href="cart.html"><span>🛒 Cart (<span id="cartCount">0</span>)</span></a>
 </div>
+
 <script>
 const API_BASE="https://rekavo-backend.vercel.app";
 const params = new URLSearchParams(location.search);
@@ -139,6 +140,7 @@ let currentProduct = null;
 let selectedRating = 0;
 let reviews = [];
 let reviewPhotoBase64 = "";
+let isSubmitting = false;
 
 async function loadProduct(){
   try{
@@ -153,7 +155,7 @@ async function loadProduct(){
     let all = JSON.parse(localStorage.getItem('rekavo_products')||'[]');
     currentProduct = all.find(p=> p.id==productId) || all[0] || {
       id: productId, name: "REKAVO Wireless Earbuds", price: 1499, old_price: 2999, discount: "50% off", coupon: "REKAVO50",
-      images: ["https://via.placeholder.com/400x400?text=REKAVO"], spec: "Premium Sound\\nLong Battery\\nFast Charging"
+      images: ["https://via.placeholder.com/400x400?text=REKAVO"], spec: "Premium Sound\nLong Battery\nFast Charging"
     };
   }
   renderProduct();
@@ -165,7 +167,7 @@ function renderProduct(){
   document.getElementById('pOff').innerText = currentProduct.discount || currentProduct.off || "";
   document.getElementById('pCoupon').innerText = currentProduct.coupon || "REKAVO50";
   document.getElementById('pSpec').innerText = currentProduct.spec || currentProduct.description || "No details";
-  let imgs = currentProduct.images || currentProduct.image? (Array.isArray(currentProduct.images)?currentProduct.images:[currentProduct.image]) : [];
+  let imgs = currentProduct.images || (currentProduct.image? [currentProduct.image] : []);
   if(imgs.length==0) imgs = [currentProduct.img||""];
   document.getElementById('mainImg').src = imgs[0]||"";
   let th = document.getElementById('thumbs');
@@ -182,7 +184,10 @@ function renderProduct(){
 }
 function setStar(n){
   selectedRating = n;
-  document.querySelectorAll('#starBox.star').forEach((s,i)=>{ s.classList.toggle('active', i < n); });
+  document.querySelectorAll('#starBox.star').forEach((s,i)=>{
+    if(i < n) s.classList.add('active');
+    else s.classList.remove('active');
+  });
   document.getElementById('err-review').classList.remove('show');
 }
 function previewPhoto(e){
@@ -202,7 +207,7 @@ async function loadReviews(){
     let res = await fetch(`${API_BASE}/reviews/get?product_id=${productId}`);
     if(res.ok){
       let data = await res.json();
-      if(Array.isArray(data)){ reviews = data; if(reviews.length==0){ let local = JSON.parse(localStorage.getItem('rekavo_reviews_'+productId)||'[]'); if(local.length>0) reviews = local; } renderReviews(); return; }
+      if(Array.isArray(data) && data.length>0){ reviews = data; renderReviews(); return; }
     }
   }catch(e){}
   reviews = JSON.parse(localStorage.getItem('rekavo_reviews_'+productId)||'[]');
@@ -210,7 +215,8 @@ async function loadReviews(){
 }
 function calculateRating(){
   if(reviews.length==0) return {avg:0, count:0, dist:{1:0,2:0,3:0,4:0,5:0}};
-  let sum = reviews.reduce((s,r)=> s + (parseInt(r.rating)||0),0);
+  let sum = 0;
+  reviews.forEach(r=> sum += Number(r.rating)||0 );
   let avg = sum / reviews.length;
   let dist = {1:0,2:0,3:0,4:0,5:0};
   reviews.forEach(r=>{ let rt=parseInt(r.rating); if(dist[rt]!==undefined) dist[rt]++; });
@@ -233,7 +239,7 @@ function renderReviews(){
   document.getElementById('barChart').innerHTML = barH;
   let list = document.getElementById('reviewList');
   if(count==0){
-    list.innerHTML = `<div style="text-align:center;padding:30px 10px;background:#fafafa;border:1px dashed #e0e0e0;border-radius:8px"><div style="font-size:36px">⭐</div><p style="font-size:13px;font-weight:700;margin-top:8px">No reviews yet</p><p style="font-size:11px;color:#878787;margin-top:4px">Be the first to review this product and help others</p></div>`;
+    list.innerHTML = `<div style="text-align:center;padding:30px 10px;background:#fafafa;border:1px dashed #e0e0e0;border-radius:8px"><div style="font-size:36px">⭐</div><p style="font-size:13px;font-weight:700;margin-top:8px">No reviews yet</p><p style="font-size:11px;color:#878787;margin-top:4px">Be the first to review this product</p></div>`;
     return;
   }
   let html = "";
@@ -243,22 +249,38 @@ function renderReviews(){
   list.innerHTML = html;
 }
 async function submitReview(){
-  if(selectedRating==0){ let er = document.getElementById('err-review'); er.innerText = "Please select rating star"; er.classList.add('show'); return; }
+  if(isSubmitting) return;
+  if(selectedRating==0){ let er = document.getElementById('err-review'); er.innerText = "Please select star"; er.classList.add('show'); return; }
   let text = document.getElementById('reviewText').value.trim();
-  if(!text){ let er = document.getElementById('err-review'); er.innerText = "Please write review text"; er.classList.add('show'); return; }
+  if(!text){ let er = document.getElementById('err-review'); er.innerText = "Please write review"; er.classList.add('show'); return; }
+  isSubmitting = true;
   let user = JSON.parse(localStorage.getItem('rekavo_user')||'{}');
   let newReview = { product_id: productId, rating: selectedRating, text: text, comment: text, photo: reviewPhotoBase64, user_name: user.name || "REKAVO User", user_id: user.user_id || user.id || "guest", created_at: new Date().toISOString() };
   reviews.push(newReview);
   localStorage.setItem('rekavo_reviews_'+productId, JSON.stringify(reviews));
   renderReviews();
-  document.getElementById('reviewText').value=""; document.getElementById('reviewPhoto').value=""; document.getElementById('photoPreview').style.display='none'; reviewPhotoBase64=""; setStar(0); selectedRating=0;
-  let msg = document.getElementById('reviewMsg'); msg.innerText = "Review submitted successfully!"; msg.classList.add('show'); setTimeout(()=>msg.classList.remove('show'),2000);
+  document.getElementById('reviewText').value=""; document.getElementById('reviewPhoto').value=""; document.getElementById('photoPreview').style.display='none'; reviewPhotoBase64="";
+  let oldRating = selectedRating; setStar(0); selectedRating=0;
+  let msg = document.getElementById('reviewMsg'); msg.innerText = "Review submitted!"; msg.classList.add('show'); setTimeout(()=>msg.classList.remove('show'),2000);
   try{ await fetch(`${API_BASE}/reviews/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(newReview)}); }catch(e){}
+  isSubmitting = false;
 }
 function liveSearch(v){ if(!v) {document.getElementById('searchResults').classList.remove('show'); return;} let all = JSON.parse(localStorage.getItem('rekavo_products')||'[]'); let f = all.filter(p=> (p.name||"").toLowerCase().includes(v.toLowerCase())).slice(0,6); let el = document.getElementById('searchResults'); if(f.length==0){ el.classList.remove('show'); return;} el.innerHTML = f.map(p=> `<div class="sr-item" onclick="location.href='product.shtml?id=${p.id||p._id}'"><img src="${(p.images? p.images[0]: p.image)||''}" style="width:40px;height:40px;object-fit:contain"><span style="font-size:13px">${p.name}</span></div>`).join(''); el.classList.add('show'); }
-function applyCoupon(){ let inp = document.getElementById('couponInput').value.trim().toUpperCase(); let real = (currentProduct.coupon||"REKAVO50").toUpperCase(); let err = document.getElementById('couponErr'); let ok = document.getElementById('couponMsg'); err.classList.remove('show'); ok.classList.remove('show'); if(!inp){ err.innerText="Enter coupon code"; err.classList.add('show'); return; } if(inp==real){ ok.innerText = "Coupon Applied! Extra discount unlocked 🎉"; ok.classList.add('show'); let price = parseInt(currentProduct.price||0); let newPrice = Math.floor(price * 0.8); document.getElementById('pPrice').innerText = "₹"+newPrice; document.getElementById('pOff').innerText = " (Coupon Applied)"; }else{ err.innerText="Invalid coupon code"; err.classList.add('show'); } }
-function addToCart(){ let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]'); let ex = cart.find(i=> (i.id||i.product_id)==productId); if(ex) ex.qty = (ex.qty||1)+1; else cart.push({id:productId, product_id:productId, name: currentProduct.name, price: currentProduct.price, image: currentProduct.images? currentProduct.images[0]: currentProduct.image, qty:1}); localStorage.setItem('rekavo_cart', JSON.stringify(cart)); document.getElementById('cartCount').innerText = cart.reduce((s,i)=>s+(i.qty||1),0); let m = document.getElementById('cartMsg'); m.innerText="Added to cart!"; m.classList.add('show'); setTimeout(()=>m.classList.remove('show'),1500); }
-function buyNow(){ addToCart(); location.href='cart.html'; }
+function applyCoupon(){ let inp = document.getElementById('couponInput').value.trim().toUpperCase(); let real = (currentProduct.coupon||"REKAVO50").toUpperCase(); let err = document.getElementById('couponErr'); let ok = document.getElementById('couponMsg'); err.classList.remove('show'); ok.classList.remove('show'); if(!inp){ err.innerText="Enter coupon"; err.classList.add('show'); return; } if(inp==real){ ok.innerText = "Coupon Applied!"; ok.classList.add('show'); }else{ err.innerText="Invalid coupon"; err.classList.add('show'); } }
+async function addToCart(){
+  let user = JSON.parse(localStorage.getItem('rekavo_user')||'{}');
+  let uid = user.user_id || user.id;
+  if(!uid){ alert('Login first'); location.href='account.html'; return; }
+  let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+  let exist = cart.find(i=> i.product_id==productId || i.id==productId);
+  if(exist) exist.qty = (exist.qty||1)+1;
+  else cart.push({product_id: productId, id: productId, name: currentProduct.name, price: currentProduct.price, image: currentProduct.images? currentProduct.images[0]: currentProduct.image, qty:1});
+  localStorage.setItem('rekavo_cart', JSON.stringify(cart));
+  document.getElementById('cartCount').innerText = cart.reduce((s,i)=>s+(i.qty||1),0);
+  try{ await fetch(`${API_BASE}/cart/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id: uid, product_id: productId, qty: 1})}); }catch(e){}
+  let m = document.getElementById('cartMsg'); m.innerText="Added to Cart ✓"; m.classList.add('show'); setTimeout(()=>m.classList.remove('show'),1500);
+}
+function buyNow(){ addToCart(); setTimeout(()=> location.href='cart.html', 300); }
 loadProduct(); loadReviews();
 </script>
 </body>
