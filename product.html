@@ -6,42 +6,56 @@
 <title>REKAVO - Product Detail</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
-body{background:#fff;padding-bottom:90px;user-select:none}
-.top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:8px 12px;font-size:12px;font-weight:800}
-.search-wrapper{background:#2874f0;padding:10px 12px;position:sticky;top:0;z-index:99}
-.search-box{width:100%;display:flex;background:#fff;border-radius:2px;height:42px;position:relative}
-.search-box input{flex:1;border:none;padding:0 14px;outline:none}
-.search-box button{border:none;background:#fff;color:#2874f0;padding:0 18px;font-size:20px;font-weight:900}
+body{background:#f1f3f6;padding-bottom:90px;user-select:none}
+.top-strip{background:#e6efff;color:#1a4ab0;text-align:center;padding:8px 12px;font-size:12px;font-weight:800;position:sticky;top:0;z-index:100}
+.search-wrapper{background:#2874f0;padding:10px 12px;position:sticky;top:32px;z-index:99}
+.search-box{width:100%;display:flex;background:#fff;border-radius:2px;height:42px;position:relative;overflow:hidden}
+.search-box input{flex:1;border:none;padding:0 14px;outline:none;font-size:14px}
+.search-box button{border:none;background:#fff;color:#2874f0;padding:0 18px;font-size:20px;font-weight:900;cursor:pointer}
 .search-results{position:absolute;top:44px;left:0;right:0;background:#fff;max-height:400px;overflow:auto;box-shadow:0 8px 16px rgba(0,0,0,.2);display:none;z-index:30}
 .search-results.show{display:block}
 .sr-item{display:flex;gap:10px;padding:10px;border-bottom:1px solid #f0f0f0;cursor:pointer;align-items:center}
-.detail-wrap{display:flex;flex-wrap:wrap}
+.detail-wrap{display:flex;flex-wrap:wrap;background:#fff}
 .detail-left{flex:1;min-width:280px;padding:12px;border-right:1px solid #f0f0f0}
 .detail-main-img{width:100%;height:340px;object-fit:contain;border:1px solid #f0f0f0;border-radius:6px;background:#fff}
 .detail-thumbs{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
-.detail-thumbs img{width:56px;height:56px;border:1px solid #e0e0e0;border-radius:4px;cursor:pointer;object-fit:contain}
+.detail-thumbs img{width:56px;height:56px;border:1px solid #e0e0e0;border-radius:4px;cursor:pointer;object-fit:contain;background:#fff}
 .detail-thumbs img.active{border:2px solid #2874f0}
 .detail-right{flex:1;min-width:300px;padding:14px}
 .price{color:#388e3c;font-weight:800;font-size:24px}
 .old-price{text-decoration:line-through;color:#878787;font-size:14px}
+.off-per{color:#388e3c;font-weight:800;font-size:14px;margin-left:6px}
+.rating-top{display:flex;align-items:center;gap:8px;margin:8px 0}
+.rating-badge{background:#878787;color:#fff;font-size:12px;padding:3px 8px;border-radius:12px;font-weight:700;display:flex;align-items:center;gap:3px}
+.rating-count{font-size:12px;color:#878787;font-weight:700}
+.assured{color:#2874f0;font-size:12px;font-weight:700}
 .coupon-row{display:flex;gap:6px;margin:12px 0}
-.coupon-row input{flex:1;padding:11px;border:1px solid #e0e0e0;border-radius:4px;outline:none}
+.coupon-row input{flex:1;padding:11px;border:1px solid #e0e0e0;border-radius:4px;outline:none;font-size:13px}
 .coupon-row button{background:#2874f0;color:#fff;border:none;padding:11px 16px;border-radius:4px;font-weight:700;cursor:pointer}
 .spec-box{background:#fafafa;border:1px solid #f0f0f0;border-radius:6px;padding:12px;margin:12px 0;font-size:13px;line-height:1.6;white-space:pre-line}
-.btn-cart{width:100%;background:#ff9f00;color:#fff;border:none;padding:14px;border-radius:4px;font-weight:800;cursor:pointer}
-.btn-buy{width:100%;background:#fb641b;color:#fff;border:none;padding:14px;border-radius:4px;font-weight:800;cursor:pointer}
-.rating-top{display:flex;align-items:center;gap:8px;margin:8px 0}
-.rating-badge{background:#878787;color:#fff;font-size:12px;padding:3px 6px;border-radius:3px;font-weight:700}
-.rating-count{font-size:12px;color:#878787;font-weight:600}
-.review-section{margin:20px 14px;border-top:8px solid #f1f3f6;padding-top:16px}
-.review-head{font-size:16px;font-weight:800;margin-bottom:10px}
-.star{font-size:28px;color:#e0e0e0;cursor:pointer;transition:0.2s}.star.active{color:#ff9f00}
-.review-card{border:1px solid #f0f0f0;border-radius:6px;padding:10px;margin:10px 0;background:#fff}
-.review-card img{width:70px;height:70px;object-fit:cover;border-radius:6px;margin-top:8px;border:1px solid #eee}
+.btns{display:flex;gap:10px;margin:12px 0}
+.btn-cart{flex:1;background:#ff9f00;color:#fff;border:none;padding:14px;border-radius:4px;font-weight:800;cursor:pointer}
+.btn-buy{flex:1;background:#fb641b;color:#fff;border:none;padding:14px;border-radius:4px;font-weight:800;cursor:pointer}
+.offer-green{color:#26a541;font-weight:700;font-size:13px;margin:8px 0;background:#f0faf0;padding:6px 8px;border-radius:4px}
+.review-section{margin-top:8px;background:#fff;padding:16px 14px}
+.review-head{font-size:16px;font-weight:800;margin-bottom:12px}
+.rating-summary{display:flex;align-items:center;gap:16px;padding:12px;border:1px solid #f0f0f0;border-radius:6px;background:#fafafa}
+.avg-big{font-size:28px;font-weight:800}
+.bar-row{display:flex;align-items:center;gap:6px;margin:3px 0;font-size:11px}
+.bar-bg{width:100px;height:6px;background:#e0e0e0;border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;background:#26a541;border-radius:3px}
+.star-box{margin:12px 0}
+.star{font-size:32px;color:#e0e0e0;cursor:pointer;transition:0.2s;padding:2px}
+.star.active{color:#ff9f00}
+.review-card{border:1px solid #f0f0f0;border-radius:6px;padding:12px;margin:10px 0;background:#fff}
+.review-card-top{display:flex;justify-content:space-between;align-items:center}
+.review-star-badge{background:#26a541;color:#fff;padding:2px 6px;border-radius:12px;font-size:11px;font-weight:700}
+.review-text{font-size:13px;margin-top:8px;line-height:1.5}
+.review-photo{width:70px;height:70px;object-fit:cover;border-radius:6px;margin-top:8px;border:1px solid #eee}
 .upload-box{border:2px dashed #2874f0;background:#f5f8ff;padding:12px;border-radius:6px;margin-top:10px}
-.error-msg{color:#d93025;font-size:11px;font-weight:600;margin-top:4px;display:none;background:#fff5f5;padding:5px 7px;border-radius:4px}
+.error-msg{color:#d93025;font-size:11px;font-weight:600;margin-top:6px;display:none;background:#fff5f5;padding:6px 8px;border-radius:4px}
 .error-msg.show{display:block}
-.success-msg{color:#188038;font-size:11px;font-weight:700;margin-top:6px;display:none;background:#e6f4ea;padding:8px;border-radius:4px;text-align:center}
+.success-msg{color:#188038;font-size:12px;font-weight:700;margin-top:8px;display:none;background:#e6f4ea;padding:8px;border-radius:4px;text-align:center}
 .success-msg.show{display:block}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:999;box-shadow:0 -2px 8px rgba(0,0,0,.06)}
 .bottom-nav a{text-decoration:none;color:#555;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;white-space:nowrap;text-align:center}
@@ -49,37 +63,48 @@ body{background:#fff;padding-bottom:90px;user-select:none}
 </head>
 <body>
 <div class="top-strip">🔥 Use Coupon For Extra Discount At 20%, 40%, 50%, 80% And More....</div>
-<div class="search-wrapper"><div class="search-box"><input id="mainSearch" placeholder="Search for products, brands and more" oninput="liveSearch(this.value)" autocomplete="off"><button>⌕</button><div id="searchResults" class="search-results"></div></div></div>
+<div class="search-wrapper"><div class="search-box"><input id="mainSearch" placeholder="Search for products, brands and more" oninput="liveSearch(this.value)" autocomplete="off"><button type="button">⌕</button><div id="searchResults" class="search-results"></div></div></div>
 
 <div class="detail-wrap">
   <div class="detail-left">
-    <button onclick="location.href='category.html?cat='+cat" style="background:#f0f0f0;border:none;padding:6px 12px;border-radius:4px;font-weight:700;margin-bottom:10px;cursor:pointer">← Back</button>
+    <button onclick="location.href='category.html?cat='+encodeURIComponent(cat||'')" style="background:#f0f0f0;border:none;padding:6px 12px;border-radius:4px;font-weight:700;margin-bottom:10px;cursor:pointer">← Back</button>
     <img id="mainImg" class="detail-main-img" src="">
     <div id="thumbs" class="detail-thumbs"></div>
   </div>
   <div class="detail-right">
-    <h2 id="pName"></h2>
-    <div class="rating-top"><span id="pRatingBadge" class="rating-badge">0 ★</span><span id="pRatingCount" class="rating-count">(0 Ratings)</span><span style="color:#2874f0;font-size:12px;font-weight:700"> • Assured</span></div>
-    <div style="margin:10px 0"><span id="pOld" class="old-price"></span> <span id="pPrice" class="price"></span> <span id="pOff" style="color:#388e3c;font-weight:800"></span></div>
-    <p style="font-size:12px">Coupon Code: <b id="pCoupon" style="color:#2874f0;background:#e6efff;padding:3px 8px;border-radius:3px;border:1px dashed #2874f0"></b> <span style="color:#26a541;font-weight:700">- Copy & Apply</span></p>
+    <h2 id="pName" style="font-size:16px;line-height:1.4"></h2>
+    <div class="rating-top">
+      <span id="pRatingBadge" class="rating-badge">0 ★</span>
+      <span id="pRatingCount" class="rating-count">(0 Ratings)</span>
+      <span class="assured"> • Assured</span>
+    </div>
+    <div style="margin:10px 0">
+      <span id="pOld" class="old-price"></span>
+      <span id="pPrice" class="price"></span>
+      <span id="pOff" class="off-per"></span>
+    </div>
+    <p class="offer-green">🎉 <span id="pOfferText">Use Coupon For Extra Discount</span> - <b id="pCoupon" style="color:#2874f0;background:#e6efff;padding:3px 8px;border-radius:3px;border:1px dashed #2874f0"></b></p>
     <div class="coupon-row"><input id="couponInput" placeholder="Enter Coupon Code"><button id="cBtn" onclick="applyCoupon()">APPLY</button></div>
     <p id="couponMsg" class="success-msg"></p><p id="couponErr" class="error-msg"></p>
     <div id="pSpec" class="spec-box"></div>
-    <div style="display:flex;gap:10px;margin-bottom:10px"><button class="btn-cart" onclick="addToCart()">ADD TO CART</button><button class="btn-buy" onclick="buyNow()">BUY NOW</button></div>
+    <div class="btns"><button class="btn-cart" onclick="addToCart()">ADD TO CART</button><button class="btn-buy" onclick="buyNow()">BUY NOW</button></div>
     <p id="cartMsg" class="success-msg"></p>
   </div>
 </div>
 
 <div class="review-section">
   <div class="review-head">Ratings & Reviews</div>
-  <div style="display:flex;align-items:center;gap:10px" id="ratingSummary">
-    <div id="avgBig" style="font-size:28px;font-weight:800">0 <span style="color:#878787;font-size:18px">★</span></div>
-    <div id="avgCount" style="font-size:12px;color:#878787">0 Ratings &<br>0 Reviews</div>
+  <div class="rating-summary" id="ratingSummary">
+    <div>
+      <div id="avgBig" class="avg-big">0 <span>★</span></div>
+      <div id="avgCount" style="font-size:12px;color:#878787;margin-top:4px">0 Ratings &<br>0 Reviews</div>
+    </div>
+    <div id="barChart" style="flex:1"></div>
   </div>
 
-  <div style="margin-top:14px;background:#fff;border:1px solid #f0f0f0;border-radius:6px;padding:12px">
+  <div style="margin-top:16px;background:#fff;border:1px solid #f0f0f0;border-radius:6px;padding:12px">
     <p style="font-weight:700;font-size:13px;margin-bottom:6px">Rate this product</p>
-    <div id="starBox">
+    <div id="starBox" class="star-box">
       <span class="star" onclick="setStar(1)">★</span>
       <span class="star" onclick="setStar(2)">★</span>
       <span class="star" onclick="setStar(3)">★</span>
@@ -87,25 +112,17 @@ body{background:#fff;padding-bottom:90px;user-select:none}
       <span class="star" onclick="setStar(5)">★</span>
     </div>
     <p id="err-review" class="error-msg"></p>
-    <textarea id="reviewText" placeholder="Write your review..." style="width:100%;margin-top:10px;padding:10px;border:1px solid #e0e0e0;border-radius:4px;height:70px;outline:none"></textarea>
-
+    <textarea id="reviewText" placeholder="Write your review..." style="width:100%;margin-top:8px;padding:10px;border:1px solid #e0e0e0;border-radius:4px;height:70px;outline:none;font-size:13px"></textarea>
     <div class="upload-box">
       <p style="font-size:12px;font-weight:700;color:#2874f0">📷 Upload Product Photo (optional)</p>
       <input type="file" id="reviewPhoto" accept="image/*" onchange="previewPhoto(event)" style="margin-top:8px">
       <img id="photoPreview" style="display:none;width:80px;height:80px;object-fit:cover;border-radius:6px;margin-top:8px;border:1px solid #ddd">
     </div>
-
-    <button onclick="submitReview()" style="margin-top:12px;background:#2874f0;color:#fff;border:none;padding:10px 20px;border-radius:4px;font-weight:700;cursor:pointer;width:100%">SUBMIT REVIEW</button>
+    <button onclick="submitReview()" style="margin-top:12px;background:#2874f0;color:#fff;border:none;padding:12px 20px;border-radius:4px;font-weight:800;cursor:pointer;width:100%">SUBMIT REVIEW</button>
     <p id="reviewMsg" class="success-msg"></p>
   </div>
 
-  <div id="reviewList" style="margin-top:16px">
-    <div id="noReviewBox" style="text-align:center;padding:30px 10px;background:#fafafa;border:1px dashed #e0e0e0;border-radius:8px">
-      <div style="font-size:36px">⭐</div>
-      <p style="font-size:13px;font-weight:700;margin-top:8px">No reviews yet</p>
-      <p style="font-size:11px;color:#878787;margin-top:4px">Be the first to review this product and help others</p>
-    </div>
-  </div>
+  <div id="reviewList" style="margin-top:16px"></div>
 </div>
 
 <div class="bottom-nav">
@@ -113,319 +130,136 @@ body{background:#fff;padding-bottom:90px;user-select:none}
   <a href="profile.html"><span>👤</span><span>Account</span></a>
   <a href="cart.html"><span>🛒 Cart (<span id="cartCount">0</span>)</span></a>
 </div>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Profile - REKAVO</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,Arial,sans-serif;-webkit-tap-highlight-color:transparent}
-body{background:#f1f3f6;padding-bottom:80px}
-.profile-wrap{padding:0;background:#f1f3f6}
-.profile-top-card{background:#fff;text-align:center;padding:28px 15px 18px;border-bottom:8px solid #f1f3f6}
-.img-wrap{position:relative;width:110px;height:110px;margin:0 auto}
-.p-circle{width:110px;height:110px;background:#e9e9e9;color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:800;border:2px solid #000;overflow:hidden}
-.p-circle img{width:100%;height:100%;object-fit:cover}
-.edit-pencil{position:absolute;bottom:2px;right:2px;width:30px;height:30px;background:#000;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid #fff;cursor:pointer}
-.p-name{margin-top:14px;font-size:18px;font-weight:800;color:#000}
-.p-mobile{margin-top:3px;font-size:14px;color:#555;font-weight:500}
-.p-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;background:#fff;border-bottom:8px solid #f1f3f6}
-.p-grid-btn{border:1.5px solid #000;border-radius:8px;padding:14px 5px;text-align:center;font-size:13px;font-weight:700;background:#fff;cursor:pointer;user-select:none;white-space:nowrap}
-.p-grid-btn:active{background:#f5f5f5!important}
-.p-list{background:#fff;padding:0}
-.p-list-item{display:flex;justify-content:space-between;align-items:center;padding:16px 15px;border-bottom:1px solid #f0f0f0;font-size:14px;font-weight:600;cursor:pointer;user-select:none}
-.empty-box{background:#fff;border-radius:8px;padding:40px 20px;text-align:center;margin-top:12px}
-.page-section{position:fixed;top:0;left:0;width:100%;height:100%;background:#f1f3f6;z-index:10000;overflow-y:auto;padding-bottom:80px}
-.page-header{background:#2874f0;color:#fff;padding:12px 14px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:2}
-.input,.select{width:100%;height:44px;border:1px solid #dbdbdb;border-radius:8px;padding:0 12px;outline:none;font-size:14px;margin:5px 0 2px;background:#fff}
-.textarea{width:100%;min-height:70px;border:1px solid #dbdbdb;border-radius:8px;padding:10px 12px;outline:none;font-size:14px;margin:5px 0 2px;resize:none}
-.btn{width:100%;height:44px;background:#2874f0;color:#fff;border:none;border-radius:8px;font-weight:800;font-size:14px;cursor:pointer;margin-top:6px}
-.btn-blue{background:#2874f0}
-.btn-outline{background:#fff;color:#2874f0;border:1.5px solid #2874f0}
-.btn-danger{background:#fff;color:#ff3e6c;border:1.5px solid #ff3e6c;margin-top:8px}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;padding:8px 0;border-top:1px solid #ddd;z-index:99;height:62px}
-.bottom-nav a{text-align:center;text-decoration:none;color:#555;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;white-space:nowrap;line-height:1}
-.bottom-nav a.active{color:#2874f0}
-.hidden{display:none!important}
-.addr-card{background:#fff;border-radius:8px;padding:12px;margin-bottom:10px;border:1.5px solid #e0e0e0;display:flex;gap:12px;align-items:center}
-.addr-card.selected{border-color:#2874f0;background:#f0f7ff}
-.radio{width:20px;height:20px;border:2px solid #878787;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.radio.sel{border-color:#2874f0}.radio.sel div{width:10px;height:10px;background:#2874f0;border-radius:50%}
-.lang-item{background:#fff;padding:14px 15px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f0f0f0;cursor:pointer;font-weight:600}
-.lang-item.sel{background:#f0f7ff;color:#2874f0}
-.lang-radio{width:20px;height:20px;border:2px solid #878787;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.lang-radio.sel{border-color:#2874f0}
-.lang-radio.sel div{width:10px;height:10px;background:#2874f0;border-radius:50%}
-.form-row{display:flex;gap:8px}.form-row>div{flex:1}
-.type-chip{border:1px solid #dbdbdb;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;background:#fff}
-.type-chip.active{background:#2874f0;color:#fff;border-color:#2874f0}
-.addr-modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:10001;display:flex;align-items:center;justify-content:center;padding:14px}
-.addr-modal{background:#fff;border-radius:12px;width:100%;max-width:380px;max-height:90vh;overflow-y:auto;padding:14px;animation:pop.2s ease}
-@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
-.delete-sheet-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:10002;display:flex;align-items:flex-end;justify-content:center}
-.delete-sheet{background:#fff;border-radius:16px 16px 0 0;width:100%;max-width:420px;padding:20px 16px 24px;animation:slideUp.25s ease}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.delete-sheet h3{font-size:16px;font-weight:800;margin-bottom:6px}
-.delete-sheet p{font-size:13px;color:#666;margin-bottom:16px;line-height:18px}
-.delete-actions{display:flex;gap:10px}
-.btn-cancel{flex:1;height:44px;background:#f1f3f6;border:none;border-radius:8px;font-weight:700}
-.btn-delete-confirm{flex:1;height:44px;background:#ff3e6c;color:#fff;border:none;border-radius:8px;font-weight:800}
-</style>
-</head>
-<body>
-<div class="profile-wrap">
-  <div class="profile-top-card">
-    <div class="img-wrap"><div class="p-circle" id="pIcon">UN</div><div class="edit-pencil" onclick="document.getElementById('profileFile').click()">✏️</div><input type="file" id="profileFile" accept="image/*" style="display:none"><input type="file" id="profileFileCamera" accept="image/*" capture="user" style="display:none"></div>
-    <div class="p-name" id="pName"></div><div class="p-mobile" id="pMobile"></div>
-    <div style="display:none" id="pEmail"></div><div style="display:none"><span id="pCartCount">0</span><span id="pWishCount">0</span></div>
-  </div>
-  <div class="p-grid">
-    <div class="p-grid-btn" data-i18n="myOrders" onclick="openPage('orders')">My orders</div>
-    <div class="p-grid-btn" data-i18n="myCart" onclick="location.href='cart.html'">My Cart (<span id="pGridCart">0</span>)</div>
-    <div class="p-grid-btn" data-i18n="coupons">coupons</div>
-    <div class="p-grid-btn" data-i18n="wishlist" onclick="openPage('wishlist')">wishlist</div>
-  </div>
-  <div class="p-list">
-    <div class="p-list-item"><div><span data-i18n="emailLabel">📧 Email</span> - <span id="pEmailShow" style="color:#878787">........</span></div></div>
-    <div class="p-list-item" onclick="openPage('address')"><div data-i18n="savedAddresses">📍 Saved Addresses</div><div>›</div></div>
-    <div class="p-list-item" onclick="openPage('editprofile')"><div data-i18n="editProfile">👤 Edit profile</div><div>›</div></div>
-    <div class="p-list-item" onclick="openPage('language')"><div data-i18n="selectLanguage">A/अ Select Language</div><div>›</div></div>
-    <div class="p-list-item" onclick="openPage('help')"><div data-i18n="helpCenter">💬 help center</div><div>›</div></div>
-    <div class="p-list-item" onclick="logout()"><div data-i18n="logout">🚪 Logout</div><div>›</div></div>
-  </div>
-</div>
-<div id="page-orders" class="page-section hidden"><div class="page-header"><span onclick="closePage('orders')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="myOrdersTitle">My Orders</b></div><div id="ordersContent"></div></div>
-<div id="page-wishlist" class="page-section hidden"><div class="page-header"><span onclick="closePage('wishlist')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="myWishlistTitle">My Wishlist</b></div><div id="wishlistContent"></div></div>
-<div id="page-address" class="page-section hidden"><div class="page-header"><span onclick="closePage('address')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="myAddressesTitle">My Addresses</b></div><div id="addressContent"></div></div>
-<div id="page-language" class="page-section hidden"><div class="page-header"><span onclick="closePage('language')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="selectLanguageTitle">A/अ Select Language</b></div><div id="langContent"></div></div>
-<div id="page-editprofile" class="page-section hidden"><div class="page-header"><span onclick="closePage('editprofile')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="editProfileTitle">Edit Profile</b></div><div style="padding:14px"><div style="background:#fff;border-radius:8px;padding:20px;text-align:center"><div class="img-wrap" style="margin-bottom:12px"><div class="p-circle" id="editPicon">UN</div></div><div style="display:flex;gap:8px;justify-content:center"><button class="btn-outline btn" style="width:auto;padding:0 14px;height:36px;font-size:12px" data-i18n="changePhoto" onclick="document.getElementById('profileFile').click()">Change Photo</button><button class="btn-outline btn" style="width:auto;padding:0 14px;height:36px;font-size:12px" onclick="document.getElementById('profileFileCamera').click()">📷 Camera</button></div><button class="btn-danger btn" style="width:auto;padding:0 14px;height:36px;font-size:12px;margin-top:8px" data-i18n="deletePhoto" onclick="deletePhoto()">Delete Photo</button></div><div style="background:#fff;border-radius:8px;padding:14px;margin-top:12px"><label style="font-size:12px;font-weight:700" data-i18n="fullName">Full Name</label><input id="editName" class="input" placeholder="Enter full name"><label style="font-size:12px;font-weight:700;margin-top:8px;display:block" data-i18n="mobile">Mobile</label><input id="editMobile" class="input" placeholder="Enter mobile number"><label style="font-size:12px;font-weight:700;margin-top:8px;display:block" data-i18n="email">Email</label><input id="editEmail" class="input" placeholder="Enter email"><button class="btn btn-blue" style="margin-top:14px" data-i18n="saveProfile" onclick="saveProfile()">Save Profile</button></div></div></div>
-<div id="page-help" class="page-section hidden"><div class="page-header"><span onclick="closePage('help')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="helpTitle">Help Center</b></div><div style="padding:12px"><div style="background:#fff;border-radius:8px;padding:12px"><h4 data-i18n="contactUs">📞 Contact Us</h4><p style="font-size:12px;color:#555;margin-top:4px">Email: support@rekavo.com<br>Phone: +91 9876543210</p></div></div></div>
-<div class="bottom-nav">
-<a href="index.html"><span>🏠</span><span data-i18n="home">Home</span></a>
-<a href="profile.html" class="active"><span>👤</span><span data-i18n="account">Account</span></a>
-<a href="cart.html"><span>🛒</span><span><span data-i18n="cart">Cart</span> (<span id="cartCount">0</span>)</span></a>
-</div>
-<div id="editAddrModal" class="addr-modal-overlay hidden" onclick="if(event.target==this)closeEditModal()"><div class="addr-modal" id="editAddrModalBox"></div></div>
-<div id="deleteSheet" class="delete-sheet-overlay hidden" onclick="if(event.target==this)closeDeleteSheet()">
-  <div class="delete-sheet">
-    <h3>Confirm to delete?</h3>
-    <p>This address will be permanently deleted. This action cannot be undone.</p>
-    <div class="delete-actions">
-      <button class="btn-cancel" onclick="closeDeleteSheet()">Cancel</button>
-      <button class="btn-delete-confirm" onclick="confirmDelete()">Delete</button>
-    </div>
-  </div>
-</div>
 <script>
 const API_BASE="https://rekavo-backend.vercel.app";
-let currentUser=null;
-let selectedAddrId = localStorage.getItem('rekavo_selected_addr')||null;
-let selectedLang = localStorage.getItem('rekavo_lang')||'English';
-let pendingDeleteId = null;
-let validPinCache = {};
-const LANGUAGES=[ {code:'English',native:'English'}, {code:'Hindi',native:'हिंदी'}, {code:'Bengali',native:'বাংলা'}, {code:'Telugu',native:'తెలుగు'}, {code:'Marathi',native:'मराठी'}, {code:'Tamil',native:'தமிழ்'}, {code:'Gujarati',native:'ગુજરાતી'}, {code:'Urdu',native:'اردو'}, {code:'Kannada',native:'ಕನ್ನಡ'}, {code:'Odia',native:'ଓଡ଼ିଆ'}, {code:'Punjabi',native:'ਪੰਜਾਬੀ'}, {code:'Malayalam',native:'മലയാളം'} ];
-const INDIAN_STATES=["Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh","Uttarakhand","West Bengal","Delhi","Jammu and Kashmir","Ladakh"];
-const TRANSLATIONS={
-English:{myOrders:'My orders',myCart:'My Cart',coupons:'coupons',wishlist:'wishlist',emailLabel:'📧 Email',savedAddresses:'📍 Saved Addresses',editProfile:'👤 Edit profile',selectLanguage:'A/अ Select Language',helpCenter:'💬 help center',logout:'🚪 Logout',myOrdersTitle:'My Orders',myWishlistTitle:'My Wishlist',myAddressesTitle:'My Addresses',selectLanguageTitle:'A/अ Select Language',editProfileTitle:'Edit Profile',changePhoto:'Change Photo',deletePhoto:'Delete Photo',fullName:'Full Name',mobile:'Mobile',email:'Email',saveProfile:'Save Profile',helpTitle:'Help Center',contactUs:'📞 Contact Us',home:'Home',account:'Account',cart:'Cart',addNewAddr:'Add New Address',saveAddr:'Save Address',updateAddr:'Update Address'},
-Hindi:{myOrders:'मेरे ऑर्डर',myCart:'मेरी कार्ट',coupons:'कूपन',wishlist:'विशलिस्ट',emailLabel:'📧 ईमेल',savedAddresses:'📍 सेव्ड एड्रेस',editProfile:'👤 प्रोफाइल एडिट',selectLanguage:'A/अ भाषा चुनें',helpCenter:'💬 हेल्प सेंटर',logout:'🚪 लॉगआउट',myOrdersTitle:'मेरे ऑर्डर',myWishlistTitle:'मेरी विशलिस्ट',myAddressesTitle:'मेरे एड्रेस',selectLanguageTitle:'A/अ भाषा चुनें',editProfileTitle:'प्रोफाइल एडिट',changePhoto:'फोटो बदलें',deletePhoto:'फोटो हटाएं',fullName:'पूरा नाम',mobile:'मोबाइल',email:'ईमेल',saveProfile:'प्रोफाइल सेव करें',helpTitle:'हेल्प सेंटर',contactUs:'📞 हमसे संपर्क करें',home:'होम',account:'अकाउंट',cart:'कार्ट',addNewAddr:'नया एड्रेस जोड़ें',saveAddr:'एड्रेस सेव करें',updateAddr:'एड्रेस अपडेट करें'},
-Marathi:{myOrders:'माझे ऑर्डर',myCart:'माझी कार्ट',coupons:'कूपन',wishlist:'विशलिस्ट',emailLabel:'📧 ईमेल',savedAddresses:'📍 जतन केलेले पत्ते',editProfile:'👤 प्रोफाइल संपादित करा',selectLanguage:'A/अ भाषा निवडा',helpCenter:'💬 मदत केंद्र',logout:'🚪 लॉगआउट',myOrdersTitle:'माझे ऑर्डर',myWishlistTitle:'माझी विशलिस्ट',myAddressesTitle:'माझे पत्ते',selectLanguageTitle:'A/अ भाषा निवडा',editProfileTitle:'प्रोफाइल',changePhoto:'फोटो बदला',deletePhoto:'फोटो हटवा',fullName:'पूर्ण नाव',mobile:'मोबाइल',email:'ईमेल',saveProfile:'प्रोफाइल सेव करा',helpTitle:'मदत केंद्र',contactUs:'📞 संपर्क',home:'होम',account:'अकाउंट',cart:'कार्ट',addNewAddr:'नवीन पत्ता जोडा',saveAddr:'सेव करा',updateAddr:'अपडेट करा'},
-Bengali:{myOrders:'আমার অর্ডার',myCart:'আমার কার্ট',coupons:'কুপন',wishlist:'উইশলিস্ট',emailLabel:'📧 ইমেইল',savedAddresses:'📍 সেভ করা ঠিকানা',editProfile:'👤 প্রোফাইল এডিট',selectLanguage:'A/অ ভাষা নির্বাচন',helpCenter:'💬 হেল্প সেন্টার',logout:'🚪 লগআউট',myOrdersTitle:'আমার অর্ডার',myWishlistTitle:'উইশলিস্ট',myAddressesTitle:'আমার ঠিকানা',selectLanguageTitle:'A/অ ভাষা নির্বাচন',editProfileTitle:'প্রোফাইল',changePhoto:'ছবি বদলান',deletePhoto:'মুছুন',fullName:'পুরো নাম',mobile:'মোবাইল',email:'ইমেইল',saveProfile:'সেভ করুন',helpTitle:'হেল্প',contactUs:'📞 যোগাযোগ',home:'হোম',account:'অ্যাকাউন্ট',cart:'কার্ট',addNewAddr:'নতুন ঠিকানা',saveAddr:'সেভ করুন',updateAddr:'আপডেট করুন'},
-Telugu:{myOrders:'నా ఆర్డర్లు',myCart:'నా కార్ట్',coupons:'కూపన్లు',wishlist:'విష్‌లిస్ట్',emailLabel:'📧 ఈమెయిల్',savedAddresses:'📍 సేవ్ చేసిన చిరునామాలు',editProfile:'👤 ప్రొఫైల్',selectLanguage:'A/అ భాష ఎంచుకోండి',helpCenter:'💬 సహాయ కేంద్రం',logout:'🚪 లాగ్ అవుట్',myOrdersTitle:'నా ఆర్డర్లు',myWishlistTitle:'విష్‌లిస్ట్',myAddressesTitle:'నా చిరునామాలు',selectLanguageTitle:'A/అ భాష',editProfileTitle:'ప్రొఫైల్',changePhoto:'ఫోటో మార్చండి',deletePhoto:'తొలగించు',fullName:'పూర్తి పేరు',mobile:'మొబైల్',email:'ఈమెయిల్',saveProfile:'సేవ్ చేయండి',helpTitle:'సహాయం',contactUs:'📞 సంప్రదించండి',home:'హోమ్',account:'ఖాతా',cart:'కార్ట్',addNewAddr:'కొత్త చిరునామా',saveAddr:'సేవ్ చేయండి',updateAddr:'అప్‌డేట్ చేయండి'},
-Tamil:{myOrders:'என் ஆர்டர்கள்',myCart:'என் கார்ட்',coupons:'கூப்பன்கள்',wishlist:'விருப்பப்பட்டியல்',emailLabel:'📧 மின்னஞ்சல்',savedAddresses:'📍 சேமித்த முகவரிகள்',editProfile:'👤 சுயவிவரம்',selectLanguage:'A/அ மொழி',helpCenter:'💬 உதவி மையம்',logout:'🚪 வெளியேறு',myOrdersTitle:'என் ஆர்டர்கள்',myWishlistTitle:'விருப்பப்பட்டியல்',myAddressesTitle:'முகவரிகள்',selectLanguageTitle:'A/அ மொழி',editProfileTitle:'சுயவிவரம்',changePhoto:'புகைப்படம்',deletePhoto:'நீக்கு',fullName:'முழு பெயர்',mobile:'மொபைல்',email:'மின்னஞ்சல்',saveProfile:'சேமி',helpTitle:'உதவி',contactUs:'📞 தொடர்பு',home:'முகப்பு',account:'கணக்கு',cart:'கார்ட்',addNewAddr:'புதிய முகவரி',saveAddr:'சேமி',updateAddr:'புதுப்பி'},
-Gujarati:{myOrders:'મારા ઓર્ડર',myCart:'મારી કાર્ટ',coupons:'કૂપન',wishlist:'વિશલિસ્ટ',emailLabel:'📧 ઇમેઇલ',savedAddresses:'📍 સાચવેલા સરનામા',editProfile:'👤 પ્રોફાઇલ',selectLanguage:'A/અ ભાષા',helpCenter:'💬 મદદ',logout:'🚪 લોગઆઉટ',myOrdersTitle:'મારા ઓર્ડર',myWishlistTitle:'વિશલિસ્ટ',myAddressesTitle:'સરનામા',selectLanguageTitle:'A/અ ભાષા',editProfileTitle:'પ્રોફાઇલ',changePhoto:'ફોટો બદલો',deletePhoto:'કાઢો',fullName:'પૂરું નામ',mobile:'મોબાઇલ',email:'ઇમેઇલ',saveProfile:'સેવ કરો',helpTitle:'મદદ',contactUs:'📞 સંપર્ક',home:'હોમ',account:'એકાઉન્ટ',cart:'કાર્ટ',addNewAddr:'નવું સરનામું',saveAddr:'સેવ',updateAddr:'અપડેટ'},
-Kannada:{myOrders:'ನನ್ನ ಆರ್ಡರ್',myCart:'ನನ್ನ ಕಾರ್ಟ್',coupons:'ಕೂಪನ್',wishlist:'ವಿಷ್‌ಲಿಸ್ಟ್',emailLabel:'📧 ಇಮೇಲ್',savedAddresses:'📍 ಉಳಿಸಿದ ವಿಳಾಸ',editProfile:'👤 ಪ್ರೊಫೈಲ್',selectLanguage:'A/ಅ ಭಾಷೆ',helpCenter:'💬 ಸಹಾಯ',logout:'🚪 ಲಾಗ್ಔಟ್',myOrdersTitle:'ಆರ್ಡರ್',myWishlistTitle:'ವಿಷ್‌ಲಿಸ್ಟ್',myAddressesTitle:'ವಿಳಾಸ',selectLanguageTitle:'A/ಅ ಭಾಷೆ',editProfileTitle:'ಪ್ರೊಫೈಲ್',changePhoto:'ಫೋಟೋ',deletePhoto:'ಅಳಿಸಿ',fullName:'ಹೆಸರು',mobile:'ಮೊಬೈಲ್',email:'ಇಮೇಲ್',saveProfile:'ಸೇವ್',helpTitle:'ಸಹಾಯ',contactUs:'📞 ಸಂಪರ್ಕ',home:'ಹೋಮ್',account:'ಖಾತೆ',cart:'ಕಾರ್ಟ್',addNewAddr:'ಹೊಸ ವಿಳಾಸ',saveAddr:'ಸೇವ್',updateAddr:'ಅಪ್ಡೇಟ್'},
-Odia:{myOrders:'ମୋ ଅର୍ଡର',myCart:'ମୋ କାର୍ଟ',coupons:'କୁପନ',wishlist:'ୱିଶ',emailLabel:'📧 ଇମେଲ',savedAddresses:'📍 ଠିକଣା',editProfile:'👤 ପ୍ରୋଫାଇଲ',selectLanguage:'A/ଅ ଭାଷା',helpCenter:'💬 ସାହାଯ୍ୟ',logout:'🚪 ଲଗଆଉଟ',myOrdersTitle:'ଅର୍ଡର',myWishlistTitle:'ୱିଶ',myAddressesTitle:'ଠିକଣା',selectLanguageTitle:'A/ଅ ଭାଷା',editProfileTitle:'ପ୍ରୋଫାଇଲ',changePhoto:'ଫଟୋ',deletePhoto:'ଡିଲିଟ',fullName:'ନାମ',mobile:'ମୋବାଇଲ',email:'ଇମେଲ',saveProfile:'ସେଭ',helpTitle:'ସାହାଯ୍ୟ',contactUs:'📞 ଯୋଗାଯୋଗ',home:'ହୋମ',account:'ଖାତା',cart:'କାର୍ଟ',addNewAddr:'ନୂଆ',saveAddr:'ସେଭ',updateAddr:'ଅପଡେଟ'},
-Punjabi:{myOrders:'ਮੇਰੇ ਆਰਡਰ',myCart:'ਮੇਰੀ ਕਾਰਟ',coupons:'ਕੂਪਨ',wishlist:'ਵਿਸ਼',emailLabel:'📧 ਈਮੇਲ',savedAddresses:'📍 ਪਤੇ',editProfile:'👤 ਪ੍ਰੋਫਾਈਲ',selectLanguage:'A/ਅ ਭਾਸ਼ਾ',helpCenter:'💬 ਮਦਦ',logout:'🚪 ਲਾਗਆਉਟ',myOrdersTitle:'ਆਰਡਰ',myWishlistTitle:'ਵਿਸ਼',myAddressesTitle:'ਪਤੇ',selectLanguageTitle:'A/ਅ ਭਾਸ਼ਾ',editProfileTitle:'ਪ੍ਰੋਫਾਈਲ',changePhoto:'ਫੋਟੋ',deletePhoto:'ਹਟਾਓ',fullName:'ਨਾਮ',mobile:'ਮੋਬਾਈਲ',email:'ਈਮੇਲ',saveProfile:'ਸੇਵ',helpTitle:'ਮਦਦ',contactUs:'📞 ਸੰਪਰਕ',home:'ਹੋਮ',account:'ਅਕਾਉਂਟ',cart:'ਕਾਰਟ',addNewAddr:'ਨਵਾਂ',saveAddr:'ਸੇਵ',updateAddr:'ਅਪਡੇਟ'},
-Malayalam:{myOrders:'എന്റെ ഓർഡർ',myCart:'എന്റെ കാർട്ട്',coupons:'കൂപ്പൺ',wishlist:'വിഷ്',emailLabel:'📧 ഇമെയിൽ',savedAddresses:'📍 വിലാസം',editProfile:'👤 പ്രൊഫൈൽ',selectLanguage:'A/അ ഭാഷ',helpCenter:'💬 സഹായം',logout:'🚪 ലോഗൗട്ട്',myOrdersTitle:'ഓർഡർ',myWishlistTitle:'വിഷ്',myAddressesTitle:'വിലാസം',selectLanguageTitle:'A/അ ഭാഷ',editProfileTitle:'പ്രൊഫൈൽ',changePhoto:'ഫോട്ടോ',deletePhoto:'നീക്കം',fullName:'പേര്',mobile:'മൊബൈൽ',email:'ഇമെയിൽ',saveProfile:'സേവ്',helpTitle:'സഹായം',contactUs:'📞 ബന്ധപ്പെടുക',home:'ഹോം',account:'അക്കൗണ്ട്',cart:'കാർട്ട്',addNewAddr:'പുതിയ',saveAddr:'സേവ്',updateAddr:'അപ്ഡേറ്റ്'},
-Urdu:{myOrders:'میرے آرڈر',myCart:'میری کارٹ',coupons:'کوپن',wishlist:'وش',emailLabel:'📧 ایمیل',savedAddresses:'📍 پتے',editProfile:'👤 پروفائل',selectLanguage:'A/ا زبان',helpCenter:'💬 مدد',logout:'🚪 لاگ آؤٹ',myOrdersTitle:'آرڈر',myWishlistTitle:'وش',myAddressesTitle:'پتے',selectLanguageTitle:'A/ا زبان',editProfileTitle:'پروفائل',changePhoto:'فوٹو',deletePhoto:'ہٹاؤ',fullName:'نام',mobile:'موبائل',email:'ایمیل',saveProfile:'سیو',helpTitle:'مدد',contactUs:'📞 رابطہ',home:'ہوم',account:'اکاؤنٹ',cart:'کارٹ',addNewAddr:'نیا',saveAddr:'سیو',updateAddr:'اپڈیٹ'}
-};
-function getTrans(k){let t=TRANSLATIONS[selectedLang]||TRANSLATIONS['English'];return t[k]||TRANSLATIONS['English'][k]||k;}
-function applyTranslations(){
- let t=TRANSLATIONS[selectedLang]||TRANSLATIONS['English'];
- let pGridEl=document.getElementById('pGridCart');
- let cartEl=document.getElementById('cartCount');
- let last = localStorage.getItem('rekavo_last_cart') || '0';
- let savedGridCart = (pGridEl && pGridEl.innerText && pGridEl.innerText!=='0')? pGridEl.innerText : last;
- let savedCartCount = (cartEl && cartEl.innerText && cartEl.innerText!=='0')? cartEl.innerText : last;
+const params = new URLSearchParams(location.search);
+let productId = params.get('id') || localStorage.getItem('rekavo_last_pid') || 'demo';
+let cat = params.get('cat') || '';
+let currentProduct = null;
+let selectedRating = 0;
+let reviews = [];
+let reviewPhotoBase64 = "";
 
- document.querySelectorAll('[data-i18n]').forEach(el=>{
-  let k=el.getAttribute('data-i18n');
-  if(el.id==='pGridCart'||el.id==='cartCount')return;
-  if(t[k]){
-   if(k==='myCart'){
-     el.innerHTML=`${t[k]} (<span id="pGridCart">${savedGridCart}</span>)`;
-   } else if(el.closest('.bottom-nav')){
-   } else el.innerText=t[k];
-  }
- });
- document.querySelectorAll('.bottom-nav [data-i18n="home"]').forEach(e=>e.innerText=getTrans('home'));
- document.querySelectorAll('.bottom-nav [data-i18n="account"]').forEach(e=>e.innerText=getTrans('account'));
- document.querySelectorAll('.bottom-nav [data-i18n="cart"]').forEach(e=>e.innerText=getTrans('cart'));
- if(document.getElementById('pGridCart')) document.getElementById('pGridCart').innerText = savedGridCart;
- if(document.getElementById('cartCount')) document.getElementById('cartCount').innerText = savedCartCount;
-}
-function renderLanguage(){
- let el=document.getElementById('langContent');
- let h=`<div style="background:#fff;border-radius:8px;overflow:hidden">`;
- LANGUAGES.forEach(l=>{
-  let isSel=(selectedLang===l.code);
-  h+=`<div class="lang-item ${isSel?'sel':''}" onclick="setLang('${l.code}')"><div style="display:flex;align-items:center;gap:10px"><div class="lang-radio ${isSel?'sel':''}"><div></div></div><div><div style="font-size:14px">${l.native}</div><div style="font-size:11px;color:#878787">${l.code}</div></div></div></div>`;
- });
- h+=`</div>`;
- el.innerHTML=h;
-}
-function setLang(code){
-  localStorage.setItem('rekavo_lang', code);
-  selectedLang = code;
-  applyTranslations();
-  renderLanguage();
-  setTimeout(()=>{
-    document.getElementById('page-language').classList.add('hidden');
-    if(location.hash === '#language'){
-      history.replaceState(null,'', location.pathname + location.search);
+async function loadProduct(){
+  try{
+    let res = await fetch(`${API_BASE}/products/get?id=${productId}`);
+    if(res.ok){
+      let data = await res.json();
+      if(Array.isArray(data)) currentProduct = data.find(p=> (p.id==productId || p._id==productId)) || data[0];
+      else currentProduct = data;
     }
-  }, 300);
-}
-function openPage(type, push=true){
- if(!currentUser){alert('Please login first');return;}
- document.querySelectorAll('.page-section').forEach(s=>s.classList.add('hidden'));
- document.getElementById(`page-${type}`).classList.remove('hidden');
- if(push){ history.pushState({page:type}, '', '#'+type); }
- if(type==='orders')renderOrders(); if(type==='wishlist')renderWishlist(); if(type==='address')renderAddress(); if(type==='language')renderLanguage(); if(type==='editprofile')fillEditProfile();
-}
-function closePage(type){ if(location.hash){ history.back(); } else { document.getElementById(`page-${type}`).classList.add('hidden'); } }
-function getUid(){return currentUser?(currentUser.user_id||currentUser.id):null;}
-async function renderOrders(){let el=document.getElementById('ordersContent');el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';try{let uid=getUid();let res=await fetch(`${API_BASE}/orders/get?user_id=${uid}`);let orders=await res.json();if(!Array.isArray(orders)||orders.length===0){el.innerHTML=`<div class="empty-box"><h3>📦 No orders</h3></div>`;return;}let html=`<div style="padding:12px">`;orders.forEach(o=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px"><b>Order #${o.order_id||o.id}</b><p style="font-size:12px">₹${o.amount||o.total}</p></div>`;});el.innerHTML=html+`</div>`;}catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}}
-async function renderWishlist(){let el=document.getElementById('wishlistContent');el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';try{let uid=getUid();let res=await fetch(`${API_BASE}/wishlist/get?user_id=${uid}`);let wish=await res.json();if(!Array.isArray(wish)||wish.length===0){el.innerHTML=`<div class="empty-box"><h3>❤️ Your wishlist is empty</h3></div>`;return;}let html=`<div style="padding:12px">`;wish.forEach(w=>{html+=`<div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;gap:10px"><img src="${w.image||''}" style="width:50px;height:50px"><div style="flex:1"><b style="font-size:13px">${w.name}</b><p>₹${w.price}</p></div></div>`;});el.innerHTML=html+`</div>`;}catch(e){el.innerHTML=`<div class="empty-box"><h3>Error</h3></div>`;}}
-function addressFormHTML(prefix, data={}){
- let stateOpts=`<option value="">Select State</option>`+INDIAN_STATES.map(s=>`<option value="${s}" ${(data.state||'').toLowerCase()===s.toLowerCase()?'selected':''}>${s}</option>`).join('');
- return `<div class="form-row"><div><label style="font-size:11px;font-weight:700">Full Name *</label><input id="${prefix}Name" class="input" placeholder="Enter full name" value="${data.full_name||''}"></div><div><label style="font-size:11px;font-weight:700">Mobile *</label><input id="${prefix}Phone" class="input" placeholder="Enter 10-digit mobile" value="${data.phone||''}"></div></div><label style="font-size:11px;font-weight:700">Alternate Phone</label><input id="${prefix}AltPhone" class="input" placeholder="Enter alternate phone (optional)" value="${data.alt_phone||''}"><div class="form-row"><div><label style="font-size:11px;font-weight:700">Pincode *</label><div style="position:relative"><input id="${prefix}Pin" class="input" placeholder="Enter 6-digit pincode" value="${data.pincode||''}" maxlength="6" inputmode="numeric" oninput="checkPinLive('${prefix}')" style="padding-right:85px"><span id="${prefix}PinMsg" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:800;display:none"></span></div></div><div><label style="font-size:11px;font-weight:700">City *</label><input id="${prefix}City" class="input" placeholder="Enter city name" value="${data.city||''}"></div></div><label style="font-size:11px;font-weight:700">State *</label><select id="${prefix}State" class="select">${stateOpts}</select><label style="font-size:11px;font-weight:700">House No, Building Name *</label><input id="${prefix}Line1" class="input" placeholder="Enter house no, building name" value="${(data.line1||data.full_address||'').replace(/"/g,'&quot;')}"><label style="font-size:11px;font-weight:700">Area, Street, Sector</label><textarea id="${prefix}Line2" class="textarea" placeholder="Enter area, colony, street">${data.line2||data.locality||''}</textarea><label style="font-size:11px;font-weight:700">Landmark</label><input id="${prefix}Landmark" class="input" placeholder="Enter nearby landmark" value="${(data.landmark||'').replace(/"/g,'&quot;')}"><label style="font-size:11px;font-weight:700">Address Type</label><div style="display:flex;gap:8px;margin:6px 0"><div class="type-chip ${(!data.type||data.type==='Home')?'active':''}" id="${prefix}TypeHome" onclick="setAddrType('${prefix}','Home')">Home</div><div class="type-chip ${data.type==='Office'?'active':''}" id="${prefix}TypeOffice" onclick="setAddrType('${prefix}','Office')">Office</div></div><input type="hidden" id="${prefix}Type" value="${data.type||'Home'}">`;
-}
-function setAddrType(prefix,t){document.getElementById(prefix+'Type').value=t;document.getElementById(prefix+'TypeHome').classList.toggle('active',t==='Home');document.getElementById(prefix+'TypeOffice').classList.toggle('active',t==='Office');}
-async function renderAddress(){
- let el=document.getElementById('addressContent');el.innerHTML='<div style="padding:20px;text-align:center">Loading...</div>';
- try{
-  let uid=getUid();let res=await fetch(`${API_BASE}/address/get?user_id=${uid}`);let addr=await res.json();
-  if(!Array.isArray(addr)||addr.length===0){
-   el.innerHTML=`<div style="padding:12px"><div style="background:#fff;border-radius:8px;padding:14px"><h3 style="font-size:14px;margin-bottom:10px">${getTrans('addNewAddr')}</h3>${addressFormHTML('new')}<button class="btn btn-blue" onclick="addNewAddress()">${getTrans('saveAddr')}</button></div></div>`;return;
+  }catch(e){}
+  if(!currentProduct){
+    let all = JSON.parse(localStorage.getItem('rekavo_products')||'[]');
+    currentProduct = all.find(p=> p.id==productId) || all[0] || {
+      id: productId, name: "REKAVO Wireless Earbuds", price: 1499, old_price: 2999, discount: "50% off", coupon: "REKAVO50",
+      images: ["https://via.placeholder.com/400x400?text=REKAVO"], spec: "Premium Sound\\nLong Battery\\nFast Charging"
+    };
   }
-  let html=`<div style="padding:12px">`;
-  addr.forEach((a,i)=>{
-   let aid=a.id||a._id||a.address_id||i;
-   let isSel=(selectedAddrId==aid)?'selected':'';let radioSel=(selectedAddrId==aid)?'sel':'';
-   let fullAddr=`${a.line1||a.full_address||''} ${a.line2||''} ${a.landmark?'('+a.landmark+')':''}, ${a.city||''}, ${a.state||''} - ${a.pincode||''}`;
-   html+=`<div class="addr-card ${isSel}"><div class="radio ${radioSel}" onclick="selectAddress('${aid}')"><div></div></div><div style="flex:1" onclick="selectAddress('${aid}')"><b style="font-size:13px">${a.full_name} - ${a.type||'Home'}</b><p style="font-size:12px;color:#555;margin-top:2px">${a.phone}${a.alt_phone?' • '+a.alt_phone:''}</p><p style="font-size:12px;color:#222;margin-top:4px;line-height:16px">${fullAddr}</p></div><div style="font-size:12px;color:#2874f0;font-weight:700;cursor:pointer;min-width:45px;min-height:35px;display:flex;align-items:center;justify-content:center;border-radius:6px" onclick="openEditModal('${aid}')">Edit</div></div>`;
+  renderProduct();
+}
+function renderProduct(){
+  document.getElementById('pName').innerText = currentProduct.name || currentProduct.title || "Product";
+  document.getElementById('pPrice').innerText = "₹"+(currentProduct.price||currentProduct.new_price||0);
+  document.getElementById('pOld').innerText = currentProduct.old_price? "₹"+currentProduct.old_price : (currentProduct.mrp? "₹"+currentProduct.mrp : "");
+  document.getElementById('pOff').innerText = currentProduct.discount || currentProduct.off || "";
+  document.getElementById('pCoupon').innerText = currentProduct.coupon || "REKAVO50";
+  document.getElementById('pSpec').innerText = currentProduct.spec || currentProduct.description || "No details";
+  let imgs = currentProduct.images || currentProduct.image? (Array.isArray(currentProduct.images)?currentProduct.images:[currentProduct.image]) : [];
+  if(imgs.length==0) imgs = [currentProduct.img||""];
+  document.getElementById('mainImg').src = imgs[0]||"";
+  let th = document.getElementById('thumbs');
+  th.innerHTML = "";
+  imgs.forEach((im,i)=>{
+    let img = document.createElement('img');
+    img.src = im;
+    if(i==0) img.classList.add('active');
+    img.onclick = ()=>{ document.getElementById('mainImg').src = im; document.querySelectorAll('#thumbs img').forEach(e=>e.classList.remove('active')); img.classList.add('active'); };
+    th.appendChild(img);
   });
-  html+=`<div style="background:#fff;border-radius:8px;padding:14px;margin-top:10px"><h3 style="font-size:14px;margin-bottom:8px">+ ${getTrans('addNewAddr')}</h3>${addressFormHTML('new')}<button class="btn btn-blue" onclick="addNewAddress()">+ ${getTrans('addNewAddr')}</button></div></div>`;
-  el.innerHTML=html;
-  window._addrCache=addr;
- }catch(e){el.innerHTML=`<div class="empty-box"><h3>Error loading address</h3></div>`;}
+  let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
+  document.getElementById('cartCount').innerText = cart.reduce((s,i)=>s+(i.qty||1),0);
 }
-function selectAddress(id){selectedAddrId=id;localStorage.setItem('rekavo_selected_addr',id);renderAddress();}
-function openEditModal(id){
- let addr=(window._addrCache||[]).find((a,i)=>{let aid=a.id||a._id||a.address_id||i;return aid==id;});
- if(!addr)return;
- let box=document.getElementById('editAddrModalBox');
- box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><b style="font-size:15px">Edit Address</b><span onclick="closeEditModal()" style="font-size:20px;cursor:pointer">✕</span></div>${addressFormHTML('ea',addr)}<button class="btn btn-blue" onclick="saveEditAddress('${id}')">${getTrans('updateAddr')}</button><button class="btn btn-danger" onclick="showDeleteSheet('${id}')">Delete Address</button>`;
- document.getElementById('editAddrModal').classList.remove('hidden');
+function setStar(n){
+  selectedRating = n;
+  document.querySelectorAll('#starBox.star').forEach((s,i)=>{ s.classList.toggle('active', i < n); });
+  document.getElementById('err-review').classList.remove('show');
 }
-function closeEditModal(){document.getElementById('editAddrModal').classList.add('hidden');}
-function showDeleteSheet(id){ pendingDeleteId=id; document.getElementById('deleteSheet').classList.remove('hidden'); }
-function closeDeleteSheet(){ document.getElementById('deleteSheet').classList.add('hidden'); pendingDeleteId=null; }
-async function confirmDelete(){
- if(!pendingDeleteId) return;
- let id=pendingDeleteId; let uid=getUid();
- try{await fetch(`${API_BASE}/address/delete`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,address_id:id,id:id})});}catch(e){}
- closeDeleteSheet(); closeEditModal(); renderAddress();
+function previewPhoto(e){
+  let file = e.target.files[0];
+  if(!file) return;
+  let reader = new FileReader();
+  reader.onload = ev=>{
+    reviewPhotoBase64 = ev.target.result;
+    let pr = document.getElementById('photoPreview');
+    pr.src = reviewPhotoBase64;
+    pr.style.display='block';
+  };
+  reader.readAsDataURL(file);
 }
-function isValidPincodeFormat(pin){ return /^[1-9][0-9]{5}$/.test(pin); }
-async function checkPinLive(p){
- let pin=document.getElementById(p+'Pin').value.trim();
- let msg=document.getElementById(p+'PinMsg');
- if(!pin){ msg.style.display='none'; validPinCache[p]=null; return; }
- if(!isValidPincodeFormat(pin)){ msg.style.display='block'; msg.innerText='✕ Invalid'; msg.style.color='#ff3e6c'; validPinCache[p]=false; return; }
- msg.style.display='block'; msg.innerText='Checking...'; msg.style.color='#878787';
- try{
-   let res=await fetch(`https://api.postalpincode.in/pincode/${pin}`);
-   let data=await res.json();
-   if(data[0].Status==='Success'){
-     msg.innerText='✓ Verified'; msg.style.color='#00b578'; validPinCache[p]=true;
-     let po=data[0].PostOffice[0];
-     let cityInput=document.getElementById(p+'City');
-     let stateInput=document.getElementById(p+'State');
-     if(cityInput &&!cityInput.value) cityInput.value=po.District;
-     if(stateInput){ for(let opt of stateInput.options){ if(opt.value.toLowerCase()===po.State.toLowerCase()){ opt.selected=true; break; } } }
-   } else { msg.innerText='✕ Not Found'; msg.style.color='#ff3e6c'; validPinCache[p]=false; }
- }catch(e){ msg.innerText='✓ Verified'; msg.style.color='#00b578'; validPinCache[p]=true; }
+async function loadReviews(){
+  try{
+    let res = await fetch(`${API_BASE}/reviews/get?product_id=${productId}`);
+    if(res.ok){
+      let data = await res.json();
+      if(Array.isArray(data)){ reviews = data; if(reviews.length==0){ let local = JSON.parse(localStorage.getItem('rekavo_reviews_'+productId)||'[]'); if(local.length>0) reviews = local; } renderReviews(); return; }
+    }
+  }catch(e){}
+  reviews = JSON.parse(localStorage.getItem('rekavo_reviews_'+productId)||'[]');
+  renderReviews();
 }
-function validateFields(p){
- let fn=document.getElementById(p+'Name').value.trim();
- let ph=document.getElementById(p+'Phone').value.trim();
- let pin=document.getElementById(p+'Pin').value.trim();
- let city=document.getElementById(p+'City').value.trim();
- let state=document.getElementById(p+'State').value.trim();
- let l1=document.getElementById(p+'Line1').value.trim();
- if(!fn) return 'Full Name is required';
- if(!ph) return 'Mobile is required';
- if(!pin) return 'Pincode is required';
- if(!isValidPincodeFormat(pin)) return 'Pincode 6 digit ka hona chahiye (ex: 462022)';
- if(validPinCache[p]===false) return 'Ye Pincode India me exist nahi karta';
- if(!city) return 'City is required';
- if(!state) return 'State is required';
- if(!l1) return 'House No / Building Name is required';
- return null;
+function calculateRating(){
+  if(reviews.length==0) return {avg:0, count:0, dist:{1:0,2:0,3:0,4:0,5:0}};
+  let sum = reviews.reduce((s,r)=> s + (parseInt(r.rating)||0),0);
+  let avg = sum / reviews.length;
+  let dist = {1:0,2:0,3:0,4:0,5:0};
+  reviews.forEach(r=>{ let rt=parseInt(r.rating); if(dist[rt]!==undefined) dist[rt]++; });
+  return {avg: avg, count: reviews.length, dist: dist};
 }
-async function saveEditAddress(id){
- let p='ea'; let err=validateFields(p); if(err){alert(err);return;}
- let fn=document.getElementById(p+'Name').value.trim();let ph=document.getElementById(p+'Phone').value.trim();let alt=document.getElementById(p+'AltPhone').value.trim();let pin=document.getElementById(p+'Pin').value.trim();let city=document.getElementById(p+'City').value.trim();let state=document.getElementById(p+'State').value.trim();let l1=document.getElementById(p+'Line1').value.trim();let l2=document.getElementById(p+'Line2').value.trim();let lm=document.getElementById(p+'Landmark').value.trim();let typ=document.getElementById(p+'Type').value;
- let uid=getUid();
- try{let res=await fetch(`${API_BASE}/address/update`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,address_id:id,id:id,full_name:fn,phone:ph,alt_phone:alt,pincode:pin,city:city,state:state,line1:l1,line2:l2,landmark:lm,type:typ,full_address:l1,locality:l2})});if(!res.ok)throw new Error();}
- catch(err){try{await fetch(`${API_BASE}/address/delete`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,address_id:id,id:id})});}catch(e){}await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:currentUser.email,full_name:fn,phone:ph,alt_phone:alt,pincode:pin,city:city,state:state,line1:l1,line2:l2,landmark:lm,type:typ,full_address:l1,locality:l2})});}
- closeEditModal();renderAddress();
-}
-async function addNewAddress(){
- let p='new'; let err=validateFields(p); if(err){alert(err);return;}
- let fn=document.getElementById(p+'Name').value.trim();let ph=document.getElementById(p+'Phone').value.trim();let alt=document.getElementById(p+'AltPhone').value.trim();let pin=document.getElementById(p+'Pin').value.trim();let city=document.getElementById(p+'City').value.trim();let state=document.getElementById(p+'State').value.trim();let l1=document.getElementById(p+'Line1').value.trim();let l2=document.getElementById(p+'Line2').value.trim();let lm=document.getElementById(p+'Landmark').value.trim();let typ=document.getElementById(p+'Type').value;
- let uid=getUid();await fetch(`${API_BASE}/address/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,email:currentUser.email,full_name:fn,phone:ph,alt_phone:alt,pincode:pin,city:city,state:state,line1:l1,line2:l2,landmark:lm,type:typ,full_address:l1,locality:l2})});renderAddress();
-}
-function fillEditProfile(){document.getElementById('editName').value=currentUser.name||'';document.getElementById('editMobile').value=currentUser.mobile||currentUser.phone||'';document.getElementById('editEmail').value=currentUser.email||'';let circle=document.getElementById('editPicon');let savedPhoto=localStorage.getItem('rekavo_profile_photo');if(savedPhoto){circle.innerHTML=`<img src="${savedPhoto}">`;}else{circle.innerText=getInitials(currentUser.name);}}
-async function saveProfile(){let n=document.getElementById('editName').value.trim();let m=document.getElementById('editMobile').value.trim();let e=document.getElementById('editEmail').value.trim();if(!n){alert('Name required');return;}currentUser.name=n;currentUser.mobile=m;currentUser.email=e;currentUser.phone=m;localStorage.setItem('rekavo_user',JSON.stringify(currentUser));document.getElementById('pName').innerText=n;document.getElementById('pMobile').innerText=m?'+91 '+m:'';document.getElementById('pEmailShow').innerText=e||'........';document.getElementById('pIcon').innerText=getInitials(n);let savedPhoto=localStorage.getItem('rekavo_profile_photo');if(savedPhoto){document.getElementById('pIcon').innerHTML=`<img src="${savedPhoto}">`;}try{let uid=getUid();await fetch(`${API_BASE}/user/update`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,name:n,mobile:m,phone:m,email:e})});}catch(err){}closePage('editprofile');}
-function deletePhoto(){localStorage.removeItem('rekavo_profile_photo');document.getElementById('pIcon').innerText=getInitials(currentUser.name);let ep=document.getElementById('editPicon');if(ep)ep.innerText=getInitials(currentUser.name);}
-function getInitials(name){if(!name)return"UN";let parts=name.trim().split(" ").filter(Boolean);if(parts.length>=2)return(parts[0][0]+parts[1][0]).toUpperCase();return parts[0].substring(0,2).toUpperCase();}
-function logout(){localStorage.removeItem('rekavo_user');localStorage.removeItem('rekavo_profile_photo');localStorage.removeItem('rekavo_cart');localStorage.removeItem('rekavo_wishlist');location.href='account.html';}
-function handlePhotoFile(e){let file=e.target.files[0];if(!file)return;let reader=new FileReader();reader.onload=function(ev){let base64=ev.target.result;localStorage.setItem('rekavo_profile_photo',base64);document.getElementById('pIcon').innerHTML=`<img src="${base64}">`;let ep=document.getElementById('editPicon');if(ep)ep.innerHTML=`<img src="${base64}">`;};reader.readAsDataURL(file);}
-document.getElementById('profileFile').addEventListener('change',handlePhotoFile);
-document.getElementById('profileFileCamera').addEventListener('change',handlePhotoFile);
-window.addEventListener('popstate', function(e){if(e.state && e.state.page){openPage(e.state.page, false);}else if(location.hash){let type=location.hash.replace('#','');if(document.getElementById('page-'+type)){openPage(type, false);}}else{document.querySelectorAll('.page-section').forEach(s=>s.classList.add('hidden'));}});
-async function updateCountsReal(){
- try{
-  let uid=getUid(); if(!uid) return;
-  let [cr,wr]=await Promise.all([fetch(`${API_BASE}/cart/get?user_id=${uid}`),fetch(`${API_BASE}/wishlist/get?user_id=${uid}`)]);
-  let c=await cr.json(); let w=await wr.json();
-  if(Array.isArray(c)){
-   let cnt=c.reduce((s,i)=>s+(i.qty||1),0);
-   localStorage.setItem('rekavo_last_cart', cnt);
-   document.getElementById('cartCount').innerText=cnt;
-   if(document.getElementById('pGridCart')) document.getElementById('pGridCart').innerText=cnt;
-   document.getElementById('pCartCount').innerText=cnt;
+function renderReviews(){
+  let calc = calculateRating();
+  let avg = calc.avg; let count = calc.count;
+  let badge = document.getElementById('pRatingBadge');
+  badge.innerText = (avg>0? avg.toFixed(1) : "0") + " ★";
+  badge.style.background = avg==0? "#878787" : avg>=4? "#26a541" : avg>=3? "#ff9f00" : "#ff6161";
+  document.getElementById('pRatingCount').innerText = `(${count} Ratings)`;
+  document.getElementById('avgBig').innerHTML = `${avg>0? avg.toFixed(1):"0"} <span>★</span>`;
+  document.getElementById('avgCount').innerHTML = `${count} Ratings &<br>${count} Reviews`;
+  let barH = "";
+  for(let i=5;i>=1;i--){
+    let c = calc.dist[i]||0; let pct = count>0? (c/count*100) : 0;
+    barH += `<div class="bar-row"><span>${i} ★</span><div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div><span>${c}</span></div>`;
   }
-  if(Array.isArray(w)){ document.getElementById('pWishCount').innerText=w.length; }
- }catch(e){}
+  document.getElementById('barChart').innerHTML = barH;
+  let list = document.getElementById('reviewList');
+  if(count==0){
+    list.innerHTML = `<div style="text-align:center;padding:30px 10px;background:#fafafa;border:1px dashed #e0e0e0;border-radius:8px"><div style="font-size:36px">⭐</div><p style="font-size:13px;font-weight:700;margin-top:8px">No reviews yet</p><p style="font-size:11px;color:#878787;margin-top:4px">Be the first to review this product and help others</p></div>`;
+    return;
+  }
+  let html = "";
+  reviews.slice().reverse().forEach(r=>{
+    html+=`<div class="review-card"><div class="review-card-top"><span class="review-star-badge">${r.rating} ★</span><span style="font-size:11px;color:#878787">${new Date(r.created_at||Date.now()).toLocaleDateString()}</span></div><p class="review-text"><b>${r.user_name||"User"}</b> - ${r.text||r.comment||""}</p>${r.photo?`<img src="${r.photo}" class="review-photo">`:""}</div>`;
+  });
+  list.innerHTML = html;
 }
-(function(){
- let u=localStorage.getItem('rekavo_user');if(!u){location.href='account.html';return;}
- currentUser=JSON.parse(u);currentUser.user_id=currentUser.user_id||currentUser.id;
- document.getElementById('pName').innerText=currentUser.name||'User Name';
- document.getElementById('pMobile').innerText=currentUser.mobile?'+91 '+currentUser.mobile:currentUser.phone?'+91 '+currentUser.phone:'';
- document.getElementById('pEmail').innerText=currentUser.email||'';
- document.getElementById('pEmailShow').innerText=currentUser.email||'........';
- let circle=document.getElementById('pIcon');let savedPhoto=localStorage.getItem('rekavo_profile_photo');if(savedPhoto){circle.innerHTML=`<img src="${savedPhoto}">`;}else{circle.innerText=getInitials(currentUser.name);}
- applyTranslations();
- updateCountsReal();
- if(location.hash){let type=location.hash.replace('#','');if(document.getElementById('page-'+type)){openPage(type, false);}}
-})();
+async function submitReview(){
+  if(selectedRating==0){ let er = document.getElementById('err-review'); er.innerText = "Please select rating star"; er.classList.add('show'); return; }
+  let text = document.getElementById('reviewText').value.trim();
+  if(!text){ let er = document.getElementById('err-review'); er.innerText = "Please write review text"; er.classList.add('show'); return; }
+  let user = JSON.parse(localStorage.getItem('rekavo_user')||'{}');
+  let newReview = { product_id: productId, rating: selectedRating, text: text, comment: text, photo: reviewPhotoBase64, user_name: user.name || "REKAVO User", user_id: user.user_id || user.id || "guest", created_at: new Date().toISOString() };
+  reviews.push(newReview);
+  localStorage.setItem('rekavo_reviews_'+productId, JSON.stringify(reviews));
+  renderReviews();
+  document.getElementById('reviewText').value=""; document.getElementById('reviewPhoto').value=""; document.getElementById('photoPreview').style.display='none'; reviewPhotoBase64=""; setStar(0); selectedRating=0;
+  let msg = document.getElementById('reviewMsg'); msg.innerText = "Review submitted successfully!"; msg.classList.add('show'); setTimeout(()=>msg.classList.remove('show'),2000);
+  try{ await fetch(`${API_BASE}/reviews/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(newReview)}); }catch(e){}
+}
+function liveSearch(v){ if(!v) {document.getElementById('searchResults').classList.remove('show'); return;} let all = JSON.parse(localStorage.getItem('rekavo_products')||'[]'); let f = all.filter(p=> (p.name||"").toLowerCase().includes(v.toLowerCase())).slice(0,6); let el = document.getElementById('searchResults'); if(f.length==0){ el.classList.remove('show'); return;} el.innerHTML = f.map(p=> `<div class="sr-item" onclick="location.href='product.shtml?id=${p.id||p._id}'"><img src="${(p.images? p.images[0]: p.image)||''}" style="width:40px;height:40px;object-fit:contain"><span style="font-size:13px">${p.name}</span></div>`).join(''); el.classList.add('show'); }
+function applyCoupon(){ let inp = document.getElementById('couponInput').value.trim().toUpperCase(); let real = (currentProduct.coupon||"REKAVO50").toUpperCase(); let err = document.getElementById('couponErr'); let ok = document.getElementById('couponMsg'); err.classList.remove('show'); ok.classList.remove('show'); if(!inp){ err.innerText="Enter coupon code"; err.classList.add('show'); return; } if(inp==real){ ok.innerText = "Coupon Applied! Extra discount unlocked 🎉"; ok.classList.add('show'); let price = parseInt(currentProduct.price||0); let newPrice = Math.floor(price * 0.8); document.getElementById('pPrice').innerText = "₹"+newPrice; document.getElementById('pOff').innerText = " (Coupon Applied)"; }else{ err.innerText="Invalid coupon code"; err.classList.add('show'); } }
+function addToCart(){ let cart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]'); let ex = cart.find(i=> (i.id||i.product_id)==productId); if(ex) ex.qty = (ex.qty||1)+1; else cart.push({id:productId, product_id:productId, name: currentProduct.name, price: currentProduct.price, image: currentProduct.images? currentProduct.images[0]: currentProduct.image, qty:1}); localStorage.setItem('rekavo_cart', JSON.stringify(cart)); document.getElementById('cartCount').innerText = cart.reduce((s,i)=>s+(i.qty||1),0); let m = document.getElementById('cartMsg'); m.innerText="Added to cart!"; m.classList.add('show'); setTimeout(()=>m.classList.remove('show'),1500); }
+function buyNow(){ addToCart(); location.href='cart.html'; }
+loadProduct(); loadReviews();
 </script>
 </body>
 </html>
