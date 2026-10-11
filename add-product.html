@@ -209,10 +209,23 @@ label{font-size:11px;font-weight:700;margin-top:10px;display:block;color:#333;te
 
 <script>
 const API_BASE="https://rekavo-backend.vercel.app";
-let mainImageBase64=null;
-let galleryImages=[];
-let attributes=[]; // [{name:"Color", values:["Black","White"]}]
-let variants=[]; // [{combo:{Color:"Black",Size:"M"}, price:999, stock:10, sku:""}]
+
+// --- PERFECT METHOD: R2 pe image upload (Base64 nahi) ---
+async function uploadToR2(file){
+  // Backend se presigned URL lo
+  let r = await fetch(`${API_BASE}/upload-url?filename=${encodeURIComponent(file.name)}&type=${encodeURIComponent(file.type)}`);
+  if(!r.ok) throw new Error('Failed to get upload URL');
+  let d = await r.json();
+  // File ko R2 pe PUT karo
+  let up = await fetch(d.uploadUrl, {method:'PUT', body:file, headers:{'Content-Type':file.type}});
+  if(!up.ok) throw new Error('R2 upload failed');
+  return d.publicUrl; // https://...r2.dev/products/...
+}
+
+let mainImageBase64=null; // ab isme URL store hoga, Base64 nahi
+let galleryImages=[]; // ab isme URLs store honge
+let attributes=[];
+let variants=[];
 let specs=[];
 
 const SUB_CATS={
@@ -249,25 +262,42 @@ function setProductType(type){
   document.getElementById('simpleStockBox').classList.toggle('hidden',type==='variable');
   document.getElementById('variableBox').classList.toggle('hidden',type==='simple');
 }
-function handleMain(input){
+
+// --- CHANGE 2: Perfect handleMain ---
+async function handleMain(input){
   let file=input.files[0]; if(!file) return;
-  let reader=new FileReader(); reader.onload=e=>{
-    mainImageBase64=e.target.result;
-    document.getElementById('mainBox').innerHTML=`<img src="${mainImageBase64}"><div class="del" style="position:absolute;top:6px;right:6px" onclick="event.stopPropagation();clearMain()">✕</div>`;
-  }; reader.readAsDataURL(file);
+  try{
+    document.getElementById('mainBox').innerHTML='<span style="font-size:12px;font-weight:700">Uploading to R2...</span>';
+    let url = await uploadToR2(file);
+    mainImageBase64 = url;
+    document.getElementById('mainBox').innerHTML=`<img src="${url}"><div style="position:absolute;top:6px;right:6px;background:#000;color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px" onclick="event.stopPropagation();clearMain()">✕</div>`;
+    showToast('✅ Main image uploaded');
+  }catch(e){
+    showToast('❌ Image upload failed: '+e.message, true);
+    clearMain();
+  }
 }
 function clearMain(){ mainImageBase64=null; document.getElementById('mainBox').innerHTML='<span style="font-size:28px">📷</span><span style="font-size:12px;margin-top:4px">Click to Upload Main Image</span>'; }
-function handleGallery(input){
-  let files=Array.from(input.files); files.forEach(file=>{
-    let reader=new FileReader(); reader.onload=e=>{
-      galleryImages.push(e.target.result); renderGallery();
-    }; reader.readAsDataURL(file);
-  });
+
+async function handleGallery(input){
+  let files=Array.from(input.files);
+  for(let file of files){
+    if(galleryImages.length>=8) break;
+    try{
+      showToast('Uploading gallery...');
+      let url = await uploadToR2(file);
+      galleryImages.push(url);
+      renderGallery();
+    }catch(e){
+      showToast('❌ Gallery upload failed: '+e.message, true);
+    }
+  }
+  showToast('✅ Gallery uploaded');
 }
 function renderGallery(){
   let grid=document.getElementById('galleryGrid');
   let html=''; galleryImages.forEach((img,i)=>{
-    html+=`<div class="g-item"><img src="${img}"><div class="del" onclick="removeGallery(${i})">✕</div></div>`;
+    html+=`<div class="g-item"><img src="${img}"><div class="del" style="position:absolute;top:2px;right:2px;background:#000;color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px" onclick="removeGallery(${i})">✕</div></div>`;
   });
   if(galleryImages.length<8) html+=`<div class="g-item" onclick="document.getElementById('galleryFile').click()">＋</div>`;
   grid.innerHTML=html;
@@ -373,7 +403,10 @@ async function saveProduct(statusFromBtn){
 
   let bullets=[document.getElementById('b1').value.trim(),document.getElementById('b2').value.trim(),document.getElementById('b3').value.trim(),document.getElementById('b4').value.trim(),document.getElementById('b5').value.trim()].filter(Boolean);
 
+  let dealer_id = localStorage.getItem('dealer_id') || "R2K_MAIN";
+
   let payload={
+    dealer_id,
     title, brand, sku, category, sub_category, product_type, description, bullets,
     main_image: mainImageBase64,
     gallery: galleryImages,
@@ -398,29 +431,24 @@ async function saveProduct(statusFromBtn){
     created_at: new Date().toISOString()
   };
 
-  showToast('Saving product...');
+  showToast('Publishing to REKAVO...');
   try{
     let res=await fetch(`${API_BASE}/products/add`,{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+(localStorage.getItem('token')||'')
+      },
       body:JSON.stringify(payload)
     });
     let out=await res.json();
     if(!res.ok) throw new Error(out.error||out.message||'Failed');
     showToast(status==='active'?'✅ Product Published - Home pe Live!':'✅ Saved as Draft');
-    setTimeout(()=>{
-      if(confirm('Product saved! Home page pe dekhega? OK dabao toh index.html pe jayega')){
-        location.href='index.html';
-      }
-    },800);
+    setTimeout(()=>{ location.href='index.html'; },800);
   }catch(e){
-    // Agar backend abhi nahi bana hai toh localStorage me save kar dega taaki tera kaam ruke nahi
-    let localProducts=JSON.parse(localStorage.getItem('rekavo_seller_products')||'[]');
-    payload.id='local_'+Date.now();
-    localProducts.push(payload);
-    localStorage.setItem('rekavo_seller_products',JSON.stringify(localProducts));
-    showToast('Backend nahi mila, local me save kiya - index.html pe dikhega (demo)');
-    setTimeout(()=>{ location.href='index.html'; },1000);
+    // PERFECT: No localStorage fallback - Fail is Fail (Flipkart style)
+    showToast('❌ Failed: '+e.message, true);
+    console.error(e);
   }
 }
 </script>
