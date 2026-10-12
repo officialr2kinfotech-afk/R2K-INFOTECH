@@ -35,19 +35,21 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
 .btn{width:100%;background:linear-gradient(90deg,#ff6a00,#ff2d00);color:#fff;border:none;padding:15px;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 10px 22px rgba(255,86,0,0.3);margin-top:10px}
 .extra{text-align:center;margin-top:18px;font-size:13.5px;color:#6b7280}
 .extra a{color:#ff5a00;font-weight:700;text-decoration:none}
+.mob-row{display:flex;gap:8px}
+.mob-row input{flex:1}
+.otp-btn{padding:0 16px;background:#111;color:#fff;border:none;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap}
+.otp-btn:disabled{opacity:.5}
+.otp-box{display:none;margin-top:8px;background:#fff7ed;border:1px dashed #ff6a00;padding:12px;border-radius:10px}
+.shop-preview{margin-top:10px;display:none;width:100%;height:160px;border-radius:10px;object-fit:cover;border:2px solid #f0f0f0}
+.note{font-size:11px;color:#6b7280;margin-top:6px;line-height:1.4}
+.note b{color:#e11d48}
 @media(max-width:900px){
   .wrapper{flex-direction:column}
   .left,.right{width:100%}
   .right{order:1;padding:16px;background:#f5f5f7}
   .left{order:2;padding:32px 22px}
   .left h1{font-size:32px}
-  .card{
-    max-width:100%;
-    padding:28px 20px;
-    border-radius:20px;
-    border:1px solid #eee;
-    box-shadow:0 8px 30px rgba(0,0,0,0.06);
-  }
+  .card{max-width:100%;padding:28px 20px;border-radius:20px;border:1px solid #eee;box-shadow:0 8px 30px rgba(0,0,0,0.06)}
 }
 </style>
 </head>
@@ -77,24 +79,48 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
       <div class="sec">
         <div class="sec-title">2. Contact Details</div>
         <div class="input-wrap"><label>Mobile Number *</label><input type="text" id="mobile" placeholder="Enter 10 digit mobile"><div class="error-msg"></div></div>
-        <div class="input-wrap"><label>Email Address *</label><input type="email" id="email" placeholder="seller@business.com"><div class="error-msg"></div></div>
-        <div class="input-wrap"><label>Create Password *</label><input type="password" id="pass" placeholder="Min. 8 characters"><div class="error-msg"></div></div>
+        
+        <div class="input-wrap"><label>Email Address * (OTP will be sent here)</label>
+          <div class="mob-row">
+            <input type="email" id="email" placeholder="seller@business.com"><button class="otp-btn" id="sendOtpBtn">Send OTP</button>
+          </div>
+          <div class="error-msg"></div>
+        </div>
+
+        <div class="otp-box" id="otpBox">
+          <label>Enter OTP sent to Email *</label>
+          <div class="mob-row">
+            <input type="text" id="otpInput" placeholder="6 digit OTP" maxlength="6"><button class="otp-btn" id="verifyOtpBtn">Verify</button>
+          </div>
+          <div class="error-msg" id="otpErr"></div>
+          <div class="note" id="otpInfo">Check your email inbox / spam for OTP.</div>
+        </div>
+
+        <div class="input-wrap" style="margin-top:10px"><label>Create Password *</label><input type="password" id="pass" placeholder="Min. 8 characters"><div class="error-msg"></div></div>
       </div>
 
       <div class="sec">
-        <div class="sec-title">3. Tax & Identity (Optional)</div>
-        <div class="input-wrap"><label>GSTIN Number <span class="opt">- Optional</span></label><input type="text" class="optional" placeholder="22AAAAA0000A1Z5 (if you have)"></div>
+        <div class="sec-title">3. Shop Verification Photo * COMPULSORY</div>
+        <div class="input-wrap"><label>Upload Clear Shop Photo * - Front board with shop name visible</label><input type="file" id="shopPhoto" accept="image/*"><div class="error-msg"></div>
+          <img id="preview" class="shop-preview">
+          <div class="note"><b>IMPORTANT:</b> Photo blur / dark / fake hua to account REJECT ho jayega. Saaf photo upload karo jisme shop ka board saaf dikhe.</div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-title">4. Tax & Identity (Optional) - GST Optional</div>
+        <div class="input-wrap"><label>GSTIN Number <span class="opt">- Optional (till 40L turnover)</span></label><input type="text" class="optional" placeholder="22AAAAA0000A1Z5 (if you have)"></div>
         <div class="input-wrap"><label>PAN Card Number <span class="opt">- Optional</span></label><input type="text" class="optional" placeholder="ABCDE1234F (if you have)"></div>
       </div>
 
       <div class="sec">
-        <div class="sec-title">4. Pickup Address</div>
+        <div class="sec-title">5. Pickup Address</div>
         <div class="input-wrap"><label>Full Pickup Address *</label><input type="text" id="address" placeholder="House No, Street, City"><div class="error-msg"></div></div>
         <div class="input-wrap"><label>Pincode *</label><input type="text" id="pincode" placeholder="Enter 6 digit pincode"><div class="error-msg"></div></div>
       </div>
 
       <div class="sec">
-        <div class="sec-title">5. Bank Details for Payments *</div>
+        <div class="sec-title">6. Bank Details for Payments *</div>
         <div class="input-wrap"><label>Account Holder Name *</label><input type="text" id="holder" placeholder="As per bank records"><div class="error-msg"></div></div>
         <div class="grid2">
           <div class="input-wrap" style="flex:1"><input type="text" id="acno" placeholder="Account Number *"><div class="error-msg"></div></div>
@@ -103,15 +129,18 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
       </div>
 
       <button class="btn" id="regBtn">Register & Submit for Verification →</button>
-      <div class="extra">Already a seller? <a href="seller-login.html">Login to Dashboard</a></div>
+      <div class="extra">Already a seller? <a href="login.html">Login to Dashboard</a></div>
     </div>
   </div>
 </div>
 
 <script>
+let isEmailVerified = false;
+
 function showErr(input, msg){
   input.classList.add('error');
   let err = input.parentElement.querySelector('.error-msg');
+  if(!err) err = document.getElementById('otpErr');
   if(err){ err.innerText = msg; err.style.display='block'; }
 }
 function clearErr(input){
@@ -122,6 +151,96 @@ function clearErr(input){
 document.querySelectorAll('input').forEach(inp => {
   inp.addEventListener('input', () => clearErr(inp));
   inp.addEventListener('focus', () => clearErr(inp));
+});
+
+// SEND OTP - Real Email via Resend API
+document.getElementById('sendOtpBtn').onclick = async function(){
+  let email = document.getElementById('email');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())){
+    showErr(email, "Enter valid email first");
+    return;
+  }
+  let btn = this;
+  btn.disabled = true;
+  btn.innerText = "Sending...";
+  try{
+    // Tera existing API jo Resend se bhejta hai
+    let res = await fetch('/api/send-otp', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email: email.value.trim(), type: 'seller-register' })
+    });
+    if(!res.ok) throw new Error();
+    document.getElementById('otpBox').style.display='block';
+    document.getElementById('otpInfo').innerText = "OTP sent to " + email.value.trim() + " - Check inbox/spam";
+    btn.innerText = "Sent ✓";
+    let c=60;
+    let timer = setInterval(()=>{c--; if(c>0){btn.innerText=c+"s";} else{clearInterval(timer); btn.disabled=false; btn.innerText="Resend OTP";}},1000);
+  } catch(e){
+    btn.disabled=false;
+    btn.innerText="Send OTP";
+    showErr(email, "Failed to send OTP. Check Resend API /api/send-otp");
+  }
+}
+
+// VERIFY OTP
+document.getElementById('verifyOtpBtn').onclick = async function(){
+  let email = document.getElementById('email').value.trim();
+  let otp = document.getElementById('otpInput').value.trim();
+  if(!otp || otp.length !== 6){
+    let err = document.getElementById('otpErr');
+    err.innerText = "Enter 6 digit OTP";
+    err.style.display='block';
+    return;
+  }
+  let btn = this;
+  btn.innerText = "Checking...";
+  try{
+    let res = await fetch('/api/verify-otp', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email: email, otp: otp })
+    });
+    let data = await res.json();
+    if(data.success || data.verified){
+      isEmailVerified = true;
+      document.getElementById('otpErr').style.display='none';
+      document.getElementById('otpBox').style.background='#f0fdf4';
+      document.getElementById('otpBox').style.borderColor='#22c55e';
+      document.getElementById('otpInfo').innerHTML = "✅ Email Verified Successfully";
+      document.getElementById('otpInfo').style.color='#16a34a';
+      document.getElementById('email').style.borderColor='#22c55e';
+      btn.innerText = "Verified ✓";
+    } else {
+      throw new Error();
+    }
+  } catch(e){
+    isEmailVerified = false;
+    let err = document.getElementById('otpErr');
+    err.innerText = "Invalid OTP. Please check email again.";
+    err.style.display='block';
+    btn.innerText = "Verify";
+  }
+}
+
+// Shop Photo Preview
+document.getElementById('shopPhoto').addEventListener('change', function(e){
+  let file = e.target.files[0];
+  clearErr(this);
+  if(file){
+    if(file.size > 5*1024*1024){
+      showErr(this, "Photo size should be less than 5MB");
+      this.value="";
+      return;
+    }
+    let reader = new FileReader();
+    reader.onload = function(ev){
+      let prev = document.getElementById('preview');
+      prev.src = ev.target.result;
+      prev.style.display='block';
+    }
+    reader.readAsDataURL(file);
+  }
 });
 
 document.getElementById('regBtn').onclick = function(){
@@ -137,7 +256,6 @@ document.getElementById('regBtn').onclick = function(){
     {id:'acno', msg:'Account number is required'},
     {id:'ifsc', msg:'IFSC code is required'},
   ];
-
   for(let f of fields){
     let el = document.getElementById(f.id);
     if(!el.value.trim()){
@@ -145,15 +263,13 @@ document.getElementById('regBtn').onclick = function(){
       valid = false;
     }
   }
-
   let mobile = document.getElementById('mobile').value.trim();
   if(mobile && !/^[0-9]{10}$/.test(mobile)){
     showErr(document.getElementById('mobile'), "Mobile number must be 10 digits");
     valid = false;
   }
-  let email = document.getElementById('email').value.trim();
-  if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    showErr(document.getElementById('email'), "Enter a valid email address");
+  if(!isEmailVerified){
+    showErr(document.getElementById('email'), "Please verify Email OTP first");
     valid = false;
   }
   let pass = document.getElementById('pass').value.trim();
@@ -161,14 +277,13 @@ document.getElementById('regBtn').onclick = function(){
     showErr(document.getElementById('pass'), "Password must be at least 8 characters");
     valid = false;
   }
-  let pin = document.getElementById('pincode').value.trim();
-  if(pin && !/^[0-9]{6}$/.test(pin)){
-    showErr(document.getElementById('pincode'), "Pincode must be 6 digits");
+  let shopPhoto = document.getElementById('shopPhoto');
+  if(!shopPhoto.files || shopPhoto.files.length === 0){
+    showErr(shopPhoto, "Shop photo COMPULSORY - Clear photo required");
     valid = false;
   }
-
   if(valid){
-    window.location.href = "seller-login.html";
+    window.location.href = "login.html";
   }
 }
 </script>
