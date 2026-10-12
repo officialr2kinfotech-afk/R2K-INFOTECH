@@ -67,8 +67,6 @@ body{background:#f1f3f6;padding-bottom:80px}
     <div class="p-name" id="pName"></div><div class="p-mobile" id="pMobile"></div>
     <div style="display:none" id="pEmail"></div><div style="display:none"><span id="pCartCount">0</span><span id="pWishCount">0</span></div>
   </div>
-
-  <!-- FLIPKART STYLE 2x2 GRID - My Cart Removed, Help Center Added Here -->
   <div class="p-grid">
     <div class="p-grid-btn" data-i18n="myOrders" onclick="openPage('orders')">
       <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8z"/><path d="M3.3 7L12 12l8.7-5"/><path d="M12 22V12"/></svg>
@@ -87,7 +85,6 @@ body{background:#f1f3f6;padding-bottom:80px}
       <span>Help Center</span>
     </div>
   </div>
-
   <div class="p-list">
     <div class="p-list-item"><div><span data-i18n="emailLabel">📧 Email</span> - <span id="pEmailShow" style="color:#878787">........</span></div></div>
     <div class="p-list-item" onclick="openPage('address')"><div data-i18n="savedAddresses">📍 Saved Addresses</div><div>›</div></div>
@@ -100,7 +97,6 @@ body{background:#f1f3f6;padding-bottom:80px}
 <div id="page-wishlist" class="page-section hidden"><div class="page-header"><span onclick="closePage('wishlist')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="myWishlistTitle">My Wishlist</b></div><div id="wishlistContent"></div></div>
 <div id="page-address" class="page-section hidden"><div class="page-header"><span onclick="closePage('address')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="myAddressesTitle">My Addresses</b></div><div id="addressContent"></div></div>
 <div id="page-language" class="page-section hidden"><div class="page-header"><span onclick="closePage('language')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="selectLanguageTitle">A/अ Select Language</b></div><div id="langContent"></div></div>
-
 <div id="page-editprofile" class="page-section hidden">
   <div class="page-header"><span onclick="closePage('editprofile')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="editProfileTitle">Edit Profile</b></div>
   <div style="padding:14px">
@@ -135,7 +131,6 @@ body{background:#f1f3f6;padding-bottom:80px}
     </div>
   </div>
 </div>
-
 <div id="page-help" class="page-section hidden"><div class="page-header"><span onclick="closePage('help')" style="font-size:22px;cursor:pointer">←</span><b data-i18n="helpTitle">Help Center</b></div><div style="padding:12px"><div style="background:#fff;border-radius:8px;padding:12px"><h4 data-i18n="contactUs">📞 Contact Us</h4><p style="font-size:12px;color:#555;margin-top:4px">Email: support@rekavo.com<br>Phone: +91 9876543210</p></div></div></div>
 <div class="bottom-nav">
 <a href="index.html"><span>🏠</span><span data-i18n="home">Home</span></a>
@@ -354,35 +349,66 @@ function handlePhotoFile(e){let file=e.target.files[0];if(!file)return;let reade
 document.getElementById('profileFile').addEventListener('change',handlePhotoFile);
 document.getElementById('profileFileCamera').addEventListener('change',handlePhotoFile);
 window.addEventListener('popstate', function(e){if(e.state && e.state.page){openPage(e.state.page, false);}else if(location.hash){let type=location.hash.replace('#','');if(document.getElementById('page-'+type)){openPage(type, false);}}else{document.querySelectorAll('.page-section').forEach(s=>s.classList.add('hidden'));}});
+
 async function updateCountsReal(){
  try{
-  let uid=getUid(); 
+  let uid=getUid();
   if(!uid) return;
-  console.log("Fetching cart for uid:", uid);
   let res = await fetch(`${API_BASE}/cart/get?user_id=${uid}`);
   let raw = await res.json();
-  console.log("Cart API response:", raw);
-  
-  let items = Array.isArray(raw) ? raw : (raw.data || raw.cart || []);
+  let items = Array.isArray(raw)? raw : (raw.data || raw.cart || []);
   let cnt = 0;
   if(Array.isArray(items)){
     cnt = items.reduce((s,i)=> s + (parseInt(i.qty || i.quantity || 1)), 0);
   }
-  
-  // Database wala count hi dikhana hai
   let el = document.getElementById('cartCount');
   if(el) el.innerText = cnt;
-  
-  // Save bhi kar denge future ke liye
   localStorage.setItem('rekavo_last_cart', cnt.toString());
   localStorage.setItem('rekavo_cart', JSON.stringify(items));
  }catch(e){
-  console.log("Cart fetch error, using local:", e);
   let cnt = localStorage.getItem('rekavo_last_cart') || '0';
   let el = document.getElementById('cartCount');
   if(el) el.innerText = cnt;
  }
 }
+
+// ===== FIXED INIT - Ye part gayab tha isliye UN aa raha tha =====
+(function(){
+ try{
+  let u=localStorage.getItem('rekavo_user');
+  console.log('rekavo_user from LS:', u);
+  if(!u || u==='null' || u==='undefined'){
+    location.href='account.html';
+    return;
+  }
+  currentUser=JSON.parse(u);
+  if(!currentUser || typeof currentUser!== 'object'){
+    location.href='account.html';
+    return;
+  }
+  currentUser.user_id=currentUser.user_id||currentUser.id||currentUser._id;
+  console.log('currentUser loaded:', currentUser);
+  if(!currentUser.user_id){
+    location.href='account.html';
+    return;
+  }
+  document.getElementById('pName').innerText=currentUser.name||'User Name';
+  document.getElementById('pMobile').innerText=currentUser.mobile?'+91 '+currentUser.mobile:(currentUser.phone?'+91 '+currentUser.phone:'');
+  document.getElementById('pEmail').innerText=currentUser.email||'';
+  document.getElementById('pEmailShow').innerText=currentUser.email||'........';
+  let circle=document.getElementById('pIcon');
+  let savedPhoto=localStorage.getItem('rekavo_profile_photo');
+  if(savedPhoto){
+    circle.innerHTML=`<img src="${savedPhoto}" style="width:100%;height:100%;object-fit:cover">`;
+  }else{
+    circle.innerText=getInitials(currentUser.name);
+  }
+  if(window.applyTranslations) window.applyTranslations();
+  updateCountsReal();
+ }catch(e){
+  console.error('Init error', e);
+ }
+})();
 </script>
 </body>
 </html>
