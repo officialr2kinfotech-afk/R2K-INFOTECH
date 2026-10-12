@@ -17,8 +17,9 @@ body{background:#f1f3f6;padding-bottom:80px}
 .p-name{margin-top:14px;font-size:18px;font-weight:800;color:#000}
 .p-mobile{margin-top:3px;font-size:14px;color:#555;font-weight:500}
 .p-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;background:#fff;border-bottom:8px solid #f1f3f6}
-.p-grid-btn{border:1.5px solid #000;border-radius:8px;padding:14px 5px;text-align:center;font-size:13px;font-weight:700;background:#fff;cursor:pointer;user-select:none;white-space:nowrap}
+.p-grid-btn{border:1px solid #d0d0d0;border-radius:8px;padding:14px 12px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;background:#fff;cursor:pointer;user-select:none;white-space:nowrap}
 .p-grid-btn:active{background:#f5f5f5!important}
+.p-grid-btn svg{width:26px;height:26px;color:#2874f0;flex-shrink:0}
 .p-list{background:#fff;padding:0}
 .p-list-item{display:flex;justify-content:space-between;align-items:center;padding:16px 15px;border-bottom:1px solid #f0f0f0;font-size:14px;font-weight:600;cursor:pointer;user-select:none}
 .empty-box{background:#fff;border-radius:8px;padding:40px 20px;text-align:center;margin-top:12px}
@@ -66,18 +67,32 @@ body{background:#f1f3f6;padding-bottom:80px}
     <div class="p-name" id="pName"></div><div class="p-mobile" id="pMobile"></div>
     <div style="display:none" id="pEmail"></div><div style="display:none"><span id="pCartCount">0</span><span id="pWishCount">0</span></div>
   </div>
+
+  <!-- FLIPKART STYLE 2x2 GRID - My Cart Removed, Help Center Added Here -->
   <div class="p-grid">
-    <div class="p-grid-btn" data-i18n="myOrders" onclick="openPage('orders')">My orders</div>
-    <div class="p-grid-btn" data-i18n="myCart" onclick="location.href='cart.html'">My Cart (<span id="pGridCart">0</span>)</div>
-    <div class="p-grid-btn" data-i18n="coupons">coupons</div>
-    <div class="p-grid-btn" data-i18n="wishlist" onclick="openPage('wishlist')">wishlist</div>
+    <div class="p-grid-btn" data-i18n="myOrders" onclick="openPage('orders')">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8z"/><path d="M3.3 7L12 12l8.7-5"/><path d="M12 22V12"/></svg>
+      <span>Orders</span>
+    </div>
+    <div class="p-grid-btn" data-i18n="wishlist" onclick="openPage('wishlist')">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M19.5 12.572L12 20l-7.5-7.428A5 5 0 1 1 12 6.006a5 5 0 1 1 7.5 6.572"/></svg>
+      <span>Wishlist</span>
+    </div>
+    <div class="p-grid-btn" data-i18n="coupons">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h16v4"/><path d="M20 12v4H6a2 2 0 0 0-2 2c0 1.1.9 2 2 2h16v-4"/></svg>
+      <span>Coupons</span>
+    </div>
+    <div class="p-grid-btn" data-i18n="helpCenter" onclick="openPage('help')">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+      <span>Help Center</span>
+    </div>
   </div>
+
   <div class="p-list">
     <div class="p-list-item"><div><span data-i18n="emailLabel">📧 Email</span> - <span id="pEmailShow" style="color:#878787">........</span></div></div>
     <div class="p-list-item" onclick="openPage('address')"><div data-i18n="savedAddresses">📍 Saved Addresses</div><div>›</div></div>
     <div class="p-list-item" onclick="openPage('editprofile')"><div data-i18n="editProfile">👤 Edit profile</div><div>›</div></div>
     <div class="p-list-item" onclick="openPage('language')"><div data-i18n="selectLanguage">A/अ Select Language</div><div>›</div></div>
-    <div class="p-list-item" onclick="openPage('help')"><div data-i18n="helpCenter">💬 help center</div><div>›</div></div>
     <div class="p-list-item" onclick="logout()"><div data-i18n="logout">🚪 Logout</div><div>›</div></div>
   </div>
 </div>
@@ -343,8 +358,8 @@ async function updateCountsReal(){
  try{
   let uid=getUid(); if(!uid) return; let [cr,wr]=await Promise.all([fetch(`${API_BASE}/cart/get?user_id=${uid}`),fetch(`${API_BASE}/wishlist/get?user_id=${uid}`)]);
   let cRaw=await cr.json(); let wRaw=await wr.json(); let c=Array.isArray(cRaw)?cRaw:cRaw.data||cRaw.cart||[]; let w=Array.isArray(wRaw)?wRaw:wRaw.data||wRaw.wishlist||[];
-  if(Array.isArray(c)){ let cnt=c.reduce((s,i)=>s+(i.qty||1),0); if(window._lastCartCnt!==undefined) window._lastCartCnt = cnt.toString(); localStorage.setItem('rekavo_last_cart', cnt.toString()); let cc = document.getElementById('cartCount'); let pg = document.getElementById('pGridCart'); let pc = document.getElementById('pCartCount'); if(cc) cc.innerText=cnt; if(pg) pg.innerText=cnt; if(pc) pc.innerText=cnt; }
-  if(Array.isArray(w)){ document.getElementById('pWishCount').innerText=w.length; }
+  if(Array.isArray(c)){ let cnt=c.reduce((s,i)=>s+(i.qty||1),0); if(window._lastCartCnt!==undefined) window._lastCartCnt = cnt.toString(); localStorage.setItem('rekavo_last_cart', cnt.toString()); let cc = document.getElementById('cartCount'); if(cc) cc.innerText=cnt; }
+  if(Array.isArray(w)){ let el=document.getElementById('pWishCount'); if(el) el.innerText=w.length; }
  }catch(e){}
 }
 (function(){
