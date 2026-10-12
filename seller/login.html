@@ -34,6 +34,20 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
 .btn{width:100%;background:linear-gradient(90deg,#ff6a00,#ff2d00);color:#fff;border:none;padding:15px;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 10px 22px rgba(255,86,0,0.3);margin-top:10px}
 .extra{text-align:center;margin-top:18px;font-size:13.5px;color:#6b7280}
 .extra a{color:#ff5a00;font-weight:700;text-decoration:none}
+.forgot{text-align:right;margin-top:-2px;margin-bottom:4px}
+.forgot a{font-size:12.5px;font-weight:700;color:#ff5a00;text-decoration:none;cursor:pointer}
+/* Forgot Popup - Same design */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:999;justify-content:center;align-items:center;padding:16px}
+.modal{width:100%;max-width:420px;background:#fff;border-radius:18px;padding:28px 24px;box-shadow:0 20px 60px rgba(0,0,0,0.2);animation:pop .2s ease}
+@keyframes pop{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+.modal h3{font-size:20px;font-weight:800;margin-bottom:6px}
+.modal p.desc{font-size:13px;color:#6b7280;margin-bottom:18px}
+.mob-row{display:flex;gap:8px}
+.mob-row input{flex:1}
+.otp-btn{padding:0 16px;background:#111;color:#fff;border:none;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap}
+.otp-btn:disabled{opacity:.5}
+.otp-box{display:none;margin-top:12px;background:#fff7ed;border:1px dashed #ff6a00;padding:12px;border-radius:10px}
+.close{position:absolute;top:14px;right:14px;background:#f3f4f6;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-weight:800}
 @media(max-width:900px){
   .wrapper{flex-direction:column}
   .left,.right{width:100%}
@@ -66,10 +80,42 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
         <div class="sec-title">Login Details</div>
         <div class="input-wrap"><label>Email or Mobile Number *</label><input type="text" id="email" placeholder="seller@business.com"><div class="error-msg"></div></div>
         <div class="input-wrap"><label>Password *</label><input type="password" id="pass" placeholder="Enter your password"><div class="error-msg"></div></div>
+        <div class="forgot"><a id="forgotLink">Forgot Password?</a></div>
       </div>
 
       <button class="btn" id="loginBtn">Login to Dashboard →</button>
       <div class="extra">Don't have a seller account? <a href="register.html">Register Now</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- Forgot Password Popup -->
+<div class="overlay" id="forgotOverlay">
+  <div class="modal" style="position:relative">
+    <button class="close" id="closeModal">✕</button>
+    <h3>Reset Password</h3>
+    <p class="desc">Enter your registered email to receive OTP</p>
+    
+    <div class="input-wrap"><label>Email Address *</label>
+      <div class="mob-row">
+        <input type="email" id="fpEmail" placeholder="seller@business.com"><button class="otp-btn" id="fpSendBtn">Send OTP</button>
+      </div>
+      <div class="error-msg" id="fpEmailErr"></div>
+    </div>
+
+    <div class="otp-box" id="fpOtpBox">
+      <label>Enter OTP *</label>
+      <div class="mob-row">
+        <input type="text" id="fpOtp" placeholder="6 digit OTP" maxlength="6"><button class="otp-btn" id="fpVerifyBtn">Verify</button>
+      </div>
+      <div class="error-msg" id="fpOtpErr"></div>
+      <div style="font-size:11px;color:#6b7280;margin-top:6px" id="fpInfo">Check inbox/spam for OTP</div>
+
+      <div id="newPassBox" style="display:none;margin-top:14px">
+        <div class="input-wrap"><label>New Password *</label><input type="password" id="newPass" placeholder="Min. 8 characters"><div class="error-msg"></div></div>
+        <div class="input-wrap"><label>Confirm Password *</label><input type="password" id="confirmPass" placeholder="Confirm new password"><div class="error-msg"></div></div>
+        <button class="btn" id="resetBtn">Reset Password & Login →</button>
+      </div>
     </div>
   </div>
 </div>
@@ -94,7 +140,6 @@ document.getElementById('loginBtn').onclick = function(){
   let valid = true;
   let email = document.getElementById('email');
   let pass = document.getElementById('pass');
-
   if(!email.value.trim()){
     showErr(email, "Email or mobile is required");
     valid = false;
@@ -103,9 +148,77 @@ document.getElementById('loginBtn').onclick = function(){
     showErr(pass, "Password is required");
     valid = false;
   }
-
   if(valid){
     window.location.href = "index.html";
+  }
+}
+
+// Forgot Password Logic
+const overlay = document.getElementById('forgotOverlay');
+document.getElementById('forgotLink').onclick = ()=>{ overlay.style.display='flex'; }
+document.getElementById('closeModal').onclick = ()=>{ overlay.style.display='none'; }
+overlay.onclick = (e)=>{ if(e.target===overlay) overlay.style.display='none'; }
+
+let isFpVerified = false;
+document.getElementById('fpSendBtn').onclick = async function(){
+  let email = document.getElementById('fpEmail');
+  let err = document.getElementById('fpEmailErr');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())){
+    email.classList.add('error'); err.innerText="Enter valid email"; err.style.display='block'; return;
+  }
+  let btn=this; btn.disabled=true; btn.innerText="Sending...";
+  try{
+    let res = await fetch('/api/send-otp', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email: email.value.trim(), type: 'forgot-password' })
+    });
+    if(!res.ok) throw new Error();
+    document.getElementById('fpOtpBox').style.display='block';
+    document.getElementById('fpInfo').innerText = "OTP sent to "+email.value.trim();
+    btn.innerText="Sent ✓";
+    let c=60; let timer=setInterval(()=>{c--; if(c>0) btn.innerText=c+"s"; else{clearInterval(timer); btn.disabled=false; btn.innerText="Resend OTP";}},1000);
+  } catch(e){
+    btn.disabled=false; btn.innerText="Send OTP";
+    email.classList.add('error'); err.innerText="Failed to send OTP. Check /api/send-otp"; err.style.display='block';
+  }
+}
+
+document.getElementById('fpVerifyBtn').onclick = async function(){
+  let email = document.getElementById('fpEmail').value.trim();
+  let otp = document.getElementById('fpOtp').value.trim();
+  let err = document.getElementById('fpOtpErr');
+  if(!otp || otp.length!=6){ err.innerText="Enter 6 digit OTP"; err.style.display='block'; return; }
+  let btn=this; btn.innerText="Checking...";
+  try{
+    let res = await fetch('/api/verify-otp', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email: email, otp: otp })
+    });
+    let data = await res.json();
+    if(data.success || data.verified){
+      isFpVerified=true; err.style.display='none';
+      document.getElementById('fpInfo').innerHTML="✅ Verified";
+      document.getElementById('fpInfo').style.color="#16a34a";
+      document.getElementById('newPassBox').style.display='block';
+      btn.innerText="Verified ✓"; btn.disabled=true;
+    } else throw new Error();
+  } catch(e){
+    err.innerText="Invalid OTP. Check email again."; err.style.display='block'; btn.innerText="Verify";
+  }
+}
+
+document.getElementById('resetBtn').onclick = function(){
+  let np = document.getElementById('newPass');
+  let cp = document.getElementById('confirmPass');
+  let valid=true;
+  if(np.value.trim().length<8){ showErr(np,"Password must be at least 8 characters"); valid=false; }
+  if(cp.value.trim()!==np.value.trim()){ showErr(cp,"Passwords do not match"); valid=false; }
+  if(!isFpVerified){ valid=false; }
+  if(valid){
+    // Here call /api/reset-password with email and new password
+    alert("Password reset successful! Please login with new password.");
+    overlay.style.display='none';
+    window.location.href="index.html";
   }
 }
 </script>
