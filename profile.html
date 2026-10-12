@@ -356,23 +356,33 @@ document.getElementById('profileFileCamera').addEventListener('change',handlePho
 window.addEventListener('popstate', function(e){if(e.state && e.state.page){openPage(e.state.page, false);}else if(location.hash){let type=location.hash.replace('#','');if(document.getElementById('page-'+type)){openPage(type, false);}}else{document.querySelectorAll('.page-section').forEach(s=>s.classList.add('hidden'));}});
 async function updateCountsReal(){
  try{
-  let uid=getUid(); if(!uid) return; let [cr,wr]=await Promise.all([fetch(`${API_BASE}/cart/get?user_id=${uid}`),fetch(`${API_BASE}/wishlist/get?user_id=${uid}`)]);
-  let cRaw=await cr.json(); let wRaw=await wr.json(); let c=Array.isArray(cRaw)?cRaw:cRaw.data||cRaw.cart||[]; let w=Array.isArray(wRaw)?wRaw:wRaw.data||wRaw.wishlist||[];
-  if(Array.isArray(c)){ let cnt=c.reduce((s,i)=>s+(i.qty||1),0); if(window._lastCartCnt!==undefined) window._lastCartCnt = cnt.toString(); localStorage.setItem('rekavo_last_cart', cnt.toString()); let cc = document.getElementById('cartCount'); if(cc) cc.innerText=cnt; }
-  if(Array.isArray(w)){ let el=document.getElementById('pWishCount'); if(el) el.innerText=w.length; }
- }catch(e){}
+  let uid=getUid(); 
+  if(!uid) return;
+  console.log("Fetching cart for uid:", uid);
+  let res = await fetch(`${API_BASE}/cart/get?user_id=${uid}`);
+  let raw = await res.json();
+  console.log("Cart API response:", raw);
+  
+  let items = Array.isArray(raw) ? raw : (raw.data || raw.cart || []);
+  let cnt = 0;
+  if(Array.isArray(items)){
+    cnt = items.reduce((s,i)=> s + (parseInt(i.qty || i.quantity || 1)), 0);
+  }
+  
+  // Database wala count hi dikhana hai
+  let el = document.getElementById('cartCount');
+  if(el) el.innerText = cnt;
+  
+  // Save bhi kar denge future ke liye
+  localStorage.setItem('rekavo_last_cart', cnt.toString());
+  localStorage.setItem('rekavo_cart', JSON.stringify(items));
+ }catch(e){
+  console.log("Cart fetch error, using local:", e);
+  let cnt = localStorage.getItem('rekavo_last_cart') || '0';
+  let el = document.getElementById('cartCount');
+  if(el) el.innerText = cnt;
+ }
 }
-(function(){
- let u=localStorage.getItem('rekavo_user');if(!u){location.href='account.html';return;}
- currentUser=JSON.parse(u);currentUser.user_id=currentUser.user_id||currentUser.id;
- document.getElementById('pName').innerText=currentUser.name||'User Name';
- document.getElementById('pMobile').innerText=currentUser.mobile?'+91 '+currentUser.mobile:currentUser.phone?'+91 '+currentUser.phone:'';
- document.getElementById('pEmail').innerText=currentUser.email||'';
- document.getElementById('pEmailShow').innerText=currentUser.email||'........';
- let circle=document.getElementById('pIcon');let savedPhoto=localStorage.getItem('rekavo_profile_photo');if(savedPhoto){circle.innerHTML=`<img src="${savedPhoto}">`;}else{circle.innerText=getInitials(currentUser.name);}
- if(window.applyTranslations) window.applyTranslations(); updateCountsReal();
- if(location.hash){let type=location.hash.replace('#','');if(document.getElementById('page-'+type)){openPage(type, false);}}
-})();
 </script>
 </body>
 </html>
