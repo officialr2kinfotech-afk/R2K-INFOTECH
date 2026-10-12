@@ -164,11 +164,10 @@ document.getElementById('sendOtpBtn').onclick = async function(){
   btn.disabled = true;
   btn.innerText = "Sending...";
   try{
-    // Tera existing API jo Resend se bhejta hai
-    let res = await fetch('/api/send-otp', {
+    let res = await fetch('https://rekavo.in/send-otp', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ email: email.value.trim(), type: 'seller-register' })
+      body: JSON.stringify({ email: email.value.trim() })
     });
     if(!res.ok) throw new Error();
     document.getElementById('otpBox').style.display='block';
@@ -179,50 +178,51 @@ document.getElementById('sendOtpBtn').onclick = async function(){
   } catch(e){
     btn.disabled=false;
     btn.innerText="Send OTP";
-    showErr(email, "Failed to send OTP. Check Resend API /api/send-otp");
+    showErr(email, "Failed to send OTP. Check API");
   }
 }
 
-// VERIFY OTP
+// VERIFY OTP - Fixed
 document.getElementById('verifyOtpBtn').onclick = async function(){
   let email = document.getElementById('email').value.trim();
   let otp = document.getElementById('otpInput').value.trim();
+  let err = document.getElementById('otpErr');
+
   if(!otp || otp.length !== 6){
-    let err = document.getElementById('otpErr');
     err.innerText = "Enter 6 digit OTP";
     err.style.display='block';
     return;
   }
+
   let btn = this;
   btn.innerText = "Checking...";
   try{
-    let res = await fetch('/api/verify-otp', {
+    let res = await fetch('https://rekavo.in/verify-otp', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ email: email, otp: otp })
     });
     let data = await res.json();
-    if(data.success || data.verified){
+    if(data.success || data.verified || res.ok){
       isEmailVerified = true;
-      document.getElementById('otpErr').style.display='none';
+      err.style.display='none';
       document.getElementById('otpBox').style.background='#f0fdf4';
       document.getElementById('otpBox').style.borderColor='#22c55e';
       document.getElementById('otpInfo').innerHTML = "✅ Email Verified Successfully";
       document.getElementById('otpInfo').style.color='#16a34a';
       document.getElementById('email').style.borderColor='#22c55e';
       btn.innerText = "Verified ✓";
+      btn.disabled = true;
     } else {
       throw new Error();
     }
   } catch(e){
     isEmailVerified = false;
-    let err = document.getElementById('otpErr');
     err.innerText = "Invalid OTP. Please check email again.";
     err.style.display='block';
     btn.innerText = "Verify";
   }
 }
-
 // Shop Photo Preview
 document.getElementById('shopPhoto').addEventListener('change', function(e){
   let file = e.target.files[0];
