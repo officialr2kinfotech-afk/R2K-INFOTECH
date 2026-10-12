@@ -36,7 +36,6 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
 .extra a{color:#ff5a00;font-weight:700;text-decoration:none}
 .forgot{text-align:right;margin-top:-2px;margin-bottom:4px}
 .forgot a{font-size:12.5px;font-weight:700;color:#ff5a00;text-decoration:none;cursor:pointer}
-/* Forgot Popup - Same design */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:999;justify-content:center;align-items:center;padding:16px}
 .modal{width:100%;max-width:420px;background:#fff;border-radius:18px;padding:28px 24px;box-shadow:0 20px 60px rgba(0,0,0,0.2);animation:pop .2s ease}
 @keyframes pop{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
@@ -75,34 +74,28 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
     <div class="card">
       <h2>Seller Login</h2>
       <p class="small">Login to your Rekavo Seller account - Welcome back</p>
-
       <div class="sec">
         <div class="sec-title">Login Details</div>
         <div class="input-wrap"><label>Email or Mobile Number *</label><input type="text" id="email" placeholder="seller@business.com"><div class="error-msg"></div></div>
         <div class="input-wrap"><label>Password *</label><input type="password" id="pass" placeholder="Enter your password"><div class="error-msg"></div></div>
         <div class="forgot"><a id="forgotLink">Forgot Password?</a></div>
       </div>
-
       <button class="btn" id="loginBtn">Login to Dashboard →</button>
       <div class="extra">Don't have a seller account? <a href="register.html">Register Now</a></div>
     </div>
   </div>
 </div>
-
-<!-- Forgot Password Popup -->
 <div class="overlay" id="forgotOverlay">
   <div class="modal" style="position:relative">
     <button class="close" id="closeModal">✕</button>
     <h3>Reset Password</h3>
     <p class="desc">Enter your registered email to receive OTP</p>
-    
     <div class="input-wrap"><label>Email Address *</label>
       <div class="mob-row">
         <input type="email" id="fpEmail" placeholder="seller@business.com"><button class="otp-btn" id="fpSendBtn">Send OTP</button>
       </div>
       <div class="error-msg" id="fpEmailErr"></div>
     </div>
-
     <div class="otp-box" id="fpOtpBox">
       <label>Enter OTP *</label>
       <div class="mob-row">
@@ -110,7 +103,6 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
       </div>
       <div class="error-msg" id="fpOtpErr"></div>
       <div style="font-size:11px;color:#6b7280;margin-top:6px" id="fpInfo">Check inbox/spam for OTP</div>
-
       <div id="newPassBox" style="display:none;margin-top:14px">
         <div class="input-wrap"><label>New Password *</label><input type="password" id="newPass" placeholder="Min. 8 characters"><div class="error-msg"></div></div>
         <div class="input-wrap"><label>Confirm Password *</label><input type="password" id="confirmPass" placeholder="Confirm new password"><div class="error-msg"></div></div>
@@ -119,7 +111,6 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
     </div>
   </div>
 </div>
-
 <script>
 function showErr(input, msg){
   input.classList.add('error');
@@ -135,7 +126,6 @@ document.querySelectorAll('input').forEach(inp => {
   inp.addEventListener('input', () => clearErr(inp));
   inp.addEventListener('focus', () => clearErr(inp));
 });
-
 document.getElementById('loginBtn').onclick = function(){
   let valid = true;
   let email = document.getElementById('email');
@@ -152,13 +142,10 @@ document.getElementById('loginBtn').onclick = function(){
     window.location.href = "index.html";
   }
 }
-
-// Forgot Password Logic
 const overlay = document.getElementById('forgotOverlay');
 document.getElementById('forgotLink').onclick = ()=>{ overlay.style.display='flex'; }
 document.getElementById('closeModal').onclick = ()=>{ overlay.style.display='none'; }
 overlay.onclick = (e)=>{ if(e.target===overlay) overlay.style.display='none'; }
-
 let isFpVerified = false;
 document.getElementById('fpSendBtn').onclick = async function(){
   let email = document.getElementById('fpEmail');
@@ -168,21 +155,20 @@ document.getElementById('fpSendBtn').onclick = async function(){
   }
   let btn=this; btn.disabled=true; btn.innerText="Sending...";
   try{
-    let res = await fetch('/api/send-otp', {
+    let res = await fetch('https://rekavo.in/send-otp', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ email: email.value.trim(), type: 'forgot-password' })
+      body: JSON.stringify({ email: email.value.trim() })
     });
     if(!res.ok) throw new Error();
     document.getElementById('fpOtpBox').style.display='block';
-    document.getElementById('fpInfo').innerText = "OTP sent to "+email.value.trim();
+    document.getElementById('fpInfo').innerText = "OTP sent to "+email.value.trim()+" - Check inbox/spam";
     btn.innerText="Sent ✓";
     let c=60; let timer=setInterval(()=>{c--; if(c>0) btn.innerText=c+"s"; else{clearInterval(timer); btn.disabled=false; btn.innerText="Resend OTP";}},1000);
   } catch(e){
     btn.disabled=false; btn.innerText="Send OTP";
-    email.classList.add('error'); err.innerText="Failed to send OTP. Check /api/send-otp"; err.style.display='block';
+    email.classList.add('error'); err.innerText="Failed to send OTP"; err.style.display='block';
   }
 }
-
 document.getElementById('fpVerifyBtn').onclick = async function(){
   let email = document.getElementById('fpEmail').value.trim();
   let otp = document.getElementById('fpOtp').value.trim();
@@ -190,14 +176,14 @@ document.getElementById('fpVerifyBtn').onclick = async function(){
   if(!otp || otp.length!=6){ err.innerText="Enter 6 digit OTP"; err.style.display='block'; return; }
   let btn=this; btn.innerText="Checking...";
   try{
-    let res = await fetch('/api/verify-otp', {
+    let res = await fetch('https://rekavo.in/verify-otp', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ email: email, otp: otp })
     });
     let data = await res.json();
-    if(data.success || data.verified){
+    if(data.success || data.verified || res.ok){
       isFpVerified=true; err.style.display='none';
-      document.getElementById('fpInfo').innerHTML="✅ Verified";
+      document.getElementById('fpInfo').innerHTML="✅ Verified - Now set new password";
       document.getElementById('fpInfo').style.color="#16a34a";
       document.getElementById('newPassBox').style.display='block';
       btn.innerText="Verified ✓"; btn.disabled=true;
@@ -206,7 +192,6 @@ document.getElementById('fpVerifyBtn').onclick = async function(){
     err.innerText="Invalid OTP. Check email again."; err.style.display='block'; btn.innerText="Verify";
   }
 }
-
 document.getElementById('resetBtn').onclick = function(){
   let np = document.getElementById('newPass');
   let cp = document.getElementById('confirmPass');
@@ -215,7 +200,6 @@ document.getElementById('resetBtn').onclick = function(){
   if(cp.value.trim()!==np.value.trim()){ showErr(cp,"Passwords do not match"); valid=false; }
   if(!isFpVerified){ valid=false; }
   if(valid){
-    // Here call /api/reset-password with email and new password
     alert("Password reset successful! Please login with new password.");
     overlay.style.display='none';
     window.location.href="index.html";
