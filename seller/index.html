@@ -11,6 +11,39 @@
 </head>
 <body class="pb-24">
 
+<script>
+// ===== FLIPKART JAISE SECURITY LOCK - SABSE ZARURI =====
+(async function() {
+  try {
+    const res = await fetch('https://rekavo-backend.vercel.app/seller-verify', {
+      method: 'GET',
+      credentials: 'include'
+    });
+    if (!res.ok) throw new Error('not verified');
+    const data = await res.json();
+    window.SELLER_DATA = data.seller;
+    document.addEventListener('DOMContentLoaded', () => {
+      const nameEl = document.getElementById('sellerName');
+      if (nameEl && data.seller) {
+        nameEl.innerText = data.seller.business_name || data.seller.email?.split('@')[0] || 'Seller';
+      }
+    });
+  } catch (e) {
+    window.location.href = 'login.html';
+  }
+})();
+async function sellerLogout() {
+  try {
+    await fetch('https://rekavo-backend.vercel.app/seller-logout', {
+      method: 'POST',
+      credentials: 'include'
+    });
+  } finally {
+    window.location.href = 'login.html';
+  }
+}
+</script>
+
 <header class="bg-[#2874F0] h-[56px] flex items-center justify-between px-4 sticky top-0 z-50 text-white">
   <div class="flex items-center gap-3">
     <button class="w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-bars text-[18px]"></i></button>
@@ -23,7 +56,7 @@
 </header>
 
 <div class="bg-white border-b px-4 py-3 flex justify-between items-center">
-  <div><p class="text-[13px] font-medium text-gray-700">Good Morning,</p><h2 id="sellerName" class="font-black text-[16px] -mt-0.5">Seller</h2></div>
+  <div><p class="text-[13px] font-medium text-gray-700">Good Morning,</p><h2 id="sellerName" class="font-black text-[16px] -mt-0.5">Loading...</h2></div>
   <div class="flex items-center gap-2 bg-[#E8F5E9] px-3 py-1.5 rounded-full border border-[#C8E6C9]"><div class="w-2 h-2 bg-[#2E7D32] rounded-full animate-pulse"></div><span class="text-[11px] font-bold text-[#2E7D32]">Account Active</span></div>
 </div>
 
@@ -32,7 +65,7 @@
   <button onclick="alert('Pricing page')" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b text-left"><i class="fa-solid fa-tag w-4"></i> Pricing</button>
   <button onclick="alert('Returns - Real data 0')" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b text-left"><i class="fa-solid fa-rotate-left w-4"></i> Returns</button>
   <button onclick="alert('Performance page')" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 border-b text-left"><i class="fa-solid fa-star w-4"></i> Performance</button>
-  <button onclick="alert('Settings page')" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium hover:bg-gray-50 text-left"><i class="fa-solid fa-gear w-4"></i> Settings</button>
+  <button onclick="sellerLogout()" class="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-bold hover:bg-red-50 text-red-600 text-left"><i class="fa-solid fa-right-from-bracket w-4"></i> Logout</button>
 </div>
 
 <main class="max-w-[520px] mx-auto p-3 space-y-3">
@@ -153,7 +186,6 @@
 <script>
 let products=JSON.parse(localStorage.getItem('rekavo_products')||'[]');
 let tempImg=''; let currentId=null; let editImg='';
-document.getElementById('sellerName').innerText=localStorage.getItem('rekavo_seller_email')?.split('@')[0] || '6264329345';
 document.getElementById('dotBtn').onclick=(e)=>{e.stopPropagation(); document.getElementById('dotMenu').classList.toggle('hidden')};
 document.addEventListener('click',(e)=>{if(!e.target.closest('#dotMenu') &&!e.target.closest('#dotBtn')) document.getElementById('dotMenu').classList.add('hidden')});
 
@@ -198,7 +230,7 @@ function openDetailPage(id){let p=products.find(x=>x.id===id); if(!p) return; cu
 function saveEdit(){let idx=products.findIndex(x=>x.id===currentId); if(idx==-1) return; let n=document.getElementById('editName').value.trim(); let d=document.getElementById('editDesc').value.trim(); let pr=parseInt(document.getElementById('editPrice').value); let st=parseInt(document.getElementById('editStock').value); if(!n||!pr||!st) return alert('Fill all'); products[idx].name=n; products[idx].desc=d; products[idx].price=pr; products[idx].stock=st; localStorage.setItem('rekavo_products',JSON.stringify(products)); localStorage.setItem('rekavo_all_products',JSON.stringify(products)); closeEdit(); openDetailPage(currentId); render(); renderFull(products)}
 function deleteProd(){if(!currentId) return; if(!confirm('Delete permanently?')) return; products=products.filter(p=>p.id!==currentId); localStorage.setItem('rekavo_products',JSON.stringify(products)); localStorage.setItem('rekavo_all_products',JSON.stringify(products)); closeDetail(); closeInventory(); render()}
 render();
-try{ new Chart(document.getElementById('salesChart'),{type:'bar',data:{labels:['Mon',[STRIPPED] Sales',data:[0,[STRIPPED] beginAtZero:true},x:{grid:{display:false}}}}}); }catch(e){}
+try{ new Chart(document.getElementById('salesChart'),{type:'bar',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{label:'Sales',data:[0,0,0,0,0,0,0],backgroundColor:'#2874F0'}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true},x:{grid:{display:false}}}}}); }catch(e){}
 </script>
 </body>
 </html>
