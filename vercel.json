@@ -2,14 +2,14 @@
   "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "host",
-          "value": "seller.rekavo.in"
-        }
-      ],
+      "source": "/",
+      "has": [{ "type": "host", "value": "seller.rekavo.in" }],
       "destination": "/seller/login.html"
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "seller.rekavo.in" }],
+      "destination": "/seller/$1"
     }
   ]
 }
