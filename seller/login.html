@@ -127,7 +127,7 @@ document.querySelectorAll('input').forEach(inp => {
   inp.addEventListener('focus', () => clearErr(inp));
 });
 
-// ===== FINAL FIXED LOGIN - BACKEND CONNECTED =====
+// ===== FINAL FIXED LOGIN - SECURE COOKIE ONLY =====
 document.getElementById('loginBtn').onclick = async function(){
   let email = document.getElementById('email');
   let pass = document.getElementById('pass');
@@ -141,17 +141,16 @@ document.getElementById('loginBtn').onclick = async function(){
   btn.innerText = "Logging in...";
 
   try{
-    let res = await fetch('https://rekavo.in/seller-login', {
+    let res = await fetch('https://rekavo-backend.vercel.app/seller-login', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
+      credentials: 'include',
       body: JSON.stringify({ email: email.value.trim(), password: pass.value.trim() })
     });
     let data = await res.json();
-    if(res.ok && data.seller){
-      localStorage.setItem('seller', JSON.stringify(data.seller));
-      localStorage.setItem('seller_logged_in', 'true');
+    if(res.ok){
       btn.innerText = "Success ✓";
-      window.location.href = "index.html";
+      window.location.href = "dashboard.html";
     } else {
       showErr(pass, data.error || "Invalid email or password");
       btn.disabled = false;
