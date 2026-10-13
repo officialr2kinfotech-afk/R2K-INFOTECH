@@ -39,6 +39,29 @@ label{font-size:11px;font-weight:700;margin-top:10px;display:block;color:#333;te
 </style>
 </head>
 <body>
+<script>
+// ===== SELLER SECURITY LOCK - FLIPKART JAISE =====
+const API_BASE="https://rekavo-backend.vercel.app";
+window.SELLER_DATA = null;
+(async function(){
+  try{
+    let r = await fetch(`${API_BASE}/seller-verify`,{method:'GET',credentials:'include'});
+    if(!r.ok) throw new Error('auth');
+    let d = await r.json();
+    window.SELLER_DATA = d.seller;
+  }catch(e){
+    window.location.href='login.html';
+  }
+})();
+async function uploadToR2(file){
+  let r = await fetch(`${API_BASE}/upload-url?filename=${encodeURIComponent(file.name)}&type=${encodeURIComponent(file.type)}`, {credentials:'include'});
+  if(!r.ok) throw new Error('Failed to get upload URL - login check');
+  let d = await r.json();
+  let up = await fetch(d.uploadUrl, {method:'PUT', body:file, headers:{'Content-Type':file.type}});
+  if(!up.ok) throw new Error('R2 upload failed');
+  return d.publicUrl;
+}
+</script>
 
 <div class="top-bar">
   <b>＋ Add New Product</b>
@@ -191,15 +214,6 @@ label{font-size:11px;font-weight:700;margin-top:10px;display:block;color:#333;te
 <div id="toast" class="toast"></div>
 
 <script>
-const API_BASE="https://rekavo-backend.vercel.app";
-async function uploadToR2(file){
-  let r = await fetch(`${API_BASE}/upload-url?filename=${encodeURIComponent(file.name)}&type=${encodeURIComponent(file.type)}`);
-  if(!r.ok) throw new Error('Failed to get upload URL');
-  let d = await r.json();
-  let up = await fetch(d.uploadUrl, {method:'PUT', body:file, headers:{'Content-Type':file.type}});
-  if(!up.ok) throw new Error('R2 upload failed');
-  return d.publicUrl;
-}
 let mainImageBase64=null;
 let galleryImages=[];
 let attributes=[];
@@ -360,16 +374,13 @@ async function saveProduct(statusFromBtn){
   let status=document.getElementById('status').value;
   if(statusFromBtn) status=statusFromBtn;
 
-  // --- FLIPKART PROFESSIONAL STOCK LOGIC (ONLY CHANGE) ---
   let finalStock = 0;
   if(product_type==='simple'){
-    finalStock = total_stock ? parseInt(total_stock) : 0;
+    finalStock = total_stock? parseInt(total_stock) : 0;
   } else {
-    // variable product ka total stock = sab variants ka sum
     finalStock = variants.reduce((sum,v)=> sum + (parseInt(v.stock)||0), 0);
   }
-  // Agar stock 0 hai to status auto out_of_stock
-  if(finalStock === 0 && status !== 'draft'){
+  if(finalStock === 0 && status!== 'draft'){
     status = 'out_of_stock';
   }
 
@@ -378,7 +389,7 @@ async function saveProduct(statusFromBtn){
   if(!category){showToast('Category required',true);return;}
   if(!mainImageBase64){showToast('Main Image required',true);return;}
   if(!mrp||!selling_price){showToast('MRP and Selling Price required',true);return;}
-  if(product_type==='simple' && !total_stock && status!=='draft'){showToast('Total Stock required',true);return;}
+  if(product_type==='simple' &&!total_stock && status!=='draft'){showToast('Total Stock required',true);return;}
   if(product_type==='variable' && variants.length===0){showToast('Generate Variants Table pe click karo - Size/Color ka stock bharo',true);return;}
   if(product_type==='variable'){
     for(let i=0;i<variants.length;i++){
@@ -387,7 +398,7 @@ async function saveProduct(statusFromBtn){
   }
 
   let bullets=[document.getElementById('b1').value.trim(),document.getElementById('b2').value.trim(),document.getElementById('b3').value.trim(),document.getElementById('b4').value.trim(),document.getElementById('b5').value.trim()].filter(Boolean);
-  let dealer_id = localStorage.getItem('dealer_id') || "R2K_MAIN";
+  let dealer_id = (window.SELLER_DATA && (window.SELLER_DATA.seller_id || window.SELLER_DATA.id)) || localStorage.getItem('dealer_id') || "R2K_MAIN";
 
   let payload={
     dealer_id,
@@ -419,9 +430,9 @@ async function saveProduct(statusFromBtn){
   try{
     let res=await fetch(`${API_BASE}/products/add`,{
       method:'POST',
+      credentials:'include',
       headers:{
-        'Content-Type':'application/json',
-        'Authorization':'Bearer '+(localStorage.getItem('token')||'')
+        'Content-Type':'application/json'
       },
       body:JSON.stringify(payload)
     });
