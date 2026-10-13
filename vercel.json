@@ -9,7 +9,7 @@
           "value": "seller.rekavo.in"
         }
       ],
-      "destination": "/seller-login.html"
+      "destination": "/seller/login.html"
     },
     {
       "source": "/index.html",
