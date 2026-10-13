@@ -7,6 +7,21 @@
       "destination": "/seller/login.html"
     },
     {
+      "source": "/seller-login",
+      "has": [{ "type": "host", "value": "seller.rekavo.in" }],
+      "destination": "/seller/login.html"
+    },
+    {
+      "source": "/login",
+      "has": [{ "type": "host", "value": "seller.rekavo.in" }],
+      "destination": "/seller/login.html"
+    },
+    {
+      "source": "/register",
+      "has": [{ "type": "host", "value": "seller.rekavo.in" }],
+      "destination": "/seller/register.html"
+    },
+    {
       "source": "/(.*)",
       "has": [{ "type": "host", "value": "seller.rekavo.in" }],
       "destination": "/seller/$1"
