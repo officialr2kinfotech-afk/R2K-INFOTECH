@@ -10,10 +10,6 @@
         }
       ],
       "destination": "/seller/login.html"
-    },
-    {
-      "source": "/index.html",
-      "destination": "/"
     }
   ]
 }
