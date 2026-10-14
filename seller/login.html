@@ -176,8 +176,9 @@ document.getElementById('fpSendBtn').onclick = async function(){
   }
   let btn=this; btn.disabled=true; btn.innerText="Sending...";
   try{
-    let res = await fetch('https://rekavo.in/send-otp', {
+    let res = await fetch('https://rekavo-backend.vercel.app/send-otp', {
       method:'POST', headers:{'Content-Type':'application/json'},
+      credentials: 'include',
       body: JSON.stringify({ email: email.value.trim() })
     });
     if(!res.ok) throw new Error();
@@ -197,8 +198,9 @@ document.getElementById('fpVerifyBtn').onclick = async function(){
   if(!otp || otp.length!=6){ err.innerText="Enter 6 digit OTP"; err.style.display='block'; return; }
   let btn=this; btn.innerText="Checking...";
   try{
-    let res = await fetch('https://rekavo.in/verify-otp', {
+    let res = await fetch('https://rekavo-backend.vercel.app/verify-otp', {
       method:'POST', headers:{'Content-Type':'application/json'},
+      credentials: 'include',
       body: JSON.stringify({ email: email, otp: otp })
     });
     let data = await res.json();
