@@ -53,7 +53,7 @@ body{background:#f1f3f6;padding-bottom:70px}
 <div id="mainBlurBg" class="page-bg" style="display:none !important"></div>
 <div class="overlay hidden" id="overlay">
   <div class="modal">
-    <span class="close" onclick="location.href='index.html'">×</span>
+    <span class="close" onclick="closeAccountModal()">×</span>
     <div class="title">Login to REKAVO</div>
     <div class="sub">Login to keep your orders safe</div>
     <div class="tabs"><div class="tab active" id="loginTab" onclick="switchTab('login')">Login</div><div class="tab inactive" id="registerTab" onclick="switchTab('register')">Register</div></div>
@@ -83,6 +83,18 @@ body{background:#f1f3f6;padding-bottom:70px}
 const API_BASE = "https://rekavo-backend.vercel.app";
 let regData={}, forgotKey="", forgotOtpVerified=false;
 let regTimer=null, forgotTimer=null;
+
+function closeAccountModal(){
+  try{
+    sessionStorage.removeItem('rekavo_tab');
+    sessionStorage.removeItem('rekavo_forgot_stage');
+    sessionStorage.removeItem('rekavo_forgot_email');
+  }catch(e){}
+  clearInterval(regTimer);
+  clearInterval(forgotTimer);
+  location.href='index.html';
+}
+
 function switchTab(t){
   document.getElementById('loginForm').classList.toggle('hidden',t!=='login');
   document.getElementById('registerForm').classList.toggle('hidden',t!=='register');
@@ -107,6 +119,19 @@ function switchTab(t){
       document.getElementById('forgotOtpBox').style.display='none';
       document.getElementById('newPassBox').classList.add('hidden');
     }
+  }
+  if(t==='login' || t==='register'){
+    try{
+      if(t!=='forgot'){
+        // login/register pe jaate hi forgot ka data clear nahi karenge, sirf newpass clear karenge
+        let st = sessionStorage.getItem('rekavo_forgot_stage');
+        if(st === 'newpass'){
+          sessionStorage.removeItem('rekavo_tab');
+          sessionStorage.removeItem('rekavo_forgot_stage');
+          sessionStorage.removeItem('rekavo_forgot_email');
+        }
+      }
+    }catch(e){}
   }
   try{ sessionStorage.setItem('rekavo_tab', t); }catch(e){}
   let loginTab=document.getElementById('loginTab'), registerTab=document.getElementById('registerTab');
@@ -265,8 +290,19 @@ async function saveNewPassword(){
     }
     let overlay = document.getElementById('overlay');
     if(overlay) overlay.classList.remove('hidden');
+    
     let savedTab = sessionStorage.getItem('rekavo_tab');
-    if(savedTab){
+    let savedStage = sessionStorage.getItem('rekavo_forgot_stage');
+
+    // FIX: Agar user ne newpass stage pe cut kiya tha, toh wapas login pe lao, newpass direct mat kholo - yehi bug tha
+    if(savedStage === 'newpass'){
+      try{
+        sessionStorage.removeItem('rekavo_tab');
+        sessionStorage.removeItem('rekavo_forgot_stage');
+        sessionStorage.removeItem('rekavo_forgot_email');
+      }catch(e){}
+      switchTab('login');
+    } else if(savedTab){
       switchTab(savedTab);
       if(savedTab === 'forgot'){
         let savedEmail = sessionStorage.getItem('rekavo_forgot_email');
@@ -275,7 +311,10 @@ async function saveNewPassword(){
           document.getElementById('forgotOtpInfo').innerText=`OTP sent to ${savedEmail}`;
         }
       }
+    } else {
+      switchTab('login');
     }
+
     let localCart = JSON.parse(localStorage.getItem('rekavo_cart')||'[]');
     let cnt = localCart.reduce((s,i)=>s+(i.qty||1),0);
     let el = document.getElementById('cartCount');
@@ -283,6 +322,7 @@ async function saveNewPassword(){
   }catch(e){
     let overlay = document.getElementById('overlay');
     if(overlay) overlay.classList.remove('hidden');
+    switchTab('login');
   }
 })();
 </script>
