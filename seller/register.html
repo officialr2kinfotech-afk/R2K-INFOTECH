@@ -100,10 +100,13 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
       </div>
 
       <div class="sec">
-        <div class="sec-title">3. Shop Verification Photo * COMPULSORY</div>
-        <div class="input-wrap"><label>Upload Clear Shop Photo * - Front board with shop name visible</label><input type="file" id="shopPhoto" accept="image/*"><div class="error-msg"></div>
-          <img id="preview" class="shop-preview">
-          <div class="note"><b>IMPORTANT:</b> Photo blur / dark / fake hua to account REJECT ho jayega. Saaf photo upload karo jisme shop ka board saaf dikhe.</div>
+        <div class="sec-title">3. Shop Verification Photo * COMPULSORY - 2 PHOTOS</div>
+        <div class="input-wrap"><label>1. Shop Front Photo (Bahar ka) * - Board visible</label><input type="file" id="shopFront" accept="image/*" capture="environment"><div class="error-msg"></div>
+          <img id="previewFront" class="shop-preview">
+        </div>
+        <div class="input-wrap" style="margin-top:12px"><label>2. Shop Inside Photo (Andar ka) * - Stock visible</label><input type="file" id="shopInside" accept="image/*" capture="environment"><div class="error-msg"></div>
+          <img id="previewInside" class="shop-preview">
+          <div class="note"><b>IMPORTANT:</b> Dono photo saaf honi chahiye. 1 Front (Bahar) + 1 Inside (Andar). Blur/dark/fake hua to account REJECT. Camera se direct kheecho ya Gallery se chuno.</div>
         </div>
       </div>
 
@@ -153,11 +156,18 @@ document.querySelectorAll('input').forEach(inp => {
   inp.addEventListener('focus', () => clearErr(inp));
 });
 
-// SEND OTP - Real Email via Resend API
+// SEND OTP - Real Email via Resend API - With 60s Timer Lock
 document.getElementById('sendOtpBtn').onclick = async function(){
   let email = document.getElementById('email');
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())){
+  let emailVal = email.value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)){
     showErr(email, "Enter valid email first");
+    return;
+  }
+  // Extra Domain Check - Malik wala validation
+  let domain = emailVal.split('@')[1];
+  if(!domain.includes('.') || domain.length < 3){
+    showErr(email, "Fake email domain - Enter real email");
     return;
   }
   let btn = this;
@@ -167,14 +177,13 @@ document.getElementById('sendOtpBtn').onclick = async function(){
     let res = await fetch('https://rekavo.in/send-otp', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ email: email.value.trim() })
+      body: JSON.stringify({ email: emailVal })
     });
     if(!res.ok) throw new Error();
     document.getElementById('otpBox').style.display='block';
-    document.getElementById('otpInfo').innerText = "OTP sent to " + email.value.trim() + " - Check inbox/spam";
-    btn.innerText = "Sent ✓";
+    document.getElementById('otpInfo').innerText = "OTP sent to " + emailVal + " - Check inbox/spam";
     let c=60;
-    let timer = setInterval(()=>{c--; if(c>0){btn.innerText=c+"s";} else{clearInterval(timer); btn.disabled=false; btn.innerText="Resend OTP";}},1000);
+    let timer = setInterval(()=>{ if(c>0){btn.innerText="Resend in "+c+"s"; c--; } else{clearInterval(timer); btn.disabled=false; btn.innerText="Resend OTP";}},1000);
   } catch(e){
     btn.disabled=false;
     btn.innerText="Send OTP";
@@ -223,25 +232,29 @@ document.getElementById('verifyOtpBtn').onclick = async function(){
     btn.innerText = "Verify";
   }
 }
-// Shop Photo Preview
-document.getElementById('shopPhoto').addEventListener('change', function(e){
-  let file = e.target.files[0];
-  clearErr(this);
-  if(file){
-    if(file.size > 5*1024*1024){
-      showErr(this, "Photo size should be less than 5MB");
-      this.value="";
-      return;
+// Shop Photo Preview - 2 Photos Malik
+function setupPreview(inputId, previewId){
+  document.getElementById(inputId).addEventListener('change', function(e){
+    let file = e.target.files[0];
+    clearErr(this);
+    if(file){
+      if(file.size > 5*1024*1024){
+        showErr(this, "Photo size should be less than 5MB");
+        this.value="";
+        return;
+      }
+      let reader = new FileReader();
+      reader.onload = function(ev){
+        let prev = document.getElementById(previewId);
+        prev.src = ev.target.result;
+        prev.style.display='block';
+      }
+      reader.readAsDataURL(file);
     }
-    let reader = new FileReader();
-    reader.onload = function(ev){
-      let prev = document.getElementById('preview');
-      prev.src = ev.target.result;
-      prev.style.display='block';
-    }
-    reader.readAsDataURL(file);
-  }
-});
+  });
+}
+setupPreview('shopFront','previewFront');
+setupPreview('shopInside','previewInside');
 
 document.getElementById('regBtn').onclick = function(){
   let valid = true;
@@ -263,10 +276,16 @@ document.getElementById('regBtn').onclick = function(){
       valid = false;
     }
   }
+  // Mobile Validation - Malik Special
   let mobile = document.getElementById('mobile').value.trim();
-  if(mobile && !/^[0-9]{10}$/.test(mobile)){
-    showErr(document.getElementById('mobile'), "Mobile number must be 10 digits");
-    valid = false;
+  if(mobile){
+    if(!/^[0-9]{10}$/.test(mobile)){
+      showErr(document.getElementById('mobile'), "Mobile number must be 10 digits");
+      valid = false;
+    } else if(!/^[6-9]/.test(mobile)){
+      showErr(document.getElementById('mobile'), "Mobile must start with 6/7/8/9 - Fake number not allowed");
+      valid = false;
+    }
   }
   if(!isEmailVerified){
     showErr(document.getElementById('email'), "Please verify Email OTP first");
@@ -277,9 +296,15 @@ document.getElementById('regBtn').onclick = function(){
     showErr(document.getElementById('pass'), "Password must be at least 8 characters");
     valid = false;
   }
-  let shopPhoto = document.getElementById('shopPhoto');
-  if(!shopPhoto.files || shopPhoto.files.length === 0){
-    showErr(shopPhoto, "Shop photo COMPULSORY - Clear photo required");
+  // 2 Photo Compulsory Check
+  let shopFront = document.getElementById('shopFront');
+  let shopInside = document.getElementById('shopInside');
+  if(!shopFront.files || shopFront.files.length === 0){
+    showErr(shopFront, "Shop Front Photo COMPULSORY");
+    valid = false;
+  }
+  if(!shopInside.files || shopInside.files.length === 0){
+    showErr(shopInside, "Shop Inside Photo COMPULSORY");
     valid = false;
   }
   if(valid){
