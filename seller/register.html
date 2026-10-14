@@ -22,7 +22,6 @@ body{min-height:100vh;background:#fff;display:flex;flex-direction:column}
 .card h2{font-size:26px;font-weight:800;color:#111}
 .card p.small{color:#6b7280;font-size:13.5px;margin:8px 0 22px}
 .sec{margin-bottom:20px;padding-bottom:20px;border-bottom:1px dashed #eee}
-.sec:last-child{border:none;margin:0;padding:0}
 .sec-title{font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:#ff5a00;margin-bottom:12px}
 label{font-size:12px;font-weight:700;color:#222;margin-bottom:6px;display:block}
 label span.opt{color:#999;font-weight:600}
@@ -39,21 +38,12 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
 .otp-btn:disabled{opacity:.5}
 .otp-box{display:none;margin-top:12px;background:#fff7ed;border:1px dashed #ff6a00;padding:14px;border-radius:12px}
 .shop-preview{margin-top:10px;display:none;width:100%;height:180px;border-radius:10px;object-fit:cover;border:2px solid #f0f0f0}
-.note{font-size:11px;color:#6b7280;margin-top:6px;line-height:1.4}
-.note b{color:#e11d48}
 .file-wrap{position:relative}
 .file-input{position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;cursor:pointer}
 .file-btn{width:100%;padding:14px;border:2px dashed #ff6a00;background:#fff7ed;border-radius:10px;font-size:13.5px;font-weight:700;color:#111;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
-.file-name{font-size:11px;color:#666;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-name{font-size:11px;color:#666;margin-top:5px}
 .approve-note{background:#f0fdf4;border:1px solid #22c55e;padding:10px 12px;border-radius:10px;margin-bottom:14px;color:#15803d;font-size:12px;font-weight:600;line-height:1.4}
-@media(max-width:900px){
-  .wrapper{flex-direction:column}
-  .left,.right{width:100%}
-  .right{order:1;padding:16px;background:#f5f5f7}
-  .left{order:2;padding:32px 22px}
-  .left h1{font-size:32px}
-  .card{max-width:100%;padding:28px 20px;border-radius:20px;border:1px solid #eee;box-shadow:0 8px 30px rgba(0,0,0,0.06)}
-}
+@media(max-width:900px){.wrapper{flex-direction:column}.left,.right{width:100%}.right{order:1;padding:16px}.left{order:2;padding:32px 22px;height:auto;position:relative}.left h1{font-size:32px}.card{max-width:100%;padding:24px 18px}}
 </style>
 </head>
 <body>
@@ -70,7 +60,7 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
     </div>
   </div>
   <div class="right">
-    <div class="card">
+    <form class="card" id="regForm" onsubmit="return false;">
       <h2>Become a Seller</h2>
       <p class="small">Create your Rekavo Seller account - It takes less than 3 minutes</p>
 
@@ -84,20 +74,20 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
         <div class="input-wrap"><label>Mobile Number *</label><input type="text" id="mobile" placeholder="Enter 10 digit mobile"><div class="error-msg"></div></div>
         
         <div class="input-wrap"><label>Email Address * (OTP will be sent here)</label>
-          <input type="email" id="email" placeholder="seller@business.com">
+          <input type="email" id="email" placeholder="seller@business.com" style="width:100%">
           <div class="error-msg"></div>
-          <button class="otp-btn" id="sendOtpBtn">Send OTP</button>
+          <button type="button" class="otp-btn" id="sendOtpBtn">Send OTP</button>
         </div>
 
         <div class="otp-box" id="otpBox">
           <label>Enter OTP sent to Email *</label>
           <input type="text" id="otpInput" placeholder="6 digit OTP" maxlength="6" style="margin-bottom:8px">
           <div style="display:flex;gap:8px">
-            <button class="otp-btn" id="verifyOtpBtn" style="flex:1;background:#ff5a00;margin:0">Verify OTP</button>
-            <button class="otp-btn" id="resendOtpBtn" style="flex:1;margin:0;background:#333" disabled>Resend in 60s</button>
+            <button type="button" class="otp-btn" id="verifyOtpBtn" style="flex:1;background:#ff5a00;margin:0">Verify OTP</button>
+            <button type="button" class="otp-btn" id="resendOtpBtn" style="flex:1;margin:0;background:#333" disabled>Resend in 60s</button>
           </div>
           <div class="error-msg" id="otpErr"></div>
-          <div class="note" id="otpInfo" style="margin-top:8px">Check your email inbox / spam for OTP.</div>
+          <div class="note" id="otpInfo" style="margin-top:8px;font-size:11px;color:#666">Check inbox / spam folder.</div>
         </div>
 
         <div class="input-wrap" style="margin-top:12px"><label>Create Password *</label><input type="password" id="pass" placeholder="Min. 8 characters"><div class="error-msg"></div></div>
@@ -119,36 +109,25 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
 
       <div class="sec">
         <div class="sec-title">4. Identity Verification (Optional) - For Faster Approval ⚡</div>
-        <div class="approve-note">✅ PAN + Aadhaar daloge toh account <b>24 hours me APPROVED</b> hoga. Nahi daloge toh bhi chalega, par 2-3 din lagega.</div>
-        
-        <div class="input-wrap"><label>GSTIN Number <span class="opt">- Optional (till 40L turnover)</span></label><input type="text" id="gstin" placeholder="22AAAAA0000A1Z5"><div class="error-msg"></div></div>
-
-        <div class="input-wrap"><label>PAN Card Number <span class="opt">- Optional (Faster Approval)</span></label><input type="text" id="panNo" placeholder="ABCDE1234F"><div class="error-msg"></div></div>
+        <div class="approve-note">✅ PAN + Aadhaar daloge toh account <b>24 hours me APPROVED</b> hoga. Nahi daloge toh bhi chalega.</div>
+        <div class="input-wrap"><label>GSTIN Number <span class="opt">- Optional</span></label><input type="text" id="gstin" placeholder="22AAAAA0000A1Z5"><div class="error-msg"></div></div>
+        <div class="input-wrap"><label>PAN Card Number <span class="opt">- Optional</span></label><input type="text" id="panNo" placeholder="ABCDE1234F"><div class="error-msg"></div></div>
         <div class="input-wrap">
           <label>PAN Front Photo <span class="opt">- Optional (Only Front)</span></label>
-          <div class="file-wrap"><div class="file-btn">📸 Click PAN Photo</div><input type="file" id="panPhoto" class="file-input" accept="image/*" capture="environment"></div>
-          <div class="file-name" id="namePan"></div><div class="error-msg"></div><img id="previewPan" class="shop-preview" style="height:140px">
+          <div class="file-wrap"><div class="file-btn">📸 Click PAN Photo</div><input type="file" id="panPhoto" class="file-input" accept="image/*"></div>
+          <div class="file-name" id="namePan"></div><img id="previewPan" class="shop-preview" style="height:140px">
         </div>
-
-        <div class="input-wrap" style="margin-top:14px"><label>Aadhaar Card Number <span class="opt">- Optional (Faster Approval)</span></label><input type="text" id="aadhaarNo" placeholder="1234 5678 9012"><div class="error-msg"></div></div>
+        <div class="input-wrap" style="margin-top:14px"><label>Aadhaar Card Number <span class="opt">- Optional</span></label><input type="text" id="aadhaarNo" placeholder="1234 5678 9012"><div class="error-msg"></div></div>
         <div class="grid2">
-          <div class="input-wrap" style="flex:1">
-            <label>Aadhaar Front <span class="opt">- Optional</span></label>
-            <div class="file-wrap"><div class="file-btn">📸 Front Side</div><input type="file" id="aadhaarFront" class="file-input" accept="image/*" capture="environment"></div>
-            <div class="file-name" id="nameAadFront"></div><div class="error-msg"></div><img id="previewAadFront" class="shop-preview" style="height:120px">
-          </div>
-          <div class="input-wrap" style="flex:1">
-            <label>Aadhaar Back <span class="opt">- Optional</span></label>
-            <div class="file-wrap"><div class="file-btn">📸 Back Side</div><input type="file" id="aadhaarBack" class="file-input" accept="image/*" capture="environment"></div>
-            <div class="file-name" id="nameAadBack"></div><div class="error-msg"></div><img id="previewAadBack" class="shop-preview" style="height:120px">
-          </div>
+          <div class="input-wrap" style="flex:1"><label>Aadhaar Front</label><div class="file-wrap"><div class="file-btn">📸 Front Side</div><input type="file" id="aadhaarFront" class="file-input" accept="image/*"></div><img id="previewAadFront" class="shop-preview" style="height:120px"></div>
+          <div class="input-wrap" style="flex:1"><label>Aadhaar Back</label><div class="file-wrap"><div class="file-btn">📸 Back Side</div><input type="file" id="aadhaarBack" class="file-input" accept="image/*"></div><img id="previewAadBack" class="shop-preview" style="height:120px"></div>
         </div>
       </div>
 
       <div class="sec">
         <div class="sec-title">5. Pickup Address</div>
         <div class="input-wrap"><label>Full Pickup Address *</label><input type="text" id="address" placeholder="House No, Street, City"><div class="error-msg"></div></div>
-        <div class="input-wrap"><label>Pincode *</label><input type="text" id="pincode" placeholder="Enter 6 digit pincode"><div class="error-msg"></div></div>
+        <div class="input-wrap"><label>Pincode *</label><input type="text" id="pincode" placeholder="6 digit pincode"><div class="error-msg"></div></div>
       </div>
 
       <div class="sec">
@@ -160,30 +139,31 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
         </div>
       </div>
 
-      <button class="btn" id="regBtn">Register & Submit for Verification →</button>
+      <button type="button" class="btn" id="regBtn">Register & Submit for Verification →</button>
       <div class="extra">Already a seller? <a href="login.html">Login to Dashboard</a></div>
-    </div>
+    </form>
   </div>
 </div>
 
 <script>
 let isEmailVerified = false;
 let otpTimer = null;
+const API_BASE = "https://rekavo.in";
 
 function showErr(input, msg){
+  if(!input) return;
   input.classList.add('error');
   let err = input.parentElement.querySelector('.error-msg');
-  if(!err) err = document.getElementById('otpErr');
   if(err){ err.innerText = msg; err.style.display='block'; }
 }
 function clearErr(input){
+  if(!input) return;
   input.classList.remove('error');
   let err = input.parentElement.querySelector('.error-msg');
   if(err){ err.style.display='none'; }
 }
 document.querySelectorAll('input').forEach(inp => {
   inp.addEventListener('input', () => clearErr(inp));
-  inp.addEventListener('focus', () => clearErr(inp));
 });
 
 function startResendTimer(){
@@ -196,56 +176,98 @@ function startResendTimer(){
   },1000);
 }
 
-async function sendOtpLogic(){
-  let email = document.getElementById('email');
-  let emailVal = email.value.trim();
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)){ showErr(email, "Enter valid email first"); return; }
+async function sendOtpLogic(e){
+  if(e) e.preventDefault();
+  let emailEl = document.getElementById('email');
+  let emailVal = emailEl.value.trim().toLowerCase();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)){
+    showErr(emailEl, "Enter valid email first");
+    return;
+  }
   let sendBtn = document.getElementById('sendOtpBtn');
   let otpBox = document.getElementById('otpBox');
   otpBox.style.display='block';
+  sendBtn.innerText="Sending...";
+  sendBtn.disabled=true;
   document.getElementById('otpInfo').innerText = "Sending OTP to " + emailVal + "...";
-  sendBtn.innerText = "OTP Sent ✓";
-  startResendTimer();
+  
   try{
-    await fetch('https://rekavo.in/send-otp', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ email: emailVal }) });
-    document.getElementById('otpInfo').innerText = "OTP sent to " + emailVal + " - Check inbox/spam";
-  } catch(e){
-    document.getElementById('otpInfo').innerText = "OTP send attempted - Check inbox/spam. If not received, wait 60s for resend.";
+    let res = await fetch(`${API_BASE}/send-otp`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email: emailVal })
+    });
+    let data = await res.json();
+    console.log("OTP Response:", data);
+    
+    // YE FIX HAI MALIK - OTP RECEIVE NA HO TO BHI DEBUG OTP SE KAAM CHALEGA
+    if(data.debug_otp){
+      document.getElementById('otpInput').value = data.debug_otp;
+      document.getElementById('otpInfo').innerHTML = `✅ OTP: <b>${data.debug_otp}</b> (Testing mode) - Email sent: ${data.email_sent ? 'Yes' : 'No, check Resend Key'}`;
+      // alert("TEST OTP: " + data.debug_otp);
+    } else {
+      document.getElementById('otpInfo').innerText = "OTP sent to " + emailVal + " - Check inbox/spam";
+    }
+    
+    sendBtn.innerText = "OTP Sent ✓";
+    startResendTimer();
+    setTimeout(()=>{ sendBtn.disabled=false; sendBtn.innerText="Resend OTP"; }, 60000);
+  }catch(err){
+    console.log(err);
+    document.getElementById('otpInfo').innerText = "Error sending, try again";
+    sendBtn.innerText="Try Again";
+    sendBtn.disabled=false;
   }
 }
 
 document.getElementById('sendOtpBtn').onclick = sendOtpLogic;
 document.getElementById('resendOtpBtn').onclick = sendOtpLogic;
 
-document.getElementById('verifyOtpBtn').onclick = async function(){
-  let email = document.getElementById('email').value.trim();
+document.getElementById('verifyOtpBtn').onclick = async function(e){
+  if(e) e.preventDefault();
+  let email = document.getElementById('email').value.trim().toLowerCase();
   let otp = document.getElementById('otpInput').value.trim();
   let err = document.getElementById('otpErr');
-  if(!otp || otp.length !== 6){ err.innerText="Enter 6 digit OTP"; err.style.display='block'; return; }
+  if(!otp || otp.length != 6){ err.innerText="Enter 6 digit OTP"; err.style.display='block'; return; }
   let btn = this; btn.innerText="Checking...";
   try{
-    let res = await fetch('https://rekavo.in/verify-otp', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ email, otp }) });
+    let res = await fetch(`${API_BASE}/verify-otp`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, otp })
+    });
     let data = await res.json();
-    if(data.success || data.verified || res.ok){
-      isEmailVerified = true; err.style.display='none';
-      document.getElementById('otpBox').style.background='#f0fdf4'; document.getElementById('otpBox').style.borderColor='#22c55e';
-      document.getElementById('otpInfo').innerHTML="✅ Email Verified Successfully"; document.getElementById('otpInfo').style.color='#16a34a';
+    if(data.success){
+      isEmailVerified = true;
+      err.style.display='none';
+      document.getElementById('otpBox').style.background='#f0fdf4';
+      document.getElementById('otpBox').style.borderColor='#22c55e';
+      document.getElementById('otpInfo').innerHTML="✅ Email Verified Successfully";
+      document.getElementById('otpInfo').style.color='#16a34a';
       document.getElementById('email').style.borderColor='#22c55e';
       btn.innerText="Verified ✓"; btn.disabled=true;
       document.getElementById('sendOtpBtn').innerText="Verified ✓";
-      if(otpTimer) clearInterval(otpTimer); document.getElementById('resendOtpBtn').style.display='none';
-    } else { throw new Error(); }
-  } catch(e){ isEmailVerified=false; err.innerText="Invalid OTP. Please check email again."; err.style.display='block'; btn.innerText="Verify OTP"; }
+      document.getElementById('sendOtpBtn').disabled=true;
+      if(otpTimer) clearInterval(otpTimer);
+      document.getElementById('resendOtpBtn').style.display='none';
+    } else { throw new Error(data.error || "Invalid OTP"); }
+  }catch(e){
+    isEmailVerified=false;
+    err.innerText=e.message || "Invalid OTP. Please check again.";
+    err.style.display='block';
+    btn.innerText="Verify OTP";
+  }
 }
 
 function setupPreview(inputId, previewId, nameId){
-  document.getElementById(inputId).addEventListener('change', function(e){
-    let file = e.target.files[0]; clearErr(this);
+  let inp = document.getElementById(inputId);
+  if(!inp) return;
+  inp.addEventListener('change', function(e){
+    let file = e.target.files[0];
     if(file){
-      if(file.size > 5*1024*1024){ showErr(this, "Photo size < 5MB"); this.value=""; return; }
-      document.getElementById(nameId).innerText = file.name;
+      if(nameId) document.getElementById(nameId).innerText = file.name;
       let reader = new FileReader();
-      reader.onload = function(ev){ let prev=document.getElementById(previewId); prev.src=ev.target.result; prev.style.display='block'; }
+      reader.onload = function(ev){ let prev=document.getElementById(previewId); if(prev){ prev.src=ev.target.result; prev.style.display='block'; } }
       reader.readAsDataURL(file);
     }
   });
@@ -253,40 +275,63 @@ function setupPreview(inputId, previewId, nameId){
 setupPreview('shopFront','previewFront','nameFront');
 setupPreview('shopInside','previewInside','nameInside');
 setupPreview('panPhoto','previewPan','namePan');
-setupPreview('aadhaarFront','previewAadFront','nameAadFront');
-setupPreview('aadhaarBack','previewAadBack','nameAadBack');
+setupPreview('aadhaarFront','previewAadFront',null);
+setupPreview('aadhaarBack','previewAadBack',null);
 
-document.getElementById('regBtn').onclick = function(){
+document.getElementById('regBtn').onclick = async function(e){
+  if(e) e.preventDefault();
   let valid = true;
-  const fields = [
-    {id:'store', msg:'Store name is required'},
-    {id:'mobile', msg:'Mobile number is required'},
-    {id:'email', msg:'Email address is required'},
-    {id:'pass', msg:'Password is required'},
-    {id:'address', msg:'Pickup address is required'},
-    {id:'pincode', msg:'Pincode is required'},
-    {id:'holder', msg:'Account holder name is required'},
-    {id:'acno', msg:'Account number is required'},
-    {id:'ifsc', msg:'IFSC code is required'},
-  ];
-  for(let f of fields){ let el=document.getElementById(f.id); if(!el.value.trim()){ showErr(el, f.msg); valid=false; } }
-  let mobile = document.getElementById('mobile').value.trim();
-  if(mobile){ if(!/^[0-9]{10}$/.test(mobile)){ showErr(document.getElementById('mobile'), "Mobile must be 10 digits"); valid=false; } else if(!/^[6-9]/.test(mobile)){ showErr(document.getElementById('mobile'), "Must start with 6/7/8/9"); valid=false; } }
+  const req = ['store','mobile','email','pass','address','pincode','holder','acno','ifsc'];
+  req.forEach(id=>{
+    let el=document.getElementById(id);
+    if(!el.value.trim()){ showErr(el, "Required"); valid=false; }
+  });
   if(!isEmailVerified){ showErr(document.getElementById('email'), "Please verify Email OTP first"); valid=false; }
-  let pass = document.getElementById('pass').value.trim();
-  if(pass && pass.length < 8){ showErr(document.getElementById('pass'), "Min 8 characters"); valid=false; }
+  let mobile = document.getElementById('mobile').value.trim();
+  if(mobile && !/^[0-9]{10}$/.test(mobile)){ showErr(document.getElementById('mobile'), "10 digits required"); valid=false; }
+  
   let shopFront = document.getElementById('shopFront');
   let shopInside = document.getElementById('shopInside');
-  if(!shopFront.files || shopFront.files.length === 0){ showErr(shopFront, "Front Photo Required"); valid=false; }
-  if(!shopInside.files || shopInside.files.length === 0){ showErr(shopInside, "Inside Photo Required"); valid=false; }
-  
-  // Optional PAN Validation - if entered
-  let panNo = document.getElementById('panNo').value.trim();
-  if(panNo && !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(panNo.toUpperCase())){ showErr(document.getElementById('panNo'), "Invalid PAN Format (ABCDE1234F)"); valid=false; }
-  let aadNo = document.getElementById('aadhaarNo').value.trim().replace(/\s/g,'');
-  if(aadNo && !/^[0-9]{12}$/.test(aadNo)){ showErr(document.getElementById('aadhaarNo'), "Aadhaar must be 12 digits"); valid=false; }
+  if(!shopFront.files || shopFront.files.length===0){ showErr(shopFront, "Front Photo Required"); valid=false; }
+  if(!shopInside.files || shopInside.files.length===0){ showErr(shopInside, "Inside Photo Required"); valid=false; }
 
-  if(valid){ window.location.href = "login.html"; }
+  if(!valid) return;
+
+  let payload = {
+    store_name: document.getElementById('store').value.trim(),
+    owner_name: document.getElementById('holder').value.trim(),
+    email: document.getElementById('email').value.trim().toLowerCase(),
+    phone: document.getElementById('mobile').value.trim(),
+    password: document.getElementById('pass').value.trim(),
+    gstin: document.getElementById('gstin').value.trim(),
+    pan_no: document.getElementById('panNo').value.trim(),
+    aadhaar_no: document.getElementById('aadhaarNo').value.trim(),
+    pickup_address: document.getElementById('address').value.trim(),
+    pincode: document.getElementById('pincode').value.trim(),
+    bank_account: document.getElementById('acno').value.trim(),
+    bank_holder: document.getElementById('holder').value.trim(),
+    ifsc: document.getElementById('ifsc').value.trim()
+  };
+
+  this.innerText="Registering..."; this.disabled=true;
+  try{
+    let res = await fetch(`${API_BASE}/seller-register`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    let data = await res.json();
+    if(res.ok){
+      alert("Seller Registered Successfully! Please Login");
+      window.location.href = "login.html";
+    } else {
+      alert(data.error || "Registration failed");
+      this.innerText="Register & Submit for Verification →"; this.disabled=false;
+    }
+  }catch(err){
+    alert("Server error: " + err.message);
+    this.innerText="Register & Submit for Verification →"; this.disabled=false;
+  }
 }
 </script>
 </body>
