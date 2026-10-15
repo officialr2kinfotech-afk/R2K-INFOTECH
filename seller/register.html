@@ -22,13 +22,13 @@ body{min-height:100vh;background:#fff;display:flex;flex-direction:column}
 .card h2{font-size:26px;font-weight:800;color:#111}
 .card p.small{color:#6b7280;font-size:13.5px;margin:8px 0 18px}
 .progress-wrap{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;position:relative}
-.progress-wrap::before{content:'';position:absolute;top:16px;left:20px;right:20px;height:3px;background:#f0f0f0;z-index:0}
-.progress-line{position:absolute;top:16px;left:20px;height:3px;background:linear-gradient(90deg,#ff6a00,#ff2d00);z-index:1;transition:0.4s;width:0%}
-.p-step{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px}
+.progress-wrap::before{content:'';position:absolute;top:16px;left:12px;right:12px;height:3px;background:#f0f0f0;z-index:0}
+.progress-line{position:absolute;top:16px;left:12px;height:3px;background:linear-gradient(90deg,#ff6a00,#ff2d00);z-index:1;transition:0.4s;width:0%}
+.p-step{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;width:25%}
 .p-circle{width:34px;height:34px;border-radius:50%;background:#f0f0f0;color:#999;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;border:2px solid #f0f0f0;transition:0.3s}
 .p-step.active.p-circle{background:#111;color:#fff;border-color:#111}
 .p-step.done.p-circle{background:#22c55e;color:#fff;border-color:#22c55e}
-.p-label{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#999}
+.p-label{font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#999;text-align:center}
 .p-step.active.p-label{color:#111}
 .p-step.done.p-label{color:#22c55e}
 .form-step{display:none;animation:slideIn 0.3s ease}
@@ -59,6 +59,14 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
 .file-name{font-size:11px;color:#666;margin-top:5px}
 .approve-note{background:#f0fdf4;border:1px solid #22c55e;padding:10px 12px;border-radius:10px;margin-bottom:14px;color:#15803d;font-size:12px;font-weight:600;line-height:1.4}
 .nav-btns{display:flex;gap:10px;margin-top:16px}
+/* GST Yes No - Meesho Style */
+.gst-choice{display:flex;gap:12px;margin:12px 0}
+.gst-card{flex:1;border:2px solid #f0f0f0;border-radius:12px;padding:14px 12px;cursor:pointer;transition:0.2s;background:#fff}
+.gst-card.active{border-color:#ff5a00;background:#fff7ed}
+.gst-card input{width:auto;accent-color:#ff5a00}
+.gst-card b{display:block;font-size:14px;margin-bottom:4px}
+.gst-card span{font-size:12px;color:#666;line-height:1.3;display:block}
+.gst-card span.green{color:#16a34a;font-weight:700;margin-top:2px}
 @media(max-width:900px){.wrapper{flex-direction:column}.left,.right{width:100%}.right{order:1;padding:16px}.left{order:2;padding:32px 22px;height:auto;position:relative}.left h1{font-size:32px}.card{max-width:100%;padding:22px 16px}}
 </style>
 </head>
@@ -81,70 +89,93 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
       <p class="small">It takes less than 3 minutes</p>
       <div class="progress-wrap">
         <div class="progress-line" id="progressLine"></div>
-        <div class="p-step active" id="ps1"><div class="p-circle">1</div><div class="p-label">Store</div></div>
-        <div class="p-step" id="ps2"><div class="p-circle">2</div><div class="p-label">Contact</div></div>
-        <div class="p-step" id="ps3"><div class="p-circle">3</div><div class="p-label">Shop</div></div>
-        <div class="p-step" id="ps4"><div class="p-circle">4</div><div class="p-label">Bank</div></div>
+        <div class="p-step active" id="ps1"><div class="p-circle">1</div><div class="p-label">Business Details</div></div>
+        <div class="p-step" id="ps2"><div class="p-circle">2</div><div class="p-label">Pickup Address</div></div>
+        <div class="p-step" id="ps3"><div class="p-circle">3</div><div class="p-label">Bank Details</div></div>
+        <div class="p-step" id="ps4"><div class="p-circle">4</div><div class="p-label">Supplier Details</div></div>
       </div>
+
+      <!-- STEP 1 - BUSINESS DETAILS -->
       <div class="form-step active" id="step1">
         <div class="sec">
-          <div class="sec-title">1. Store Details</div>
+          <div class="sec-title">Business Details</div>
           <div class="input-wrap"><label>Store / Business Name *</label><input type="text" id="store" placeholder="Ex: R2K Electronics"><div class="error-msg"></div></div>
+
+          <label style="margin-top:14px;font-size:14px">Do you have a GST number?</label>
+          <div class="gst-choice">
+            <div class="gst-card" id="gstYesCard" onclick="selectGST(true)">
+              <div style="display:flex;gap:8px;align-items:center"><input type="radio" name="hasGst" id="gstYes"><b>Yes</b></div>
+              <span>Enter your GSTIN and sell anywhere easily</span>
+            </div>
+            <div class="gst-card" id="gstNoCard" onclick="selectGST(false)">
+              <div style="display:flex;gap:8px;align-items:center"><input type="radio" name="hasGst" id="gstNo"><b>No</b></div>
+              <span>Worry not, you can sell without GST</span>
+              <span class="green">Get EID in mins ⚡</span>
+            </div>
+          </div>
+          <div class="input-wrap" id="gstInputWrap" style="display:none"><label>GSTIN Number *</label><input type="text" id="gstin" placeholder="Enter your GSTIN"><div class="error-msg"></div></div>
         </div>
-        <button type="button" class="btn" onclick="nextStep(2)">Continue →</button>
-      </div>
-      <div class="form-step" id="step2">
         <div class="sec">
-          <div class="sec-title">2. Contact Details</div>
+          <div class="sec-title">Shop Verification Photo * COMPULSORY - 2 PHOTOS</div>
+          <div class="input-wrap"><label>1. Shop Front Photo (Bahar ka) *</label><div class="file-wrap"><div class="file-btn">📸 Click Picture - Front Shop</div><input type="file" id="shopFront" class="file-input" accept="image/*" capture="environment"></div><div class="file-name" id="nameFront"></div><div class="error-msg"></div><img id="previewFront" class="shop-preview"></div>
+          <div class="input-wrap" style="margin-top:14px"><label>2. Shop Inside Photo (Andar ka) *</label><div class="file-wrap"><div class="file-btn">📸 Click Picture - Inside Shop</div><input type="file" id="shopInside" class="file-input" accept="image/*" capture="environment"></div><div class="file-name" id="nameInside"></div><div class="error-msg"></div><img id="previewInside" class="shop-preview"></div>
+        </div>
+        <div class="sec">
+          <div class="sec-title">Contact Details</div>
           <div class="input-wrap"><label>Mobile Number *</label><input type="text" id="mobile" placeholder="Enter 10 digit mobile"><div class="error-msg"></div></div>
-          <div class="input-wrap"><label>Email Address * (OTP will be sent here)</label>
-            <input type="email" id="email" placeholder="seller@business.com"><div class="error-msg"></div>
+          <div class="input-wrap"><label>Email Address *</label>
+            <input type="email" id="email" placeholder="Enter your email"><div class="error-msg"></div>
             <button type="button" class="otp-btn" id="sendOtpBtn">Send OTP</button>
           </div>
           <div class="otp-box" id="otpBox">
             <label>Enter OTP sent to Email *</label>
-            <input type="text" id="otpInput" placeholder="6 digit OTP" maxlength="6" style="margin-bottom:8px">
+            <input type="text" id="otpInput" placeholder="Enter 6 digit OTP" maxlength="6" style="margin-bottom:8px">
             <div style="display:flex;gap:8px">
               <button type="button" class="otp-btn" id="verifyOtpBtn" style="flex:1;background:#ff5a00;margin:0">Verify OTP</button>
               <button type="button" class="otp-btn" id="resendOtpBtn" style="flex:1;margin:0;background:#333" disabled>Resend in 60s</button>
             </div>
             <div class="error-msg" id="otpErr"></div>
-            <div class="note" id="otpInfo" style="margin-top:8px;font-size:11px;color:#666">Check inbox / spam folder.</div>
+            <div class="note" id="otpInfo" style="margin-top:8px;font-size:12px;font-weight:700;display:none;padding:8px;border-radius:8px"></div>
           </div>
           <div class="input-wrap" style="margin-top:12px"><label>Create Password *</label><input type="password" id="pass" placeholder="Min. 8 characters"><div class="error-msg"></div></div>
         </div>
+        <button type="button" class="btn" onclick="nextStep(2)">Continue →</button>
+      </div>
+
+      <!-- STEP 2 - PICKUP ADDRESS -->
+      <div class="form-step" id="step2">
+        <div class="sec">
+          <div class="sec-title">Pickup Address</div>
+          <div class="input-wrap"><label>Full Pickup Address *</label><input type="text" id="address" placeholder="Enter full address"><div class="error-msg"></div></div>
+          <div class="input-wrap"><label>Pincode *</label><input type="text" id="pincode" placeholder="Enter 6 digit pincode"><div class="error-msg"></div></div>
+        </div>
         <div class="nav-btns"><button type="button" class="btn-sec" onclick="prevStep(1)">← Back</button><button type="button" class="btn" onclick="nextStep(3)">Continue →</button></div>
       </div>
+
+      <!-- STEP 3 - BANK DETAILS -->
       <div class="form-step" id="step3">
         <div class="sec">
-          <div class="sec-title">3. Shop Verification Photo * COMPULSORY - 2 PHOTOS</div>
-          <div class="input-wrap"><label>1. Shop Front Photo (Bahar ka) *</label><div class="file-wrap"><div class="file-btn">📸 Click Picture - Front Shop</div><input type="file" id="shopFront" class="file-input" accept="image/*" capture="environment"></div><div class="file-name" id="nameFront"></div><div class="error-msg"></div><img id="previewFront" class="shop-preview"></div>
-          <div class="input-wrap" style="margin-top:14px"><label>2. Shop Inside Photo (Andar ka) *</label><div class="file-wrap"><div class="file-btn">📸 Click Picture - Inside Shop</div><input type="file" id="shopInside" class="file-input" accept="image/*" capture="environment"></div><div class="file-name" id="nameInside"></div><div class="error-msg"></div><img id="previewInside" class="shop-preview"></div>
-        </div>
-        <div class="sec">
-          <div class="sec-title">4. Identity Verification (Optional) - For Faster Approval ⚡</div>
-          <div class="approve-note">✅ PAN + Aadhaar daloge toh account <b>24 hours me APPROVED</b> hoga.</div>
-          <div class="input-wrap"><label>GSTIN Number <span class="opt">- Optional</span></label><input type="text" id="gstin" placeholder="22AAAAA0000A1Z5"><div class="error-msg"></div></div>
-          <div class="input-wrap"><label>PAN Card Number <span class="opt">- Optional</span></label><input type="text" id="panNo" placeholder="ABCDE1234F"><div class="error-msg"></div></div>
-          <div class="input-wrap"><label>PAN Front Photo <span class="opt">- Optional</span></label><div class="file-wrap"><div class="file-btn">📸 Click PAN Photo</div><input type="file" id="panPhoto" class="file-input" accept="image/*"></div><div class="file-name" id="namePan"></div><img id="previewPan" class="shop-preview" style="height:140px"></div>
-          <div class="input-wrap" style="margin-top:14px"><label>Aadhaar Card Number <span class="opt">- Optional</span></label><input type="text" id="aadhaarNo" placeholder="1234 5678 9012"><div class="error-msg"></div></div>
-          <div class="grid2"><div class="input-wrap" style="flex:1"><label>Aadhaar Front</label><div class="file-wrap"><div class="file-btn">📸 Front</div><input type="file" id="aadhaarFront" class="file-input" accept="image/*"></div><img id="previewAadFront" class="shop-preview" style="height:120px"></div><div class="input-wrap" style="flex:1"><label>Aadhaar Back</label><div class="file-wrap"><div class="file-btn">📸 Back</div><input type="file" id="aadhaarBack" class="file-input" accept="image/*"></div><img id="previewAadBack" class="shop-preview" style="height:120px"></div></div>
+          <div class="sec-title">Bank Details for Payments *</div>
+          <div class="input-wrap"><label>Account Holder Name *</label><input type="text" id="holder" placeholder="Enter account holder name"><div class="error-msg"></div></div>
+          <div class="grid2"><div class="input-wrap" style="flex:1"><label>Account Number *</label><input type="text" id="acno" placeholder="Enter account number"><div class="error-msg"></div></div><div class="input-wrap" style="flex:1"><label>IFSC Code *</label><input type="text" id="ifsc" placeholder="Enter IFSC code"><div class="error-msg"></div></div></div>
         </div>
         <div class="nav-btns"><button type="button" class="btn-sec" onclick="prevStep(2)">← Back</button><button type="button" class="btn" onclick="nextStep(4)">Continue →</button></div>
       </div>
+
+      <!-- STEP 4 - SUPPLIER DETAILS -->
       <div class="form-step" id="step4">
         <div class="sec">
-          <div class="sec-title">5. Pickup Address</div>
-          <div class="input-wrap"><label>Full Pickup Address *</label><input type="text" id="address" placeholder="House No, Street, City"><div class="error-msg"></div></div>
-          <div class="input-wrap"><label>Pincode *</label><input type="text" id="pincode" placeholder="6 digit pincode"><div class="error-msg"></div></div>
-        </div>
-        <div class="sec">
-          <div class="sec-title">6. Bank Details for Payments *</div>
-          <div class="input-wrap"><label>Account Holder Name *</label><input type="text" id="holder" placeholder="As per bank records"><div class="error-msg"></div></div>
-          <div class="grid2"><div class="input-wrap" style="flex:1"><input type="text" id="acno" placeholder="Account Number *"><div class="error-msg"></div></div><div class="input-wrap" style="flex:1"><input type="text" id="ifsc" placeholder="IFSC Code *"><div class="error-msg"></div></div></div>
+          <div class="sec-title">Supplier Details</div>
+          <div class="input-wrap"><label>Supplier Full Name *</label><input type="text" id="fullName" placeholder="Enter full name"><div class="error-msg"></div></div>
+          <div class="input-wrap"><label>Supplier Mobile Number *</label><input type="text" id="supplierMobile" placeholder="Enter mobile number"><div class="error-msg"></div></div>
+          <div class="approve-note">✅ PAN + Aadhaar daloge toh account <b>24 hours me APPROVED</b> hoga.</div>
+          <div class="input-wrap"><label>PAN Card Number *</label><input type="text" id="panNo" placeholder="Enter PAN number"><div class="error-msg"></div></div>
+          <div class="input-wrap"><label>PAN Front Photo *</label><div class="file-wrap"><div class="file-btn">📸 Click PAN Photo</div><input type="file" id="panPhoto" class="file-input" accept="image/*"></div><div class="file-name" id="namePan"></div><img id="previewPan" class="shop-preview" style="height:140px"></div>
+          <div class="input-wrap" style="margin-top:14px"><label>Aadhaar Card Number *</label><input type="text" id="aadhaarNo" placeholder="Enter Aadhaar number"><div class="error-msg"></div></div>
+          <div class="grid2"><div class="input-wrap" style="flex:1"><label>Aadhaar Front</label><div class="file-wrap"><div class="file-btn">📸 Front</div><input type="file" id="aadhaarFront" class="file-input" accept="image/*"></div><img id="previewAadFront" class="shop-preview" style="height:120px"></div><div class="input-wrap" style="flex:1"><label>Aadhaar Back</label><div class="file-wrap"><div class="file-btn">📸 Back</div><input type="file" id="aadhaarBack" class="file-input" accept="image/*"></div><img id="previewAadBack" class="shop-preview" style="height:120px"></div></div>
         </div>
         <button type="button" class="btn" id="regBtn">Register & Submit for Verification →</button>
-        <button type="button" class="btn-sec" onclick="prevStep(3)">← Back to Shop Photos</button>
+        <button type="button" class="btn-sec" onclick="prevStep(3)">← Back</button>
         <div class="extra">Already a seller? <a href="login.html">Login to Dashboard</a></div>
       </div>
     </form>
@@ -154,7 +185,17 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
 let currentStep = 1;
 let isEmailVerified = false;
 let otpTimer = null;
+let hasGST = null;
 const API_BASE = "https://rekavo-backend.vercel.app";
+
+function selectGST(val){
+  hasGST = val;
+  document.getElementById('gstYes').checked = val;
+  document.getElementById('gstNo').checked =!val;
+  document.getElementById('gstYesCard').classList.toggle('active', val);
+  document.getElementById('gstNoCard').classList.toggle('active',!val);
+  document.getElementById('gstInputWrap').style.display = val? 'block' : 'none';
+}
 
 function updateProgress(step){
   document.querySelectorAll('.p-step').forEach((el,i)=>{
@@ -166,23 +207,33 @@ function updateProgress(step){
 }
 function nextStep(n){
   if(currentStep===1){
-    let el=document.getElementById('store');
-    if(!el.value.trim()){ showErr(el,"Required"); return; }
-  }
-  if(currentStep===2){
+    let s=document.getElementById('store');
     let m=document.getElementById('mobile');
     let e=document.getElementById('email');
     let p=document.getElementById('pass');
+    let sf=document.getElementById('shopFront');
+    let si=document.getElementById('shopInside');
+    if(!s.value.trim()){ showErr(s,"Required"); return; }
+    if(hasGST===null){ alert("Please select GST Yes or No"); return; }
+    if(hasGST &&!document.getElementById('gstin').value.trim()){ showErr(document.getElementById('gstin'),"Enter GSTIN"); return; }
+    if(!sf.files.length){ showErr(sf,"Front Photo Required"); return; }
+    if(!si.files.length){ showErr(si,"Inside Photo Required"); return; }
     if(!m.value.trim() ||!/^[0-9]{10}$/.test(m.value.trim())){ showErr(m,"10 digits required"); return; }
     if(!e.value.trim()){ showErr(e,"Required"); return; }
     if(!isEmailVerified){ showErr(e,"Please verify Email OTP first"); return; }
     if(!p.value.trim() || p.value.trim().length<8){ showErr(p,"Min 8 chars"); return; }
   }
+  if(currentStep===2){
+    let a=document.getElementById('address');
+    let pin=document.getElementById('pincode');
+    if(!a.value.trim()){ showErr(a,"Required"); return; }
+    if(!pin.value.trim() || pin.value.trim().length!=6){ showErr(pin,"6 digit pincode"); return; }
+  }
   if(currentStep===3){
-    let sf=document.getElementById('shopFront');
-    let si=document.getElementById('shopInside');
-    if(!sf.files.length){ showErr(sf,"Front Photo Required"); return; }
-    if(!si.files.length){ showErr(si,"Inside Photo Required"); return; }
+    let h=document.getElementById('holder');
+    let ac=document.getElementById('acno');
+    let ifsc=document.getElementById('ifsc');
+    if(!h.value.trim() ||!ac.value.trim() ||!ifsc.value.trim()){ showErr(h,"Required"); return; }
   }
   document.getElementById('step'+currentStep).classList.remove('active');
   document.getElementById('step'+n).classList.add('active');
@@ -229,7 +280,11 @@ async function sendOtpLogic(e){
   let otpBox = document.getElementById('otpBox');
   otpBox.style.display='block';
   sendBtn.innerText="Sending..."; sendBtn.disabled=true;
-  document.getElementById('otpInfo').innerText = "Sending OTP to " + emailVal + "...";
+  let otpInfo = document.getElementById('otpInfo');
+  otpInfo.style.display='block';
+  otpInfo.innerText = "Sending OTP to " + emailVal + "...";
+  otpInfo.style.color="#666";
+  otpInfo.style.background="#fff";
   try{
     let res = await fetch(`${API_BASE}/seller/send-otp`, {
       method:'POST',
@@ -239,14 +294,18 @@ async function sendOtpLogic(e){
     });
     let data = await res.json();
     if(!res.ok) throw new Error(data.error || "Failed to send OTP");
-    document.getElementById('otpInfo').innerText = "OTP sent! Check inbox / spam folder - Direct from Rekavo";
+    otpInfo.innerText = "✅ OTP sent to " + emailVal;
+    otpInfo.style.color="#16a34a";
+    otpInfo.style.background="#f0fdf4";
+    otpInfo.style.border="1px solid #22c55e";
     document.getElementById('otpInput').value = "";
     document.getElementById('otpInput').focus();
     sendBtn.innerText = "OTP Sent ✓";
     startResendTimer();
     setTimeout(()=>{ sendBtn.disabled=false; sendBtn.innerText="Resend OTP"; }, 60000);
   }catch(err){
-    document.getElementById('otpInfo').innerText = "Error: " + err.message;
+    otpInfo.innerText = "Error: " + err.message;
+    otpInfo.style.color="#e11d48";
     sendBtn.innerText="Try Again"; sendBtn.disabled=false;
   }
 }
@@ -271,12 +330,18 @@ document.getElementById('verifyOtpBtn').onclick = async function(e){
       isEmailVerified = true; err.style.display='none';
       document.getElementById('otpBox').style.background='#f0fdf4';
       document.getElementById('otpBox').style.borderColor='#22c55e';
-      document.getElementById('otpInfo').innerHTML="✅ Email Verified Successfully";
-      document.getElementById('otpInfo').style.color='#16a34a';
+      let otpInfo = document.getElementById('otpInfo');
+      otpInfo.style.display='block';
+      otpInfo.innerHTML="✅ OTP sent to " + email + " verified successfully";
+      otpInfo.style.color='#16a34a';
+      otpInfo.style.background='#f0fdf4';
+      otpInfo.style.border='1px solid #22c55e';
       document.getElementById('email').style.borderColor='#22c55e';
-      btn.innerText="Verified ✓"; btn.disabled=true;
+      document.getElementById('email').style.background='#f0fdf4';
+      btn.innerText="Verified ✓"; btn.disabled=true; btn.style.background="#22c55e";
       document.getElementById('sendOtpBtn').innerText="Verified ✓";
       document.getElementById('sendOtpBtn').disabled=true;
+      document.getElementById('sendOtpBtn').style.background="#22c55e";
       if(otpTimer) clearInterval(otpTimer);
       document.getElementById('resendOtpBtn').style.display='none';
     } else { throw new Error(data.error || "Invalid OTP"); }
@@ -305,16 +370,18 @@ setupPreview('aadhaarBack','previewAadBack',null);
 document.getElementById('regBtn').onclick = async function(e){
   if(e) e.preventDefault();
   let valid = true;
-  const req = ['address','pincode','holder','acno','ifsc'];
+  const req = ['address','pincode','holder','acno','ifsc','fullName','supplierMobile','panNo','aadhaarNo'];
   req.forEach(id=>{ let el=document.getElementById(id); if(!el.value.trim()){ showErr(el, "Required"); valid=false; }});
   if(!valid) return;
   let payload = {
     store_name: document.getElementById('store').value.trim(),
-    owner_name: document.getElementById('holder').value.trim(),
+    has_gst: hasGST,
+    gstin: document.getElementById('gstin').value.trim(),
+    owner_name: document.getElementById('fullName').value.trim(),
     email: document.getElementById('email').value.trim().toLowerCase(),
     phone: document.getElementById('mobile').value.trim(),
+    supplier_mobile: document.getElementById('supplierMobile').value.trim(),
     password: document.getElementById('pass').value.trim(),
-    gstin: document.getElementById('gstin').value.trim(),
     pan_no: document.getElementById('panNo').value.trim(),
     aadhaar_no: document.getElementById('aadhaarNo').value.trim(),
     pickup_address: document.getElementById('address').value.trim(),
