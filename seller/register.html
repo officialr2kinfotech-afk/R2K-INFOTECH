@@ -26,11 +26,11 @@ body{min-height:100vh;background:#fff;display:flex;flex-direction:column}
 .progress-line{position:absolute;top:16px;left:20px;height:3px;background:linear-gradient(90deg,#ff6a00,#ff2d00);z-index:1;transition:0.4s;width:0%}
 .p-step{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px}
 .p-circle{width:34px;height:34px;border-radius:50%;background:#f0f0f0;color:#999;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;border:2px solid #f0f0f0;transition:0.3s}
-.p-step.active .p-circle{background:#111;color:#fff;border-color:#111}
-.p-step.done .p-circle{background:#22c55e;color:#fff;border-color:#22c55e}
+.p-step.active.p-circle{background:#111;color:#fff;border-color:#111}
+.p-step.done.p-circle{background:#22c55e;color:#fff;border-color:#22c55e}
 .p-label{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#999}
-.p-step.active .p-label{color:#111}
-.p-step.done .p-label{color:#22c55e}
+.p-step.active.p-label{color:#111}
+.p-step.done.p-label{color:#22c55e}
 .form-step{display:none;animation:slideIn 0.3s ease}
 .form-step.active{display:block}
 @keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
@@ -173,7 +173,7 @@ function nextStep(n){
     let m=document.getElementById('mobile');
     let e=document.getElementById('email');
     let p=document.getElementById('pass');
-    if(!m.value.trim() || !/^[0-9]{10}$/.test(m.value.trim())){ showErr(m,"10 digits required"); return; }
+    if(!m.value.trim() ||!/^[0-9]{10}$/.test(m.value.trim())){ showErr(m,"10 digits required"); return; }
     if(!e.value.trim()){ showErr(e,"Required"); return; }
     if(!isEmailVerified){ showErr(e,"Please verify Email OTP first"); return; }
     if(!p.value.trim() || p.value.trim().length<8){ showErr(p,"Min 8 chars"); return; }
@@ -238,16 +238,15 @@ async function sendOtpLogic(e){
       body: JSON.stringify({ email: emailVal })
     });
     let data = await res.json();
-    if(data.debug_otp){
-      document.getElementById('otpInput').value = data.debug_otp;
-      document.getElementById('otpInfo').innerHTML = `✅ OTP: <b>${data.debug_otp}</b> (Testing mode)`;
-    } else {
-      document.getElementById('otpInfo').innerText = "OTP sent to " + emailVal;
-    }
-    sendBtn.innerText = "OTP Sent ✓"; startResendTimer();
+    if(!res.ok) throw new Error(data.error || "Failed to send OTP");
+    document.getElementById('otpInfo').innerText = "OTP sent! Check inbox / spam folder - Direct from Rekavo";
+    document.getElementById('otpInput').value = "";
+    document.getElementById('otpInput').focus();
+    sendBtn.innerText = "OTP Sent ✓";
+    startResendTimer();
     setTimeout(()=>{ sendBtn.disabled=false; sendBtn.innerText="Resend OTP"; }, 60000);
   }catch(err){
-    document.getElementById('otpInfo').innerText = "Error sending, try again: " + err.message;
+    document.getElementById('otpInfo').innerText = "Error: " + err.message;
     sendBtn.innerText="Try Again"; sendBtn.disabled=false;
   }
 }
@@ -258,7 +257,7 @@ document.getElementById('verifyOtpBtn').onclick = async function(e){
   let email = document.getElementById('email').value.trim().toLowerCase();
   let otp = document.getElementById('otpInput').value.trim();
   let err = document.getElementById('otpErr');
-  if(!otp || otp.length != 6){ err.innerText="Enter 6 digit OTP"; err.style.display='block'; return; }
+  if(!otp || otp.length!= 6){ err.innerText="Enter 6 digit OTP"; err.style.display='block'; return; }
   let btn = this; btn.innerText="Checking...";
   try{
     let res = await fetch(`${API_BASE}/seller/verify-otp`, {
