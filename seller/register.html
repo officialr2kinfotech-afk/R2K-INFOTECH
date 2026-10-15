@@ -21,8 +21,6 @@ body{min-height:100vh;background:#fff;display:flex;flex-direction:column}
 .card{width:100%;max-width:480px;background:#fff;padding:28px 26px;border-radius:18px;box-shadow:0 12px 40px rgba(0,0,0,0.06);border:1px solid #f0f0f0}
 .card h2{font-size:26px;font-weight:800;color:#111}
 .card p.small{color:#6b7280;font-size:13.5px;margin:8px 0 18px}
-
-/* PROGRESS CSS - NEW */
 .progress-wrap{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;position:relative}
 .progress-wrap::before{content:'';position:absolute;top:16px;left:20px;right:20px;height:3px;background:#f0f0f0;z-index:0}
 .progress-line{position:absolute;top:16px;left:20px;height:3px;background:linear-gradient(90deg,#ff6a00,#ff2d00);z-index:1;transition:0.4s;width:0%}
@@ -33,11 +31,9 @@ body{min-height:100vh;background:#fff;display:flex;flex-direction:column}
 .p-label{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#999}
 .p-step.active .p-label{color:#111}
 .p-step.done .p-label{color:#22c55e}
-
 .form-step{display:none;animation:slideIn 0.3s ease}
 .form-step.active{display:block}
 @keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
-
 .sec{margin-bottom:18px;padding-bottom:18px;border-bottom:1px dashed #eee}
 .sec-title{font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:#ff5a00;margin-bottom:12px}
 label{font-size:12px;font-weight:700;color:#222;margin-bottom:6px;display:block}
@@ -83,8 +79,6 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
     <form class="card" id="regForm" onsubmit="return false;">
       <h2>Become a Seller</h2>
       <p class="small">It takes less than 3 minutes</p>
-
-      <!-- PROGRESS TRACKER -->
       <div class="progress-wrap">
         <div class="progress-line" id="progressLine"></div>
         <div class="p-step active" id="ps1"><div class="p-circle">1</div><div class="p-label">Store</div></div>
@@ -92,8 +86,6 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
         <div class="p-step" id="ps3"><div class="p-circle">3</div><div class="p-label">Shop</div></div>
         <div class="p-step" id="ps4"><div class="p-circle">4</div><div class="p-label">Bank</div></div>
       </div>
-
-      <!-- STEP 1 -->
       <div class="form-step active" id="step1">
         <div class="sec">
           <div class="sec-title">1. Store Details</div>
@@ -101,8 +93,6 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
         </div>
         <button type="button" class="btn" onclick="nextStep(2)">Continue →</button>
       </div>
-
-      <!-- STEP 2 -->
       <div class="form-step" id="step2">
         <div class="sec">
           <div class="sec-title">2. Contact Details</div>
@@ -125,8 +115,6 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
         </div>
         <div class="nav-btns"><button type="button" class="btn-sec" onclick="prevStep(1)">← Back</button><button type="button" class="btn" onclick="nextStep(3)">Continue →</button></div>
       </div>
-
-      <!-- STEP 3 -->
       <div class="form-step" id="step3">
         <div class="sec">
           <div class="sec-title">3. Shop Verification Photo * COMPULSORY - 2 PHOTOS</div>
@@ -144,8 +132,6 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
         </div>
         <div class="nav-btns"><button type="button" class="btn-sec" onclick="prevStep(2)">← Back</button><button type="button" class="btn" onclick="nextStep(4)">Continue →</button></div>
       </div>
-
-      <!-- STEP 4 -->
       <div class="form-step" id="step4">
         <div class="sec">
           <div class="sec-title">5. Pickup Address</div>
@@ -161,11 +147,9 @@ input.error{border-color:#ff2d00!important;background:#fff5f5!important}
         <button type="button" class="btn-sec" onclick="prevStep(3)">← Back to Shop Photos</button>
         <div class="extra">Already a seller? <a href="login.html">Login to Dashboard</a></div>
       </div>
-
     </form>
   </div>
 </div>
-
 <script>
 let currentStep = 1;
 let isEmailVerified = false;
@@ -180,9 +164,7 @@ function updateProgress(step){
   });
   document.getElementById('progressLine').style.width = ((step-1)/3*100)+'%';
 }
-
 function nextStep(n){
-  // VALIDATION BEFORE NEXT
   if(currentStep===1){
     let el=document.getElementById('store');
     if(!el.value.trim()){ showErr(el,"Required"); return; }
@@ -214,7 +196,6 @@ function prevStep(n){
   currentStep=n;
   updateProgress(n);
 }
-
 function showErr(input, msg){
   if(!input) return;
   input.classList.add('error');
@@ -250,7 +231,12 @@ async function sendOtpLogic(e){
   sendBtn.innerText="Sending..."; sendBtn.disabled=true;
   document.getElementById('otpInfo').innerText = "Sending OTP to " + emailVal + "...";
   try{
-    let res = await fetch(`${API_BASE}/send-otp`, {method:'POST',headers:{'Content-Type':'application/json'},body: JSON.stringify({ email: emailVal })});
+    let res = await fetch(`${API_BASE}/seller/send-otp`, {
+      method:'POST',
+      credentials:'include',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email: emailVal })
+    });
     let data = await res.json();
     if(data.debug_otp){
       document.getElementById('otpInput').value = data.debug_otp;
@@ -261,7 +247,7 @@ async function sendOtpLogic(e){
     sendBtn.innerText = "OTP Sent ✓"; startResendTimer();
     setTimeout(()=>{ sendBtn.disabled=false; sendBtn.innerText="Resend OTP"; }, 60000);
   }catch(err){
-    document.getElementById('otpInfo').innerText = "Error sending, try again";
+    document.getElementById('otpInfo').innerText = "Error sending, try again: " + err.message;
     sendBtn.innerText="Try Again"; sendBtn.disabled=false;
   }
 }
@@ -275,7 +261,12 @@ document.getElementById('verifyOtpBtn').onclick = async function(e){
   if(!otp || otp.length != 6){ err.innerText="Enter 6 digit OTP"; err.style.display='block'; return; }
   let btn = this; btn.innerText="Checking...";
   try{
-    let res = await fetch(`${API_BASE}/verify-otp`, {method:'POST',headers:{'Content-Type':'application/json'},body: JSON.stringify({ email, otp })});
+    let res = await fetch(`${API_BASE}/seller/verify-otp`, {
+      method:'POST',
+      credentials:'include',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, otp })
+    });
     let data = await res.json();
     if(data.success){
       isEmailVerified = true; err.style.display='none';
@@ -312,7 +303,6 @@ setupPreview('shopInside','previewInside','nameInside');
 setupPreview('panPhoto','previewPan','namePan');
 setupPreview('aadhaarFront','previewAadFront',null);
 setupPreview('aadhaarBack','previewAadBack',null);
-
 document.getElementById('regBtn').onclick = async function(e){
   if(e) e.preventDefault();
   let valid = true;
@@ -336,7 +326,12 @@ document.getElementById('regBtn').onclick = async function(e){
   };
   this.innerText="Registering..."; this.disabled=true;
   try{
-    let res = await fetch(`${API_BASE}/seller-register`, {method:'POST',headers:{'Content-Type':'application/json'},body: JSON.stringify(payload)});
+    let res = await fetch(`${API_BASE}/seller-register`, {
+      method:'POST',
+      credentials:'include',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
     let data = await res.json();
     if(res.ok){ alert("Seller Registered Successfully! Please Login"); window.location.href = "login.html"; }
     else { alert(data.error || "Registration failed"); this.innerText="Register & Submit for Verification →"; this.disabled=false; }
